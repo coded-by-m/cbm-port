@@ -19,3 +19,6 @@ yarn-error.log*
 
 # misc
 .DS_Store
+
+# claude code — configuração pessoal (não versionar)
+.claude/settings.local.json

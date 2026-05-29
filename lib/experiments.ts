@@ -31,36 +31,36 @@ export const EXPERIMENTS: Experiment[] = [
     slug: "triangle-lines",
     title: "Triangle Lines",
     description:
-      "Linhas desenhando formas, variações de triângulos e múltiplas conexões.",
-    status: "planned",
+      "Nós surgem, linhas conectam e os triângulos emergem como consequência. Uma malha triangulada cresce em profundidade e permanece viva — um sistema sendo construído.",
+    status: "ready",
   },
   {
     slug: "terrain-mesh",
     title: "Terrain Mesh",
     description:
-      "Malha triangulada procedural com movimento orgânico sutil e performance estável.",
-    status: "planned",
+      "Malha triangulada procedural com profundidade real, respiração sutil e câmera de observação. Primeira versão da futura Paisagem Digital — apenas o terreno.",
+    status: "ready",
   },
   {
     slug: "project-fragments",
     title: "Project Fragments",
     description:
-      "Fragmentos triangulares com hover no desktop, toque no mobile e reação visual.",
-    status: "planned",
+      "Projetos como fragmentos triangulados descobertos sobre o terreno. Hover/toque destaca o fragmento e revela um marcador simples — sem cards, sem grade. Valida a descoberta dentro da futura Paisagem Digital.",
+    status: "ready",
   },
   {
     slug: "html-overlay",
     title: "HTML Overlay",
     description:
-      "Card HTML ancorado a uma posição 3D, com acessibilidade e responsividade.",
-    status: "planned",
+      "Card HTML acessível ancorado à posição 3D do fragmento. A ponte entre Three.js e HTML: o fragmento continua 3D, o conteúdo do projeto é HTML navegável fora do canvas.",
+    status: "ready",
   },
   {
     slug: "scroll-camera",
     title: "Scroll Camera",
     description:
-      "Câmera controlada por scroll com GSAP ScrollTrigger + Lenis e transições suaves.",
-    status: "planned",
+      "A câmera percorre a paisagem conforme o scroll (GSAP ScrollTrigger + Lenis): visão ampla → foco em cada fragmento → retorno. Valida ritmo, legibilidade e narrativa comercial.",
+    status: "ready",
   },
   {
     slug: "cta-formation",

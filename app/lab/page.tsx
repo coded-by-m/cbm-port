@@ -1,34 +1,64 @@
 "use client";
 
+import { useState, type ComponentType } from "react";
 import dynamic from "next/dynamic";
 import { EXPERIMENTS } from "@/lib/experiments";
 
 /**
- * O experimento ativo usa WebGL e só deve montar no cliente.
+ * Experimentos ativos usam WebGL e só devem montar no cliente.
  * `ssr: false` evita renderizar o Canvas no servidor.
  */
-const TriangleLoader = dynamic(
-  () => import("@/components/lab/TriangleLoader").then((m) => m.TriangleLoader),
-  { ssr: false },
-);
+const EXPERIMENT_COMPONENTS: Record<string, ComponentType> = {
+  "triangle-loader": dynamic(
+    () => import("@/components/lab/TriangleLoader").then((m) => m.TriangleLoader),
+    { ssr: false },
+  ),
+  "triangle-lines": dynamic(
+    () => import("@/components/lab/TriangleLines").then((m) => m.TriangleLines),
+    { ssr: false },
+  ),
+  "terrain-mesh": dynamic(
+    () => import("@/components/lab/TerrainMesh").then((m) => m.TerrainMesh),
+    { ssr: false },
+  ),
+  "project-fragments": dynamic(
+    () =>
+      import("@/components/lab/ProjectFragments").then(
+        (m) => m.ProjectFragments,
+      ),
+    { ssr: false },
+  ),
+  "html-overlay": dynamic(
+    () => import("@/components/lab/HtmlOverlay").then((m) => m.HtmlOverlay),
+    { ssr: false },
+  ),
+  "scroll-camera": dynamic(
+    () => import("@/components/lab/ScrollCamera").then((m) => m.ScrollCamera),
+    { ssr: false },
+  ),
+};
 
 /**
  * /lab — Experience Lab.
  *
  * Central de experimentos da Coded by M. Valida riscos técnicos antes do
- * site principal. Mostra o experimento ativo (Triangle Loader) como camada
- * 3D ao fundo e os próximos experimentos como overlay HTML discreto.
+ * site principal. Mostra o experimento ativo como camada 3D ao fundo, permite
+ * alternar entre os experimentos prontos e lista os próximos como overlay.
  */
 export default function LabPage() {
-  const active = EXPERIMENTS.find((experiment) => experiment.status === "ready");
+  const ready = EXPERIMENTS.filter((experiment) => experiment.status === "ready");
   const planned = EXPERIMENTS.filter(
     (experiment) => experiment.status === "planned",
   );
 
+  const [activeSlug, setActiveSlug] = useState(ready[0]?.slug ?? "");
+  const active = ready.find((experiment) => experiment.slug === activeSlug);
+  const ActiveExperiment = EXPERIMENT_COMPONENTS[activeSlug];
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#050505] text-neutral-200">
-      {/* Camada 3D — experimento ativo */}
-      <TriangleLoader />
+      {/* Camada 3D — experimento ativo (remonta ao trocar de experimento) */}
+      {ActiveExperiment && <ActiveExperiment key={activeSlug} />}
 
       {/* Camada de conteúdo — HTML overlay */}
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-6 sm:p-10">
@@ -58,6 +88,28 @@ export default function LabPage() {
               <p className="mt-2 text-xs leading-relaxed text-neutral-500">
                 {active.description}
               </p>
+
+              {/* Alternância entre experimentos prontos */}
+              <div className="pointer-events-auto mt-5 flex flex-wrap gap-2">
+                {ready.map((experiment) => {
+                  const isActive = experiment.slug === activeSlug;
+                  return (
+                    <button
+                      key={experiment.slug}
+                      type="button"
+                      onClick={() => setActiveSlug(experiment.slug)}
+                      aria-pressed={isActive}
+                      className={`rounded-sm border px-3 py-1.5 text-[0.6rem] uppercase tracking-[0.25em] transition-colors ${
+                        isActive
+                          ? "border-neutral-400 text-neutral-100"
+                          : "border-neutral-800 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300"
+                      }`}
+                    >
+                      {experiment.title}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
 

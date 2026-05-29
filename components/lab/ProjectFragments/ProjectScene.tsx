@@ -1,0 +1,37 @@
+"use client";
+
+import { useMemo, useRef } from "react";
+import type { Group } from "three";
+import TerrainLayer from "@/components/lab/TerrainMesh/TerrainLayer";
+import { useCinematicCamera } from "@/components/lab/TerrainMesh/useCinematicCamera";
+import { useResponsiveFit } from "@/components/lab/TerrainMesh/useResponsiveFit";
+import { LAYERS } from "@/components/lab/TerrainMesh/config";
+import Fragments from "./Fragments";
+
+/**
+ * Cena do Project Fragments.
+ *
+ * Reaproveita o Terrain Mesh como base (camadas + câmera + fit, sem alterá-lo)
+ * e adiciona os fragmentos no mesmo grupo de fit — assim eles repousam sobre o
+ * terreno e escalam junto com ele de forma responsiva.
+ */
+export default function ProjectScene() {
+  const fitRef = useRef<Group>(null);
+
+  const fitRadius = useMemo(
+    () => Math.max(...LAYERS.map((layer) => layer.sizeX / 2)),
+    [],
+  );
+
+  useResponsiveFit(fitRef, fitRadius);
+  useCinematicCamera();
+
+  return (
+    <group ref={fitRef}>
+      {LAYERS.map((layer) => (
+        <TerrainLayer key={layer.name} layer={layer} />
+      ))}
+      <Fragments />
+    </group>
+  );
+}
