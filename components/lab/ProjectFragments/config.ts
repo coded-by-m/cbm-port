@@ -63,7 +63,7 @@ export const FRAGMENT_COLORS = {
   node: "#cccccc",
   nodeNormalOpacity: 0.42,
   nodeHighlightOpacity: 0.85,
-  apex: "#e4e4e4",
+  apex: "#FB3640",
   label: "#b6b6b6",
 } as const;
 

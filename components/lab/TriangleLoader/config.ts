@@ -31,7 +31,7 @@ export const TRIANGLE_RADIUS = 1;
  * Referência emocional: Porsche, não videogame.
  */
 export const COLORS = {
-  background: "#050505",
+  background: "#000F08",
   point: "#e2e2e2",
   line: "#9c9c9c",
 } as const;

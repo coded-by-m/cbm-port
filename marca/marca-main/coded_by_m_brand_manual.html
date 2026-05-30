@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coded by M — Manual de Marca</title>
+<link href="https://api.fontshare.com/v2/css?f[]=panchang@200,300,400,500,600,700,800&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black:   #000F08;
+  --red:     #FB3640;
+  --white:   #F5F2ED;
+  --gray100: #E8E4DE;
+  --gray200: #C8C4BE;
+  --gray400: #8A8780;
+  --gray600: #4A4844;
+  --gray800: #1E1E1A;
+  --green:   #0A1F10;
+  --font-display: 'Panchang', sans-serif;
+  --font-body:    'Satoshi', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { background: #0d0d0d; color: var(--white); font-family: var(--font-body); font-weight: 400; line-height: 1.6; }
+.page { width: 100%; max-width: 900px; margin: 0 auto; padding: 0 40px; }
+section { padding: 100px 0; border-bottom: 1px solid #1a1a1a; }
+section:last-child { border-bottom: none; }
+
+/* COVER */
+.cover { min-height: 100vh; background: var(--black); display: flex; flex-direction: column; justify-content: space-between; padding: 60px 80px; position: relative; overflow: hidden; }
+.cover::before { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(251,54,64,0.06) 0%, transparent 70%); pointer-events: none; }
+.cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.cover-tag { font-family: var(--font-body); font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--red); opacity: 0.7; }
+.cover-year { font-family: var(--font-body); font-size: 10px; font-weight: 400; letter-spacing: 0.2em; color: var(--gray400); }
+.cover-center { display: flex; flex-direction: column; align-items: flex-start; gap: 40px; }
+.cover-logo-row { display: flex; align-items: center; gap: 32px; }
+.cover-divider { width: 1px; height: 72px; background: linear-gradient(to bottom, transparent, #2a4a32, transparent); }
+.cover-wordmark { display: flex; flex-direction: column; gap: 6px; }
+.cover-wordmark-main { font-family: var(--font-display); font-size: 48px; font-weight: 700; letter-spacing: -0.01em; color: var(--white); line-height: 1; text-transform: uppercase; }
+.cover-wordmark-main span { color: var(--red); }
+.cover-wordmark-rule { height: 0.5px; background: var(--red); opacity: 0.4; }
+.cover-wordmark-sub { font-family: var(--font-body); font-size: 10px; font-weight: 400; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gray400); }
+.cover-title { font-family: var(--font-display); font-size: 72px; font-weight: 800; letter-spacing: -0.03em; line-height: 0.95; color: var(--white); }
+.cover-title span { color: var(--red); }
+.cover-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+.cover-info { font-family: var(--font-body); font-size: 10px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray600); line-height: 2; }
+.cover-version { font-family: var(--font-display); font-size: 64px; font-weight: 200; color: #1a2e1e; line-height: 1; letter-spacing: -0.04em; }
+
+/* SECTION HEADERS */
+.sec-tag { font-family: var(--font-body); font-size: 9px; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase; color: var(--red); opacity: 0.7; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+.sec-tag::after { content: ''; flex: 1; height: 0.5px; background: linear-gradient(to right, #1a2e1e, transparent); }
+.sec-title { font-family: var(--font-display); font-size: 42px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; color: var(--white); margin-bottom: 48px; }
+
+/* LOGO */
+.logo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 2px; }
+.logo-cell { padding: 64px 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; position: relative; }
+.logo-cell.dark  { background: var(--black); }
+.logo-cell.mid   { background: #0e1810; }
+.logo-cell.light { background: var(--gray100); }
+.logo-cell.white { background: #ffffff; }
+.logo-cell-label { font-family: var(--font-body); font-size: 8px; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gray400); position: absolute; bottom: 16px; }
+.logo-full-row { background: var(--black); padding: 56px 48px; display: flex; align-items: center; gap: 36px; margin-bottom: 2px; }
+.logo-rule { width: 1px; height: 80px; background: linear-gradient(to bottom, transparent, #2a4a32, transparent); }
+.logo-wordmark { display: flex; flex-direction: column; gap: 6px; }
+.logo-wm-main { font-family: var(--font-display); font-size: 36px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--white); line-height: 1; }
+.logo-wm-main span { color: var(--red); }
+.logo-wm-line { height: 0.5px; background: var(--red); opacity: 0.4; }
+.logo-wm-sub { font-family: var(--font-body); font-size: 9px; font-weight: 400; letter-spacing: 0.38em; text-transform: uppercase; color: var(--gray400); }
+.clearzone-box { background: #0a0f0b; border: 1px solid #1a2a1e; padding: 48px; display: flex; align-items: center; justify-content: center; position: relative; margin-top: 2px; }
+.clearzone-inner { border: 1px dashed #2a4a32; padding: 40px; display: flex; align-items: center; justify-content: center; }
+.clearzone-label { font-family: var(--font-body); font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase; color: #2a4a32; position: absolute; }
+.cz-top { top: 20px; } .cz-bottom { bottom: 20px; }
+.dont-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; margin-top: 2px; }
+.dont-cell { background: #0a0f0b; border: 1px solid #1a2a1e; padding: 36px 24px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.dont-label { font-family: var(--font-body); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); opacity: 0.6; text-align: center; }
+
+/* CORES */
+.color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-bottom: 2px; }
+.color-card { display: flex; flex-direction: column; }
+.color-swatch { height: 120px; }
+.color-info { padding: 16px; background: #0a0f0b; border: 1px solid #1a2a1e; border-top: none; }
+.color-name { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.color-hex { font-family: var(--font-body); font-size: 10px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray400); }
+.color-role { font-family: var(--font-body); font-size: 9px; color: var(--gray600); margin-top: 4px; }
+.color-grid-2 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; }
+.color-card-sm .color-swatch { height: 72px; }
+.color-card-sm .color-info { padding: 12px; }
+.color-card-sm .color-name { font-size: 11px; }
+.color-card-sm .color-hex { font-size: 9px; }
+
+/* TIPOGRAFIA */
+.type-specimen { background: var(--black); border: 1px solid #1a2a1e; padding: 48px; margin-bottom: 2px; }
+.type-label { font-family: var(--font-body); font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--red); opacity: 0.6; margin-bottom: 24px; }
+.type-display { font-family: var(--font-display); font-size: 80px; font-weight: 800; letter-spacing: -0.03em; line-height: 0.9; color: var(--white); }
+.type-display span { color: var(--red); }
+.type-scale { background: #0a0f0b; border: 1px solid #1a2a1e; padding: 40px 48px; margin-bottom: 2px; }
+.type-scale-row { display: flex; align-items: baseline; gap: 24px; padding: 16px 0; border-bottom: 1px solid #111811; }
+.type-scale-row:last-child { border-bottom: none; }
+.type-scale-meta { font-family: var(--font-body); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray600); min-width: 120px; }
+.type-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 2px; }
+.type-pair-cell { background: var(--black); border: 1px solid #1a2a1e; padding: 40px; }
+.type-pair-label { font-family: var(--font-body); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--red); opacity: 0.6; margin-bottom: 20px; }
+.type-pair-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+.type-pair-desc { font-family: var(--font-body); font-size: 11px; color: var(--gray400); margin-bottom: 20px; }
+.type-pair-sample-body { font-family: var(--font-body); font-size: 13px; font-weight: 300; line-height: 1.8; color: var(--gray200); }
+
+/* TOM DE VOZ */
+.voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 2px; }
+.voice-card { padding: 36px 32px; border: 1px solid #1a2a1e; }
+.voice-card.dark { background: var(--black); } .voice-card.mid { background: #0a0f0b; }
+.voice-tag { font-family: var(--font-body); font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 12px; }
+.voice-tag.good { color: #4a9a5a; } .voice-tag.bad { color: var(--red); opacity: 0.6; }
+.voice-quote { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--white); line-height: 1.4; margin-bottom: 12px; }
+.voice-note { font-family: var(--font-body); font-size: 11px; color: var(--gray400); line-height: 1.6; }
+.voice-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 2px; }
+.voice-pillar { background: var(--black); border: 1px solid #1a2a1e; padding: 32px 28px; }
+.voice-pillar-num { font-family: var(--font-display); font-size: 40px; font-weight: 800; color: #1a2e1e; line-height: 1; margin-bottom: 12px; }
+.voice-pillar-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.voice-pillar-desc { font-family: var(--font-body); font-size: 12px; color: var(--gray400); line-height: 1.6; }
+
+/* CARTÃO */
+.card-wrap { display: flex; gap: 24px; padding: 48px; background: #0a0a0a; border: 1px solid #1a2a1e; justify-content: center; flex-wrap: wrap; margin-bottom: 2px; }
+.biz-card { width: 340px; height: 190px; border-radius: 4px; padding: 28px 32px; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; }
+.biz-card.front { background: var(--black); border: 1px solid #1a2a1e; }
+.biz-card.back { background: var(--red); }
+.biz-card-logo { display: flex; align-items: center; gap: 16px; }
+.biz-card-wm { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--white); text-transform: uppercase; }
+.biz-card-wm span { color: var(--red); }
+.biz-card-wm-sub { font-family: var(--font-body); font-size: 7px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gray400); margin-top: 2px; }
+.biz-card-info { font-family: var(--font-body); font-size: 9px; color: var(--gray400); line-height: 1.8; letter-spacing: 0.05em; }
+.biz-card-back-wm { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--black); text-transform: uppercase; }
+
+/* EMAIL */
+.email-sig-wrap { background: #ffffff; padding: 40px; margin-bottom: 2px; }
+.email-sig { display: flex; align-items: flex-start; gap: 24px; max-width: 480px; }
+.email-sig-divider { width: 2px; min-height: 80px; background: var(--red); flex-shrink: 0; }
+.email-sig-name { font-family: 'Panchang', sans-serif; font-size: 18px; font-weight: 700; color: #111; margin-bottom: 2px; }
+.email-sig-role { font-family: 'Satoshi', sans-serif; font-size: 11px; color: #888; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 14px; }
+.email-sig-info { font-family: 'Satoshi', sans-serif; font-size: 11px; color: #555; line-height: 1.9; }
+.email-sig-info a { color: var(--red); text-decoration: none; }
+
+/* SOCIAL */
+.social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-bottom: 2px; }
+.social-cell { background: #0a0f0b; border: 1px solid #1a2a1e; padding: 32px 16px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.social-label { font-family: var(--font-body); font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gray600); }
+.avatar-circle { border-radius: 50%; background: var(--black); display: flex; align-items: center; justify-content: center; border: 2px solid #1a2a1e; }
+.stories-wrap { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; margin-bottom: 2px; }
+.story-card { background: var(--black); border: 1px solid #1a2a1e; aspect-ratio: 9/16; max-height: 320px; display: flex; flex-direction: column; justify-content: space-between; padding: 24px 20px; position: relative; overflow: hidden; }
+.story-card::before { content: ''; position: absolute; bottom: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(251,54,64,0.08) 0%, transparent 70%); }
+.story-top { display: flex; justify-content: space-between; align-items: center; }
+.story-logo-sm { font-family: var(--font-display); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--white); }
+.story-logo-sm span { color: var(--red); }
+.story-tag { font-family: var(--font-body); font-size: 7px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); opacity: 0.7; }
+.story-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--white); line-height: 1.1; letter-spacing: -0.02em; }
+.story-title span { color: var(--red); }
+.story-sub { font-family: var(--font-body); font-size: 9px; color: var(--gray400); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 8px; }
+.story-bottom { font-family: var(--font-body); font-size: 8px; color: var(--gray600); letter-spacing: 0.15em; text-transform: uppercase; }
+
+/* WEBSITE */
+.web-mockup { background: var(--black); border: 1px solid #1a2a1e; overflow: hidden; margin-bottom: 2px; }
+.web-nav { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #0e1810; }
+.web-nav-logo { display: flex; align-items: center; gap: 14px; }
+.web-nav-wm { font-family: var(--font-display); font-size: 16px; font-weight: 700; text-transform: uppercase; color: var(--white); }
+.web-nav-wm span { color: var(--red); }
+.web-nav-links { display: flex; gap: 32px; }
+.web-nav-link { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray400); }
+.web-hero { padding: 80px 40px; display: flex; flex-direction: column; gap: 24px; }
+.web-hero-tag { font-family: var(--font-body); font-size: 9px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--red); opacity: 0.7; display: flex; align-items: center; gap: 12px; }
+.web-hero-tag::before { content: ''; width: 24px; height: 1px; background: var(--red); opacity: 0.5; }
+.web-hero-title { font-family: var(--font-display); font-size: 56px; font-weight: 800; letter-spacing: -0.03em; line-height: 0.95; color: var(--white); }
+.web-hero-title span { color: var(--red); }
+.web-hero-sub { font-family: var(--font-body); font-size: 14px; font-weight: 300; color: var(--gray400); max-width: 480px; line-height: 1.7; }
+.web-hero-cta { display: flex; gap: 16px; margin-top: 8px; }
+.btn-primary { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; background: var(--red); color: var(--black); padding: 14px 28px; border: none; cursor: pointer; display: inline-block; }
+.btn-secondary { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; background: transparent; color: var(--white); padding: 14px 28px; border: 1px solid #2a4a32; display: inline-block; }
+.web-hero-bottom { padding: 20px 40px; border-top: 1px solid #0e1810; display: flex; gap: 40px; }
+.web-stat { display: flex; flex-direction: column; gap: 4px; }
+.web-stat-num { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--white); }
+.web-stat-num span { color: var(--red); }
+.web-stat-label { font-family: var(--font-body); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray600); }
+
+/* PROPOSTA */
+.proposal-wrap { background: var(--white); padding: 60px; border: 1px solid #e0ddd8; margin-bottom: 2px; }
+.proposal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; }
+.proposal-logo-wm { font-family: 'Panchang', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; color: #111; }
+.proposal-logo-wm span { color: var(--red); }
+.proposal-logo-sub { font-family: 'Satoshi', sans-serif; font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin-top: 4px; }
+.proposal-doc-title { font-family: 'Panchang', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); text-align: right; }
+.proposal-doc-num { font-family: 'Satoshi', sans-serif; font-size: 28px; font-weight: 700; color: #111; text-align: right; }
+.proposal-divider { height: 2px; background: #111; margin-bottom: 40px; }
+.proposal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px; }
+.proposal-field-label { font-family: 'Satoshi', sans-serif; font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase; color: #888; margin-bottom: 6px; }
+.proposal-field-value { font-family: 'Satoshi', sans-serif; font-size: 13px; font-weight: 500; color: #111; }
+.proposal-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+.proposal-table th { font-family: 'Satoshi', sans-serif; font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase; color: #888; padding: 10px 0; border-bottom: 1px solid #e0ddd8; text-align: left; font-weight: 400; }
+.proposal-table td { font-family: 'Satoshi', sans-serif; font-size: 12px; color: #333; padding: 14px 0; border-bottom: 1px solid #f0ede8; }
+.proposal-table td:last-child { text-align: right; font-weight: 500; color: #111; }
+.proposal-total-row { display: flex; justify-content: flex-end; gap: 40px; align-items: baseline; }
+.proposal-total-label { font-family: 'Panchang', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #888; }
+.proposal-total-value { font-family: 'Panchang', sans-serif; font-size: 28px; font-weight: 800; color: #111; }
+.proposal-total-value span { color: var(--red); }
+.proposal-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid #e0ddd8; display: flex; justify-content: space-between; align-items: flex-end; }
+.proposal-footer-info { font-family: 'Satoshi', sans-serif; font-size: 10px; color: #888; line-height: 1.8; }
+.proposal-footer-brand { font-family: 'Panchang', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #ccc; }
+
+/* TOC */
+.toc { background: var(--black); border-bottom: 1px solid #1a1a1a; padding: 60px 0; }
+.toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.toc-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #0e1810; text-decoration: none; }
+.toc-item:hover .toc-name { color: var(--red); }
+.toc-item:nth-child(odd) { padding-right: 40px; }
+.toc-item:nth-child(even) { padding-left: 40px; border-left: 1px solid #0e1810; }
+.toc-num { font-family: var(--font-display); font-size: 11px; font-weight: 400; color: #1a2e1e; }
+.toc-name { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--white); letter-spacing: 0.05em; transition: color 0.2s; }
+.toc-arrow { color: var(--gray600); font-size: 12px; }
+
+/* CONTATO */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.contact-info-row { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid #0e1810; }
+.contact-info-label { font-family: var(--font-body); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gray600); min-width: 80px; }
+.contact-info-value { font-family: var(--font-body); font-size: 13px; color: var(--white); }
+.contact-info-value a { color: var(--red); text-decoration: none; }
+
+/* BACKCOVER */
+.backcover { background: var(--red); min-height: 40vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px; text-align: center; gap: 24px; }
+.backcover-title { font-family: var(--font-display); font-size: 56px; font-weight: 800; color: var(--black); letter-spacing: -0.03em; line-height: 1; }
+.backcover-sub { font-family: var(--font-body); font-size: 11px; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase; color: var(--black); opacity: 0.75; }
+.backcover-url { font-family: var(--font-display); font-size: 18px; font-weight: 600; color: var(--black); opacity: 0.65; letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="cover">
+  <div class="cover-top">
+    <span class="cover-tag">Manual de Marca</span>
+    <span class="cover-year">2025 — v1.0</span>
+  </div>
+  <div class="cover-center">
+    <div class="cover-logo-row">
+      <svg width="64" height="73" viewBox="0 0 142 161" fill="none">
+        <path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/>
+      </svg>
+      <div class="cover-divider"></div>
+      <div class="cover-wordmark">
+        <div class="cover-wordmark-main">Coded <span>by</span> M</div>
+        <div class="cover-wordmark-rule"></div>
+        <div class="cover-wordmark-sub">Web Development</div>
+      </div>
+    </div>
+    <div class="cover-title">Brand<br>Guide<span>.</span></div>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-info">codedbym.com<br>@codedbymstudio<br>Florianópolis — Brasil</div>
+    <div class="cover-version">01</div>
+  </div>
+</div>
+
+<!-- ÍNDICE -->
+<div class="toc">
+  <div class="page">
+    <div class="sec-tag">Conteúdo</div>
+    <div class="sec-title">Índice</div>
+    <div class="toc-grid">
+      <a href="#logo" class="toc-item"><span class="toc-num">01</span><span class="toc-name">Logo & Símbolo</span><span class="toc-arrow">→</span></a>
+      <a href="#cores" class="toc-item"><span class="toc-num">02</span><span class="toc-name">Paleta de Cores</span><span class="toc-arrow">→</span></a>
+      <a href="#tipografia" class="toc-item"><span class="toc-num">03</span><span class="toc-name">Tipografia</span><span class="toc-arrow">→</span></a>
+      <a href="#voz" class="toc-item"><span class="toc-num">04</span><span class="toc-name">Tom de Voz</span><span class="toc-arrow">→</span></a>
+      <a href="#cartao" class="toc-item"><span class="toc-num">05</span><span class="toc-name">Cartão de Visita</span><span class="toc-arrow">→</span></a>
+      <a href="#email" class="toc-item"><span class="toc-num">06</span><span class="toc-name">Assinatura de E-mail</span><span class="toc-arrow">→</span></a>
+      <a href="#social" class="toc-item"><span class="toc-num">07</span><span class="toc-name">Redes Sociais</span><span class="toc-arrow">→</span></a>
+      <a href="#website" class="toc-item"><span class="toc-num">08</span><span class="toc-name">Website</span><span class="toc-arrow">→</span></a>
+      <a href="#proposta" class="toc-item"><span class="toc-num">09</span><span class="toc-name">Proposta Comercial</span><span class="toc-arrow">→</span></a>
+      <a href="#contato" class="toc-item"><span class="toc-num">10</span><span class="toc-name">Contato</span><span class="toc-arrow">→</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- 01 LOGO -->
+<section id="logo" style="background:#0d0d0d">
+  <div class="page">
+    <div class="sec-tag">01</div>
+    <div class="sec-title">Logo & Símbolo</div>
+    <div class="logo-grid">
+      <div class="logo-cell dark">
+        <svg width="80" height="91" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+        <span class="logo-cell-label">Fundo primário</span>
+      </div>
+      <div class="logo-cell mid">
+        <svg width="80" height="91" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+        <span class="logo-cell-label">Fundo secundário</span>
+      </div>
+      <div class="logo-cell light">
+        <svg width="80" height="91" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+        <span class="logo-cell-label" style="color:#555">Fundo claro</span>
+      </div>
+      <div class="logo-cell white">
+        <svg width="80" height="91" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+        <span class="logo-cell-label" style="color:#555">Fundo branco</span>
+      </div>
+    </div>
+    <div class="logo-full-row">
+      <svg width="52" height="59" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+      <div class="logo-rule"></div>
+      <div class="logo-wordmark">
+        <div class="logo-wm-main">Coded <span>by</span> M</div>
+        <div class="logo-wm-line"></div>
+        <div class="logo-wm-sub">Web Development</div>
+      </div>
+    </div>
+    <div class="clearzone-box">
+      <span class="clearzone-label cz-top">Área de proteção — mínimo 1× a altura do símbolo</span>
+      <span class="clearzone-label cz-bottom">Nenhum elemento dentro desta área</span>
+      <div class="clearzone-inner">
+        <svg width="80" height="91" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+    <div style="margin-top:32px; margin-bottom:16px"><div class="sec-tag">Uso incorreto</div></div>
+    <div class="dont-grid">
+      <div class="dont-cell">
+        <svg width="60" height="68" viewBox="0 0 142 161" fill="none" style="opacity:0.4"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round"/></svg>
+        <span class="dont-label">Não alterar as cores</span>
+      </div>
+      <div class="dont-cell">
+        <svg width="60" height="68" viewBox="0 0 142 161" fill="none" style="transform:rotate(45deg)"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+        <span class="dont-label">Não rotacionar</span>
+      </div>
+      <div class="dont-cell">
+        <svg width="80" height="48" viewBox="0 0 142 161" fill="none" style="transform:scaleX(1.6) scaleY(0.6)"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+        <span class="dont-label">Não distorcer proporções</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 CORES -->
+<section id="cores" style="background:#0d0d0d">
+  <div class="page">
+    <div class="sec-tag">02</div>
+    <div class="sec-title">Paleta de Cores</div>
+    <div class="color-grid" style="margin-bottom:24px">
+      <div class="color-card"><div class="color-swatch" style="background:#000F08"></div><div class="color-info"><div class="color-name">Deep Black</div><div class="color-hex">#000F08</div><div class="color-role">Cor primária — fundos, base</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#FB3640"></div><div class="color-info"><div class="color-name">Signal Red</div><div class="color-hex">#FB3640</div><div class="color-role">Cor de acento — ações, destaques</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#F5F2ED"></div><div class="color-info"><div class="color-name">Off White</div><div class="color-hex">#F5F2ED</div><div class="color-role">Texto principal em fundos escuros</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#0E1810"></div><div class="color-info"><div class="color-name">Forest Dark</div><div class="color-hex">#0E1810</div><div class="color-role">Fundos secundários, cards</div></div></div>
+    </div>
+    <div class="sec-tag" style="margin-bottom:16px">Neutros</div>
+    <div class="color-grid-2">
+      <div class="color-card color-card-sm"><div class="color-swatch" style="background:#E8E4DE"></div><div class="color-info"><div class="color-name">Gray 100</div><div class="color-hex">#E8E4DE</div></div></div>
+      <div class="color-card color-card-sm"><div class="color-swatch" style="background:#C8C4BE"></div><div class="color-info"><div class="color-name">Gray 200</div><div class="color-hex">#C8C4BE</div></div></div>
+      <div class="color-card color-card-sm"><div class="color-swatch" style="background:#8A8780"></div><div class="color-info"><div class="color-name">Gray 400</div><div class="color-hex">#8A8780</div></div></div>
+      <div class="color-card color-card-sm"><div class="color-swatch" style="background:#4A4844"></div><div class="color-info"><div class="color-name">Gray 600</div><div class="color-hex">#4A4844</div></div></div>
+      <div class="color-card color-card-sm"><div class="color-swatch" style="background:#1E1E1A"></div><div class="color-info"><div class="color-name">Gray 800</div><div class="color-hex">#1E1E1A</div></div></div>
+      <div class="color-card color-card-sm"><div class="color-swatch" style="background:#C42030"></div><div class="color-info"><div class="color-name">Red Dark</div><div class="color-hex">#C42030</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 TIPOGRAFIA -->
+<section id="tipografia" style="background:#0d0d0d">
+  <div class="page">
+    <div class="sec-tag">03</div>
+    <div class="sec-title">Tipografia</div>
+    <div class="type-specimen">
+      <div class="type-label">Display — Panchang</div>
+      <div class="type-display">Web<br>Design<span>.</span></div>
+    </div>
+    <div class="type-pair">
+      <div class="type-pair-cell">
+        <div class="type-pair-label">Display & Headlines</div>
+        <div class="type-pair-name">Panchang</div>
+        <div class="type-pair-desc">Fontshare — Gratuita · Pesos 200–800</div>
+        <div style="font-family:'Panchang',sans-serif; font-size:32px; font-weight:700; color:var(--white); line-height:1.1; letter-spacing:-0.02em">ABCDEFG<br>1234567</div>
+      </div>
+      <div class="type-pair-cell">
+        <div class="type-pair-label">Body & Interface</div>
+        <div class="type-pair-name">Satoshi</div>
+        <div class="type-pair-desc">Fontshare — Gratuita · Pesos 300–700</div>
+        <div class="type-pair-sample-body">Sites rápidos, precisos e com identidade visual forte. Para fundadores que levam a sério cada detalhe da presença digital.</div>
+      </div>
+    </div>
+    <div class="type-scale">
+      <div class="type-label">Escala tipográfica</div>
+      <div class="type-scale-row"><span class="type-scale-meta">Display · 700 · 64px</span><span style="font-family:'Panchang',sans-serif; font-size:64px; font-weight:700; color:var(--white); line-height:1; letter-spacing:-0.03em">Coded.</span></div>
+      <div class="type-scale-row"><span class="type-scale-meta">H1 · 700 · 40px</span><span style="font-family:'Panchang',sans-serif; font-size:40px; font-weight:700; color:var(--white); letter-spacing:-0.02em">Projetos Premium</span></div>
+      <div class="type-scale-row"><span class="type-scale-meta">H2 · 600 · 28px</span><span style="font-family:'Panchang',sans-serif; font-size:28px; font-weight:600; color:var(--white)">Desenvolvimento sob medida</span></div>
+      <div class="type-scale-row"><span class="type-scale-meta">H3 · 500 · 20px</span><span style="font-family:'Panchang',sans-serif; font-size:20px; font-weight:500; color:var(--white)">Sites rápidos e precisos</span></div>
+      <div class="type-scale-row"><span class="type-scale-meta">Body · 400 · 15px</span><span style="font-family:'Satoshi',sans-serif; font-size:15px; font-weight:400; color:var(--gray200); line-height:1.7">Sites rápidos, precisos e com identidade visual forte para fundadores e empresas que levam a sério a presença digital.</span></div>
+      <div class="type-scale-row"><span class="type-scale-meta">Small · 300 · 13px</span><span style="font-family:'Satoshi',sans-serif; font-size:13px; font-weight:300; color:var(--gray400)">Detalhes, legendas e informações secundárias.</span></div>
+      <div class="type-scale-row"><span class="type-scale-meta">Caption · 300 · 10px</span><span style="font-family:'Satoshi',sans-serif; font-size:10px; font-weight:300; letter-spacing:0.3em; text-transform:uppercase; color:var(--gray600)">Coded by M · Web Development · Florianópolis</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 TOM DE VOZ -->
+<section id="voz" style="background:#0d0d0d">
+  <div class="page">
+    <div class="sec-tag">04</div>
+    <div class="sec-title">Tom de Voz</div>
+    <div class="voice-pillars" style="margin-bottom:2px">
+      <div class="voice-pillar"><div class="voice-pillar-num">01</div><div class="voice-pillar-title">Direto</div><div class="voice-pillar-desc">Sem rodeios. A mensagem vai ao ponto. O cliente entende o valor sem precisar decifrar jargão.</div></div>
+      <div class="voice-pillar"><div class="voice-pillar-num">02</div><div class="voice-pillar-title">Técnico</div><div class="voice-pillar-desc">Demonstra expertise real. Não foge de detalhes técnicos — usa-os como prova de competência.</div></div>
+      <div class="voice-pillar"><div class="voice-pillar-num">03</div><div class="voice-pillar-title">Descontraído</div><div class="voice-pillar-desc">Humano e acessível. Sem rigidez corporativa. A seriedade está na entrega, não no tom.</div></div>
+    </div>
+    <div class="voice-grid">
+      <div class="voice-card dark"><div class="voice-tag good">✓ Use assim</div><div class="voice-quote">"Entrego em React + Vite. Leve, rápido, SEO-ready. Sem template."</div><div class="voice-note">Direto, técnico, confiante. Mostra o que faz sem precisar convencer.</div></div>
+      <div class="voice-card mid"><div class="voice-tag bad">✗ Evite</div><div class="voice-quote">"Ofereço soluções digitais completas e inovadoras para sua empresa."</div><div class="voice-note">Vago, genérico, poderia ser qualquer agência. Não diferencia.</div></div>
+      <div class="voice-card mid"><div class="voice-tag good">✓ Use assim</div><div class="voice-quote">"PageSpeed 95+. Não é promessa, é entrega padrão."</div><div class="voice-note">Dado concreto + confiança. Brevidade que transmite autoridade.</div></div>
+      <div class="voice-card dark"><div class="voice-tag bad">✗ Evite</div><div class="voice-quote">"Trabalhamos arduamente para superar suas expectativas em todos os aspectos!"</div><div class="voice-note">Exclamação, adjetivos vagos, promessas sem prova. Parece ansioso.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 CARTÃO -->
+<section id="cartao" style="background:#0d0d0d">
+  <div class="page">
+    <div class="sec-tag">05</div>
+    <div class="sec-title">Cartão de Visita</div>
+    <div class="card-wrap">
+      <div class="biz-card front">
+        <div class="biz-card-logo">
+          <svg width="28" height="32" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+          <div><div class="biz-card-wm">Coded <span>by</span> M</div><div class="biz-card-wm-sub">Web Development</div></div>
+        </div>
+        <div class="biz-card-info">codedbym.com<br>codedbymstudio@gmail.com<br>@codedbymstudio<br>Florianópolis — Brasil</div>
+      </div>
+      <div class="biz-card back">
+        <div style="display:flex; align-items:center; justify-content:center; height:100%; flex-direction:column; gap:8px">
+          <svg width="40" height="46" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#000F08" stroke-width="9" stroke-linecap="round" opacity="0.3"/></svg>
+          <div class="biz-card-back-wm">Coded by M</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 EMAIL -->
+<section id="email" style="background:#0d0d0d">
+  <div class="page">
+    <div class="sec-tag">06</div>
+    <div class="sec-title">Assinatura de E-mail</div>
+    <div class="email-sig-wrap">
+      <div class="email-sig">
+        <svg width="32" height="37" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+        <div class="email-sig-divider"></div>
+        <div>
+          <div class="email-sig-name">Coded by M</div>
+          <div class="email-sig-role">Web Development Studio</div>
+          <div class="email-sig-info"><a href="mailto:codedbymstudio@gmail.com">codedbymstudio@gmail.com</a><br><a href="https://codedbym.com">codedbym.com</a><br>@codedbymstudio · Florianópolis, Brasil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 SOCIAL -->
+<section id="social" style="background:#0d0d0d">
+  <div class="page">
+    <div class="sec-tag">07</div>
+    <div class="sec-title">Redes Sociais</div>
+    <div class="social-grid" style="margin-bottom:2px">
+      <div class="social-cell">
+        <div class="avatar-circle" style="width:80px;height:80px">
+          <svg width="40" height="46" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+        </div>
+        <span class="social-label">Avatar / Profile</span>
+      </div>
+      <div class="social-cell">
+        <div style="width:120px; height:40px; background:var(--black); border:1px solid #1a2a1e; display:flex; align-items:center; justify-content:center; gap:10px; padding:0 12px;">
+          <svg width="18" height="21" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+          <span style="font-family:'Panchang',sans-serif; font-size:11px; font-weight:700; color:var(--white); text-transform:uppercase; white-space:nowrap">by M</span>
+        </div>
+        <span class="social-label">Banner horizontal</span>
+      </div>
+      <div class="social-cell">
+        <div style="width:80px; height:80px; background:var(--red); display:flex; align-items:center; justify-content:center;">
+          <svg width="36" height="41" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#000F08" stroke-width="9" stroke-linecap="round" opacity="0.35"/></svg>
+        </div>
+        <span class="social-label">Variação vermelha</span>
+      </div>
+      <div class="social-cell">
+        <div style="width:80px; height:80px; background:#fff; display:flex; align-items:center; justify-content:center; border:1px solid #e0e0e0;">
+          <svg width="36" height="41" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+        </div>
+        <span class="social-label">Fundo branco</span>
+      </div>
+    </div>
+    <div class="sec-tag" style="margin:24px 0 16px">Stories / Reels</div>
+    <div class="stories-wrap">
+      <div class="story-card">
+        <div class="story-top"><div class="story-logo-sm">CBM<span>.</span></div><div class="story-tag">Novo projeto</div></div>
+        <div><div class="story-title">Site<br><span>entregue.</span></div><div class="story-sub">codedbym.com</div></div>
+        <div class="story-bottom">@codedbymstudio</div>
+      </div>
+      <div class="story-card" style="background:#FB3640; border-color:#c42030">
+        <div class="story-top">
+          <svg width="24" height="28" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#000F08" stroke-width="9" stroke-linecap="round" opacity="0.3"/></svg>
+          <div style="font-family:'Satoshi',sans-serif; font-size:7px; letter-spacing:0.2em; text-transform:uppercase; color:#000F08; font-weight:600">Dica</div>
+        </div>
+        <div><div style="font-family:'Panchang',sans-serif; font-size:22px; font-weight:800; color:#000F08; line-height:1.1; letter-spacing:-0.02em">Por que<br>seu site<br><span style="opacity:0.45">é lento.</span></div></div>
+        <div style="font-family:'Satoshi',sans-serif; font-size:8px; color:#000F08; letter-spacing:0.15em; text-transform:uppercase; font-weight:600">@codedbymstudio</div>
+      </div>
+      <div class="story-card">
+        <div class="story-top"><div class="story-logo-sm">CBM<span>.</span></div><div class="story-tag">Serviço</div></div>
+        <div><div class="story-title">Landing<br><span>Pages.</span></div><div class="story-sub">A partir de R$ 1.500</div></div>
+        <div class="story-bottom">@codedbymstudio</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 WEBSITE -->
+<section id="website" style="background:#0d0d0d">
+  <div class="page">
+    <div class="sec-tag">08</div>
+    <div class="sec-title">Website</div>
+    <div class="web-mockup">
+      <div class="web-nav">
+        <div class="web-nav-logo">
+          <svg width="24" height="28" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+          <div class="web-nav-wm">Coded <span>by</span> M</div>
+        </div>
+        <div class="web-nav-links"><span class="web-nav-link">Projetos</span><span class="web-nav-link">Serviços</span><span class="web-nav-link">Contato</span></div>
+      </div>
+      <div class="web-hero">
+        <div class="web-hero-tag">Web Development Studio</div>
+        <div class="web-hero-title">Sites que<br><span>convertem.</span></div>
+        <div class="web-hero-sub">Desenvolvimento web de alto padrão para fundadores e empresas que levam a presença digital a sério.</div>
+        <div class="web-hero-cta"><div class="btn-primary">Iniciar projeto</div><div class="btn-secondary">Ver portfólio</div></div>
+      </div>
+      <div class="web-hero-bottom">
+        <div class="web-stat"><div class="web-stat-num">95<span>+</span></div><div class="web-stat-label">PageSpeed</div></div>
+        <div class="web-stat"><div class="web-stat-num">48<span>h</span></div><div class="web-stat-label">Primeiro entregável</div></div>
+        <div class="web-stat"><div class="web-stat-num">100<span>%</span></div><div class="web-stat-label">Custom — sem template</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 PROPOSTA -->
+<section id="proposta" style="background:#0d0d0d">
+  <div class="page">
+    <div class="sec-tag">09</div>
+    <div class="sec-title">Proposta Comercial</div>
+    <div class="proposal-wrap">
+      <div class="proposal-header">
+        <div>
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:8px">
+            <svg width="24" height="28" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#000F08" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+            <div class="proposal-logo-wm">Coded <span>by</span> M</div>
+          </div>
+          <div class="proposal-logo-sub">Web Development Studio</div>
+        </div>
+        <div><div class="proposal-doc-title">Proposta</div><div class="proposal-doc-num">#001</div></div>
+      </div>
+      <div class="proposal-divider"></div>
+      <div class="proposal-grid">
+        <div><div class="proposal-field-label">Cliente</div><div class="proposal-field-value">Nome do Cliente</div></div>
+        <div><div class="proposal-field-label">Data</div><div class="proposal-field-value">Janeiro 2025</div></div>
+        <div><div class="proposal-field-label">Projeto</div><div class="proposal-field-value">Landing Page + Identidade</div></div>
+        <div><div class="proposal-field-label">Prazo estimado</div><div class="proposal-field-value">10 dias úteis</div></div>
+      </div>
+      <table class="proposal-table">
+        <tr><th>Serviço</th><th>Descrição</th><th>Valor</th></tr>
+        <tr><td>Landing Page</td><td>Design + desenvolvimento React/Vite</td><td>R$ 2.500</td></tr>
+        <tr><td>SEO On-page</td><td>Otimização técnica + meta tags</td><td>R$ 800</td></tr>
+        <tr><td>Deploy + Hospedagem</td><td>Netlify / Vercel — 1 ano</td><td>R$ 500</td></tr>
+      </table>
+      <div class="proposal-total-row"><div class="proposal-total-label">Total</div><div class="proposal-total-value">R$ 3<span>.</span>800</div></div>
+      <div class="proposal-footer">
+        <div class="proposal-footer-info">codedbymstudio@gmail.com<br>codedbym.com · @codedbymstudio<br>Florianópolis — Brasil</div>
+        <div class="proposal-footer-brand">Coded by M</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 CONTATO -->
+<section id="contato" style="background:var(--black)">
+  <div class="page">
+    <div class="contact-grid">
+      <div>
+        <div class="sec-tag">10</div>
+        <div class="sec-title">Contato</div>
+        <div class="contact-info-row"><span class="contact-info-label">Website</span><span class="contact-info-value"><a href="https://codedbym.com">codedbym.com</a></span></div>
+        <div class="contact-info-row"><span class="contact-info-label">E-mail</span><span class="contact-info-value"><a href="mailto:codedbymstudio@gmail.com">codedbymstudio@gmail.com</a></span></div>
+        <div class="contact-info-row"><span class="contact-info-label">Instagram</span><span class="contact-info-value">@codedbymstudio</span></div>
+        <div class="contact-info-row"><span class="contact-info-label">Localização</span><span class="contact-info-value">Florianópolis — Brasil</span></div>
+      </div>
+      <div style="display:flex; align-items:center; justify-content:center">
+        <svg width="160" height="182" viewBox="0 0 142 161" fill="none"><path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BACKCOVER -->
+<div class="backcover">
+  <div class="backcover-title">Coded<br>by M.</div>
+  <div class="backcover-sub">Web Development Studio — 2025</div>
+  <div class="backcover-url">codedbym.com</div>
+</div>
+
+</body>
+</html>

@@ -14,7 +14,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className="min-h-screen bg-[#050505] text-[#e0e0e0]">
+      <head>
+        <link rel="preconnect" href="https://api.fontshare.com" />
+        <link
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=panchang@200,300,400,500,600,700,800&f[]=satoshi@300,400,500,700&display=swap"
+        />
+      </head>
+      <body className="min-h-screen bg-[#000F08] text-[#e0e0e0]">
         {children}
       </body>
     </html>

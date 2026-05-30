@@ -6,18 +6,19 @@ import TerrainLayer from "@/components/lab/TerrainMesh/TerrainLayer";
 import { useResponsiveFit } from "@/components/lab/TerrainMesh/useResponsiveFit";
 import { LAYERS } from "@/components/lab/TerrainMesh/config";
 import { HOST_LAYER } from "@/components/lab/ProjectFragments/config";
-import { PROJECT_CARDS } from "@/components/lab/HtmlOverlay/config";
 import type { OverlayStore } from "@/components/lab/HtmlOverlay/useOverlayStore";
 import ScrollFragment from "./ScrollFragment";
 import { useScrollCamera } from "./useScrollCamera";
 import { useScrollNarrative } from "./useScrollNarrative";
+import { SCROLL_CARDS } from "./config";
 
 /**
  * Cena 3D do Scroll Camera.
  *
- * Reaproveita o terreno e o fit do Terrain Mesh e os fragmentos/overlay. A
- * câmera e o fragmento ativo são dirigidos pelo progresso do scroll (não há
- * câmera cinematográfica autônoma nem hover).
+ * Usa SCROLL_CARDS (posições ajustadas para o percurso em profundidade) em
+ * vez das posições originais de HtmlOverlay — os experimentos 4 e 5 ficam
+ * intocados. Passa `progress` e `envelopeIndex` a cada ScrollFragment para
+ * que cada um controle sua própria visibilidade ao longo da trilha.
  */
 export default function ScrollScene({
   store,
@@ -48,12 +49,13 @@ export default function ScrollScene({
       <group
         position={[HOST_LAYER.xOffset, HOST_LAYER.yOffset, HOST_LAYER.zOffset]}
       >
-        {PROJECT_CARDS.map((card, index) => (
+        {SCROLL_CARDS.map((card, index) => (
           <ScrollFragment
             key={card.id}
             card={card}
-            index={index}
             store={store}
+            progress={progress}
+            envelopeIndex={index}
           />
         ))}
       </group>

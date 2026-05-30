@@ -29,11 +29,11 @@ export default function Connector({
     >
       <line
         ref={setLine}
-        stroke="rgba(255,255,255,0.22)"
+        stroke="rgba(251,54,64,0.5)"
         strokeWidth={1}
         shapeRendering="crispEdges"
       />
-      <circle ref={setDot} r={2.4} fill="rgba(255,255,255,0.55)" />
+      <circle ref={setDot} r={2.4} fill="#FB3640" />
     </svg>
   );
 }

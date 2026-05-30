@@ -13,12 +13,12 @@
 
 /** Paleta de estúdio escuro. Sem neon, sem sci-fi. */
 export const COLORS = {
-  background: "#050505",
+  background: "#000F08",
 } as const;
 
 /** Névoa de profundidade (perspectiva atmosférica). Funde o fundo no preto. */
 export const FOG = {
-  color: "#050505",
+  color: "#000F08",
   near: 6,
   far: 17,
 } as const;

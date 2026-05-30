@@ -15,7 +15,7 @@
  * background some no preto, o foreground é o mais legível.
  */
 export const COLORS = {
-  background: "#050505",
+  background: "#000F08",
   node: "#e6e6e6",
 } as const;
 

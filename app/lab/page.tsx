@@ -56,7 +56,7 @@ export default function LabPage() {
   const ActiveExperiment = EXPERIMENT_COMPONENTS[activeSlug];
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#050505] text-neutral-200">
+    <main className="relative min-h-screen overflow-hidden bg-[#000F08] text-neutral-200">
       {/* Camada 3D — experimento ativo (remonta ao trocar de experimento) */}
       {ActiveExperiment && <ActiveExperiment key={activeSlug} />}
 
