@@ -192,6 +192,7 @@ interface ProjectOverlayData {
   description: string;
   meta:        ProjectMeta[];
   cta:         string;
+  ctaHref?:    string;
 }
 
 const PROJECT_SAMPLE: ProjectOverlayData = {
@@ -205,6 +206,7 @@ const PROJECT_SAMPLE: ProjectOverlayData = {
     { label: "Status",   value: "Case Real"              },
   ],
   cta: "View Case",
+  ctaHref: "/cases/machado-plataformas",
 };
 
 // ---------------------------------------------------------------------------
@@ -1038,13 +1040,26 @@ function ProjectOverlayPanel({
         <div className="mb-5 h-px w-full" style={{ background: DIVIDER_COLOR }} />
 
         {/* CTA */}
-        <span className="group inline-flex cursor-pointer flex-col items-start gap-[3px]">
-          <span className="inline-flex items-center gap-[7px] font-display text-[11px] font-semibold uppercase tracking-[0.15em] text-cbm-white/90 transition-colors duration-200 group-hover:text-cbm-white">
-            {data.cta}
-            <span className="text-[10px] leading-none opacity-75 transition-[opacity,transform] duration-200 group-hover:translate-x-[2px] group-hover:opacity-100" aria-hidden="true">→</span>
+        {data.ctaHref ? (
+          <Link
+            href={data.ctaHref}
+            className="group inline-flex flex-col items-start gap-[3px]"
+          >
+            <span className="inline-flex items-center gap-[7px] font-display text-[11px] font-semibold uppercase tracking-[0.15em] text-cbm-white/90 transition-colors duration-200 group-hover:text-cbm-white">
+              {data.cta}
+              <span className="text-[10px] leading-none opacity-75 transition-[opacity,transform] duration-200 group-hover:translate-x-[2px] group-hover:opacity-100" aria-hidden="true">→</span>
+            </span>
+            <span className="block h-px w-full origin-left scale-x-0 bg-cbm-red transition-transform duration-[350ms] ease-out group-hover:scale-x-100" />
+          </Link>
+        ) : (
+          <span className="group inline-flex cursor-pointer flex-col items-start gap-[3px]">
+            <span className="inline-flex items-center gap-[7px] font-display text-[11px] font-semibold uppercase tracking-[0.15em] text-cbm-white/90 transition-colors duration-200 group-hover:text-cbm-white">
+              {data.cta}
+              <span className="text-[10px] leading-none opacity-75 transition-[opacity,transform] duration-200 group-hover:translate-x-[2px] group-hover:opacity-100" aria-hidden="true">→</span>
+            </span>
+            <span className="block h-px w-full origin-left scale-x-0 bg-cbm-red transition-transform duration-[350ms] ease-out group-hover:scale-x-100" />
           </span>
-          <span className="block h-px w-full origin-left scale-x-0 bg-cbm-red transition-transform duration-[350ms] ease-out group-hover:scale-x-100" />
-        </span>
+        )}
       </div>
     </div>
   );
