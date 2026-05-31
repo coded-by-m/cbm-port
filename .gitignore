@@ -22,3 +22,4 @@ yarn-error.log*
 
 # claude code — configuração pessoal (não versionar)
 .claude/settings.local.json
+.superpowers/

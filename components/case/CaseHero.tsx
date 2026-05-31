@@ -6,7 +6,7 @@ import { ProjectFacts } from "@/components/case/ProjectFacts";
 export function CaseHero({ project }: { project: CaseProject }) {
   return (
     <section
-      className="grid min-h-screen"
+      className="flex flex-col lg:grid lg:min-h-screen"
       style={{
         gridTemplateColumns: "1fr 1.1fr",
         background: "#000F08",
@@ -15,7 +15,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
     >
       {/* ── Text side */}
       <div
-        className="flex flex-col justify-between px-12 py-16 xl:px-16 xl:py-20"
+        className="flex flex-col justify-between px-6 py-12 sm:px-12 sm:py-16 xl:px-16 xl:py-20"
         style={{ borderRight: "1px solid rgba(245,242,237,0.06)" }}
       >
         <div>
@@ -34,7 +34,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
           <h1
             className="font-display font-black uppercase text-cbm-white"
             style={{
-              fontSize: "clamp(36px,4.5vw,60px)",
+              fontSize: "clamp(32px,4.5vw,60px)",
               letterSpacing: "-0.03em",
               lineHeight: 0.95,
             }}
@@ -51,7 +51,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
           <ProjectFacts meta={project.meta} />
         </div>
 
-        {/* CTA — Text Link CTA pattern (Button System V1 approved) */}
+        {/* CTA */}
         <div className="mt-10">
           <Link
             href="#overview"
@@ -72,7 +72,9 @@ export function CaseHero({ project }: { project: CaseProject }) {
       </div>
 
       {/* ── Visual side */}
-      <CaseHeroCollage images={project.heroImages} />
+      <div className="min-h-[300px] lg:min-h-0">
+        <CaseHeroCollage images={project.heroImages} />
+      </div>
     </section>
   );
 }

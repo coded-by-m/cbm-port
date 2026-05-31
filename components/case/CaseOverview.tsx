@@ -6,13 +6,13 @@ export function CaseOverview({ project }: { project: CaseProject }) {
   return (
     <section
       id="overview"
-      className="border-b px-12 py-20 xl:px-16 xl:py-24"
+      className="border-b px-6 py-16 sm:px-12 sm:py-20 xl:px-16 xl:py-24"
       style={{
         background: "#000F08",
         borderColor: "rgba(245,242,237,0.06)",
       }}
     >
-      <div className="mx-auto flex max-w-[1200px] items-start gap-16 lg:gap-24">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-12 lg:flex-row lg:items-start lg:gap-24">
 
         {/* Left — editorial text */}
         <div className="flex-1">
@@ -46,7 +46,7 @@ export function CaseOverview({ project }: { project: CaseProject }) {
         </div>
 
         {/* Right — challenge block */}
-        <div className="w-[280px] flex-shrink-0">
+        <div className="w-full lg:w-[280px] lg:flex-shrink-0">
           <div className="border border-cbm-gray-800 p-6">
             <p className="mb-3 font-body text-[8px] uppercase tracking-[0.35em] text-cbm-gray-600">
               Desafio

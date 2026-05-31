@@ -10,12 +10,12 @@ const config: Config = {
       colors: {
         cbm: {
           black: "#000F08",
-          forest: "#0E1810",
+          forest: "#070B08",
           white: "#F5F2ED",
           red: "#FB3640",
           "red-dark": "#C42030",
-          border: "#1a2a1e",
-          "border-active": "#2a4a32",
+          border: "#111511",
+          "border-active": "#1A2418",
           gray: {
             100: "#E8E4DE",
             200: "#C8C4BE",

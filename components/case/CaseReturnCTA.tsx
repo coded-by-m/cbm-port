@@ -4,7 +4,10 @@ export function CaseReturnCTA() {
   return (
     <section
       className="flex flex-col items-center justify-center gap-5 px-8 py-32 text-center"
-      style={{ background: "#000F08" }}
+      style={{
+        background: "#000F08",
+        borderTop: "1px solid rgba(245,242,237,0.06)",
+      }}
     >
       <p className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red/60">
         Continuar Explorando
