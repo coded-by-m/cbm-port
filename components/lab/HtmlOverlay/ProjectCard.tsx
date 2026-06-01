@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { PROJECT_CARDS } from "./config";
+import { PROJECT_CARDS, type ProjectCard as ProjectCardData } from "./config";
 
 /**
  * Card HTML do projeto — Camada de Overlay (fora do canvas).
@@ -18,15 +18,18 @@ export default function ProjectCard({
   isCompact,
   setCardEl,
   onClose,
+  cards,
 }: {
   activeId: string | null;
   isCompact: boolean;
   setCardEl: (el: HTMLDivElement | null) => void;
   onClose: () => void;
+  cards?: ProjectCardData[];
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const source = cards ?? PROJECT_CARDS;
   const card = activeId
-    ? PROJECT_CARDS.find((item) => item.id === activeId)
+    ? source.find((item) => item.id === activeId)
     : null;
   const visible = Boolean(card);
 

@@ -19,8 +19,8 @@ export const COLORS = {
 /** Névoa de profundidade (perspectiva atmosférica). Funde o fundo no preto. */
 export const FOG = {
   color: "#000F08",
-  near: 6,
-  far: 17,
+  near: 8,
+  far: 28,
 } as const;
 
 /** Fração do maior lado do viewport que o raio do terreno deve cobrir. */
@@ -75,10 +75,10 @@ export interface LayerConfig {
 export const LAYERS: LayerConfig[] = [
   {
     name: "background",
-    segX: 20,
-    segZ: 12,
-    sizeX: 13,
-    sizeZ: 8,
+    segX: 36,
+    segZ: 24,
+    sizeX: 26,
+    sizeZ: 18,
     xOffset: 0,
     yOffset: 1.55,
     zOffset: -3.7,
@@ -100,10 +100,10 @@ export const LAYERS: LayerConfig[] = [
   },
   {
     name: "midground",
-    segX: 24,
-    segZ: 16,
-    sizeX: 11,
-    sizeZ: 8,
+    segX: 40,
+    segZ: 28,
+    sizeX: 22,
+    sizeZ: 16,
     xOffset: 0,
     yOffset: 0,
     zOffset: -0.5,
@@ -125,10 +125,10 @@ export const LAYERS: LayerConfig[] = [
   },
   {
     name: "foreground",
-    segX: 18,
-    segZ: 10,
-    sizeX: 9,
-    sizeZ: 6,
+    segX: 30,
+    segZ: 18,
+    sizeX: 18,
+    sizeZ: 12,
     xOffset: 0,
     yOffset: -1.25,
     zOffset: 2.7,

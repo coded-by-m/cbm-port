@@ -1,36 +1,30 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import { Line } from "@react-three/drei";
-import type { Group, Mesh, Vector3 } from "three";
-import { Vector3 as ThreeVector3 } from "three";
+import { useMemo, useRef, useState, type RefObject } from "react";
+import { Line, OrbitControls } from "@react-three/drei";
+import type { Group, Mesh } from "three";
+import { Vector3 } from "three";
 import type { Line2 } from "three-stdlib";
 import Point from "./Point";
 import Particles from "./Particles";
+import ExitParticles from "./ExitParticles";
 import { useTriangleAnimation } from "./useTriangleAnimation";
 import { useOrganicMotion } from "./useOrganicMotion";
 import { useResponsiveFit } from "./useResponsiveFit";
-import {
-  COLORS,
-  LINE_WIDTH,
-  TRIANGLE_EDGES,
-  TRIANGLE_VERTICES,
-} from "./config";
+import { LINE_WIDTH, LOGO_POINTS, LOGO_STROKES, TIMING } from "./config";
 
-/**
- * Cena do Triangle Loader.
- *
- * Monta os pontos e as linhas a partir de `config` e delega:
- *  - construção/rotação para `useTriangleAnimation`;
- *  - adaptação de tamanho para `useResponsiveFit`.
- *
- * Dois grupos aninhados separam responsabilidades:
- *  - `fitRef`    → escala responsiva;
- *  - `rotateRef` → rotação da estrutura.
- */
-export default function TriangleScene() {
+type TriangleSceneProps = {
+  onComplete?: () => void;
+  scrollProgress?: RefObject<number>;
+};
+
+export default function TriangleScene({
+  onComplete,
+  scrollProgress,
+}: TriangleSceneProps) {
   const fitRef = useRef<Group>(null);
   const rotateRef = useRef<Group>(null);
+  const [autoRotate, setAutoRotate] = useState(false);
 
   const pointRefs = [
     useRef<Mesh>(null),
@@ -43,27 +37,52 @@ export default function TriangleScene() {
     useRef<Line2>(null),
   ];
 
-  // Pares de pontos de cada aresta, derivados dos vértices uma única vez.
-  const edges = useMemo<[Vector3, Vector3][]>(
+  const strokes = useMemo(
     () =>
-      TRIANGLE_EDGES.map(([a, b]) => [
-        new ThreeVector3(...TRIANGLE_VERTICES[a]),
-        new ThreeVector3(...TRIANGLE_VERTICES[b]),
-      ]),
+      LOGO_STROKES.map((stroke) =>
+        stroke.points.map((p) => new Vector3(...p)),
+      ),
+    [],
+  );
+
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
+
+  const handleConstructionComplete = useMemo(
+    () => () => {
+      setAutoRotate(true);
+      onCompleteRef.current?.();
+    },
     [],
   );
 
   useResponsiveFit(fitRef);
-  useTriangleAnimation(rotateRef, pointRefs, lineRefs);
+  useTriangleAnimation(
+    rotateRef,
+    pointRefs,
+    lineRefs,
+    handleConstructionComplete,
+  );
   useOrganicMotion(rotateRef);
 
   return (
     <>
+      <OrbitControls
+        autoRotate={autoRotate}
+        autoRotateSpeed={60 / TIMING.rotationDuration}
+        enableZoom={false}
+        enablePan={false}
+        enableDamping
+        dampingFactor={0.05}
+      />
+
       <Particles />
+
+      {scrollProgress && <ExitParticles scrollProgress={scrollProgress} />}
 
       <group ref={fitRef}>
         <group ref={rotateRef}>
-          {TRIANGLE_VERTICES.map((vertex, index) => (
+          {LOGO_POINTS.map((vertex, index) => (
             <Point
               key={`point-${index}`}
               ref={pointRefs[index]}
@@ -71,15 +90,16 @@ export default function TriangleScene() {
             />
           ))}
 
-          {edges.map((points, index) => (
+          {strokes.map((points, index) => (
             <Line
-              key={`edge-${index}`}
+              key={`stroke-${index}`}
               ref={lineRefs[index]}
               points={points}
-              color={COLORS.line}
+              color={LOGO_STROKES[index].color}
               lineWidth={LINE_WIDTH}
               transparent
               opacity={0}
+              dashed
               depthTest={false}
             />
           ))}

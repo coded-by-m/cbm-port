@@ -9,6 +9,18 @@ import { EXPERIMENTS } from "@/lib/experiments";
  * `ssr: false` evita renderizar o Canvas no servidor.
  */
 const EXPERIMENT_COMPONENTS: Record<string, ComponentType> = {
+  "opening-sequence": dynamic(
+    () =>
+      import("@/components/lab/OpeningSequence").then(
+        (m) => m.OpeningSequence,
+      ),
+    { ssr: false },
+  ),
+  pyramid: dynamic(
+    () =>
+      import("@/components/lab/Pyramid").then((m) => m.Pyramid),
+    { ssr: false },
+  ),
   "triangle-loader": dynamic(
     () => import("@/components/lab/TriangleLoader").then((m) => m.TriangleLoader),
     { ssr: false },
@@ -34,6 +46,27 @@ const EXPERIMENT_COMPONENTS: Record<string, ComponentType> = {
   ),
   "scroll-camera": dynamic(
     () => import("@/components/lab/ScrollCamera").then((m) => m.ScrollCamera),
+    { ssr: false },
+  ),
+  "digital-landscape-v1": dynamic(
+    () =>
+      import("@/components/lab/DigitalLandscape").then(
+        (m) => m.DigitalLandscape,
+      ),
+    { ssr: false },
+  ),
+  "spatial-composition": dynamic(
+    () =>
+      import("@/components/lab/SpatialComposition").then(
+        (m) => m.SpatialComposition,
+      ),
+    { ssr: false },
+  ),
+  "hero-to-landscape": dynamic(
+    () =>
+      import("@/components/lab/HeroToLandscape").then(
+        (m) => m.HeroToLandscape,
+      ),
     { ssr: false },
   ),
 };

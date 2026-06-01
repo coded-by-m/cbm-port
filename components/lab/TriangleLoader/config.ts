@@ -1,72 +1,116 @@
 /**
  * Triangle Loader — configuração e dados da estrutura.
  *
- * Fonte única da verdade para a geometria, paleta e tempos da animação.
- * Mantém a "lógica" separada da "cena" e das "animações" (ver docs/06).
+ * Geometria baseada na logo CbM: dois strokes estruturais (#F5F2ED)
+ * e uma diagonal vermelha (#FB3640) como sinal de completude.
+ *
+ * Coordenadas normalizadas a partir do SVG da logo (142×161),
+ * centradas na origem e com Y invertido para espaço 3D.
  */
 
 /**
- * Vértices de um triângulo equilátero com circunraio = 1
- * (vértice superior em y = 1). A simetria mantém a estrutura
- * centrada na origem, facilitando a rotação e o ajuste responsivo.
- */
-export const TRIANGLE_VERTICES: readonly [number, number, number][] = [
-  [0, 1, 0],
-  [-0.8660254, -0.5, 0],
-  [0.8660254, -0.5, 0],
-];
-
-/** Arestas do triângulo, como pares de índices de vértices. */
-export const TRIANGLE_EDGES: readonly [number, number][] = [
-  [0, 1],
-  [1, 2],
-  [2, 0],
-];
-
-/** Circunraio do triângulo (usado pelo ajuste responsivo de escala). */
-export const TRIANGLE_RADIUS = 1;
-
-/**
- * Paleta de estúdio escuro. Tons de cinza, sem neon, sem cyberpunk.
- * Referência emocional: Porsche, não videogame.
+ * Paleta de estúdio escuro. Off-white quente, Signal Red quando importa.
  */
 export const COLORS = {
   background: "#000F08",
-  point: "#e2e2e2",
-  line: "#9c9c9c",
+  point: "#F5F2ED",
+  line: "#F5F2ED",
+  signal: "#FB3640",
 } as const;
 
 /**
- * Raio do marcador de vértice. Reduzido ~40% (0.055 → 0.033) para que os
- * pontos pareçam rebites de engenharia de precisão, não esferas dominantes.
+ * Pontos estruturais da logo — os "nós" que aparecem antes dos strokes.
+ * Posicionados nos cantos/bends dos strokes C e M, e na origem do signal.
+ */
+export const LOGO_POINTS: readonly [number, number, number][] = [
+  [-0.836, 0.343, 0],
+  [0.864, 0.914, 0],
+  [-0.864, 0.929, 0],
+];
+
+function polylineLength(points: [number, number, number][]): number {
+  let len = 0;
+  for (let i = 1; i < points.length; i++) {
+    const dx = points[i][0] - points[i - 1][0];
+    const dy = points[i][1] - points[i - 1][1];
+    const dz = points[i][2] - points[i - 1][2];
+    len += Math.sqrt(dx * dx + dy * dy + dz * dz);
+  }
+  return len;
+}
+
+/**
+ * Strokes da logo CbM como polilíneas.
+ * Cada stroke tem pontos, cor, opacidade-alvo e comprimento pré-calculado.
+ * O comprimento é usado para a animação de draw-on via dashOffset.
+ */
+const STROKE_DEFS = [
+  {
+    points: [
+      [-0.836, -0.929, 0],
+      [-0.836, 0.343, 0],
+      [-0.254, -0.323, 0],
+    ] as [number, number, number][],
+    color: COLORS.line,
+    targetOpacity: 0.65,
+  },
+  {
+    points: [
+      [0.864, -0.286, 0],
+      [0.864, 0.914, 0],
+      [0.238, 0.246, 0],
+    ] as [number, number, number][],
+    color: COLORS.line,
+    targetOpacity: 0.65,
+  },
+  {
+    points: [
+      [-0.864, 0.929, 0],
+      [0.864, -0.914, 0],
+    ] as [number, number, number][],
+    color: COLORS.signal,
+    targetOpacity: 0.88,
+  },
+];
+
+export const LOGO_STROKES = STROKE_DEFS.map((s) => ({
+  ...s,
+  length: polylineLength(s.points),
+}));
+
+/** Raio envolvente da logo (usado pelo ajuste responsivo de escala). */
+export const LOGO_RADIUS = 1.27;
+
+/**
+ * Raio do marcador de vértice. Rebites de precisão nos cantos da logo.
  */
 export const POINT_RADIUS = 0.033;
 
 /**
- * Espessura das arestas (Line2, em px lógicos). Fina e constante para uma
- * leitura técnica de blueprint — precisa, não decorativa.
+ * Espessura dos strokes (Line2, em px lógicos). Mais presente que o
+ * blueprint original, fiel ao peso visual da logo SVG.
  */
-export const LINE_WIDTH = 1.5;
+export const LINE_WIDTH = 2.0;
 
 /**
- * Tempos (em segundos) da timeline de construção. Lento e progressivo:
- * cada elemento se assenta antes do próximo — sensação de montagem.
+ * Tempos (em segundos) da timeline de construção.
+ * Pontos surgem → strokes estruturais desenham linearmente → diagonal vermelha cruza.
  */
 export const TIMING = {
   startDelay: 0.45,
-  pointPop: 0.7,
-  pointStagger: 0.18,
-  lineDraw: 0.85,
-  lineOverlap: 0.1,
-  lineOpacity: 0.74,
-  settle: 0.6,
-  rotationDuration: 28,
+  pointPop: 0.6,
+  pointStagger: 0.22,
+  strokeDraw: 0.8,
+  strokeStagger: 0.12,
+  signalDelay: 0.25,
+  signalDraw: 0.85,
+  signalShift: 0.85,
+  settle: 0.5,
+  rotationDuration: 50,
 } as const;
 
 /**
  * Estrutura "viva": respiração e inclinação orgânicas, extremamente sutis.
- * Amplitudes minúsculas e períodos longos — nunca uma animação chamativa,
- * apenas a sensação de que a peça respira.
  */
 export const MOTION = {
   breathAmplitude: 0.012,
@@ -77,9 +121,7 @@ export const MOTION = {
 
 /**
  * Profundidade cinematográfica: três camadas de partículas discretas.
- * `background` distante e quase imperceptível, `foreground` perto da câmera
- * e raríssimo. Cada camada gira lentamente em ritmo próprio (parallax sutil).
- * Sem poluição visual: contagens baixas, opacidades mínimas.
+ * Tons quentes alinhados com a temperatura do fundo #000F08.
  */
 export const PARTICLE_LAYERS = [
   {
@@ -89,7 +131,7 @@ export const PARTICLE_LAYERS = [
     opacity: 0.1,
     spread: [9, 9] as const,
     depth: [-9, -4] as const,
-    color: "#565656",
+    color: "#5a5750",
     drift: 0.006,
   },
   {
@@ -99,7 +141,7 @@ export const PARTICLE_LAYERS = [
     opacity: 0.16,
     spread: [6, 6] as const,
     depth: [-3, -1] as const,
-    color: "#6f6f6f",
+    color: "#736f66",
     drift: 0.011,
   },
   {
@@ -109,7 +151,7 @@ export const PARTICLE_LAYERS = [
     opacity: 0.08,
     spread: [5, 4] as const,
     depth: [1.5, 3.5] as const,
-    color: "#959595",
+    color: "#97938b",
     drift: 0.017,
   },
 ] as const;

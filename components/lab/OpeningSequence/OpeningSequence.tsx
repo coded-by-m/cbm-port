@@ -9,40 +9,65 @@ const TriangleLoader = dynamic(
   { ssr: false },
 );
 
-const Pyramid = dynamic(
-  () => import("@/components/lab/Pyramid/Pyramid"),
+const PhilosophySection = dynamic(
+  () =>
+    import("@/components/lab/PhilosophySection").then(
+      (m) => m.PhilosophySection,
+    ),
+  { ssr: false },
+);
+
+const DigitalLandscape = dynamic(
+  () =>
+    import("@/components/lab/DigitalLandscape").then(
+      (m) => m.DigitalLandscape,
+    ),
   { ssr: false },
 );
 
 const SCROLL_LENGTH = 200;
+
+type Phase = "logo" | "philosophy" | "landscape";
 
 export default function OpeningSequence() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const pyramidRef = useRef<HTMLDivElement>(null);
+  const philosophyRef = useRef<HTMLDivElement>(null);
   const scrollProgress = useRef(0);
 
+  const [phase, setPhase] = useState<Phase>("logo");
   const [buildComplete, setBuildComplete] = useState(false);
-  const [showPyramid, setShowPyramid] = useState(false);
 
   const handleLogoComplete = useCallback(() => {
     setBuildComplete(true);
   }, []);
 
-  const handlePyramidVisible = useCallback(() => {
-    setShowPyramid(true);
+  const handlePhilosophyVisible = useCallback(() => {
+    setPhase("philosophy");
+  }, []);
+
+  const handlePhilosophyComplete = useCallback(() => {
+    setPhase("landscape");
   }, []);
 
   useOpeningScroll(
     wrapperRef,
     contentRef,
-    { logo: logoRef, text: textRef, pyramid: pyramidRef },
+    { logo: logoRef, text: textRef, pyramid: philosophyRef },
     scrollProgress,
     buildComplete,
-    handlePyramidVisible,
+    handlePhilosophyVisible,
   );
+
+  if (phase === "landscape") {
+    return (
+      <div className="absolute inset-0">
+        <DigitalLandscape />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -63,13 +88,15 @@ export default function OpeningSequence() {
             />
           </div>
 
-          {/* Pyramid — shows after scroll crossfade */}
+          {/* Philosophy — shows after scroll crossfade */}
           <div
-            ref={pyramidRef}
+            ref={philosophyRef}
             className="absolute inset-0"
             style={{ opacity: 0 }}
           >
-            {showPyramid && <Pyramid />}
+            {phase === "philosophy" && (
+              <PhilosophySection onComplete={handlePhilosophyComplete} />
+            )}
           </div>
 
           {/* Tipografia + scroll hint */}

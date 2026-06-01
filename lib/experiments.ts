@@ -21,6 +21,20 @@ export interface Experiment {
 
 export const EXPERIMENTS: Experiment[] = [
   {
+    slug: "opening-sequence",
+    title: "Opening Sequence",
+    description:
+      "Logo CbM se constrói, marca se revela e dissolve na pirâmide triangulada com pontos de conteúdo — abertura cinematográfica do site.",
+    status: "ready",
+  },
+  {
+    slug: "pyramid",
+    title: "Pyramid",
+    description:
+      "Pirâmide wireframe com faces trianguladas e 4 pontos de conteúdo revelados por scroll. Seção de posicionamento da marca.",
+    status: "ready",
+  },
+  {
     slug: "triangle-loader",
     title: "Triangle Loader",
     description:
@@ -60,6 +74,27 @@ export const EXPERIMENTS: Experiment[] = [
     title: "Scroll Camera",
     description:
       "A câmera percorre a paisagem conforme o scroll (GSAP ScrollTrigger + Lenis): visão ampla → foco em cada fragmento → retorno. Valida ritmo, legibilidade e narrativa comercial.",
+    status: "ready",
+  },
+  {
+    slug: "digital-landscape-v1",
+    title: "Digital Landscape V1",
+    description:
+      "Prova de conceito da Paisagem Digital: terreno, câmera por scroll, fragmento ativo com overlay e fluxo completo até o case real (Machado Plataformas).",
+    status: "ready",
+  },
+  {
+    slug: "spatial-composition",
+    title: "Spatial Composition",
+    description:
+      "Composição espacial pura: terreno + estrutura focal distante + câmera cinematográfica lenta + vinheta de hierarquia visual. Sem textos, sem overlay — a cena desperta curiosidade sozinha?",
+    status: "ready",
+  },
+  {
+    slug: "hero-to-landscape",
+    title: "Hero → Landscape",
+    description:
+      "Transição B: passagem entre contemplação (hero) e exploração (scroll). Hero recua no fog, vignette dissolve, câmera troca de drift para scroll.",
     status: "ready",
   },
   {

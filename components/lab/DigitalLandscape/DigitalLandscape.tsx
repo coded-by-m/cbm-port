@@ -1,0 +1,82 @@
+"use client";
+
+import { useRef, useState } from "react";
+import { Canvas } from "@react-three/fiber";
+import { CAMERA, COLORS, FOG } from "@/components/lab/TerrainMesh/config";
+import { useOverlayStore } from "@/components/lab/HtmlOverlay/useOverlayStore";
+import ProjectCard from "@/components/lab/HtmlOverlay/ProjectCard";
+import Connector from "@/components/lab/HtmlOverlay/Connector";
+import { useScrollDriver } from "@/components/lab/ScrollCamera/useScrollDriver";
+import { SCROLL_LENGTH } from "@/components/lab/ScrollCamera/config";
+import LandscapeScene from "./LandscapeScene";
+import { LANDSCAPE_CARDS } from "./config";
+
+export default function DigitalLandscape() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const progress = useRef(0);
+  const [started, setStarted] = useState(false);
+
+  const {
+    store,
+    activeId,
+    isCompact,
+    setActive,
+    setCardEl,
+    setConnectorLine,
+    setConnectorDot,
+  } = useOverlayStore();
+
+  useScrollDriver(wrapperRef, contentRef, progress, setStarted);
+
+  const length = isCompact ? SCROLL_LENGTH.compact : SCROLL_LENGTH.desktop;
+
+  return (
+    <div
+      ref={wrapperRef}
+      className="absolute inset-0 overflow-y-auto overscroll-contain"
+    >
+      <div ref={contentRef} className="relative w-full" style={{ height: `${length}vh` }}>
+        <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
+          <Canvas
+            frameloop="always"
+            gl={{ antialias: true, alpha: false }}
+            dpr={[1, 2]}
+            camera={{ position: [...CAMERA.position], fov: CAMERA.fov }}
+            style={{ background: COLORS.background }}
+          >
+            <fog attach="fog" args={[FOG.color, FOG.near, FOG.far]} />
+            <LandscapeScene store={store} progress={progress} setActive={setActive} />
+          </Canvas>
+
+          <Connector
+            visible={Boolean(activeId) && !isCompact}
+            setLine={setConnectorLine}
+            setDot={setConnectorDot}
+          />
+
+          <ProjectCard
+            activeId={activeId}
+            isCompact={isCompact}
+            setCardEl={setCardEl}
+            onClose={() => setActive(null)}
+            cards={LANDSCAPE_CARDS}
+          />
+
+          <div
+            aria-hidden="true"
+            className={[
+              "pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 text-center transition-opacity duration-500",
+              started ? "opacity-0" : "opacity-100",
+            ].join(" ")}
+          >
+            <p className="text-[0.6rem] uppercase tracking-[0.4em] text-neutral-500">
+              Scroll
+            </p>
+            <p className="mt-1 text-neutral-600">↓</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

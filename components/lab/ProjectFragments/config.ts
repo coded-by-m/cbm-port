@@ -31,10 +31,15 @@ export interface FragmentConfig {
  * continuar limpa.
  */
 export const FRAGMENTS: FragmentConfig[] = [
-  { id: "a", label: "PROJECT A", x: -2.6, z: 0.7, seed: 17 },
-  { id: "b", label: "PROJECT B", x: -0.3, z: -1.5, seed: 53 },
-  { id: "c", label: "PROJECT C", x: 1.9, z: 1.1, seed: 91 },
-  { id: "d", label: "PROJECT D", x: 3.1, z: -0.7, seed: 139 },
+  { id: "a", label: "PROJECT A", x: -2.6, z:  3.2, seed: 17  },
+  { id: "b", label: "PROJECT B", x:  2.4, z:  1.8, seed: 53  },
+  { id: "c", label: "PROJECT C", x: -1.2, z:  0.0, seed: 91  },
+  { id: "d", label: "PROJECT D", x:  3.6, z: -0.8, seed: 139 },
+  { id: "e", label: "PROJECT E", x: -3.4, z: -1.6, seed: 173 },
+  { id: "f", label: "PROJECT F", x:  0.8, z: -3.0, seed: 211 },
+  { id: "g", label: "PROJECT G", x: -2.0, z: -4.4, seed: 257 },
+  { id: "h", label: "PROJECT H", x:  2.8, z: -5.6, seed: 307 },
+  { id: "i", label: "PROJECT I", x: -0.4, z: -7.0, seed: 359 },
 ];
 
 /** Forma e dimensões do fragmento (pequeno tetraedro triangulado emergente). */
@@ -47,7 +52,7 @@ export const FRAGMENT = {
   highlightLift: 0.08,
   /** Escala em repouso → destacado (sutil). */
   scaleHighlight: 1.07,
-  nodeRadius: 0.032,
+  nodeRadius: 0.02,
   /** Suavização do destaque (lerp por frame). */
   highlightLerp: 6,
 } as const;
