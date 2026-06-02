@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import type { Group } from "three";
 import TerrainLayer from "@/components/lab/TerrainMesh/TerrainLayer";
 import { useResponsiveFit } from "@/components/lab/TerrainMesh/useResponsiveFit";
-import { LAYERS } from "@/components/lab/TerrainMesh/config";
+import { FIT_RADIUS, LAYERS } from "@/components/lab/TerrainMesh/config";
 import { HOST_LAYER } from "@/components/lab/ProjectFragments/config";
 import type { OverlayStore } from "@/components/lab/HtmlOverlay/useOverlayStore";
 import ScrollFragment from "@/components/lab/ScrollCamera/ScrollFragment";
@@ -28,11 +28,6 @@ export default function TransitionScene({
   onHeroState: MutableRefObject<HeroTransitionState | null>;
 }) {
   const fitRef = useRef<Group>(null);
-  const fitRadius = useMemo(
-    () => Math.max(...LAYERS.map((layer) => layer.sizeX / 2)),
-    [],
-  );
-
   const fragmentProgress = useRef(0);
   useFrame(() => {
     const p = progress.current;
@@ -42,7 +37,7 @@ export default function TransitionScene({
         : (p - TRANSITION.heroFadeEnd) / (1 - TRANSITION.heroFadeEnd);
   });
 
-  useResponsiveFit(fitRef, fitRadius);
+  useResponsiveFit(fitRef, FIT_RADIUS);
   useTransitionCamera(progress);
 
   const heroState = useHeroTransition(progress);

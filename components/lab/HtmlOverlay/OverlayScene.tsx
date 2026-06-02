@@ -5,7 +5,7 @@ import type { Group } from "three";
 import TerrainLayer from "@/components/lab/TerrainMesh/TerrainLayer";
 import { useCinematicCamera } from "@/components/lab/TerrainMesh/useCinematicCamera";
 import { useResponsiveFit } from "@/components/lab/TerrainMesh/useResponsiveFit";
-import { LAYERS } from "@/components/lab/TerrainMesh/config";
+import { FIT_RADIUS, LAYERS } from "@/components/lab/TerrainMesh/config";
 import { HOST_LAYER } from "@/components/lab/ProjectFragments/config";
 import OverlayFragment from "./OverlayFragment";
 import { PROJECT_CARDS } from "./config";
@@ -27,12 +27,7 @@ export default function OverlayScene({
 }) {
   const fitRef = useRef<Group>(null);
 
-  const fitRadius = useMemo(
-    () => Math.max(...LAYERS.map((layer) => layer.sizeX / 2)),
-    [],
-  );
-
-  useResponsiveFit(fitRef, fitRadius);
+  useResponsiveFit(fitRef, FIT_RADIUS);
   useCinematicCamera();
 
   return (

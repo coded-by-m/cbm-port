@@ -4,13 +4,13 @@ import { useEffect, useRef } from "react";
 import type { MutableRefObject } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Vector3 } from "three";
-import { FIT_RATIO, LAYERS } from "@/components/lab/TerrainMesh/config";
+import { FIT_RADIUS, FIT_RATIO } from "@/components/lab/TerrainMesh/config";
 import { SPATIAL_CAMERA } from "@/components/lab/SpatialComposition/config";
 import { SCROLL_POSES, CAMERA_IDLE, type Pose } from "@/components/lab/ScrollCamera/config";
 import { TRANSITION, DRIFT_CAMERA } from "./config";
 
 const smoothstep = (t: number) => t * t * (3 - 2 * t);
-const fitRadius = Math.max(...LAYERS.map((layer) => layer.sizeX / 2));
+const fitRadius = FIT_RADIUS;
 
 const [baseX, baseY, baseZ] = SPATIAL_CAMERA.position;
 const [tgtX, tgtY, tgtZ] = SPATIAL_CAMERA.target;

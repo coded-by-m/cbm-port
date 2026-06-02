@@ -133,7 +133,7 @@ export default function ScrollFragment({
     const apex = nodeMeshRefs[3].current;
     if (apex) apex.scale.setScalar(1 + ACTIVE.apexEmphasis * h);
 
-    // Ponte 3D → 2D: ancora o card ao ápice projetado (apenas desktop).
+    // Ponte 3D → 2D: card centralizado na viewport, connector liga ao ápice.
     if (isActive && apex && store.cardEl && !store.isCompact) {
       apex.updateWorldMatrix(true, false);
       apex.getWorldPosition(projected).project(camera);
@@ -144,16 +144,8 @@ export default function ScrollFragment({
       const el  = store.cardEl;
       const w   = el.offsetWidth;
       const hgt = el.offsetHeight;
-      const left = clamp(
-        screenX + OVERLAY.offsetX,
-        OVERLAY.margin,
-        size.width - w - OVERLAY.margin,
-      );
-      const top = clamp(
-        screenY - hgt - OVERLAY.offsetY,
-        OVERLAY.margin,
-        size.height - hgt - OVERLAY.margin,
-      );
+      const left = (size.width - w) / 2;
+      const top  = (size.height - hgt) / 2;
       el.style.left = `${left}px`;
       el.style.top  = `${top}px`;
 

@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import type { Group } from "three";
 import TerrainLayer from "@/components/lab/TerrainMesh/TerrainLayer";
 import { useResponsiveFit } from "@/components/lab/TerrainMesh/useResponsiveFit";
-import { LAYERS } from "@/components/lab/TerrainMesh/config";
+import { FIT_RADIUS, LAYERS } from "@/components/lab/TerrainMesh/config";
 import HeroFragment from "./HeroFragment";
 import { useSpatialCamera } from "./useSpatialCamera";
 
@@ -18,12 +18,7 @@ import { useSpatialCamera } from "./useSpatialCamera";
 export default function SpatialScene() {
   const fitRef = useRef<Group>(null);
 
-  const fitRadius = useMemo(
-    () => Math.max(...LAYERS.map((layer) => layer.sizeX / 2)),
-    [],
-  );
-
-  useResponsiveFit(fitRef, fitRadius);
+  useResponsiveFit(fitRef, FIT_RADIUS);
   useSpatialCamera();
 
   return (

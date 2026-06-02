@@ -28,10 +28,10 @@ export function useOpeningScroll(
     const lenis = new Lenis({
       wrapper,
       content,
-      lerp: 0.1,
+      lerp: 0.07,
       smoothWheel: true,
-      wheelMultiplier: 0.5,
-      touchMultiplier: 0.6,
+      wheelMultiplier: 0.35,
+      touchMultiplier: 0.4,
     });
 
     const onScroll = () => ScrollTrigger.update();
@@ -41,7 +41,8 @@ export function useOpeningScroll(
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
-    let pyramidTriggered = false;
+    let pyramidMounted = false;
+    let scrollStopped = false;
 
     const trigger = ScrollTrigger.create({
       scroller: wrapper,
@@ -56,23 +57,33 @@ export function useOpeningScroll(
         const textEl = layers.text.current;
         const pyramidEl = layers.pyramid.current;
 
+        // Phase 1: text hint exits first (0 → 0.10)
         if (textEl) {
-          textEl.style.opacity = String(Math.max(0, 1 - p / 0.3));
+          const t = Math.min(1, p / 0.10);
+          textEl.style.opacity = String(1 - t);
         }
+        // Phase 2: logo fades out (0.08 → 0.25)
         if (logoEl) {
-          logoEl.style.opacity = String(Math.max(0, 1 - p / 0.5));
+          const t = Math.max(0, Math.min(1, (p - 0.08) / 0.17));
+          logoEl.style.opacity = String(1 - t);
         }
+        // Phase 3: philosophy fades in overlapping logo exit (0.20 → 0.38)
         if (pyramidEl) {
-          const fadeIn = Math.max(0, Math.min(1, (p - 0.4) / 0.4));
-          pyramidEl.style.opacity = String(fadeIn);
+          const t = Math.max(0, Math.min(1, (p - 0.20) / 0.18));
+          pyramidEl.style.opacity = String(t);
         }
 
-        if (p > 0.85 && !pyramidTriggered) {
-          pyramidTriggered = true;
+        // Mount PhilosophySection early so terrain has time to build
+        if (p > 0.15 && !pyramidMounted) {
+          pyramidMounted = true;
           onPyramidVisible();
+        }
+        // Stop scroll only once philosophy is fully visible
+        if (p > 0.42 && !scrollStopped) {
+          scrollStopped = true;
           setTimeout(() => {
             lenis.stop();
-          }, 800);
+          }, 600);
         }
       },
     });

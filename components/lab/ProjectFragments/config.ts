@@ -31,15 +31,15 @@ export interface FragmentConfig {
  * continuar limpa.
  */
 export const FRAGMENTS: FragmentConfig[] = [
-  { id: "a", label: "PROJECT A", x: -2.6, z:  3.2, seed: 17  },
-  { id: "b", label: "PROJECT B", x:  2.4, z:  1.8, seed: 53  },
-  { id: "c", label: "PROJECT C", x: -1.2, z:  0.0, seed: 91  },
-  { id: "d", label: "PROJECT D", x:  3.6, z: -0.8, seed: 139 },
-  { id: "e", label: "PROJECT E", x: -3.4, z: -1.6, seed: 173 },
-  { id: "f", label: "PROJECT F", x:  0.8, z: -3.0, seed: 211 },
-  { id: "g", label: "PROJECT G", x: -2.0, z: -4.4, seed: 257 },
-  { id: "h", label: "PROJECT H", x:  2.8, z: -5.6, seed: 307 },
-  { id: "i", label: "PROJECT I", x: -0.4, z: -7.0, seed: 359 },
+  { id: "a", label: "PROJECT A", x:  0.0, z:  3.0, seed: 17  },
+  { id: "b", label: "PROJECT B", x:  0.0, z:  1.5, seed: 53  },
+  { id: "c", label: "PROJECT C", x:  0.0, z:  0.0, seed: 91  },
+  { id: "d", label: "PROJECT D", x:  0.0, z: -1.5, seed: 139 },
+  { id: "e", label: "PROJECT E", x:  0.0, z: -3.0, seed: 173 },
+  { id: "f", label: "PROJECT F", x:  0.0, z: -4.5, seed: 211 },
+  { id: "g", label: "PROJECT G", x:  0.0, z: -6.0, seed: 257 },
+  { id: "h", label: "PROJECT H", x:  0.0, z: -7.5, seed: 307 },
+  { id: "i", label: "PROJECT I", x:  0.0, z: -9.0, seed: 359 },
 ];
 
 /** Forma e dimensões do fragmento (pequeno tetraedro triangulado emergente). */

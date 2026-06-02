@@ -25,7 +25,7 @@ const DigitalLandscape = dynamic(
   { ssr: false },
 );
 
-const SCROLL_LENGTH = 200;
+const SCROLL_LENGTH = 250;
 
 type Phase = "logo" | "philosophy" | "landscape";
 

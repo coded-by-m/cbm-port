@@ -3,12 +3,12 @@
 import { type MutableRefObject } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Vector3 } from "three";
-import { FIT_RATIO, LAYERS } from "@/components/lab/TerrainMesh/config";
+import { FIT_RADIUS, FIT_RATIO } from "@/components/lab/TerrainMesh/config";
 import { CAMERA_IDLE, SCROLL_POSES, type Pose } from "./config";
 
 const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
-const fitRadius = Math.max(...LAYERS.map((layer) => layer.sizeX / 2));
+const fitRadius = FIT_RADIUS;
 
 const posA = new Vector3();
 const tgtA = new Vector3();

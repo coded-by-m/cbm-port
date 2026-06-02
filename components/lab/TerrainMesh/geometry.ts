@@ -128,6 +128,20 @@ export function buildTerrainGeometry(layer: LayerConfig): TerrainGeometry {
  * vem da altura normalizada (vales escuros, cristas mais claras) — profundidade
  * sem luzes nem shaders, evitando o aspecto chapado.
  */
+/**
+ * Fator de fade nas bordas do mesh (0 na borda, 1 no interior).
+ * Usa as 15% externas de cada eixo para transição suave — o mesh
+ * desaparece gradualmente em vez de ter um corte abrupto.
+ */
+function edgeFade(x: number, z: number, layer: LayerConfig): number {
+  const halfX = layer.sizeX * 0.5;
+  const halfZ = layer.sizeZ * 0.5;
+  const margin = 0.15;
+  const fadeX = 1 - smoothstep(halfX * (1 - margin), halfX, Math.abs(x));
+  const fadeZ = 1 - smoothstep(halfZ * (1 - margin), halfZ, Math.abs(z));
+  return fadeX * fadeZ;
+}
+
 export function updateTerrain(
   geometry: BufferGeometry,
   layer: LayerConfig,
@@ -135,6 +149,7 @@ export function updateTerrain(
   reveal: number,
   low: Color,
   high: Color,
+  bg?: Color,
 ): void {
   const position = geometry.attributes.position as BufferAttribute;
   const color = geometry.attributes.color as BufferAttribute;
@@ -142,20 +157,23 @@ export function updateTerrain(
   const col = color.array as Float32Array;
 
   const range = HEIGHT_RANGE * layer.heightAmp;
+  const bgColor = bg ?? new Color(0x000f08);
 
   for (let i = 0; i < position.count; i += 1) {
     const x = pos[i * 3];
     const z = pos[i * 3 + 2];
     const h = sampleHeight(x, z, t, layer);
+    const fade = edgeFade(x, z, layer);
 
-    pos[i * 3 + 1] = h * reveal;
+    pos[i * 3 + 1] = h * reveal * fade;
 
-    // Vales/planos escuros, apenas as cristas se iluminam: o centro calmo
-    // recua para o fundo e não disputa atenção com o conteúdo.
     const n = clamp01(h / range);
-    col[i * 3] = low.r + (high.r - low.r) * n;
-    col[i * 3 + 1] = low.g + (high.g - low.g) * n;
-    col[i * 3 + 2] = low.b + (high.b - low.b) * n;
+    const lr = low.r + (high.r - low.r) * n;
+    const lg = low.g + (high.g - low.g) * n;
+    const lb = low.b + (high.b - low.b) * n;
+    col[i * 3] = bgColor.r + (lr - bgColor.r) * fade;
+    col[i * 3 + 1] = bgColor.g + (lg - bgColor.g) * fade;
+    col[i * 3 + 2] = bgColor.b + (lb - bgColor.b) * fade;
   }
 
   position.needsUpdate = true;

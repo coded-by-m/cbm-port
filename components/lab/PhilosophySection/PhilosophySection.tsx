@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 
-const TerrainMesh = dynamic(
-  () => import("@/components/lab/TerrainMesh").then((m) => m.TerrainMesh),
+const TerrainBackground = dynamic(
+  () => import("./TerrainBackground"),
   { ssr: false },
 );
 
@@ -30,8 +30,8 @@ const STATEMENTS = [
 ];
 
 const DWELL = 4;
-const TRANSITION = 0.8;
-const SCROLL_COOLDOWN = 900;
+const TRANSITION = 0.7;
+const SCROLL_COOLDOWN = 1200;
 
 type PhilosophySectionProps = {
   onComplete?: () => void;
@@ -46,38 +46,65 @@ export default function PhilosophySection({ onComplete }: PhilosophySectionProps
   const lineRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollCooldown = useRef(false);
+  const transitioning = useRef(false);
   const autoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const goTo = useCallback((index: number) => {
     const clamped = Math.max(0, Math.min(index, STATEMENTS.length - 1));
+    if (clamped === activeRef.current) return;
 
+    // Kill any running tweens on all statement elements
+    statementsRef.current.forEach((el) => {
+      if (el) gsap.killTweensOf(el);
+    });
+    if (lineRef.current) gsap.killTweensOf(lineRef.current);
+
+    transitioning.current = true;
+
+    // Exit current statement first, then enter new one
+    const currentEl = activeRef.current >= 0 ? statementsRef.current[activeRef.current] : null;
+    const nextEl = statementsRef.current[clamped];
+    const direction = clamped > activeRef.current ? -1 : 1;
+
+    // Hide all others immediately (prevents stacking)
     statementsRef.current.forEach((el, i) => {
-      if (!el) return;
-      if (i === clamped) {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: TRANSITION,
-          ease: "power2.out",
-        });
-      } else {
-        gsap.to(el, {
-          opacity: 0,
-          y: i < clamped ? -30 : 30,
-          scale: 0.96,
-          duration: TRANSITION * 0.6,
-          ease: "power2.in",
-        });
-      }
+      if (!el || i === activeRef.current || i === clamped) return;
+      gsap.set(el, { opacity: 0, y: 30 * (i < clamped ? -1 : 1), scale: 0.96 });
     });
 
+    const tl = gsap.timeline({
+      onComplete: () => {
+        transitioning.current = false;
+      },
+    });
+
+    if (currentEl) {
+      tl.to(currentEl, {
+        opacity: 0,
+        y: direction * -30,
+        scale: 0.96,
+        duration: TRANSITION * 0.5,
+        ease: "power2.in",
+      });
+    }
+
+    if (nextEl) {
+      gsap.set(nextEl, { y: direction * -30 * -1, scale: 0.96, opacity: 0 });
+      tl.to(nextEl, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: TRANSITION,
+        ease: "power2.out",
+      }, currentEl ? ">" : 0);
+    }
+
     if (lineRef.current) {
-      gsap.to(lineRef.current, {
+      tl.to(lineRef.current, {
         width: `${((clamped + 1) / STATEMENTS.length) * 100}%`,
         duration: TRANSITION,
         ease: "power2.inOut",
-      });
+      }, 0);
     }
 
     activeRef.current = clamped;
@@ -142,7 +169,7 @@ export default function PhilosophySection({ onComplete }: PhilosophySectionProps
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      if (scrollCooldown.current) return;
+      if (scrollCooldown.current || transitioning.current) return;
 
       scrollCooldown.current = true;
       setTimeout(() => {
@@ -165,10 +192,10 @@ export default function PhilosophySection({ onComplete }: PhilosophySectionProps
   }, [next, prev]);
 
   return (
-    <div ref={containerRef} className="relative h-full w-full overflow-hidden">
-      {/* Background: Terrain Mesh at low opacity */}
-      <div className="absolute inset-0 opacity-[0.35]">
-        <TerrainMesh />
+    <div ref={containerRef} className="relative h-full w-full overflow-clip">
+      {/* Background: Terrain with camera adjusted to fill the viewport */}
+      <div className="absolute inset-0 opacity-[0.75]">
+        <TerrainBackground />
       </div>
 
       {/* Vignette overlay for depth */}
@@ -176,7 +203,7 @@ export default function PhilosophySection({ onComplete }: PhilosophySectionProps
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 30%, #000F08 75%)",
+            "radial-gradient(ellipse at center, transparent 50%, #000F08 90%)",
         }}
       />
 
