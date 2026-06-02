@@ -1,82 +1,85 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { CAMERA, COLORS, FOG } from "@/components/lab/TerrainMesh/config";
-import { useOverlayStore } from "@/components/lab/HtmlOverlay/useOverlayStore";
-import ProjectCard from "@/components/lab/HtmlOverlay/ProjectCard";
-import Connector from "@/components/lab/HtmlOverlay/Connector";
-import { useScrollDriver } from "@/components/lab/ScrollCamera/useScrollDriver";
-import { SCROLL_LENGTH } from "@/components/lab/ScrollCamera/config";
 import LandscapeScene from "./LandscapeScene";
+import CenteredCard from "./CenteredCard";
+import DotsNav from "./DotsNav";
 import { LANDSCAPE_CARDS } from "./config";
 
+const COOLDOWN = 1200;
+
 export default function DigitalLandscape() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const progress = useRef(0);
-  const [started, setStarted] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const cooldown = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const {
-    store,
-    activeId,
-    isCompact,
-    setActive,
-    setCardEl,
-    setConnectorLine,
-    setConnectorDot,
-  } = useOverlayStore();
+  const goTo = useCallback((index: number) => {
+    const clamped = Math.max(0, Math.min(index, LANDSCAPE_CARDS.length - 1));
+    if (clamped === activeIndex) return;
+    setActiveIndex(clamped);
+  }, [activeIndex]);
 
-  useScrollDriver(wrapperRef, contentRef, progress, setStarted);
+  const next = useCallback(() => {
+    if (cooldown.current) return;
+    cooldown.current = true;
+    setTimeout(() => { cooldown.current = false; }, COOLDOWN);
+    goTo(activeIndex + 1);
+  }, [activeIndex, goTo]);
 
-  const length = isCompact ? SCROLL_LENGTH.compact : SCROLL_LENGTH.desktop;
+  const prev = useCallback(() => {
+    if (cooldown.current) return;
+    cooldown.current = true;
+    setTimeout(() => { cooldown.current = false; }, COOLDOWN);
+    goTo(activeIndex - 1);
+  }, [activeIndex, goTo]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      if (e.deltaY > 0) next();
+      else if (e.deltaY < 0) prev();
+    };
+    container.addEventListener("wheel", onWheel, { passive: false });
+    return () => container.removeEventListener("wheel", onWheel);
+  }, [next, prev]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        next();
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        prev();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [next, prev]);
 
   return (
-    <div
-      ref={wrapperRef}
-      className="absolute inset-0 overflow-y-auto overscroll-contain"
-    >
-      <div ref={contentRef} className="relative w-full" style={{ height: `${length}vh` }}>
-        <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
-          <Canvas
-            frameloop="always"
-            gl={{ antialias: true, alpha: false }}
-            dpr={[1, 2]}
-            camera={{ position: [...CAMERA.position], fov: CAMERA.fov }}
-            style={{ background: COLORS.background }}
-          >
-            <fog attach="fog" args={[FOG.color, FOG.near, FOG.far]} />
-            <LandscapeScene store={store} progress={progress} setActive={setActive} />
-          </Canvas>
+    <div ref={containerRef} className="absolute inset-0">
+      <Canvas
+        frameloop="always"
+        gl={{ antialias: true, alpha: false }}
+        dpr={[1, 2]}
+        camera={{ position: [...CAMERA.position], fov: CAMERA.fov }}
+        style={{ background: COLORS.background }}
+      >
+        <fog attach="fog" args={[FOG.color, FOG.near, FOG.far]} />
+        <LandscapeScene activeIndex={activeIndex} />
+      </Canvas>
 
-          <Connector
-            visible={Boolean(activeId) && !isCompact}
-            setLine={setConnectorLine}
-            setDot={setConnectorDot}
-          />
-
-          <ProjectCard
-            activeId={activeId}
-            isCompact={isCompact}
-            setCardEl={setCardEl}
-            onClose={() => setActive(null)}
-            cards={LANDSCAPE_CARDS}
-          />
-
-          <div
-            aria-hidden="true"
-            className={[
-              "pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 text-center transition-opacity duration-500",
-              started ? "opacity-0" : "opacity-100",
-            ].join(" ")}
-          >
-            <p className="text-[0.6rem] uppercase tracking-[0.4em] text-neutral-500">
-              Scroll
-            </p>
-            <p className="mt-1 text-neutral-600">↓</p>
-          </div>
-        </div>
-      </div>
+      <CenteredCard activeIndex={activeIndex} cards={LANDSCAPE_CARDS} />
+      <DotsNav
+        count={LANDSCAPE_CARDS.length}
+        activeIndex={activeIndex}
+        onGo={goTo}
+      />
     </div>
   );
 }

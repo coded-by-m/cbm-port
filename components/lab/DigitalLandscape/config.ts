@@ -1,25 +1,17 @@
 import type { ProjectCard } from "@/components/lab/HtmlOverlay/config";
 import { FRAGMENTS } from "@/components/lab/ProjectFragments/config";
-import {
-  SCROLL_POSITIONS,
-  VISIBILITY_ENVELOPES,
-  ACTIVE_RANGES,
-} from "@/components/lab/ScrollCamera/config";
 
-const SOURCE = new Map(FRAGMENTS.map((f) => [f.id, f]));
-
-export const LANDSCAPE_CARDS: ProjectCard[] = FRAGMENTS.map((frag, i) => ({
+export const LANDSCAPE_CARDS: ProjectCard[] = FRAGMENTS.map((frag) => ({
   id: frag.id,
   title: frag.label.replace("PROJECT ", "Project "),
   type: "Web Design",
   description: "Placeholder — projeto em desenvolvimento.",
   href: "#",
-  x: SCROLL_POSITIONS[i]?.x ?? frag.x,
-  z: SCROLL_POSITIONS[i]?.z ?? frag.z,
+  x: frag.x,
+  z: frag.z,
   seed: frag.seed,
 }));
 
-// Override first 3 with real content
 const REAL_CONTENT: Partial<ProjectCard>[] = [
   {
     title: "Machado Plataformas",
@@ -82,5 +74,3 @@ REAL_CONTENT.forEach((content, i) => {
     Object.assign(LANDSCAPE_CARDS[i], content);
   }
 });
-
-export { VISIBILITY_ENVELOPES, ACTIVE_RANGES };
