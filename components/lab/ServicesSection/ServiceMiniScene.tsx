@@ -22,7 +22,7 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
    pattern. Targets: scale 1.0 → 1.18 (sutil pra não cortar), rotX 0 → 0.25
    rad, posY 0 → 0.2. Camera pullback z 6 → 7.2 compensa o crescimento. */
 
-/** Camera pullback usando activeRef pra fresh closure. */
+/** Camera pullback sutil pra evitar clipping nas bordas. */
 function CameraPullback({
   activeRef,
 }: {
@@ -33,7 +33,8 @@ function CameraPullback({
   useFrame((_, delta) => {
     const target = activeRef.current ? 1 : 0;
     t.current = lerp(t.current, target, Math.min(1, delta * 2.5));
-    camera.position.z = lerp(6, 7.2, t.current);
+    // Pullback muito sutil — só pra dar respiro, não cancelar o crescimento
+    camera.position.z = lerp(6, 6.5, t.current);
   });
   return null;
 }
@@ -145,9 +146,9 @@ function LandingScene({ active }: { active: boolean }) {
     expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
     const w = expansionRef.current;
     if (w) {
-      w.scale.setScalar(1 + expT.current * 0.18);
-      w.rotation.x = expT.current * 0.25;
-      w.position.y = expT.current * 0.2;
+      w.scale.setScalar(1 + expT.current * 0.2);
+      w.rotation.x = expT.current * 0.4;
+      w.position.y = expT.current * 0.35;
     }
 
     // Calcula em qual fase estamos do ciclo.
@@ -385,9 +386,9 @@ function InstitutionalScene({ active }: { active: boolean }) {
     expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
     const w = expansionRef.current;
     if (w) {
-      w.scale.setScalar(1 + expT.current * 0.18);
-      w.rotation.x = expT.current * 0.25;
-      w.position.y = expT.current * 0.2;
+      w.scale.setScalar(1 + expT.current * 0.2);
+      w.rotation.x = expT.current * 0.4;
+      w.position.y = expT.current * 0.35;
     }
 
     particles.forEach((p, i) => {
@@ -532,9 +533,9 @@ function AppScene({ active }: { active: boolean }) {
     expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
     const w = expansionRef.current;
     if (w) {
-      w.scale.setScalar(1 + expT.current * 0.18);
-      w.rotation.x = expT.current * 0.25;
-      w.position.y = expT.current * 0.2;
+      w.scale.setScalar(1 + expT.current * 0.2);
+      w.rotation.x = expT.current * 0.4;
+      w.position.y = expT.current * 0.35;
     }
 
     nodes.forEach((n, i) => {
