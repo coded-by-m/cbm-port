@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useMemo, useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
-import gsap from "gsap";
 import {
   BoxGeometry,
   CatmullRomCurve3,
@@ -19,56 +18,8 @@ import type { ServiceVariant } from "@/data/services";
 const TWO_PI = Math.PI * 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-/* ============================================================
-   SHARED — Expansion behavior via GSAP (mais determinístico)
-   ============================================================ */
-
-/**
- * Aplica scale + tilt + cameraZ na expansão via GSAP.
- *
- * Por que GSAP em useEffect (não useFrame): mais determinístico,
- * não depende de closure refresh em hooks customizados, e dá controle
- * fino do easing/duração.
- */
-function ExpansionRig({
-  active,
-  groupRef,
-}: {
-  active: boolean;
-  groupRef: React.RefObject<Group>;
-}) {
-  const camera = useThree((s) => s.camera);
-  const stateRef = useRef({ scale: 1, rotX: 0, posY: 0, camZ: 6 });
-  const tweenRef = useRef<gsap.core.Tween | null>(null);
-
-  useEffect(() => {
-    if (tweenRef.current) tweenRef.current.kill();
-    const target = active
-      ? { scale: 1.35, rotX: 0.28, posY: 0.25, camZ: 8.5 }
-      : { scale: 1, rotX: 0, posY: 0, camZ: 6 };
-
-    tweenRef.current = gsap.to(stateRef.current, {
-      ...target,
-      duration: 0.7,
-      ease: "power2.out",
-      onUpdate: () => {
-        const w = groupRef.current;
-        if (w) {
-          w.scale.setScalar(stateRef.current.scale);
-          w.rotation.x = stateRef.current.rotX;
-          w.position.y = stateRef.current.posY;
-        }
-        camera.position.z = stateRef.current.camZ;
-      },
-    });
-
-    return () => {
-      if (tweenRef.current) tweenRef.current.kill();
-    };
-  }, [active, camera, groupRef]);
-
-  return null;
-}
+/* Expansion: cada scene aplica direto no seu useFrame via activeRef
+   pattern. Targets: scale 1.0 → 1.4, rotX 0 → 0.3 rad, posY 0 → 0.3. */
 
 /**
  * Mini-scene 3D dentro do card de serviço.
@@ -111,6 +62,10 @@ function LandingScene({ active }: { active: boolean }) {
   const sparkRef = useRef<Mesh>(null);
   const elapsed = useRef(0);
   const speedRef = useRef(1);
+  // Ref pra active garantir fresh read no useFrame (evita stale closure)
+  const activeRef = useRef(active);
+  activeRef.current = active;
+  const expT = useRef(0);
 
   // Página única + 4 sections horizontais internas (todas off-white agora).
   const pageW = 1.4;
@@ -168,7 +123,15 @@ function LandingScene({ active }: { active: boolean }) {
       g.position.y = Math.sin(t * 0.4) * 0.06;
     }
 
-    // (Expansion agora é gerenciada via ExpansionRig com GSAP, não aqui)
+    // Expansion via useFrame com activeRef (fresh closure)
+    const expTarget = activeRef.current ? 1 : 0;
+    expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
+    const w = expansionRef.current;
+    if (w) {
+      w.scale.setScalar(1 + expT.current * 0.4);
+      w.rotation.x = expT.current * 0.3;
+      w.position.y = expT.current * 0.3;
+    }
 
     // Calcula em qual fase estamos do ciclo.
     const cyclePos = t % CYCLE;
@@ -256,7 +219,6 @@ function LandingScene({ active }: { active: boolean }) {
 
   return (
     <>
-      <ExpansionRig active={active} groupRef={expansionRef} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.85}>
           {/* Frame externo da página */}
@@ -352,6 +314,9 @@ function InstitutionalScene({ active }: { active: boolean }) {
   const particlesRef = useRef<(Mesh | null)[]>([]);
   const elapsed = useRef(0);
   const speedRef = useRef(1);
+  const activeRef = useRef(active);
+  activeRef.current = active;
+  const expT = useRef(0);
 
   // 6 andares empilhados verticalmente — lê como site com várias páginas.
   const floors = useMemo(() => {
@@ -398,7 +363,14 @@ function InstitutionalScene({ active }: { active: boolean }) {
       g.position.y = Math.sin(t * 0.4) * 0.08;
     }
 
-    // (Expansion gerenciada via ExpansionRig)
+    const expTarget = activeRef.current ? 1 : 0;
+    expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
+    const w = expansionRef.current;
+    if (w) {
+      w.scale.setScalar(1 + expT.current * 0.4);
+      w.rotation.x = expT.current * 0.3;
+      w.position.y = expT.current * 0.3;
+    }
 
     particles.forEach((p, i) => {
       const mesh = particlesRef.current[i];
@@ -418,7 +390,6 @@ function InstitutionalScene({ active }: { active: boolean }) {
 
   return (
     <>
-      <ExpansionRig active={active} groupRef={expansionRef} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.8}>
           {floors.map((f, i) => (
@@ -484,6 +455,9 @@ function AppScene({ active }: { active: boolean }) {
   const nodesRef = useRef<(Group | null)[]>([]);
   const elapsed = useRef(0);
   const speedRef = useRef(1);
+  const activeRef = useRef(active);
+  activeRef.current = active;
+  const expT = useRef(0);
 
   const nodes = useMemo(() => {
     return [
@@ -535,7 +509,14 @@ function AppScene({ active }: { active: boolean }) {
       g.rotation.x = Math.sin(t * 0.3) * 0.06;
     }
 
-    // (Expansion gerenciada via ExpansionRig)
+    const expTarget = activeRef.current ? 1 : 0;
+    expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
+    const w = expansionRef.current;
+    if (w) {
+      w.scale.setScalar(1 + expT.current * 0.4);
+      w.rotation.x = expT.current * 0.3;
+      w.position.y = expT.current * 0.3;
+    }
 
     nodes.forEach((n, i) => {
       const node = nodesRef.current[i];
@@ -548,7 +529,6 @@ function AppScene({ active }: { active: boolean }) {
 
   return (
     <>
-      <ExpansionRig active={active} groupRef={expansionRef} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.95}>
           {tubes.map((g, i) => (
