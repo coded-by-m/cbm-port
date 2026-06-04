@@ -17,7 +17,7 @@ export interface Experiment {
   /** Nome exibido na central de experimentos. */
   title: string;
   /** Em que momento da home esta técnica entra. */
-  stage: "loading" | "intro" | "hero" | "paisagem";
+  stage: "loading" | "intro" | "hero" | "paisagem" | "servicos";
   /** O que o experimento valida. */
   description: string;
   /** "ready" = implementado e ativo; "planned" = placeholder preparado. */
@@ -89,6 +89,14 @@ export const EXPERIMENTS: Experiment[] = [
       "A câmera percorre a paisagem conforme o scroll (GSAP ScrollTrigger + Lenis): visão ampla → foco em cada fragmento → retorno. Valida ritmo, legibilidade e narrativa comercial.",
     status: "ready",
   },
+  {
+    slug: "services-section",
+    title: "Services Section",
+    stage: "servicos",
+    description:
+      "3 cards expandíveis (acordeon) — Landing Pages, Sites Institucionais, Aplicações Web. Cada um com mini-scene 3D específica + border-draw animation + CTA mailto.",
+    status: "ready",
+  },
 ];
 
 /** Rótulo legível de cada estágio, para agrupamento na UI. */
@@ -97,6 +105,7 @@ export const STAGE_LABEL: Record<Experiment["stage"], string> = {
   intro: "Intro",
   hero: "Hero",
   paisagem: "Paisagem",
+  servicos: "Serviços",
 };
 
 /** Ordem canônica dos estágios na jornada. */
@@ -105,4 +114,5 @@ export const STAGE_ORDER: Experiment["stage"][] = [
   "intro",
   "hero",
   "paisagem",
+  "servicos",
 ];

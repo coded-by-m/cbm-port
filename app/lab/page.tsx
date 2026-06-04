@@ -48,6 +48,11 @@ const EXPERIMENT_COMPONENTS: Record<string, ComponentType> = {
     () => import("@/components/lab/ScrollCamera").then((m) => m.ScrollCamera),
     { ssr: false },
   ),
+  "services-section": dynamic(
+    () =>
+      import("@/components/lab/ServicesSection").then((m) => m.ServicesSection),
+    { ssr: false },
+  ),
 };
 
 /**
