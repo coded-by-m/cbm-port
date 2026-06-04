@@ -53,46 +53,47 @@ export default function ServiceMiniScene({
 
 function LandingScene({ active }: { active: boolean }) {
   const groupRef = useRef<Group>(null);
+  const highlightGroupRef = useRef<Group>(null);
+  const highlightMatRefs = useRef<{ opacity: number }[]>([]);
   const sparkRef = useRef<Mesh>(null);
   const elapsed = useRef(0);
   const speedRef = useRef(1);
 
-  // Página única (frame retangular tall) + 4 blocks horizontais internos.
-  // Lê como UMA página com hero + 2 sections + CTA — simples e direto.
+  // Página única + 4 sections horizontais internas (todas off-white agora).
   const pageW = 1.4;
   const pageH = 3.2;
 
-  // Frame externo (edges)
   const frameEdges = useMemo(() => {
     const box = new BoxGeometry(pageW, pageH, 0.04);
     return new EdgesGeometry(box);
   }, []);
 
-  // 4 sections internas: hero (maior) + 2 content + CTA (vermelho, embaixo)
+  // 4 sections internas — todas off-white. O destaque vermelho agora é
+  // um bloco animado que viaja por elas (highlight scanner).
   const sections = useMemo(() => {
     const padding = 0.18;
     const gap = 0.1;
     const totalContentH = pageH - padding * 2;
-    // Hero ocupa 35%, 2 content 22% cada, CTA 21%
     const ratios = [0.35, 0.22, 0.22, 0.21];
-    const blocks: Array<{
-      yCenter: number;
-      height: number;
-      isAccent: boolean;
-    }> = [];
+    const blocks: Array<{ yCenter: number; height: number }> = [];
     let cursor = pageH / 2 - padding;
-    ratios.forEach((r, i) => {
+    ratios.forEach((r) => {
       const h = (totalContentH - gap * (ratios.length - 1)) * r;
       const yCenter = cursor - h / 2;
-      blocks.push({
-        yCenter,
-        height: h,
-        isAccent: i === ratios.length - 1, // último (CTA) é vermelho
-      });
+      blocks.push({ yCenter, height: h });
       cursor -= h + gap;
     });
     return blocks;
   }, []);
+
+  // Dimensões do highlight vermelho — tamanho do CTA section.
+  const highlightHeight = sections[3].height;
+  const highlightW = pageW * 0.78;
+
+  // Range Y: do topo do hero (~yTop) até o centro do CTA (~yBot).
+  const yTop = sections[0].yCenter;
+  const yBot = sections[3].yCenter;
+  const yRange = yTop - yBot; // valor positivo (vai descendo)
 
   useFrame((_, delta) => {
     speedRef.current = lerp(
@@ -105,17 +106,75 @@ function LandingScene({ active }: { active: boolean }) {
 
     const g = groupRef.current;
     if (g) {
-      // Página flutuante: rotação Y muito lenta + bob suave
       g.rotation.y = Math.sin(t * 0.25) * 0.18;
       g.position.y = Math.sin(t * 0.4) * 0.06;
     }
 
-    // Faísca no apex/CTA: pulsa de leve
+    // Highlight viaja top → bottom em loop. Ciclo: 4s total.
+    // Inclui pausa breve no topo e no bottom pra "respirar".
+    const cycleDuration = 4.5;
+    const cyclePhase = (t / cycleDuration) % 1; // 0..1
+
+    // Curva: easeInOut pra deslocamento + fade out perto do final do ciclo.
+    // 0..0.85 = descida; 0.85..1.0 = reaparece no topo (fade out/in)
+    let yProgress: number;
+    let visibility: number;
+    if (cyclePhase < 0.85) {
+      // Easing: ease-in-out pra deslocamento suave
+      const t01 = cyclePhase / 0.85;
+      yProgress = t01 < 0.5 ? 2 * t01 * t01 : 1 - Math.pow(-2 * t01 + 2, 2) / 2;
+      visibility = 1;
+    } else {
+      // Fase de reset: fade out → reaparece no topo
+      yProgress = 1; // já está no bottom
+      const fadePhase = (cyclePhase - 0.85) / 0.15;
+      visibility = 1 - fadePhase;
+    }
+
+    const highlightY = yTop - yProgress * yRange;
+
+    if (highlightGroupRef.current) {
+      highlightGroupRef.current.position.y = highlightY;
+    }
+
+    // Aplica opacity do scanner em todas as linhas + faísca
+    const opacityBase = 0.9 * visibility;
+    highlightMatRefs.current.forEach((mat) => {
+      if (mat) mat.opacity = opacityBase;
+    });
+
     if (sparkRef.current) {
-      const pulse = 1 + Math.sin(t * 2) * 0.15;
+      const pulse = 1 + Math.sin(t * 3) * 0.15;
       sparkRef.current.scale.setScalar(pulse);
+      const mat = sparkRef.current.material as { opacity: number };
+      mat.opacity = visibility;
     }
   });
+
+  // Points da borda do highlight
+  const halfW = highlightW / 2;
+  const halfH = highlightHeight / 2;
+  const highlightLines: [
+    [number, number, number],
+    [number, number, number],
+  ][] = [
+    [
+      [-halfW, halfH, 0.06],
+      [halfW, halfH, 0.06],
+    ],
+    [
+      [halfW, halfH, 0.06],
+      [halfW, -halfH, 0.06],
+    ],
+    [
+      [halfW, -halfH, 0.06],
+      [-halfW, -halfH, 0.06],
+    ],
+    [
+      [-halfW, -halfH, 0.06],
+      [-halfW, halfH, 0.06],
+    ],
+  ];
 
   return (
     <group ref={groupRef} scale={0.85}>
@@ -129,43 +188,41 @@ function LandingScene({ active }: { active: boolean }) {
         />
       </lineSegments>
 
-      {/* 4 sections internas */}
+      {/* 4 sections internas — todas off-white agora */}
       {sections.map((s, i) => {
-        const halfW = (pageW * 0.78) / 2;
-        const halfH = s.height / 2;
+        const sHalfW = (pageW * 0.78) / 2;
+        const sHalfH = s.height / 2;
         const blockPoints: [
           [number, number, number],
           [number, number, number],
         ][] = [
           [
-            [-halfW, s.yCenter + halfH, 0.025],
-            [halfW, s.yCenter + halfH, 0.025],
+            [-sHalfW, s.yCenter + sHalfH, 0.025],
+            [sHalfW, s.yCenter + sHalfH, 0.025],
           ],
           [
-            [halfW, s.yCenter + halfH, 0.025],
-            [halfW, s.yCenter - halfH, 0.025],
+            [sHalfW, s.yCenter + sHalfH, 0.025],
+            [sHalfW, s.yCenter - sHalfH, 0.025],
           ],
           [
-            [halfW, s.yCenter - halfH, 0.025],
-            [-halfW, s.yCenter - halfH, 0.025],
+            [sHalfW, s.yCenter - sHalfH, 0.025],
+            [-sHalfW, s.yCenter - sHalfH, 0.025],
           ],
           [
-            [-halfW, s.yCenter - halfH, 0.025],
-            [-halfW, s.yCenter + halfH, 0.025],
+            [-sHalfW, s.yCenter - sHalfH, 0.025],
+            [-sHalfW, s.yCenter + sHalfH, 0.025],
           ],
         ];
-        const color = s.isAccent ? "#FB3640" : "#F5F2ED";
-        const opacity = s.isAccent ? 0.9 : 0.55;
         return (
           <group key={`section-${i}`}>
             {blockPoints.map((p, bi) => (
               <Line
                 key={`bp-${bi}`}
                 points={p}
-                color={color}
+                color="#F5F2ED"
                 lineWidth={1.1}
                 transparent
-                opacity={opacity}
+                opacity={0.55}
                 depthWrite={false}
               />
             ))}
@@ -173,11 +230,31 @@ function LandingScene({ active }: { active: boolean }) {
         );
       })}
 
-      {/* Faísca vermelha no centro do CTA block */}
-      <mesh ref={sparkRef} position={[0, sections[3].yCenter, 0.05]}>
-        <icosahedronGeometry args={[0.05, 0]} />
-        <meshBasicMaterial color="#FB3640" transparent opacity={1} />
-      </mesh>
+      {/* Highlight vermelho viajando top → bottom em loop */}
+      <group ref={highlightGroupRef}>
+        {highlightLines.map((p, i) => (
+          <Line
+            key={`hl-${i}`}
+            points={p}
+            color="#FB3640"
+            lineWidth={1.6}
+            transparent
+            opacity={0.9}
+            depthWrite={false}
+            ref={(line) => {
+              highlightMatRefs.current[i] = (line?.material as
+                | { opacity: number }
+                | undefined) ?? { opacity: 0 };
+            }}
+          />
+        ))}
+
+        {/* Faísca vermelha no centro do highlight (acompanha o movimento) */}
+        <mesh ref={sparkRef} position={[0, 0, 0.08]}>
+          <icosahedronGeometry args={[0.05, 0]} />
+          <meshBasicMaterial color="#FB3640" transparent opacity={1} />
+        </mesh>
+      </group>
     </group>
   );
 }
