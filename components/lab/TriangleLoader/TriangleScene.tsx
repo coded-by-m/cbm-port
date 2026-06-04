@@ -2,29 +2,40 @@
 
 import { useMemo, useRef, useState, type RefObject } from "react";
 import { Line, OrbitControls } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import type { Group, Mesh } from "three";
 import { Vector3 } from "three";
 import type { Line2 } from "three-stdlib";
 import Point from "./Point";
 import Particles from "./Particles";
-import ExitParticles from "./ExitParticles";
 import { useTriangleAnimation } from "./useTriangleAnimation";
 import { useOrganicMotion } from "./useOrganicMotion";
 import { useResponsiveFit } from "./useResponsiveFit";
-import { LINE_WIDTH, LOGO_POINTS, LOGO_STROKES, TIMING } from "./config";
+import {
+  LINE_WIDTH,
+  LOGO_POINTS,
+  LOGO_ROTATION_PERIOD,
+  LOGO_STROKES,
+} from "./config";
+
+/** Quanto o logo encolhe no final do exit (1.0 → RECOIL_END). */
+const RECOIL_END = 0.6;
+/** Velocidade angular (rad/s) — derivada de LOGO_ROTATION_PERIOD. */
+const ROTATION_SPEED = (Math.PI * 2) / LOGO_ROTATION_PERIOD;
 
 type TriangleSceneProps = {
   onComplete?: () => void;
-  scrollProgress?: RefObject<number>;
+  exitProgress?: RefObject<number>;
 };
 
 export default function TriangleScene({
   onComplete,
-  scrollProgress,
+  exitProgress,
 }: TriangleSceneProps) {
   const fitRef = useRef<Group>(null);
+  const recoilRef = useRef<Group>(null);
   const rotateRef = useRef<Group>(null);
-  const [autoRotate, setAutoRotate] = useState(false);
+  const [spinning, setSpinning] = useState(false);
 
   const pointRefs = [
     useRef<Mesh>(null),
@@ -50,7 +61,7 @@ export default function TriangleScene({
 
   const handleConstructionComplete = useMemo(
     () => () => {
-      setAutoRotate(true);
+      setSpinning(true);
       onCompleteRef.current?.();
     },
     [],
@@ -65,11 +76,26 @@ export default function TriangleScene({
   );
   useOrganicMotion(rotateRef);
 
+  // Recuo: durante o EXIT, o logo encolhe ao centro enquanto desvanece.
+  // Sem partículas — só uma cortina que diminui de presença.
+  // Rotação livre no próprio eixo Y após o build (câmera fica parada).
+  useFrame((_, delta) => {
+    const recoil = recoilRef.current;
+    if (recoil) {
+      const p = exitProgress?.current ?? 0;
+      recoil.scale.setScalar(1 - p * (1 - RECOIL_END));
+    }
+    const rotate = rotateRef.current;
+    if (rotate && spinning) {
+      rotate.rotation.y += ROTATION_SPEED * delta;
+    }
+  });
+
   return (
     <>
       <OrbitControls
-        autoRotate={autoRotate}
-        autoRotateSpeed={60 / TIMING.rotationDuration}
+        autoRotate={false}
+        enableRotate={false}
         enableZoom={false}
         enablePan={false}
         enableDamping
@@ -78,10 +104,9 @@ export default function TriangleScene({
 
       <Particles />
 
-      {scrollProgress && <ExitParticles scrollProgress={scrollProgress} />}
-
       <group ref={fitRef}>
-        <group ref={rotateRef}>
+        <group ref={recoilRef}>
+          <group ref={rotateRef}>
           {LOGO_POINTS.map((vertex, index) => (
             <Point
               key={`point-${index}`}
@@ -103,6 +128,7 @@ export default function TriangleScene({
               depthTest={false}
             />
           ))}
+          </group>
         </group>
       </group>
     </>

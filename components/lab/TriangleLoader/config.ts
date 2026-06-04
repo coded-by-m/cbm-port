@@ -106,8 +106,14 @@ export const TIMING = {
   signalDraw: 0.85,
   signalShift: 0.85,
   settle: 0.5,
-  rotationDuration: 50,
 } as const;
+
+/**
+ * Velocidade da rotação livre do logo (em segundos por volta completa).
+ * Aplicada diretamente em `rotateRef.rotation.y` após o build — a câmera
+ * fica parada, o próprio logo gira no eixo Y.
+ */
+export const LOGO_ROTATION_PERIOD = 55;
 
 /**
  * Estrutura "viva": respiração e inclinação orgânicas, extremamente sutis.
@@ -127,8 +133,8 @@ export const PARTICLE_LAYERS = [
   {
     name: "background",
     count: 44,
-    size: 0.016,
-    opacity: 0.1,
+    size: 0.08,
+    opacity: 0.12,
     spread: [9, 9] as const,
     depth: [-9, -4] as const,
     color: "#5a5750",
@@ -137,8 +143,8 @@ export const PARTICLE_LAYERS = [
   {
     name: "midground",
     count: 24,
-    size: 0.022,
-    opacity: 0.16,
+    size: 0.11,
+    opacity: 0.18,
     spread: [6, 6] as const,
     depth: [-3, -1] as const,
     color: "#736f66",
@@ -147,8 +153,8 @@ export const PARTICLE_LAYERS = [
   {
     name: "foreground",
     count: 8,
-    size: 0.03,
-    opacity: 0.08,
+    size: 0.15,
+    opacity: 0.1,
     spread: [5, 4] as const,
     depth: [1.5, 3.5] as const,
     color: "#97938b",

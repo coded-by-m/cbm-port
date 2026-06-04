@@ -12,6 +12,10 @@
 
 import { BufferAttribute, BufferGeometry, Color } from "three";
 import type { LayerConfig } from "./config";
+import { CURSOR_HOVER, LAYERS, NOISE } from "./config";
+import type { CursorHover } from "./useCursorHover";
+const { colorGain: COLOR_GAIN, colorFloor: COLOR_FLOOR } = NOISE;
+import { fbm2D } from "./noise";
 
 /** PRNG determinístico (mulberry32): jitter estável entre renders. */
 function mulberry32(seed: number): () => number {
@@ -33,28 +37,42 @@ function smoothstep(edge0: number, edge1: number, x: number): number {
 }
 
 /**
- * Altura do terreno em (x, z) no instante t. Soma de senos não-harmônicos +
- * um termo mais fino para irregularidade organizada. Os termos animados têm
- * velocidade mínima — a malha "respira", não escorre.
+ * Altura do terreno em (x, z) no instante t.
  *
- * Um amortecimento radial ("centro calmo") aplaina a região central de cada
- * camada: cria respiro visual no meio da cena, abre áreas calmas onde futuros
- * fragmentos/projetos poderão aparecer e evita que o relevo compita com textos
- * HTML. As cristas ficam nas bordas, reforçando a moldura de profundidade.
+ * fBm 2D (value noise, 4 oitavas) dá cristas com hierarquia técnica — blocos
+ * grandes + detalhe fino, sem o aspecto "ondulado" da soma de senos. O input
+ * é deslocado por `(offsetX, offsetZ)` para permitir navegação por drag sem
+ * mover a geometria nem a câmera: o **conteúdo do noise** rola por baixo da
+ * malha finita. Um leve `timeWobble` no input cria a respiração orgânica.
+ *
+ * O amortecimento radial ("centro calmo") permanece ancorado às coordenadas
+ * locais da malha — a área plana fica sempre no meio da viewport mesmo
+ * arrastando, abrindo espaço para fragmentos/cards.
  */
 export function sampleHeight(
   x: number,
   z: number,
   t: number,
   layer: LayerConfig,
+  offsetX = 0,
+  offsetZ = 0,
 ): number {
-  const s = layer.seed * 0.013;
-  let h = 0;
-  h += Math.sin(x * 0.55 + t * 0.14 + s) * 0.55;
-  h += Math.cos(z * 0.5 - t * 0.11 + s) * 0.5;
-  h += Math.sin((x + z) * 0.32 + t * 0.09) * 0.35;
-  h += Math.sin(x * 1.15 - z * 0.6 + s * 3) * 0.16;
-  h *= layer.heightAmp;
+  const f = NOISE.frequency;
+  const tw = NOISE.timeWobble;
+  const ts = NOISE.timeSpeed;
+  // Drift contínuo: o conteúdo do noise flui lentamente sob a câmera,
+  // dando a sensação de cena viva mesmo sem cursor próximo.
+  const nx =
+    (x + offsetX + t * NOISE.driftSpeedX) * f + Math.sin(t * ts) * tw;
+  const nz =
+    (z + offsetZ + t * NOISE.driftSpeedZ) * f + Math.cos(t * ts * 0.83) * tw;
+
+  let h = fbm2D(nx, nz, layer.seed, NOISE.octaves, NOISE.lacunarity, NOISE.gain);
+  // fBm tende a se concentrar perto de 0 (central-limit). A curva sign·|h|^c
+  // empurra valores intermediários para os extremos — relevo legível sem
+  // perder a forma natural do noise.
+  h = Math.sign(h) * Math.pow(Math.abs(h), NOISE.contrast);
+  h *= layer.heightAmp * NOISE.amplitude;
 
   const rx = x / (layer.sizeX * 0.5);
   const rz = z / (layer.sizeZ * 0.5);
@@ -63,8 +81,30 @@ export function sampleHeight(
   return h * (layer.calmMin + (1 - layer.calmMin) * calm);
 }
 
-/** Soma das amplitudes — usado para normalizar a altura em cor. */
-const HEIGHT_RANGE = 0.55 + 0.5 + 0.35 + 0.16;
+/**
+ * Altura final do terreno em coordenadas de mundo (inclui `yOffset` da camada).
+ * Use para posicionar pirâmides, marcadores ou cards sobre a superfície.
+ *
+ * @param layerName nome da camada a amostrar. O config atual usa um único
+ *   layer `"terrain"`; o fallback retorna a única camada disponível, então
+ *   chamadas com nomes legados (`foreground`/`midground`/`background`)
+ *   continuam funcionando.
+ */
+export function getTerrainHeight(
+  x: number,
+  z: number,
+  t = 0,
+  offsetX = 0,
+  offsetZ = 0,
+  layerName: string = "terrain",
+): number {
+  const layer =
+    LAYERS.find((l) => l.name === layerName) ?? LAYERS[LAYERS.length - 1];
+  return sampleHeight(x, z, t, layer, offsetX, offsetZ) + layer.yOffset;
+}
+
+/** Faixa esperada do fBm (≈ -1..1) escalada pela amplitude global. */
+const HEIGHT_RANGE = NOISE.amplitude;
 
 export interface TerrainGeometry {
   geometry: BufferGeometry;
@@ -150,6 +190,7 @@ export function updateTerrain(
   low: Color,
   high: Color,
   bg?: Color,
+  hover?: CursorHover,
 ): void {
   const position = geometry.attributes.position as BufferAttribute;
   const color = geometry.attributes.color as BufferAttribute;
@@ -159,15 +200,36 @@ export function updateTerrain(
   const range = HEIGHT_RANGE * layer.heightAmp;
   const bgColor = bg ?? new Color(0x000f08);
 
+  // Lift localizado sob o cursor: pré-calcula raio ao quadrado pra evitar
+  // `Math.sqrt` em vértices fora da área de hover.
+  const hoverActive = hover?.active ?? false;
+  const hx = hover?.x ?? 0;
+  const hz = hover?.z ?? 0;
+  const hoverR = CURSOR_HOVER.radius;
+  const hoverR2 = hoverR * hoverR;
+  const hoverA = CURSOR_HOVER.amplitude;
+
   for (let i = 0; i < position.count; i += 1) {
     const x = pos[i * 3];
     const z = pos[i * 3 + 2];
     const h = sampleHeight(x, z, t, layer);
     const fade = edgeFade(x, z, layer);
 
-    pos[i * 3 + 1] = h * reveal * fade;
+    let lift = 0;
+    if (hoverActive) {
+      const dx = x - hx;
+      const dz = z - hz;
+      const d2 = dx * dx + dz * dz;
+      if (d2 < hoverR2) {
+        // Bell curve: smoothstep no fator de proximidade (1 no centro, 0 na borda).
+        const u = 1 - Math.sqrt(d2) / hoverR;
+        lift = hoverA * u * u * (3 - 2 * u);
+      }
+    }
 
-    const n = clamp01(h / range);
+    pos[i * 3 + 1] = (h + lift) * reveal * fade;
+
+    const n = clamp01((h / range) * COLOR_GAIN + COLOR_FLOOR);
     const lr = low.r + (high.r - low.r) * n;
     const lg = low.g + (high.g - low.g) * n;
     const lb = low.b + (high.b - low.b) * n;

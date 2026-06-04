@@ -25,6 +25,49 @@ export const cases: CaseProject[] = [
         "Empresa técnica de alto valor percebido como commodity. Presença digital genérica não refletia a capacidade real do negócio.",
     },
     gallery: ["", "", "", "", ""],
+    status: "published",
+  },
+  {
+    slug: "estudio-mendes",
+    eyebrow: "Em breve",
+    title: "Estúdio Mendes",
+    description:
+      "Identidade digital e site para um estúdio de arquitetura focado em obras residenciais de alto padrão.",
+    meta: {
+      cliente: "Estúdio Mendes",
+      setor: "Arquitetura",
+      tipo: "Site Institucional",
+      ano: "2026",
+    },
+    heroImages: [],
+    overview: {
+      heading: "",
+      body: [],
+      challenge: "",
+    },
+    gallery: [],
+    status: "coming-soon",
+  },
+  {
+    slug: "rota-clinica",
+    eyebrow: "Em breve",
+    title: "Rota Clínica",
+    description:
+      "Plataforma de agendamento e presença digital para uma rede de clínicas especializadas em fisioterapia.",
+    meta: {
+      cliente: "Rota Clínica",
+      setor: "Saúde",
+      tipo: "Plataforma + Site",
+      ano: "2026",
+    },
+    heroImages: [],
+    overview: {
+      heading: "",
+      body: [],
+      challenge: "",
+    },
+    gallery: [],
+    status: "coming-soon",
   },
 ];
 

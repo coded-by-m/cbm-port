@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Color, type MeshBasicMaterial } from "three";
 import { buildTerrainGeometry, updateTerrain } from "./geometry";
 import { useTerrainBuild } from "./useTerrainBuild";
 import type { LayerConfig } from "./config";
+import type { CursorHover } from "./useCursorHover";
 
 /**
  * Uma camada de profundidade do terreno.
@@ -19,7 +20,13 @@ import type { LayerConfig } from "./config";
  * opacidade acompanha o `reveal` da construção. `polygonOffset` no
  * preenchimento evita z-fighting com o wireframe.
  */
-export default function TerrainLayer({ layer }: { layer: LayerConfig }) {
+export default function TerrainLayer({
+  layer,
+  hoverRef,
+}: {
+  layer: LayerConfig;
+  hoverRef?: RefObject<CursorHover>;
+}) {
   const { geometry } = useMemo(() => buildTerrainGeometry(layer), [layer]);
   const low = useMemo(() => new Color(layer.fillLow), [layer.fillLow]);
   const high = useMemo(() => new Color(layer.fillHigh), [layer.fillHigh]);
@@ -41,7 +48,8 @@ export default function TerrainLayer({ layer }: { layer: LayerConfig }) {
       elapsed.current * layer.driftSpeed * Math.PI * 2 + layer.driftPhase;
     const time = elapsed.current + Math.sin(phase) * layer.driftAmp;
 
-    updateTerrain(geometry, layer, time, r, low, high);
+    const hover = hoverRef?.current ?? undefined;
+    updateTerrain(geometry, layer, time, r, low, high, undefined, hover);
 
     if (fillRef.current) fillRef.current.opacity = layer.fillOpacity * r;
     if (wireRef.current) wireRef.current.opacity = layer.edgeOpacity * r;

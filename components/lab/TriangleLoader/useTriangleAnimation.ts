@@ -106,6 +106,24 @@ export function useTriangleAnimation(
     // 8: construção completa — sinaliza para o pai.
     timeline.call(() => onCompleteRef.current?.(), [], `+=${TIMING.settle}`);
 
+    // 9: micro-pulse nos 3 pontos durante o HOLD da Parte 1. Reforça que a
+    // estrutura é triangular (pontos como nós ativos) antes da dissolução.
+    points.forEach((point, idx) => {
+      timeline.to(
+        point.scale,
+        {
+          x: 1.15,
+          y: 1.15,
+          z: 1.15,
+          duration: 0.5,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: 1,
+        },
+        `>+=${idx * 0.08}`,
+      );
+    });
+
     return () => {
       timeline.kill();
       gsap.ticker.remove(invalidate);

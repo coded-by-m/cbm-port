@@ -77,79 +77,29 @@ export interface LayerConfig {
 
 export const LAYERS: LayerConfig[] = [
   {
-    name: "background",
-    segX: 48,
-    segZ: 32,
-    sizeX: 40,
-    sizeZ: 28,
+    name: "terrain",
+    segX: 90,
+    segZ: 64,
+    sizeX: 50,
+    sizeZ: 36,
     xOffset: 0,
-    yOffset: 1.55,
-    zOffset: -3.7,
-    heightAmp: 0.85,
-    jitter: 0.32,
-    seed: 71,
-    calmRadius: 0.08,
+    yOffset: 0,
+    zOffset: 0,
+    heightAmp: 0.55,
+    jitter: 0.22,
+    seed: 137,
+    calmRadius: 0,
     calmFalloff: 0.5,
-    calmMin: 0.5,
-    edgeColor: "#3c3c3c",
-    edgeOpacity: 0.11,
-    fillLow: "#070707",
-    fillHigh: "#191919",
-    fillOpacity: 0.36,
-    driftAmp: 0.12,
+    calmMin: 0.78,
+    edgeColor: "#7a7a7a",
+    edgeOpacity: 0.28,
+    fillLow: "#0a0a0a",
+    fillHigh: "#2a2a2a",
+    fillOpacity: 0.65,
+    driftAmp: 0.1,
     driftSpeed: 0.06,
     driftPhase: 0,
     buildDelay: 0,
-  },
-  {
-    name: "midground",
-    segX: 52,
-    segZ: 36,
-    sizeX: 34,
-    sizeZ: 24,
-    xOffset: 0,
-    yOffset: 0,
-    zOffset: -0.5,
-    heightAmp: 1,
-    jitter: 0.36,
-    seed: 137,
-    calmRadius: 0,
-    calmFalloff: 0.62,
-    calmMin: 0.1,
-    edgeColor: "#6f6f6f",
-    edgeOpacity: 0.22,
-    fillLow: "#090909",
-    fillHigh: "#262626",
-    fillOpacity: 0.52,
-    driftAmp: 0.09,
-    driftSpeed: 0.08,
-    driftPhase: 2.1,
-    buildDelay: 0.35,
-  },
-  {
-    name: "foreground",
-    segX: 40,
-    segZ: 24,
-    sizeX: 28,
-    sizeZ: 18,
-    xOffset: 0,
-    yOffset: -1.25,
-    zOffset: 2.7,
-    heightAmp: 1.05,
-    jitter: 0.4,
-    seed: 211,
-    calmRadius: 0,
-    calmFalloff: 0.5,
-    calmMin: 0.18,
-    edgeColor: "#9a9a9a",
-    edgeOpacity: 0.1,
-    fillLow: "#0a0a0a",
-    fillHigh: "#242424",
-    fillOpacity: 0.6,
-    driftAmp: 0.14,
-    driftSpeed: 0.05,
-    driftPhase: 4.3,
-    buildDelay: 0.7,
   },
 ];
 
@@ -160,13 +110,68 @@ export const TIMING = {
 } as const;
 
 /**
+ * Parâmetros do noise procedural (fBm 2D).
+ *
+ * `amplitude` multiplica `layer.heightAmp` — controle global do relevo.
+ * `frequency` é a escala XZ do noise — menor = montanhas maiores.
+ * `octaves`/`lacunarity`/`gain` controlam o detalhe fractal.
+ * `timeSpeed`/`timeWobble` dão a respiração orgânica sem deriva real.
+ */
+export const NOISE = {
+  amplitude: 2.6,
+  frequency: 0.28,
+  octaves: 3,
+  lacunarity: 2.05,
+  gain: 0.4,
+  /** Expoente da curva de contraste (1 = linear, <1 = empurra para os extremos, >1 = comprime). */
+  contrast: 1.3,
+  /**
+   * Drift contínuo do conteúdo do noise (unidades de mundo por segundo).
+   * Faz o terreno "fluir" lentamente quando o cursor está parado — vivo, mas
+   * tranquilo. Combinado com `timeWobble` (respiração), dá a sensação de
+   * cena observada, não estática.
+   */
+  driftSpeedX: 0.14,
+  driftSpeedZ: 0.09,
+  /**
+   * Mapeamento de altura → cor. `colorGain` é a amplitude do gradiente
+   * (quanto do range é usado para variar cor). `colorFloor` é o piso —
+   * h=0 mapeia para esse ponto do gradiente, evitando vales como buracos
+   * pretos. Cristas ainda atingem `fillHigh`, só vales muito profundos
+   * caem em `fillLow`.
+   */
+  colorGain: 0.6,
+  colorFloor: 0.4,
+  timeSpeed: 0.08,
+  timeWobble: 0.12,
+} as const;
+
+/**
+ * Lift localizado do terreno sob o cursor. Em vez de mover todo o noise, o
+ * relevo se eleva levemente numa área circular ao redor do ponto onde o
+ * usuário está com o cursor — fica claro que "isso aqui responde a mim",
+ * mas sem deslocar o resto.
+ *
+ * `radius` = raio (em unidades locais do terreno) da área afetada.
+ * `amplitude` = altura máxima do lift no centro do hover (somada ao relevo
+ *   base; valores típicos ≈ 20-30% da altura máxima do noise).
+ * `lerp` = suavidade do alinhamento do centro do lift com o cursor
+ *   (menor = lift "arrasta" atrás do cursor).
+ */
+export const CURSOR_HOVER = {
+  radius: 3.2,
+  amplitude: 0.28,
+  lerp: 0.18,
+} as const;
+
+/**
  * Câmera cinematográfica. Posição base + deriva extremamente lenta (paralaxe),
  * olhando o terreno de um ângulo elevado. Sensação de observação, não de voo.
  */
 export const CAMERA = {
-  position: [0, 3.4, 7.6] as const,
+  position: [0, 5.2, 15] as const,
   fov: 42,
-  target: [0, -0.1, -0.6] as const,
+  target: [0, -0.8, -0.6] as const,
   driftX: 0.7,
   driftY: 0.28,
   driftZ: 0.35,

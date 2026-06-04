@@ -5,15 +5,16 @@ import TerrainScene from "./TerrainScene";
 import { CAMERA, COLORS, FOG } from "./config";
 
 /**
- * Terrain Mesh — Experimento 03 do Experience Lab.
+ * Terrain Mesh — Experimento do Experience Lab.
  *
- * Primeira versão da futura Paisagem Digital: apenas o terreno. Uma malha
- * triangulada procedural com profundidade real (3 camadas), respiração sutil e
- * câmera de observação. Sem projetos, cards ou cases — só a estrutura.
+ * Paisagem digital procedural: heightfield triangulado em fBm (4 oitavas)
+ * com câmera de observação e parallax dirigido pelo cursor. O cursor move
+ * o conteúdo do noise sob a tela; a câmera permanece fixa, preservando a
+ * composição cinematográfica.
  *
- * Procedural, sem assets/modelos, sem shaders complexos e sem post-processing.
- * Materiais não-iluminados (basic) dispensam luzes; a névoa funde a
- * profundidade no preto. `frameloop="always"` mantém a malha viva.
+ * Materiais não-iluminados, sem post-processing, sem texturas. A névoa
+ * funde a profundidade no preto e o edge fade garante que a borda da
+ * malha nunca apareça mesmo durante o parallax.
  */
 export default function TerrainMesh() {
   return (

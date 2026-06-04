@@ -1,72 +1,122 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import type { Points } from "three";
+import {
+  BufferAttribute,
+  BufferGeometry,
+  DoubleSide,
+  type InstancedMesh,
+  Matrix4,
+  Quaternion,
+  Vector3,
+} from "three";
 import { PARTICLE_LAYERS } from "./config";
 
 type Layer = (typeof PARTICLE_LAYERS)[number];
 
-/**
- * Uma camada de partículas em profundidade.
- *
- * Posições aleatórias são geradas uma única vez. A camada gira lentamente
- * em torno de Y, criando um parallax discreto entre planos (cada camada com
- * seu próprio `drift`). Sem `depthWrite` para não ocultar a estrutura.
- */
-function ParticleLayer({ layer }: { layer: Layer }) {
-  const ref = useRef<Points>(null);
+const _matrix = new Matrix4();
+const _quat = new Quaternion();
+const _scale = new Vector3();
 
-  const positions = useMemo(() => {
-    const data = new Float32Array(layer.count * 3);
+/**
+ * Triângulo unitário equilátero (altura 0.866). Compartilhado por todas as
+ * camadas — cada instância é posicionada/escalada por `setMatrixAt`.
+ */
+function createUnitTriangleGeo(): BufferGeometry {
+  const geo = new BufferGeometry();
+  const h = 0.866;
+  const v = new Float32Array([
+    0, h * 0.667, 0,
+    -0.5, -h * 0.333, 0,
+    0.5, -h * 0.333, 0,
+  ]);
+  geo.setAttribute("position", new BufferAttribute(v, 3));
+  return geo;
+}
+
+/**
+ * Uma camada de mini-triângulos em profundidade.
+ *
+ * Posições e rotações geradas uma única vez. A camada gira lentamente em
+ * torno de Y (parallax discreto entre planos). `depthWrite=false` para não
+ * ocultar a estrutura do logo.
+ *
+ * Trianguladas em vez de pontos: amarra o vocabulário visual com
+ * ExitParticles e os triângulos do TerrainBackground que vem em seguida.
+ */
+function ParticleLayer({
+  layer,
+  geometry,
+}: {
+  layer: Layer;
+  geometry: BufferGeometry;
+}) {
+  const ref = useRef<InstancedMesh>(null);
+
+  const instances = useMemo(() => {
     const [spreadX, spreadY] = layer.spread;
     const [near, far] = layer.depth;
-
-    for (let i = 0; i < layer.count; i += 1) {
-      data[i * 3] = (Math.random() * 2 - 1) * spreadX;
-      data[i * 3 + 1] = (Math.random() * 2 - 1) * spreadY;
-      data[i * 3 + 2] = near + Math.random() * (far - near);
-    }
-
-    return data;
+    return Array.from({ length: layer.count }, () => ({
+      pos: new Vector3(
+        (Math.random() * 2 - 1) * spreadX,
+        (Math.random() * 2 - 1) * spreadY,
+        near + Math.random() * (far - near),
+      ),
+      axis: new Vector3(
+        Math.random() - 0.5,
+        Math.random() - 0.5,
+        Math.random() - 0.5,
+      ).normalize(),
+      rotation: Math.random() * Math.PI * 2,
+    }));
   }, [layer]);
 
+  useEffect(() => {
+    const mesh = ref.current;
+    if (!mesh) return;
+    instances.forEach((inst, i) => {
+      _quat.setFromAxisAngle(inst.axis, inst.rotation);
+      _scale.setScalar(layer.size);
+      _matrix.compose(inst.pos, _quat, _scale);
+      mesh.setMatrixAt(i, _matrix);
+    });
+    mesh.instanceMatrix.needsUpdate = true;
+  }, [instances, layer.size]);
+
   useFrame((_, delta) => {
-    const points = ref.current;
-    if (!points) return;
-    points.rotation.y += layer.drift * delta;
+    const mesh = ref.current;
+    if (!mesh) return;
+    mesh.rotation.y += layer.drift * delta;
   });
 
   return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-      </bufferGeometry>
-      <pointsMaterial
+    <instancedMesh ref={ref} args={[geometry, undefined, layer.count]}>
+      <meshBasicMaterial
         color={layer.color}
-        size={layer.size}
-        sizeAttenuation
         transparent
         opacity={layer.opacity}
         depthWrite={false}
+        side={DoubleSide}
       />
-    </points>
+    </instancedMesh>
   );
 }
 
 /**
  * Profundidade cinematográfica do loader.
  *
- * Renderiza as três camadas (background / midground / foreground) como
- * ambiente — fora dos grupos de fit e rotação, para que não escalem nem
- * girem com o triângulo. Extremamente discreto: a estrutura continua sendo
- * o foco.
+ * Três camadas (background / midground / foreground) renderizadas fora dos
+ * grupos de fit e rotação: não escalam nem giram com a logo. Discreto — a
+ * estrutura continua sendo o foco; as partículas só estabelecem que esse é
+ * um mundo triangulado.
  */
 export default function Particles() {
+  const geometry = useMemo(createUnitTriangleGeo, []);
   return (
     <group>
       {PARTICLE_LAYERS.map((layer) => (
-        <ParticleLayer key={layer.name} layer={layer} />
+        <ParticleLayer key={layer.name} layer={layer} geometry={geometry} />
       ))}
     </group>
   );

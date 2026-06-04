@@ -7,12 +7,12 @@ import { COLORS } from "./config";
 
 type TriangleLoaderProps = {
   onComplete?: () => void;
-  scrollProgress?: RefObject<number>;
+  exitProgress?: RefObject<number>;
 };
 
 export default function TriangleLoader({
   onComplete,
-  scrollProgress,
+  exitProgress,
 }: TriangleLoaderProps) {
   return (
     <div className="absolute inset-0">
@@ -25,7 +25,7 @@ export default function TriangleLoader({
       >
         <TriangleScene
           onComplete={onComplete}
-          scrollProgress={scrollProgress}
+          exitProgress={exitProgress}
         />
       </Canvas>
     </div>

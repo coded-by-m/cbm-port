@@ -2,7 +2,7 @@
 
 import { useState, type ComponentType } from "react";
 import dynamic from "next/dynamic";
-import { EXPERIMENTS } from "@/lib/experiments";
+import { EXPERIMENTS, STAGE_LABEL, STAGE_ORDER } from "@/lib/experiments";
 
 /**
  * Experimentos ativos usam WebGL e só devem montar no cliente.
@@ -48,27 +48,6 @@ const EXPERIMENT_COMPONENTS: Record<string, ComponentType> = {
     () => import("@/components/lab/ScrollCamera").then((m) => m.ScrollCamera),
     { ssr: false },
   ),
-  "digital-landscape-v1": dynamic(
-    () =>
-      import("@/components/lab/DigitalLandscape").then(
-        (m) => m.DigitalLandscape,
-      ),
-    { ssr: false },
-  ),
-  "spatial-composition": dynamic(
-    () =>
-      import("@/components/lab/SpatialComposition").then(
-        (m) => m.SpatialComposition,
-      ),
-    { ssr: false },
-  ),
-  "hero-to-landscape": dynamic(
-    () =>
-      import("@/components/lab/HeroToLandscape").then(
-        (m) => m.HeroToLandscape,
-      ),
-    { ssr: false },
-  ),
 };
 
 /**
@@ -87,6 +66,12 @@ export default function LabPage() {
   const [activeSlug, setActiveSlug] = useState(ready[0]?.slug ?? "");
   const active = ready.find((experiment) => experiment.slug === activeSlug);
   const ActiveExperiment = EXPERIMENT_COMPONENTS[activeSlug];
+
+  // Agrupa por estágio mantendo a ordem canônica da jornada.
+  const readyByStage = STAGE_ORDER.map((stage) => ({
+    stage,
+    items: ready.filter((experiment) => experiment.stage === stage),
+  })).filter((group) => group.items.length > 0);
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#000F08] text-neutral-200">
@@ -122,43 +107,54 @@ export default function LabPage() {
                 {active.description}
               </p>
 
-              {/* Alternância entre experimentos prontos */}
-              <div className="pointer-events-auto mt-5 flex flex-wrap gap-2">
-                {ready.map((experiment) => {
-                  const isActive = experiment.slug === activeSlug;
-                  return (
-                    <button
-                      key={experiment.slug}
-                      type="button"
-                      onClick={() => setActiveSlug(experiment.slug)}
-                      aria-pressed={isActive}
-                      className={`rounded-sm border px-3 py-1.5 text-[0.6rem] uppercase tracking-[0.25em] transition-colors ${
-                        isActive
-                          ? "border-neutral-400 text-neutral-100"
-                          : "border-neutral-800 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300"
-                      }`}
-                    >
-                      {experiment.title}
-                    </button>
-                  );
-                })}
+              {/* Experimentos agrupados pela ordem da jornada da home. */}
+              <div className="pointer-events-auto mt-5 flex flex-col gap-3">
+                {readyByStage.map((group) => (
+                  <div key={group.stage} className="flex flex-col gap-1.5">
+                    <p className="text-[0.55rem] uppercase tracking-[0.35em] text-neutral-600">
+                      {STAGE_LABEL[group.stage]}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {group.items.map((experiment) => {
+                        const isActive = experiment.slug === activeSlug;
+                        return (
+                          <button
+                            key={experiment.slug}
+                            type="button"
+                            onClick={() => setActiveSlug(experiment.slug)}
+                            aria-pressed={isActive}
+                            className={`rounded-sm border px-3 py-1.5 text-[0.6rem] uppercase tracking-[0.25em] transition-colors ${
+                              isActive
+                                ? "border-neutral-400 text-neutral-100"
+                                : "border-neutral-800 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300"
+                            }`}
+                          >
+                            {experiment.title}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
 
-          <ul className="flex flex-col gap-1.5 sm:text-right">
-            <li className="mb-1 text-[0.6rem] uppercase tracking-[0.35em] text-neutral-600">
-              Próximos experimentos
-            </li>
-            {planned.map((experiment) => (
-              <li
-                key={experiment.slug}
-                className="text-xs tracking-wide text-neutral-600"
-              >
-                {experiment.title}
+          {planned.length > 0 && (
+            <ul className="flex flex-col gap-1.5 sm:text-right">
+              <li className="mb-1 text-[0.6rem] uppercase tracking-[0.35em] text-neutral-600">
+                Próximos experimentos
               </li>
-            ))}
-          </ul>
+              {planned.map((experiment) => (
+                <li
+                  key={experiment.slug}
+                  className="text-xs tracking-wide text-neutral-600"
+                >
+                  {experiment.title}
+                </li>
+              ))}
+            </ul>
+          )}
         </footer>
       </div>
     </main>
