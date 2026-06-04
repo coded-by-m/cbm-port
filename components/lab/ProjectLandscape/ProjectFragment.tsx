@@ -1,11 +1,10 @@
 "use client";
 
 import { createRef, useMemo, useRef } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
 import {
   Color,
-  Vector3,
   type Group,
   type Mesh,
   type MeshBasicMaterial,
@@ -31,7 +30,6 @@ import {
 const TWO_PI = Math.PI * 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-const projected = new Vector3();
 const apexColorBase = new Color(FRAGMENT_VISUAL.apexColor);
 const offWhite = new Color(FRAGMENT_VISUAL.nodeColor);
 const dimColor = new Color(FRAGMENT_VISUAL.dimColor);
@@ -43,23 +41,15 @@ export default function ProjectFragment({
   anyActive,
   onHover,
   onClick,
-  onScreenPosition,
 }: {
   slot: FragmentSlot;
   isActive: boolean;
   anyActive: boolean;
   onHover: (id: string | null) => void;
   onClick: (id: string) => void;
-  onScreenPosition: (
-    id: string,
-    pos: { x: number; y: number; visible: boolean } | null,
-  ) => void;
 }) {
   const geom = useMemo(() => buildTower(slot.seed), [slot.seed]);
   const reveal = useFragmentBuild(0);
-
-  const camera = useThree((state) => state.camera);
-  const size = useThree((state) => state.size);
 
   const groupRef = useRef<Group>(null);
   const lineRefs = useMemo(
@@ -178,24 +168,6 @@ export default function ProjectFragment({
 
     const apex = nodeMeshRefs[APEX_INDEX].current;
     if (apex) apex.scale.setScalar(1 + FRAGMENT_VISUAL.apexHighlightScale * h);
-
-    if (isActive && apex) {
-      apex.updateWorldMatrix(true, false);
-      apex.getWorldPosition(projected).project(camera);
-      const visible =
-        projected.z < 1 &&
-        projected.x > -1.2 &&
-        projected.x < 1.2 &&
-        projected.y > -1.2 &&
-        projected.y < 1.2;
-      onScreenPosition(slot.slug, {
-        x: (projected.x * 0.5 + 0.5) * size.width,
-        y: (-projected.y * 0.5 + 0.5) * size.height,
-        visible,
-      });
-    } else if (highlight.current < 0.02) {
-      onScreenPosition(slot.slug, null);
-    }
   });
 
   return (

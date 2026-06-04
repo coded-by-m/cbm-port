@@ -30,9 +30,9 @@ export default function NetworkLine({
   slots: FragmentSlot[];
   activeSlug: string | null;
 }) {
-  // Ordena por x para garantir adjacência espacial (left → center → right).
+  // Ordena por Z (mais perto → mais longe) — adjacência espacial no corredor.
   const ordered = useMemo(
-    () => [...slots].sort((a, b) => a.x - b.x),
+    () => [...slots].sort((a, b) => b.z - a.z),
     [slots],
   );
 

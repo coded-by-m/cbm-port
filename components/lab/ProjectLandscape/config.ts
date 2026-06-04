@@ -21,14 +21,50 @@ export interface FragmentSlot {
   slug: string;
 }
 
+/**
+ * Layout em corredor de profundidade ("tunnel").
+ *
+ * 6 fragmentos distribuídos ao longo de Z (espaçamento 5 unidades), com leve
+ * serpentina em X (±1.5) pra quebrar a leitura de fila. A câmera percorre
+ * o eixo Z conforme o usuário scrolla.
+ *
+ * Mais próximo (z=-2) é o que aparece primeiro; mais distante (z=-27) é o
+ * último alcançável. Scale uniforme — distância da câmera + fog fazem o
+ * trabalho de hierarquia visual.
+ */
 export const FRAGMENT_SLOTS: FragmentSlot[] = [
-  { index: 0, x: -3, z: -1.5, scale: 2.4, seed: 17, slug: "machado-plataformas" },
-  { index: 1, x: 0, z: 0, scale: 2.6, seed: 137, slug: "estudio-mendes" },
-  { index: 2, x: 3, z: -1.5, scale: 2.4, seed: 211, slug: "rota-clinica" },
+  { index: 0, x: 0, z: -2, scale: 2.4, seed: 17, slug: "machado-plataformas" },
+  { index: 1, x: 1.5, z: -7, scale: 2.4, seed: 137, slug: "estudio-mendes" },
+  { index: 2, x: -1.5, z: -12, scale: 2.4, seed: 211, slug: "rota-clinica" },
+  { index: 3, x: 1.5, z: -17, scale: 2.4, seed: 73, slug: "industrial-tba" },
+  { index: 4, x: -1.5, z: -22, scale: 2.4, seed: 191, slug: "ecommerce-tba" },
+  { index: 5, x: 0, z: -27, scale: 2.4, seed: 257, slug: "education-tba" },
 ];
 
 /** Slug do fragmento que abre automaticamente quando a Paisagem entra. */
-export const INITIAL_ACTIVE_SLUG = "estudio-mendes";
+export const INITIAL_ACTIVE_SLUG = "machado-plataformas";
+
+/**
+ * Câmera percorre Z conforme o scroll.
+ *
+ * Movimento linear single-axis (sem keyframes em arco / sem pan X). Active
+ * deriva da posição Z da câmera — não há slideshow paralelo que possa
+ * conflitar.
+ */
+export const TUNNEL = {
+  /** Z inicial da câmera (em frente ao primeiro fragmento). */
+  startZ: 4,
+  /** Z final (depois do último fragmento). */
+  endZ: -30,
+  /** Altura da câmera. */
+  cameraY: 4.5,
+  /** Y do target (ligeiramente abaixo pra criar tilt down sutil). */
+  targetY: 0.5,
+  /** Distância à frente da câmera onde o target fica (look-ahead). */
+  lookAhead: 10,
+  /** Altura de scroll dedicada (em vh). */
+  scrollVh: 350,
+} as const;
 
 /** Delay (ms) antes de auto-ativar o fragmento inicial — dá tempo do flip assentar. */
 export const INITIAL_ACTIVE_DELAY = 1000;

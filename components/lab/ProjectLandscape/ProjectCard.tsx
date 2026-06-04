@@ -8,31 +8,25 @@ import { CARD, FRAGMENT_SLOTS, SLIDESHOW } from "./config";
 import { CardMeshPlaceholder } from "./CardMeshPlaceholder";
 import SlideshowDots from "./SlideshowDots";
 
-type Pos = { x: number; y: number; visible: boolean } | null;
 type Direction = "left" | "right" | null;
 
-const clamp = (v: number, min: number, max: number) =>
-  v < min ? min : v > max ? max : v;
-
 /**
- * Card de hover dos projetos (desktop) ou bottom sheet (mobile).
+ * Card de projetos (desktop fixo bottom-right) ou bottom sheet (mobile).
  *
- * Mobile (≤767px): bottom sheet full-width, sempre visível, layout 2 colunas
- * (preview esquerda, texto direita). Slideshow dots no header.
+ * Mobile (≤767px): bottom sheet full-width, sempre visível, layout 2 colunas.
  *
- * Desktop: card flutuante ancorado ao apex projetado em 2D. Conteúdo interno
- * faz slide direcional + crossfade ao trocar de projeto; wrapper fica estável.
+ * Desktop: card fixo no canto inferior direito do viewport. Estável mesmo
+ * com a câmera 3D em movimento (tunnel mode). Conteúdo interno faz slide
+ * direcional + crossfade ao trocar de projeto.
  */
 export function ProjectCard({
   caseProject,
-  pos,
   isMobile,
   direction,
   activeSlug,
   onSelectSlide,
 }: {
   caseProject: CaseProject | null;
-  pos: Pos;
   isMobile: boolean;
   direction: Direction;
   activeSlug: string | null;
@@ -44,39 +38,18 @@ export function ProjectCard({
   // Conteúdo "exibido" — separado da prop pra permitir slide-out → swap → slide-in.
   const [displayed, setDisplayed] = useState<CaseProject | null>(caseProject);
 
-  // Posicionamento desktop (via DOM imperativo).
-  useEffect(() => {
-    if (isMobile) return;
-    const el = wrapperRef.current;
-    if (!el || !pos || !pos.visible || !caseProject) return;
-    const w = el.offsetWidth;
-    const h = el.offsetHeight;
-    const left = clamp(
-      pos.x + CARD.offsetX,
-      CARD.margin,
-      window.innerWidth - w - CARD.margin,
-    );
-    const top = clamp(
-      pos.y - h - CARD.offsetY,
-      CARD.margin,
-      window.innerHeight - h - CARD.margin,
-    );
-    el.style.left = `${left}px`;
-    el.style.top = `${top}px`;
-  }, [pos, caseProject, isMobile]);
-
-  // Fade do wrapper inteiro — só desktop (mobile fica sempre visível).
+  // Fade do wrapper desktop conforme caseProject existe ou não.
   useEffect(() => {
     const el = wrapperRef.current;
     if (!el || isMobile) return;
-    const shouldShow = !!(caseProject && pos?.visible);
+    const shouldShow = !!caseProject;
     gsap.killTweensOf(el);
     gsap.to(el, {
       opacity: shouldShow ? 1 : 0,
       duration: shouldShow ? CARD.fadeInDuration : CARD.fadeOutDuration,
       ease: shouldShow ? "power2.out" : "power2.in",
     });
-  }, [caseProject, pos, isMobile]);
+  }, [caseProject, isMobile]);
 
   // Slide direcional ao trocar de projeto.
   useEffect(() => {
@@ -254,12 +227,13 @@ export function ProjectCard({
     );
   }
 
-  // Render desktop floating.
+  // Render desktop — card fixo no canto inferior direito do viewport.
   if (!displayed) {
     return (
       <div
         ref={wrapperRef}
-        className="pointer-events-none fixed left-0 top-0 opacity-0"
+        className="pointer-events-none fixed bottom-6 right-6 opacity-0"
+        style={{ width: `${CARD.widthDesktop}px` }}
         aria-hidden
       />
     );
@@ -267,10 +241,8 @@ export function ProjectCard({
 
   const isComingSoon = displayed.status === "coming-soon";
   const wrapperClassName =
-    "pointer-events-auto fixed z-30 border border-[#F5F2ED]/30 bg-[#000F08]/85 backdrop-blur-md transition-colors duration-300 hover:border-[#F5F2ED]/60";
+    "pointer-events-auto fixed bottom-6 right-6 z-30 border border-[#F5F2ED]/30 bg-[#000F08]/85 backdrop-blur-md transition-colors duration-300 hover:border-[#F5F2ED]/60";
 
-  // Conteúdo do card. Link envolve só o bloco de preview/texto — dots ficam
-  // de fora pra evitar <button> aninhado dentro de <a> (HTML inválido).
   const contentBlock = (
     <div ref={contentRef} className="px-5 pb-3 pt-5">
       {renderContent(displayed)}

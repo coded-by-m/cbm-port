@@ -1,31 +1,32 @@
 "use client";
 
+import { type MutableRefObject } from "react";
 import TerrainScene from "@/components/lab/TerrainMesh/TerrainScene";
 import ProjectFragment from "./ProjectFragment";
 import NetworkLine from "./NetworkLine";
+import { useTunnelCamera } from "./useTunnelCamera";
 import { FRAGMENT_SLOTS } from "./config";
 
 /**
- * Cena 3D da Paisagem Digital de Projetos — vista fixa.
+ * Cena 3D da Paisagem Digital — modo tunnel.
  *
- * Terreno + 3 fragmentos + linha de rede. Câmera não se move (controlada pelo
- * Canvas no orquestrador). Slideshow muda apenas o `activeSlug`; ativos
- * avançam em z + cor; inativos recuam pra cor do terreno.
+ * Terreno + 6 fragmentos distribuídos em Z + linha de rede + câmera dirigida
+ * pelo scroll (linearmente, sem keyframes em arco). Active deriva da posição
+ * Z da câmera lá em cima (no orquestrador) — aqui só renderizamos.
  */
 export default function LandscapeScene({
+  progress,
   activeSlug,
   onHover,
   onClick,
-  onScreenPosition,
 }: {
+  progress: MutableRefObject<number>;
   activeSlug: string | null;
   onHover: (slug: string | null) => void;
   onClick: (slug: string) => void;
-  onScreenPosition: (
-    slug: string,
-    pos: { x: number; y: number; visible: boolean } | null,
-  ) => void;
 }) {
+  useTunnelCamera(progress);
+
   const anyActive = activeSlug !== null;
 
   return (
@@ -39,7 +40,6 @@ export default function LandscapeScene({
           anyActive={anyActive}
           onHover={onHover}
           onClick={onClick}
-          onScreenPosition={onScreenPosition}
         />
       ))}
       <NetworkLine slots={FRAGMENT_SLOTS} activeSlug={activeSlug} />
