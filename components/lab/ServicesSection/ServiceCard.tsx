@@ -84,7 +84,7 @@ export default function ServiceCard({
       data-service-card
       className={`relative border bg-[#0E1810] transition-all duration-500 ease-out ${
         expanded
-          ? "scale-[1.02] border-[#F5F2ED]/80 opacity-100"
+          ? "border-[#F5F2ED]/80 opacity-100"
           : isDimmed
             ? "scale-[0.96] border-[#1a2a1e] opacity-40"
             : "scale-100 border-[#1a2a1e] opacity-100 hover:-translate-y-1 hover:border-[#F5F2ED]/40"

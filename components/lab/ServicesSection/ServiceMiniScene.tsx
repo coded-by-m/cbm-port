@@ -411,7 +411,7 @@ function InstitutionalScene({ active }: { active: boolean }) {
     <>
       <CameraPullback activeRef={activeRef} />
       <group ref={expansionRef}>
-        <group ref={groupRef} scale={0.8}>
+        <group ref={groupRef} scale={0.65}>
           {floors.map((f, i) => (
         <group key={`floor-${i}`} position={[0, f.y, 0]}>
           <lineSegments geometry={edgesGeoms[i]}>
