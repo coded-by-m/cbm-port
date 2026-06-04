@@ -90,10 +90,15 @@ function LandingScene({ active }: { active: boolean }) {
   const highlightHeight = sections[3].height;
   const highlightW = pageW * 0.78;
 
-  // Range Y: do topo do hero (~yTop) até o centro do CTA (~yBot).
-  const yTop = sections[0].yCenter;
-  const yBot = sections[3].yCenter;
-  const yRange = yTop - yBot; // valor positivo (vai descendo)
+  // Timing das paradas em cada section.
+  const DWELL = 0.9; // tempo parado em cada section (s)
+  const TRANSITION = 0.45; // tempo de transição entre sections (s)
+  const PHASE = DWELL + TRANSITION; // duração de cada fase (1 section)
+  const CYCLE = PHASE * sections.length; // ciclo completo (loop)
+
+  // Ease in-out cubic
+  const easeInOut = (x: number) =>
+    x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 
   useFrame((_, delta) => {
     speedRef.current = lerp(
@@ -110,34 +115,52 @@ function LandingScene({ active }: { active: boolean }) {
       g.position.y = Math.sin(t * 0.4) * 0.06;
     }
 
-    // Highlight viaja top → bottom em loop. Ciclo: 4s total.
-    // Inclui pausa breve no topo e no bottom pra "respirar".
-    const cycleDuration = 4.5;
-    const cyclePhase = (t / cycleDuration) % 1; // 0..1
+    // Calcula em qual fase estamos do ciclo.
+    const cyclePos = t % CYCLE;
+    const phaseIdx = Math.floor(cyclePos / PHASE); // 0..sections.length-1
+    const phaseT = (cyclePos - phaseIdx * PHASE) / PHASE; // 0..1
+    const fromIdx = phaseIdx;
+    const toIdx = (phaseIdx + 1) % sections.length;
 
-    // Curva: easeInOut pra deslocamento + fade out perto do final do ciclo.
-    // 0..0.85 = descida; 0.85..1.0 = reaparece no topo (fade out/in)
-    let yProgress: number;
+    let highlightY: number;
     let visibility: number;
-    if (cyclePhase < 0.85) {
-      // Easing: ease-in-out pra deslocamento suave
-      const t01 = cyclePhase / 0.85;
-      yProgress = t01 < 0.5 ? 2 * t01 * t01 : 1 - Math.pow(-2 * t01 + 2, 2) / 2;
+
+    const dwellRatio = DWELL / PHASE; // proporção da fase em dwell
+
+    if (phaseT < dwellRatio) {
+      // Parado no fromIdx, opacity full
+      highlightY = sections[fromIdx].yCenter;
       visibility = 1;
     } else {
-      // Fase de reset: fade out → reaparece no topo
-      yProgress = 1; // já está no bottom
-      const fadePhase = (cyclePhase - 0.85) / 0.15;
-      visibility = 1 - fadePhase;
-    }
+      // Transição
+      const trT = (phaseT - dwellRatio) / (1 - dwellRatio); // 0..1
+      const eased = easeInOut(trT);
 
-    const highlightY = yTop - yProgress * yRange;
+      if (fromIdx === sections.length - 1) {
+        // Última fase: fade out no bottom → snap pro topo → fade in
+        // Não move Y (fica no bottom até fade out completar, depois snap)
+        if (trT < 0.5) {
+          highlightY = sections[fromIdx].yCenter;
+          visibility = 1 - trT * 2; // fade out
+        } else {
+          highlightY = sections[toIdx].yCenter; // snap pro topo
+          visibility = (trT - 0.5) * 2; // fade in
+        }
+      } else {
+        // Transição normal: move suave entre sections, opacity full
+        highlightY = lerp(
+          sections[fromIdx].yCenter,
+          sections[toIdx].yCenter,
+          eased,
+        );
+        visibility = 1;
+      }
+    }
 
     if (highlightGroupRef.current) {
       highlightGroupRef.current.position.y = highlightY;
     }
 
-    // Aplica opacity do scanner em todas as linhas + faísca
     const opacityBase = 0.9 * visibility;
     highlightMatRefs.current.forEach((mat) => {
       if (mat) mat.opacity = opacityBase;
