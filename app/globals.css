@@ -8,3 +8,27 @@ body {
   color: #F5F2ED;
   font-family: "Satoshi", system-ui, -apple-system, sans-serif;
 }
+
+/* Stagger de entrada das UIs da Paisagem (progress bar, setas) — entra
+   suavemente depois que os fragmentos começam a aparecer, evitando
+   quebra de cinematografia. */
+@keyframes landscape-ui-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.landscape-ui-stagger {
+  opacity: 0;
+  animation: landscape-ui-enter 0.7s ease-out forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .landscape-ui-stagger {
+    animation: none;
+    opacity: 1;
+  }
+}

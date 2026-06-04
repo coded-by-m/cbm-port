@@ -37,7 +37,7 @@ export default function SlideshowDots({
               e.stopPropagation();
               onSelect(slot.slug);
             }}
-            className={`h-2 w-2 rounded-full border transition-all duration-300 ${
+            className={`h-2 w-2 rounded-full border transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[#F5F2ED] ${
               isActive
                 ? "border-[#F5F2ED] bg-[#F5F2ED] opacity-100"
                 : "border-[#F5F2ED]/40 bg-transparent opacity-50 hover:border-[#F5F2ED]/80 hover:opacity-100"

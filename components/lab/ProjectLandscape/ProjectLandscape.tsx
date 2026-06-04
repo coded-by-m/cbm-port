@@ -92,6 +92,28 @@ export default function ProjectLandscape() {
     setPaused(true);
   }, []);
 
+  // Toggle manual do pause via botão.
+  const togglePause = useCallback(() => {
+    setShowHint(false);
+    setPaused((prev) => {
+      const next = !prev;
+      // Se vai retomar, reseta o lastInteraction pra que auto-resume não pause
+      // de novo imediatamente. Se vai pausar, marca agora.
+      lastInteractionRef.current = next ? Date.now() : 0;
+      return next;
+    });
+  }, []);
+
+  // Hover sobre o card pausa auto-rotate temporariamente. lastInteraction
+  // é atualizado em cada movement → resume só depois de sair + idle.
+  const handleCardEnter = useCallback(() => {
+    setPaused(true);
+    lastInteractionRef.current = Date.now();
+  }, []);
+  const handleCardMove = useCallback(() => {
+    lastInteractionRef.current = Date.now();
+  }, []);
+
   useEffect(() => {
     const mql = window.matchMedia(MOBILE_BREAKPOINT);
     const apply = () => setIsMobile(mql.matches);
@@ -364,22 +386,42 @@ export default function ProjectLandscape() {
 
       {!devCamera && (
         <>
-          <LandscapeProgressBar
-            slots={FRAGMENT_SLOTS}
-            activeSlug={activeSlug}
-            visitedSlugs={visitedSlugs}
-            onSelect={snapToSlug}
-          />
-          <LandscapeArrows onPrev={goPrev} onNext={goNext} />
+          <div
+            className="landscape-ui-stagger"
+            style={{ animationDelay: "0.4s" }}
+          >
+            <LandscapeProgressBar
+              slots={FRAGMENT_SLOTS}
+              activeSlug={activeSlug}
+              visitedSlugs={visitedSlugs}
+              onSelect={snapToSlug}
+            />
+          </div>
+          <div
+            className="landscape-ui-stagger"
+            style={{ animationDelay: "0.6s" }}
+          >
+            <LandscapeArrows
+              paused={paused}
+              onPrev={goPrev}
+              onNext={goNext}
+              onTogglePause={togglePause}
+            />
+          </div>
           <LandscapeHint show={showHint} />
-          <ProjectCard
-            caseProject={activeCase}
-            isMobile={isMobile}
-            direction={direction}
-            activeSlug={activeSlug}
-            allVisited={allVisited}
-            onSelectSlide={snapToSlug}
-          />
+          <div
+            onPointerEnter={handleCardEnter}
+            onPointerMove={handleCardMove}
+          >
+            <ProjectCard
+              caseProject={activeCase}
+              isMobile={isMobile}
+              direction={direction}
+              activeSlug={activeSlug}
+              allVisited={allVisited}
+              onSelectSlide={snapToSlug}
+            />
+          </div>
         </>
       )}
 

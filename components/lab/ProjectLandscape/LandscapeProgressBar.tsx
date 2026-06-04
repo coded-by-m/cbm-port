@@ -42,7 +42,7 @@ export default function LandscapeProgressBar({
                 onClick={() => onSelect(slot.slug)}
                 aria-label={`Projeto ${idx}`}
                 aria-current={isActive ? "true" : undefined}
-                className="group relative py-3"
+                className="group relative py-3 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-[#F5F2ED]"
               >
                 <span
                   className={`block h-[2px] transition-all duration-300 ${

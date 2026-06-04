@@ -72,12 +72,12 @@ export const ORBIT = {
   cameraY: 5,
   /** Y do target — abaixo dos fragmentos pra empurrá-los pra cima no frame. */
   targetY: -0.5,
-  /** Velocidade do auto-rotate (rad/seg) — ~40s pra dar uma volta. */
-  autoRotateSpeed: 0.157,
+  /** Velocidade do auto-rotate (rad/seg) — ~90s pra dar uma volta. */
+  autoRotateSpeed: 0.07,
   /** Sensibilidade do drag (rad por pixel) — drag suave, controle fino. */
   dragSensitivity: 0.003,
-  /** Duração do snap pra um fragmento (s) — lento, contemplativo. */
-  snapDuration: 4.2,
+  /** Duração do snap pra um fragmento (s) — equilíbrio entre rápido e suave. */
+  snapDuration: 2,
   /** Ângulo inicial da câmera (rad). Aponta pro primeiro fragmento. */
   initialAngle: 0,
   /** Amplitude da respiração ambiente (oscila Y). */
