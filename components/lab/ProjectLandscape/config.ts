@@ -174,26 +174,26 @@ export const APEX_PULSE = {
 
 /** Feixe vertical de luz acima do apex (só quando ativo). */
 export const APEX_BEAM = {
-  /** Altura do feixe (unidades world). */
-  height: 3.5,
-  /** Largura do sprite. */
-  width: 0.12,
+  /** Altura do feixe em unidades world (não escala com fragmento). */
+  height: 1.8,
+  /** Largura do sprite — fino, leitura de "agulha de sinal". */
+  width: 0.05,
   /** Lerp do fade in/out. */
   lerpSpeed: 4,
 } as const;
 
 /** Numeração técnica ao lado de cada fragmento. */
 export const FRAGMENT_LABEL = {
-  /** Tamanho da fonte (unidades world). */
-  fontSize: 0.18,
-  /** Opacidade no estado normal. */
-  baseOpacity: 0.35,
+  /** Tamanho da fonte em unidades world (não escala com fragmento). */
+  fontSize: 0.22,
+  /** Opacidade no estado normal — discreto, não compete com o fragmento. */
+  baseOpacity: 0.2,
   /** Opacidade quando ativo. */
-  activeOpacity: 1.0,
+  activeOpacity: 0.85,
   /** Lerp da opacidade. */
   lerpSpeed: 5,
-  /** Offset Y local em relação ao apex (acima dele). */
-  yOffset: 0.55,
+  /** Offset Y world em relação ao apex world (acima dele). */
+  yOffset: 0.45,
   color: "#F5F2ED",
 } as const;
 
