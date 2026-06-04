@@ -26,6 +26,8 @@ Transformar a Paisagem do estado "funciona em desktop com hover" para o estado "
 
 | Tema | Decisão |
 |------|---------|
+| **Geometria do fragmento** | **Torre triangular ascendente** (3 níveis: base → meio rotacionado 60° → apex), 7 nós, 15 arestas — substitui tetraedro genérico |
+| **Rede entre fragmentos** | **Linha de conexão** ligando os 3 ápices; segmentos adjacentes ao fragmento ativo intensificam |
 | Slideshow | Release-on-interact: auto-rotação até primeira interação real, depois user-controlled |
 | Card mobile | Bottom sheet full-width fixo, layout vertical (desktop preview empilhado sobre mobile preview) |
 | Transição entre cards | Slide direcional + crossfade (direção bate com posição espacial do fragmento) |
@@ -36,6 +38,107 @@ Transformar a Paisagem do estado "funciona em desktop com hover" para o estado "
 ---
 
 ## Design
+
+### 0. Refatoração da geometria do fragmento — torre triangular
+
+**Motivação:** o tetraedro atual (4 nós, 6 arestas) é a forma mais óbvia possível pra "pirâmide triangulada" — qualquer projeto poderia usar. A torre ascendente vira a **assinatura visual** dos fragmentos da Paisagem: silhueta vertical reconhecível mesmo de longe, lê como "obra que sobe", contrasta com o relevo horizontal do terreno.
+
+**Forma:**
+
+```
+            • (6)            ← apex (vermelho, FB3640)
+           ╱ │ ╲
+          ╱  │  ╲
+         •───•───•            ← nível médio (3,4,5) — triângulo rotacionado 60°
+        ╱ ╲ │ ╱ ╲
+       ╱   ╲│╱   ╲
+      •─────•─────•           ← base (0,1,2) — triângulo na altura 0
+```
+
+**Especificação geométrica:**
+
+```ts
+// Constantes (em FRAGMENT, config compartilhado mas adicionado pela landscape):
+TOWER_BASE_RADIUS    = 0.34   // = baseRadius atual; raio do triângulo da base
+TOWER_MID_RADIUS     = 0.22   // ~65% da base — afina conforme sobe
+TOWER_MID_HEIGHT     = 0.34   // altura do nível médio (≈45% da apex)
+TOWER_APEX_HEIGHT    = 0.75   // (+50% sobre apexHeight=0.5 do tetra) — vertical mais marcante
+```
+
+**Geração por seed** (mulberry32, mesmo padrão atual):
+
+- Base: 3 nós em ângulos `{−π/2, −π/2 + 2π/3, −π/2 + 4π/3}` ± jitter `(rand-0.5) × 0.5` no ângulo, raio `TOWER_BASE_RADIUS × (0.85 + rand × 0.3)`
+- Meio: 3 nós nos ângulos da base **+ π/3** (rotação 60°), altura `TOWER_MID_HEIGHT × (0.9 + rand × 0.2)`, raio `TOWER_MID_RADIUS × (0.85 + rand × 0.3)`
+- Apex: posição `[jitter×0.08, TOWER_APEX_HEIGHT × (0.85 + rand × 0.3), jitter×0.08]`
+
+**Arestas (15 total):**
+
+- 3 da base (triângulo fechado: 0→1, 1→2, 2→0)
+- 3 do meio (triângulo fechado: 3→4, 4→5, 5→3)
+- 6 conectando base→meio (cada base node liga aos **2** mid nodes adjacentes — formando padrão "estrela" entre os níveis)
+  - base[i] → mid[i] e base[i] → mid[(i+2) % 3]
+- 3 conectando meio→apex (3→6, 4→6, 5→6)
+
+**Nodes (7 total):** 0,1,2 base · 3,4,5 meio · 6 apex.
+
+**Impacto no código existente:**
+
+- Novo arquivo `components/lab/ProjectLandscape/towerGeometry.ts` com `buildTower(seed)` retornando `FragmentGeometry` (mesmo shape: `{ nodes, edges, apex }`)
+- `ProjectFragment.tsx` na Paisagem importa **`buildTower`** em vez de `buildFragment`
+- `ProjectFragments` (Lab) continua usando `buildFragment` — Lab vira playground histórico, Paisagem ganha sua própria identidade
+- Apex index muda de **3 → 6** em `ProjectFragment.tsx`. Atualizar:
+  - `nodeMeshRefs[3]` → `nodeMeshRefs[6]` (highlight do apex)
+  - `i === 3 ? FRAGMENT_VISUAL.apexColor : ...` → `i === 6 ? ...` (cor do apex)
+  - `i === 3 ? 1.4 : 1` (scale extra do apex) → `i === 6 ? 1.4 : 1`
+
+**Compatibilidade com sampleHeight/bob/yaw:** geometria nova mantém o eixo Y como "para cima"; toda a lógica de surfaceY/bob/yaw em `ProjectFragment` continua válida sem mudança.
+
+### 0.5. Linha de rede entre fragmentos
+
+**Motivação:** hoje os 3 fragmentos coexistem mas não se relacionam visualmente. Uma linha sutil conectando os 3 ápices faz o portfólio ler como **sistema** (rede), não coleção (3 itens isolados). O fragmento ativo "pulsa" sua influência pelos segmentos adjacentes.
+
+**Visual:**
+
+- Polyline com 3 pontos (= 3 apexes em world space, na ordem por `slot.x`): **left → center → right**
+- 2 segmentos: `seg0` (left↔center) e `seg1` (center↔right)
+- Cor base: `#F5F2ED` (off-white)
+- Opacity base (nenhum ativo): `0.10`
+- Opacity de segmento adjacente ao fragmento ativo: `0.55`
+- Largura: `1.2px` (mais fino que as arestas do fragmento — fica em background)
+- `depthTest: false` para sempre desenhar (mesma estratégia das arestas do fragmento)
+
+**Lógica de intensidade:**
+
+| activeSlug | seg0 (left↔center) | seg1 (center↔right) |
+|------------|--------------------|-----------------------|
+| null | 0.10 | 0.10 |
+| left | 0.55 | 0.10 |
+| center | 0.55 | 0.55 |
+| right | 0.10 | 0.55 |
+
+Transição via lerp por frame (`delta × 4`, mesma cadência do dim).
+
+**Implementação:**
+
+- Novo componente `<NetworkLine>` em `components/lab/ProjectLandscape/NetworkLine.tsx`
+- Props: `activeSlug: string | null`, `slots: FragmentSlot[]`
+- Internamente: 2 `<Line>` separados (um por segmento) — permite controlar opacity por segmento independentemente
+- Cada segmento usa `useFrame` para amostrar o apex Y atual do terreno (`sampleHeight(slot.x, slot.z, t, HOST_LAYER) + FRAGMENT_VISUAL.surfaceLift + TOWER_APEX_HEIGHT * slot.scale`) e atualizar pontos via `line.geometry.setPositions([...])`
+- Adicionado em `LandscapeScene.tsx`, **depois** dos fragmentos para garantir z-order
+
+**Detalhe sutil:** os pontos do segmento devem refletir o apex **com bob aplicado** — o mesmo Y do fragmento naquele frame. Isso faz a linha "respirar" junto.
+
+**Novos valores em [config.ts](../../../components/lab/ProjectLandscape/config.ts):**
+
+```ts
+export const NETWORK_LINE = {
+  color: "#F5F2ED",
+  baseOpacity: 0.10,
+  activeOpacity: 0.55,
+  lineWidth: 1.2,
+  lerpSpeed: 4,
+} as const;
+```
 
 ### 1. Slideshow auto-rotativo
 
@@ -221,11 +324,14 @@ mount → setTimeout(1000ms) → setActiveSlug('estudio-mendes')
 
 | Arquivo | Mudança |
 |---------|---------|
+| `towerGeometry.ts` | **novo** — `buildTower(seed)` retorna 7 nós / 15 arestas |
+| `NetworkLine.tsx` | **novo** — 2 segmentos ligando apexes com intensidade reativa ao slug ativo |
 | `ProjectLandscape.tsx` | + slideshow hook, + isMobile, + released, + direction calc |
 | `ProjectCard.tsx` | split em wrapper estável + content slidável; mobile bottom-sheet branch; integra SlideshowDots; onError no img |
-| `ProjectFragment.tsx` | + prop `anyActive`, dim apex/edges quando dormente |
+| `ProjectFragment.tsx` | usa `buildTower`; apex index 3→6; + prop `anyActive` (dim quando dormente) |
+| `LandscapeScene.tsx` | + `<NetworkLine>` depois dos fragmentos |
 | `SlideshowDots.tsx` | **novo** |
-| `config.ts` | + SLIDESHOW, + dimMultiplier/dimLerpSpeed em FRAGMENT_VISUAL |
+| `config.ts` | + SLIDESHOW, + NETWORK_LINE, + TOWER_*, + dimMultiplier/dimLerpSpeed em FRAGMENT_VISUAL |
 | `data/cases.ts` | + preview em machado-plataformas |
 | `public/cases/machado/README.md` | **novo** — instruções de dropping |
 
@@ -244,6 +350,9 @@ mount → setTimeout(1000ms) → setActiveSlug('estudio-mendes')
 - **Slideshow release-on-interact:** se o usuário fizer hover por acidente (mouse passa rápido), o slideshow para definitivamente. Considerado aceitável — exploração explícita > automação burra. Alternativa rejeitada: "pause + resume após N segundos" adiciona complexidade sem ganho claro.
 - **onError no `<img>`:** adicionado para não quebrar visual se assets faltarem, mas em produção o ideal é validar no build (CI checa que `preview.desktop` aponta pra arquivo existente). Fora de escopo desta iteração.
 - **Direção da transição em mobile:** dots clicáveis podem pular do 1 pro 3 (esquerda → direita +2). Direção continua `right`. Pulos não-adjacentes raramente acontecem (3 fragmentos só) — não otimizar.
+- **Geometria nova só na Paisagem (não no Lab):** decisão consciente. Lab é playground histórico; a Paisagem ganha sua assinatura própria. Tradeoff: dois caminhos de geometria pra manter, mas o Lab raramente é editado e a divergência é explícita.
+- **NetworkLine atualizando geometria a 60fps:** cada frame faz `setPositions([...])` em 2 linhas com 2 pontos cada (sampleHeight 6×). Custo trivial — sampleHeight já roda 3× para os fragmentos.
+- **Apex index 3 → 6:** ponto único de quebra. Se houver código que assume "apex é nó[3]" em outro lugar, vai falhar silenciosamente. Verificado: só `ProjectFragment.tsx` toca apex por índice. Mas se a Paisagem reutilizar o `buildTower` em outro componente futuro, exportar `APEX_INDEX = 6` como constante para evitar magic number.
 
 ## Out of scope
 
@@ -261,6 +370,9 @@ Antes de marcar como concluído:
 - [ ] Lint passa (`pnpm lint`)
 - [ ] Build passa (`pnpm build`)
 - [ ] Manualmente em browser:
+  - [ ] Fragmento renderiza como torre 3 níveis (não tetraedro) — silhueta vertical visível
+  - [ ] NetworkLine conecta os 3 apexes; segmentos adjacentes ao ativo brilham mais
+  - [ ] Linha "respira" junto com bob dos fragmentos (Y atualiza por frame)
   - [ ] Desktop ≥1024px: slideshow roda, card aparece ancorado ao apex, hover em fragmento para o auto-rotate
   - [ ] Mobile <768px (DevTools): bottom sheet aparece, dots funcionam, tap em fragmento muda o card
   - [ ] Dim: ao ativar um fragmento, os outros 2 dimam suavemente e apex perde vermelho
