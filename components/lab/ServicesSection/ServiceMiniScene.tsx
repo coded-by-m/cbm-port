@@ -36,13 +36,13 @@ function useExpansion(active: boolean): MutableRefObject<number> {
 }
 
 /**
- * Camera dolly-back quando expandido: z 6 → 7.
+ * Camera dolly-back quando expandido: z 6 → 8.5.
  * Renderiza como filho do Canvas pra ter acesso à camera via useThree.
  */
 function CameraExpander({ expT }: { expT: MutableRefObject<number> }) {
   const camera = useThree((s) => s.camera);
   useFrame(() => {
-    camera.position.z = lerp(6, 7, expT.current);
+    camera.position.z = lerp(6, 8.5, expT.current);
   });
   return null;
 }
@@ -146,11 +146,12 @@ function LandingScene({ active }: { active: boolean }) {
       g.position.y = Math.sin(t * 0.4) * 0.06;
     }
 
-    // Expansion: scale 1.0 → 1.12, tilt forward (X) 0 → 0.14 rad
+    // Expansion: scale 1.0 → 1.35, tilt forward (X) 0 → 0.28 rad, leve orbit Y
     const w = expansionRef.current;
     if (w) {
-      w.scale.setScalar(1 + expT.current * 0.12);
-      w.rotation.x = expT.current * 0.14;
+      w.scale.setScalar(1 + expT.current * 0.35);
+      w.rotation.x = expT.current * 0.28;
+      w.position.y = expT.current * 0.25;
     }
 
     // Calcula em qual fase estamos do ciclo.
