@@ -26,6 +26,10 @@ export const cases: CaseProject[] = [
     },
     gallery: ["", "", "", "", ""],
     status: "published",
+    preview: {
+      desktop: "/cases/machado/desktop-tall.webp",
+      mobile: "/cases/machado/mobile-tall.webp",
+    },
   },
   {
     slug: "estudio-mendes",

@@ -3,16 +3,23 @@
 import { createRef, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
-import { Vector3, type Group, type Mesh, type MeshBasicMaterial } from "three";
+import {
+  Color,
+  Vector3,
+  type Group,
+  type Mesh,
+  type MeshBasicMaterial,
+} from "three";
 import type { Line2 } from "three-stdlib";
 import { sampleHeight } from "@/components/lab/TerrainMesh/geometry";
-import { buildFragment } from "@/components/lab/ProjectFragments/geometry";
 import { useFragmentBuild } from "@/components/lab/ProjectFragments/useFragmentBuild";
 import {
   FRAGMENT,
   FRAGMENT_MOTION,
 } from "@/components/lab/ProjectFragments/config";
+import { buildTower } from "./towerGeometry";
 import {
+  APEX_INDEX,
   FRAGMENT_VISUAL,
   HOST_LAYER,
   type FragmentSlot,
@@ -22,24 +29,21 @@ const TWO_PI = Math.PI * 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 const projected = new Vector3();
+const apexColorBase = new Color(FRAGMENT_VISUAL.apexColor);
+const nodeColorBase = new Color(FRAGMENT_VISUAL.nodeColor);
+const apexColorScratch = new Color();
 
-/**
- * Um fragmento de projeto na Paisagem Digital.
- *
- * Reaproveita a geometria triangulada de `lab/ProjectFragments`. Acompanha o
- * relevo do terreno (sampleHeight) e bobs/yaws sutilmente. Em hover ganha
- * presença (opacidade/scale) e empurra coordenadas 2D do ápice pro pai —
- * que renderiza o card HTML.
- */
 export default function ProjectFragment({
   slot,
   isActive,
+  anyActive,
   onHover,
   onClick,
   onScreenPosition,
 }: {
   slot: FragmentSlot;
   isActive: boolean;
+  anyActive: boolean;
   onHover: (id: string | null) => void;
   onClick: (id: string) => void;
   onScreenPosition: (
@@ -47,9 +51,7 @@ export default function ProjectFragment({
     pos: { x: number; y: number; visible: boolean } | null,
   ) => void;
 }) {
-  const geom = useMemo(() => buildFragment(slot.seed), [slot.seed]);
-  // index=0 pra todos: sem stagger entre fragmentos. Eles surgem juntos,
-  // garantindo opacidades e escalas uniformes em qualquer instante.
+  const geom = useMemo(() => buildTower(slot.seed), [slot.seed]);
   const reveal = useFragmentBuild(0);
 
   const camera = useThree((state) => state.camera);
@@ -70,6 +72,7 @@ export default function ProjectFragment({
   );
 
   const highlight = useRef(0);
+  const dim = useRef(0);
   const elapsed = useRef(0);
 
   const handlers = {
@@ -98,8 +101,17 @@ export default function ProjectFragment({
       isActive ? 1 : 0,
       Math.min(1, delta * FRAGMENT.highlightLerp),
     );
+    dim.current = lerp(
+      dim.current,
+      anyActive && !isActive ? 1 : 0,
+      Math.min(1, delta * FRAGMENT_VISUAL.dimLerpSpeed),
+    );
     const h = highlight.current;
+    const d = dim.current;
     const r = reveal.current;
+
+    // Multiplicador de opacidade: 1 normal, dimMultiplier quando dormente.
+    const dimAtten = lerp(1, FRAGMENT_VISUAL.dimMultiplier, d);
 
     const surfaceY = sampleHeight(slot.x, slot.z, t, HOST_LAYER);
     const bob =
@@ -116,8 +128,6 @@ export default function ProjectFragment({
           FRAGMENT_VISUAL.highlightLift * h,
         slot.z,
       );
-      // slot.scale é o multiplicador de presença (central > laterais).
-      // FRAGMENT_VISUAL.highlightScale dá o bump no hover.
       const presence = slot.scale;
       group.scale.setScalar(
         presence * (1 + (FRAGMENT_VISUAL.highlightScale - 1) * h) * r,
@@ -130,7 +140,9 @@ export default function ProjectFragment({
         FRAGMENT_VISUAL.edgeNormalOpacity,
         FRAGMENT_VISUAL.edgeHighlightOpacity,
         h,
-      ) * r;
+      ) *
+      r *
+      dimAtten;
     lineRefs.forEach((ref) => {
       const line = ref.current;
       if (line) (line.material as { opacity: number }).opacity = edgeOpacity;
@@ -141,16 +153,22 @@ export default function ProjectFragment({
         FRAGMENT_VISUAL.nodeNormalOpacity,
         FRAGMENT_VISUAL.nodeHighlightOpacity,
         h,
-      ) * r;
-    nodeMatRefs.forEach((ref) => {
-      if (ref.current) ref.current.opacity = nodeOpacity;
+      ) *
+      r *
+      dimAtten;
+    nodeMatRefs.forEach((ref, i) => {
+      if (!ref.current) return;
+      ref.current.opacity = nodeOpacity;
+      // Apex perde o vermelho conforme dim aumenta: lerp Color → off-white.
+      if (i === APEX_INDEX) {
+        apexColorScratch.copy(apexColorBase).lerp(nodeColorBase, d);
+        ref.current.color.copy(apexColorScratch);
+      }
     });
 
-    const apex = nodeMeshRefs[3].current;
+    const apex = nodeMeshRefs[APEX_INDEX].current;
     if (apex) apex.scale.setScalar(1 + FRAGMENT_VISUAL.apexHighlightScale * h);
 
-    // Quando o fragmento está ativo, projeta o ápice para coordenadas 2D
-    // e reporta pro pai posicionar o card. Quando inativo, manda null.
     if (isActive && apex) {
       apex.updateWorldMatrix(true, false);
       apex.getWorldPosition(projected).project(camera);
@@ -197,13 +215,15 @@ export default function ProjectFragment({
           key={`node-${i}`}
           ref={nodeMeshRefs[i]}
           position={position}
-          scale={i === 3 ? 1.4 : 1}
+          scale={i === APEX_INDEX ? 1.4 : 1}
         >
           <icosahedronGeometry args={[FRAGMENT.nodeRadius, 1]} />
           <meshBasicMaterial
             ref={nodeMatRefs[i]}
             color={
-              i === 3 ? FRAGMENT_VISUAL.apexColor : FRAGMENT_VISUAL.nodeColor
+              i === APEX_INDEX
+                ? FRAGMENT_VISUAL.apexColor
+                : FRAGMENT_VISUAL.nodeColor
             }
             transparent
             opacity={0}

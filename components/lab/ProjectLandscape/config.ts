@@ -56,6 +56,48 @@ export const FRAGMENT_VISUAL = {
   /** Elevação adicional sobre o terreno (compensa a escala maior). */
   surfaceLift: 0.4,
   highlightLift: 0.18,
+  /** Multiplicador aplicado às opacidades quando há outro fragmento ativo. */
+  dimMultiplier: 0.55,
+  /** Velocidade do lerp do dim (mesma escala do highlight). */
+  dimLerpSpeed: 4,
+} as const;
+
+/**
+ * Geometria da torre triangular ascendente.
+ *
+ * 3 níveis empilhados: base (3 nós) → meio rotacionado 60° (3 nós) → apex.
+ * Total 7 nós, 15 arestas (3 base + 3 meio + 6 base↔meio em estrela + 3 meio↔apex).
+ */
+export const TOWER = {
+  baseRadius: 0.34,
+  midRadius: 0.22,
+  midHeight: 0.34,
+  apexHeight: 0.75,
+} as const;
+
+/** Index do apex no array de nós retornado por `buildTower`. */
+export const APEX_INDEX = 6;
+
+/**
+ * Linha de rede ligando os 3 apexes ao longo do horizonte.
+ *
+ * Lê o portfólio como sistema, não coleção. Segmentos adjacentes ao fragmento
+ * ativo intensificam; os demais ficam discretos.
+ */
+export const NETWORK_LINE = {
+  color: "#F5F2ED",
+  baseOpacity: 0.1,
+  activeOpacity: 0.55,
+  lineWidth: 1.2,
+  lerpSpeed: 4,
+} as const;
+
+/** Tempos do slideshow auto-rotativo. */
+export const SLIDESHOW = {
+  /** Tempo (ms) que cada fragmento fica ativo antes do próximo entrar. */
+  holdDuration: 6000,
+  /** Duração total da transição direcional do card (ms). */
+  transitionDuration: 600,
 } as const;
 
 /** Layer do terreno que hospeda os fragmentos. */

@@ -3,15 +3,16 @@
 import { type MutableRefObject } from "react";
 import TerrainScene from "@/components/lab/TerrainMesh/TerrainScene";
 import ProjectFragment from "./ProjectFragment";
+import NetworkLine from "./NetworkLine";
 import { useProjectScrollCamera } from "./useProjectScrollCamera";
 import { FRAGMENT_SLOTS } from "./config";
 
 /**
  * Cena 3D da Paisagem Digital de Projetos.
  *
- * Renderiza o terreno único + N fragmentos (um por case) + câmera dirigida
- * pelo scroll (pan horizontal). Eventos de hover/click dos fragmentos sobem
- * pro orquestrador via props.
+ * Renderiza o terreno único + N fragmentos (um por case) + linha de rede
+ * conectando os apexes + câmera dirigida pelo scroll. Eventos de hover/click
+ * dos fragmentos sobem pro orquestrador via props.
  */
 export default function LandscapeScene({
   progress,
@@ -31,6 +32,8 @@ export default function LandscapeScene({
 }) {
   useProjectScrollCamera(progress);
 
+  const anyActive = activeSlug !== null;
+
   return (
     <>
       <TerrainScene />
@@ -39,11 +42,13 @@ export default function LandscapeScene({
           key={slot.slug}
           slot={slot}
           isActive={activeSlug === slot.slug}
+          anyActive={anyActive}
           onHover={onHover}
           onClick={onClick}
           onScreenPosition={onScreenPosition}
         />
       ))}
+      <NetworkLine slots={FRAGMENT_SLOTS} activeSlug={activeSlug} />
     </>
   );
 }

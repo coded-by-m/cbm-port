@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Canvas } from "@react-three/fiber";
 import { cases } from "@/data/cases";
@@ -9,23 +9,24 @@ import { useScrollDriver } from "@/components/lab/ScrollCamera/useScrollDriver";
 import LandscapeScene from "./LandscapeScene";
 import { ProjectCard } from "./ProjectCard";
 import {
+  FRAGMENT_SLOTS,
   INITIAL_ACTIVE_DELAY,
   INITIAL_ACTIVE_SLUG,
   SCROLL_VH,
+  SLIDESHOW,
 } from "./config";
 
 type ScreenPos = { x: number; y: number; visible: boolean } | null;
+type Direction = "left" | "right" | null;
+
+const MOBILE_BREAKPOINT = "(max-width: 767px)";
 
 /**
  * Paisagem Digital — orquestrador.
  *
- * Substitui o `DigitalLandscape` (1 fragmento) por uma paisagem com N
- * fragmentos descobertos via scroll horizontal. Cada fragmento é um case;
- * hover revela um card HTML ancorado ao ápice projetado em 2D. Click
- * navega para `/cases/[slug]` (cases publicados) ou é no-op (em breve).
- *
- * O scroll é escopado a um wrapper interno (Lenis + ScrollTrigger) — não
- * conflita com o scroll da OpeningSequence ou do site real ao redor.
+ * 3 fragmentos triangulares sobre o terreno, cada um um case. Auto-rotaciona
+ * entre eles (release-on-interact) e expõe card flutuante (desktop) ou
+ * bottom sheet (mobile). Direção do slide do card bate com posição espacial.
  */
 export default function ProjectLandscape() {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -35,13 +36,30 @@ export default function ProjectLandscape() {
   const [, setStarted] = useState(false);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [screenPos, setScreenPos] = useState<ScreenPos>(null);
+  const [released, setReleased] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [direction, setDirection] = useState<Direction>(null);
 
   const router = useRouter();
 
   useScrollDriver(wrapperRef, contentRef, progress, setStarted);
 
-  // Auto-ativa o fragmento central pouco depois da Paisagem entrar — usuário
-  // já chega com o card aberto sem precisar mover o mouse.
+  // Ordem visual horizontal dos fragmentos (left → center → right).
+  const orderedSlots = useMemo(
+    () => [...FRAGMENT_SLOTS].sort((a, b) => a.x - b.x),
+    [],
+  );
+
+  // Detecta viewport mobile.
+  useEffect(() => {
+    const mql = window.matchMedia(MOBILE_BREAKPOINT);
+    const apply = () => setIsMobile(mql.matches);
+    apply();
+    mql.addEventListener("change", apply);
+    return () => mql.removeEventListener("change", apply);
+  }, []);
+
+  // Auto-ativa o fragmento inicial pouco depois da Paisagem entrar.
   useEffect(() => {
     const timer = setTimeout(() => {
       setActiveSlug((prev) => prev ?? INITIAL_ACTIVE_SLUG);
@@ -49,15 +67,53 @@ export default function ProjectLandscape() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Slideshow auto-rotativo — roda até a primeira interação real do usuário.
+  useEffect(() => {
+    if (released) return;
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return;
+
+    const interval = setInterval(() => {
+      setActiveSlug((current) => {
+        if (!current) return INITIAL_ACTIVE_SLUG;
+        const idx = orderedSlots.findIndex((s) => s.slug === current);
+        const next = orderedSlots[(idx + 1) % orderedSlots.length];
+        return next.slug;
+      });
+    }, SLIDESHOW.holdDuration);
+
+    return () => clearInterval(interval);
+  }, [released, orderedSlots]);
+
+  // Calcula direção da transição baseado no delta de slot.x.
+  const prevSlugRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!activeSlug) return;
+    const prev = prevSlugRef.current;
+    if (prev && prev !== activeSlug) {
+      const prevSlot = FRAGMENT_SLOTS.find((s) => s.slug === prev);
+      const nextSlot = FRAGMENT_SLOTS.find((s) => s.slug === activeSlug);
+      if (prevSlot && nextSlot) {
+        setDirection(nextSlot.x > prevSlot.x ? "right" : "left");
+      }
+    }
+    prevSlugRef.current = activeSlug;
+  }, [activeSlug]);
+
   const handleHover = useCallback((slug: string | null) => {
+    // Hover real = "tomou controle". Pausa slideshow em definitivo.
+    if (slug !== null) setReleased(true);
     setActiveSlug((prev) => {
-      if (slug === null && prev !== null) return null;
+      if (slug === null && prev !== null) return prev;
       return slug ?? prev;
     });
   }, []);
 
   const handleClick = useCallback(
     (slug: string) => {
+      setReleased(true);
       const caseProject = cases.find((c) => c.slug === slug);
       if (!caseProject) return;
       if (caseProject.status === "coming-soon") return;
@@ -66,9 +122,13 @@ export default function ProjectLandscape() {
     [router],
   );
 
+  const handleSelectSlide = useCallback((slug: string) => {
+    setReleased(true);
+    setActiveSlug(slug);
+  }, []);
+
   const handleScreenPosition = useCallback(
     (slug: string, pos: ScreenPos) => {
-      // Só atualiza se for o slug ativo — evita race entre fragmentos.
       setScreenPos((prev) => (slug === activeSlug ? pos : prev));
     },
     [activeSlug],
@@ -107,7 +167,14 @@ export default function ProjectLandscape() {
             />
           </Canvas>
 
-          <ProjectCard caseProject={activeCase} pos={screenPos} />
+          <ProjectCard
+            caseProject={activeCase}
+            pos={screenPos}
+            isMobile={isMobile}
+            direction={direction}
+            activeSlug={activeSlug}
+            onSelectSlide={handleSelectSlide}
+          />
         </div>
       </div>
     </div>
