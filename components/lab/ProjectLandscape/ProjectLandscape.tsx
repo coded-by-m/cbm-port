@@ -49,6 +49,8 @@ export default function ProjectLandscape() {
   const releasedRef = useRef(false);
   const snapTweenRef = useRef<gsap.core.Tween | null>(null);
   const lastTickRef = useRef<number | null>(null);
+  // Slug em hover (sobrescreve o ativo derivado do ângulo enquanto presente).
+  const hoverSlugRef = useRef<string | null>(null);
 
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -82,19 +84,8 @@ export default function ProjectLandscape() {
     return () => mql.removeEventListener("change", apply);
   }, []);
 
-  // Toggle modo dev de câmera via tecla "C".
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      // Ignora se foco em input/textarea.
-      const target = e.target as HTMLElement | null;
-      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
-      if (e.key === "c" || e.key === "C") {
-        setDevCamera((v) => !v);
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  // Modo dev de câmera (DevCameraControls + DevCameraHUD) está disponível mas
+  // sem atalho de teclado ativo. Pra reativar, restaurar listener da tecla "C".
 
   // rAF loop principal: auto-rotate + active derivation.
   useEffect(() => {
@@ -113,18 +104,25 @@ export default function ProjectLandscape() {
         angleRef.current += ORBIT.autoRotateSpeed * delta;
       }
 
-      // Active = slot cuja ângulo mais se aproxima do ângulo da câmera atual.
-      const camAngle = normalizeAngle(angleRef.current);
-      let best = slotAngles[0];
-      let minDist = Math.abs(shortAngleDelta(camAngle, best.angle));
-      for (const sa of slotAngles) {
-        const d = Math.abs(shortAngleDelta(camAngle, sa.angle));
-        if (d < minDist) {
-          minDist = d;
-          best = sa;
+      // Hover, se presente, tem prioridade sobre o ativo derivado do ângulo.
+      let nextSlug: string;
+      if (hoverSlugRef.current) {
+        nextSlug = hoverSlugRef.current;
+      } else {
+        // Active = slot cuja ângulo mais se aproxima do ângulo da câmera atual.
+        const camAngle = normalizeAngle(angleRef.current);
+        let best = slotAngles[0];
+        let minDist = Math.abs(shortAngleDelta(camAngle, best.angle));
+        for (const sa of slotAngles) {
+          const d = Math.abs(shortAngleDelta(camAngle, sa.angle));
+          if (d < minDist) {
+            minDist = d;
+            best = sa;
+          }
         }
+        nextSlug = best.slug;
       }
-      setActiveSlug((prev) => (prev === best.slug ? prev : best.slug));
+      setActiveSlug((prev) => (prev === nextSlug ? prev : nextSlug));
 
       raf = requestAnimationFrame(tick);
     };
@@ -206,8 +204,10 @@ export default function ProjectLandscape() {
     });
   }, []);
 
-  const handleHover = useCallback((_slug: string | null) => {
-    // Hover em fragmento é decorativo no modo orbital.
+  const handleHover = useCallback((slug: string | null) => {
+    // Hover override: enquanto cursor está sobre um fragmento, ele é o ativo.
+    // Quando sai, volta a derivar do ângulo da câmera.
+    hoverSlugRef.current = slug;
   }, []);
 
   const handleClick = useCallback(

@@ -33,7 +33,7 @@ function ringSlot(
   scaleSlug: { scale: number; seed: number; slug: string },
 ): FragmentSlot {
   const angle = index * ((Math.PI * 2) / 6);
-  const r = 3.5;
+  const r = 5.5;
   return {
     index,
     x: Math.sin(angle) * r,
@@ -44,13 +44,15 @@ function ringSlot(
   };
 }
 
+const FRAGMENT_SCALE = 1.8;
+
 export const FRAGMENT_SLOTS: FragmentSlot[] = [
-  ringSlot(0, { scale: 2.4, seed: 17, slug: "machado-plataformas" }),
-  ringSlot(1, { scale: 2.4, seed: 137, slug: "estudio-mendes" }),
-  ringSlot(2, { scale: 2.4, seed: 211, slug: "rota-clinica" }),
-  ringSlot(3, { scale: 2.4, seed: 73, slug: "industrial-tba" }),
-  ringSlot(4, { scale: 2.4, seed: 191, slug: "ecommerce-tba" }),
-  ringSlot(5, { scale: 2.4, seed: 257, slug: "education-tba" }),
+  ringSlot(0, { scale: FRAGMENT_SCALE, seed: 17, slug: "machado-plataformas" }),
+  ringSlot(1, { scale: FRAGMENT_SCALE, seed: 137, slug: "estudio-mendes" }),
+  ringSlot(2, { scale: FRAGMENT_SCALE, seed: 211, slug: "rota-clinica" }),
+  ringSlot(3, { scale: FRAGMENT_SCALE, seed: 73, slug: "industrial-tba" }),
+  ringSlot(4, { scale: FRAGMENT_SCALE, seed: 191, slug: "ecommerce-tba" }),
+  ringSlot(5, { scale: FRAGMENT_SCALE, seed: 257, slug: "education-tba" }),
 ];
 
 /** Slug do fragmento que abre automaticamente quando a Paisagem entra. */
@@ -70,10 +72,10 @@ export const ORBIT = {
   cameraY: 5,
   /** Y do target — alinhado com o meio dos fragmentos (centralização vertical). */
   targetY: 1.8,
-  /** Velocidade do auto-rotate (rad/seg) — ~24s pra dar uma volta. */
-  autoRotateSpeed: 0.26,
-  /** Sensibilidade do drag (rad por pixel). */
-  dragSensitivity: 0.006,
+  /** Velocidade do auto-rotate (rad/seg) — ~40s pra dar uma volta. */
+  autoRotateSpeed: 0.157,
+  /** Sensibilidade do drag (rad por pixel) — drag suave, controle fino. */
+  dragSensitivity: 0.003,
   /** Duração do snap pra um fragmento (s). */
   snapDuration: 0.8,
   /** Ângulo inicial da câmera (rad). Aponta pro primeiro fragmento. */
