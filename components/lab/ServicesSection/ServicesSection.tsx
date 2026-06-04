@@ -1,18 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { SERVICES } from "@/data/services";
 import ServiceCard from "./ServiceCard";
+
+const TerrainBackground = dynamic(
+  () => import("./TerrainBackground"),
+  { ssr: false },
+);
 
 /**
  * Seção Serviços da Home — 3 cards expandíveis (acordeon).
  *
- * Layout grid responsivo:
- *  - Desktop (≥1024px): 3 colunas; quando um card expande, ele ocupa ~2.4
- *    unidades enquanto os outros encolhem (via grid-template-columns dinâmico).
- *  - Mobile (<768px): stack vertical, expand cresce em altura.
+ * Layout grid responsivo desktop (≥1024px):
+ *  - Default: `1fr 1fr 1fr` (3 colunas iguais)
+ *  - Quando 1 card expandido: ativo `2.6fr`, inativos `0.7fr` (encolhem
+ *    visivelmente). Outros cards também recebem opacity 0.45 e scale 0.96
+ *    via GSAP no ServiceCard pra reforçar a hierarquia visual.
+ *
+ * Mobile (<768px): stack vertical, expand cresce em altura, sem mudança de
+ * scale/opacity nos outros.
  *
  * Estado: apenas 1 card expandido por vez (acordeon).
+ *
+ * Background: TerrainScene transparente (~0.22 opacity) por trás.
  */
 export default function ServicesSection() {
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
@@ -21,10 +33,13 @@ export default function ServicesSection() {
     setExpandedSlug((prev) => (prev === slug ? null : slug));
   };
 
-  // Grid template columns dinâmico: quando expandido, o card ativo ganha mais espaço.
   const gridTemplate = expandedSlug
-    ? SERVICES.map((s) => (s.slug === expandedSlug ? "2.4fr" : "1fr")).join(" ")
+    ? SERVICES.map((s) => (s.slug === expandedSlug ? "2.6fr" : "0.7fr")).join(
+        " ",
+      )
     : "1fr 1fr 1fr";
+
+  const someExpanded = expandedSlug !== null;
 
   return (
     <section
@@ -32,7 +47,12 @@ export default function ServicesSection() {
       className="absolute inset-0 overflow-y-auto bg-[#000F08] py-24 sm:py-32"
       aria-labelledby="services-headline"
     >
-      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
+      {/* Background terrain mesh — bem transparente */}
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.22]">
+        <TerrainBackground />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-[1280px] px-6 sm:px-10">
         {/* Eyebrow */}
         <p
           className="text-[0.6rem] uppercase tracking-[0.4em] text-[#F5F2ED]/50"
@@ -70,6 +90,7 @@ export default function ServicesSection() {
               key={service.slug}
               service={service}
               expanded={expandedSlug === service.slug}
+              someExpanded={someExpanded}
               onToggle={() => handleToggle(service.slug)}
               borderDelay={i * 0.15}
             />
@@ -83,6 +104,7 @@ export default function ServicesSection() {
               key={service.slug}
               service={service}
               expanded={expandedSlug === service.slug}
+              someExpanded={someExpanded}
               onToggle={() => handleToggle(service.slug)}
               borderDelay={i * 0.15}
             />

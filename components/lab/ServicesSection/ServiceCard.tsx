@@ -16,18 +16,44 @@ import { useBorderDraw } from "./useBorderDraw";
 export default function ServiceCard({
   service,
   expanded,
+  someExpanded,
   onToggle,
   borderDelay,
 }: {
   service: ServiceConfig;
   expanded: boolean;
+  /** Algum outro card está expandido (e este não é ele). */
+  someExpanded: boolean;
   onToggle: () => void;
   borderDelay: number;
 }) {
+  const cardRef = useRef<HTMLDivElement>(null);
   const detailsRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
 
   useBorderDraw(pathRef, { delay: borderDelay });
+
+  // Quando este card está inativo MAS outro está expandido: dim + shrink.
+  // Quando ESTE está expandido: leve scale up + opacity full.
+  // Quando nenhum expandido: estado neutro.
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const dur = reduceMotion ? 0 : 0.5;
+
+    const isDimmed = someExpanded && !expanded;
+    const isHighlighted = expanded;
+
+    gsap.to(el, {
+      opacity: isDimmed ? 0.42 : 1,
+      scale: isHighlighted ? 1.02 : isDimmed ? 0.96 : 1,
+      duration: dur,
+      ease: "power2.out",
+    });
+  }, [expanded, someExpanded]);
 
   // Anima a abertura/fechamento do detalhes via height: auto manual.
   useEffect(() => {
@@ -78,11 +104,13 @@ export default function ServiceCard({
 
   return (
     <div
-      className={`relative border bg-[#0E1810] transition-all duration-500 ${
+      ref={cardRef}
+      className={`relative border bg-[#0E1810] transition-colors duration-500 ${
         expanded
-          ? "border-[#F5F2ED]/70"
-          : "border-[#1a2a1e] hover:border-[#F5F2ED]/35 hover:-translate-y-0.5"
+          ? "border-[#F5F2ED]/80"
+          : "border-[#1a2a1e] hover:border-[#F5F2ED]/35"
       }`}
+      style={{ transformOrigin: "center center" }}
     >
       {/* SVG border-draw overlay */}
       <svg

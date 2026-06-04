@@ -3,12 +3,7 @@
 import { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
-import {
-  Color,
-  type Group,
-  type Mesh,
-  type MeshBasicMaterial,
-} from "three";
+import type { Group } from "three";
 import type { ServiceVariant } from "@/data/services";
 
 const TWO_PI = Math.PI * 2;
@@ -17,10 +12,10 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 /**
  * Mini-scene 3D dentro do card de serviço.
  *
- * 3 variants visuais:
- * - "landing": 3 colunas verticais conectadas em zigzag — eco do preview tall
- * - "institutional": 4 planos horizontais empilhados — eco de site multi-seção
- * - "app": núcleo central + 6 módulos satélite + linhas pulsando — sistema
+ * 3 variants literais (lê em segundos o que o serviço é):
+ *  - "landing": página tall vertical com blocks internos descendo
+ *  - "institutional": sitemap (página central + filhas conectadas)
+ *  - "app": dashboard (frame + widgets internos animando)
  */
 export default function ServiceMiniScene({
   variant,
@@ -33,7 +28,7 @@ export default function ServiceMiniScene({
     <Canvas
       gl={{ antialias: true, alpha: true }}
       dpr={[1, 1.5]}
-      camera={{ position: [0, 0, 5], fov: 40 }}
+      camera={{ position: [0, 0, 6], fov: 35 }}
       style={{ background: "transparent" }}
     >
       {variant === "landing" && <LandingScene active={active} />}
@@ -43,374 +38,516 @@ export default function ServiceMiniScene({
   );
 }
 
-/* -------------------- LANDING -------------------- */
+/* -------------------- LANDING: página tall com sections deslizando -------------------- */
 
 function LandingScene({ active }: { active: boolean }) {
-  const groupRef = useRef<Group>(null);
+  const innerGroupRef = useRef<Group>(null);
   const elapsed = useRef(0);
   const speedRef = useRef(1);
 
-  // 3 colunas × 5 níveis = 15 nós base. Em zigzag: colunas alternam X levemente.
-  const layout = useMemo(() => {
-    const cols = [-1.4, 0, 1.4];
-    const rows = [-2, -1, 0, 1, 2];
-    const nodes: [number, number, number][] = [];
-    for (const x of cols) {
-      for (const y of rows) {
-        nodes.push([x, y, 0]);
-      }
+  // Frame externo: retângulo vertical tall (proporção ~9:16, página de smartphone).
+  const frameWidth = 1.5;
+  const frameHeight = 3.4;
+
+  // Sections internas: 6 blocos horizontais empilhados verticalmente.
+  // O grupo inteiro desliza Y pra simular scroll vertical de uma landing.
+  const sections = useMemo(() => {
+    const count = 6;
+    const sectionHeight = 1.0;
+    const totalHeight = count * sectionHeight;
+    const blocks: Array<{
+      yCenter: number;
+      width: number;
+      isAccent: boolean;
+    }> = [];
+    for (let i = 0; i < count; i++) {
+      const yCenter = (totalHeight / 2) - (i * sectionHeight) - sectionHeight / 2;
+      blocks.push({
+        yCenter,
+        width: frameWidth * (0.55 + (i % 3) * 0.15), // varia largura
+        isAccent: i === 2, // 1 bloco vermelho (eco do CTA "Iniciar")
+      });
     }
-    // Arestas: dentro de cada coluna (verticais) + zigzag entre colunas adjacentes.
-    const edges: [[number, number, number], [number, number, number]][] = [];
-    // Verticais
-    for (let c = 0; c < 3; c++) {
-      for (let r = 0; r < 4; r++) {
-        edges.push([nodes[c * 5 + r], nodes[c * 5 + r + 1]]);
-      }
-    }
-    // Zigzag entre col 0↔1 e col 1↔2
-    for (let r = 0; r < 5; r++) {
-      edges.push([nodes[r], nodes[5 + r]]);
-      edges.push([nodes[5 + r], nodes[10 + r]]);
-    }
-    return { nodes, edges };
-  }, []);
+    return { blocks, totalHeight };
+  }, [frameWidth]);
 
   useFrame((_, delta) => {
-    speedRef.current = lerp(speedRef.current, active ? 1.8 : 1, Math.min(1, delta * 4));
+    speedRef.current = lerp(
+      speedRef.current,
+      active ? 1.8 : 1,
+      Math.min(1, delta * 4),
+    );
     elapsed.current += delta * speedRef.current;
     const t = elapsed.current;
-    const g = groupRef.current;
-    if (g) {
-      // Oscilação Y do grupo inteiro: lê como "página tall scrollando"
-      g.position.y = Math.sin(t * (TWO_PI / 8)) * 0.3;
+
+    // Scroll vertical loop: o grupo interno desliza Y de -1.0 até totalHeight - 1.0.
+    // Velocidade lenta, infinito.
+    const scrollSpeed = 0.4;
+    const cycleHeight = sections.totalHeight;
+    const yOffset = ((t * scrollSpeed) % cycleHeight);
+    if (innerGroupRef.current) {
+      innerGroupRef.current.position.y = -yOffset + cycleHeight / 2 - 0.3;
     }
   });
 
+  // Frame externo (estático, define a "tela").
+  const framePoints: [[number, number, number], [number, number, number]][] = [
+    [[-frameWidth / 2, frameHeight / 2, 0], [frameWidth / 2, frameHeight / 2, 0]],
+    [[frameWidth / 2, frameHeight / 2, 0], [frameWidth / 2, -frameHeight / 2, 0]],
+    [[frameWidth / 2, -frameHeight / 2, 0], [-frameWidth / 2, -frameHeight / 2, 0]],
+    [[-frameWidth / 2, -frameHeight / 2, 0], [-frameWidth / 2, frameHeight / 2, 0]],
+  ];
+
   return (
-    <group ref={groupRef}>
-      {layout.edges.map((e, i) => (
+    <group>
+      {/* Frame */}
+      {framePoints.map((p, i) => (
         <Line
-          key={`l-edge-${i}`}
-          points={e}
+          key={`frame-${i}`}
+          points={p}
           color="#F5F2ED"
-          lineWidth={1.2}
+          lineWidth={1.4}
           transparent
-          opacity={0.7}
+          opacity={0.8}
           depthWrite={false}
         />
       ))}
-      {layout.nodes.map((p, i) => (
-        <mesh key={`l-node-${i}`} position={p}>
-          <icosahedronGeometry args={[0.05, 0]} />
-          <meshBasicMaterial
-            color={active && i === 12 ? "#FB3640" : "#F5F2ED"}
-            transparent
-            opacity={0.85}
-          />
-        </mesh>
-      ))}
+
+      {/* Conteúdo interno (clipped pela máscara) — scrollando */}
+      <group ref={innerGroupRef}>
+        {/* Repete blocks 2x pra fazer loop suave */}
+        {[0, 1].map((repeat) => (
+          <group
+            key={`rep-${repeat}`}
+            position={[0, repeat * sections.totalHeight, 0]}
+          >
+            {sections.blocks.map((block, i) => {
+              const h = 0.7; // altura visual do bloco
+              const halfW = block.width / 2;
+              const yTop = block.yCenter + h / 2;
+              const yBot = block.yCenter - h / 2;
+              const linePoints: [
+                [number, number, number],
+                [number, number, number],
+              ][] = [
+                [
+                  [-halfW, yTop, 0],
+                  [halfW, yTop, 0],
+                ],
+                [
+                  [halfW, yTop, 0],
+                  [halfW, yBot, 0],
+                ],
+                [
+                  [halfW, yBot, 0],
+                  [-halfW, yBot, 0],
+                ],
+                [
+                  [-halfW, yBot, 0],
+                  [-halfW, yTop, 0],
+                ],
+              ];
+              const opacity = block.isAccent ? 0.85 : 0.5;
+              const color = block.isAccent ? "#FB3640" : "#F5F2ED";
+              return (
+                <group key={`block-${repeat}-${i}`}>
+                  {linePoints.map((p, lpi) => (
+                    <Line
+                      key={`bp-${lpi}`}
+                      points={p}
+                      color={color}
+                      lineWidth={1.0}
+                      transparent
+                      opacity={opacity}
+                      depthWrite={false}
+                    />
+                  ))}
+                </group>
+              );
+            })}
+          </group>
+        ))}
+      </group>
     </group>
   );
 }
 
-/* -------------------- INSTITUTIONAL -------------------- */
+/* -------------------- INSTITUTIONAL: sitemap (1 página central + 4 filhas) -------------------- */
 
 function InstitutionalScene({ active }: { active: boolean }) {
-  const layersRef = useRef<(Group | null)[]>([]);
+  const groupRef = useRef<Group>(null);
   const elapsed = useRef(0);
+  const speedRef = useRef(1);
 
-  // 4 planos empilhados em Y.
-  const layers = useMemo(() => {
-    const ys = [-1.5, -0.5, 0.5, 1.5];
-    return ys.map((y, idx) => {
-      const half = 1.2;
-      const corners: [number, number, number][] = [
-        [-half, y, -half],
-        [half, y, -half],
-        [half, y, half],
-        [-half, y, half],
-      ];
-      const center: [number, number, number] = [0, y, 0];
-      const nodes = [...corners, center];
-      const edges: [[number, number, number], [number, number, number]][] = [
-        [corners[0], corners[1]],
-        [corners[1], corners[2]],
-        [corners[2], corners[3]],
-        [corners[3], corners[0]],
-        [corners[0], center],
-        [corners[1], center],
-        [corners[2], center],
-        [corners[3], center],
-      ];
-      return { idx, y, nodes, edges, opacity: 0.6 - idx * 0.05 };
-    });
+  // Página central (raiz) + 4 páginas filhas + 1 página secundária ligada à raiz.
+  const pages = useMemo(() => {
+    return [
+      { id: "root", x: 0, y: 1.4, w: 1.1, h: 0.7, isCenter: true },
+      { id: "child-1", x: -2.0, y: -0.4, w: 0.9, h: 0.6, isCenter: false },
+      { id: "child-2", x: -0.7, y: -0.4, w: 0.9, h: 0.6, isCenter: false },
+      { id: "child-3", x: 0.7, y: -0.4, w: 0.9, h: 0.6, isCenter: false },
+      { id: "child-4", x: 2.0, y: -0.4, w: 0.9, h: 0.6, isCenter: false },
+      // Página de detalhe (3º nível, conectada a child-2)
+      { id: "grand", x: -0.7, y: -1.8, w: 0.8, h: 0.5, isCenter: false },
+    ];
   }, []);
 
-  // Conexões verticais entre cantos correspondentes de camadas adjacentes.
-  const verticalConnections = useMemo(() => {
-    const conns: [[number, number, number], [number, number, number]][] = [];
-    for (let li = 0; li < 3; li++) {
-      const lower = layers[li];
-      const upper = layers[li + 1];
-      for (let ci = 0; ci < 4; ci++) {
-        conns.push([lower.nodes[ci], upper.nodes[ci]]);
-      }
-    }
-    return conns;
-  }, [layers]);
-
-  const vertOpacityRef = useRef(0);
+  // Conexões: root↔children + child-2↔grand
+  const connections = useMemo(
+    () => [
+      { from: [0, 1.4 - 0.35, 0], to: [-2.0, -0.4 + 0.3, 0] },
+      { from: [0, 1.4 - 0.35, 0], to: [-0.7, -0.4 + 0.3, 0] },
+      { from: [0, 1.4 - 0.35, 0], to: [0.7, -0.4 + 0.3, 0] },
+      { from: [0, 1.4 - 0.35, 0], to: [2.0, -0.4 + 0.3, 0] },
+      { from: [-0.7, -0.4 - 0.3, 0], to: [-0.7, -1.8 + 0.25, 0] },
+    ],
+    [],
+  );
 
   useFrame((_, delta) => {
-    elapsed.current += delta;
-    const t = elapsed.current;
-    layers.forEach((layer, i) => {
-      const g = layersRef.current[i];
-      if (!g) return;
-      // Cada camada respira em fase deslocada.
-      g.position.y = Math.sin(t * (TWO_PI / 5) + i * 1.25) * 0.08;
-    });
-
-    // Conexões verticais aparecem quando ativo.
-    vertOpacityRef.current = lerp(
-      vertOpacityRef.current,
-      active ? 0.8 : 0,
-      Math.min(1, delta * 3),
+    speedRef.current = lerp(
+      speedRef.current,
+      active ? 1.4 : 1,
+      Math.min(1, delta * 4),
     );
+    elapsed.current += delta * speedRef.current;
+    const t = elapsed.current;
+
+    if (groupRef.current) {
+      // Levíssima rotação Y pra dar vida — eco de "estrutura sendo observada"
+      groupRef.current.rotation.y = Math.sin(t * (TWO_PI / 14)) * 0.08;
+    }
   });
 
+  const pageEdges = (p: { x: number; y: number; w: number; h: number }) => {
+    const hw = p.w / 2;
+    const hh = p.h / 2;
+    return [
+      [
+        [p.x - hw, p.y + hh, 0],
+        [p.x + hw, p.y + hh, 0],
+      ],
+      [
+        [p.x + hw, p.y + hh, 0],
+        [p.x + hw, p.y - hh, 0],
+      ],
+      [
+        [p.x + hw, p.y - hh, 0],
+        [p.x - hw, p.y - hh, 0],
+      ],
+      [
+        [p.x - hw, p.y - hh, 0],
+        [p.x - hw, p.y + hh, 0],
+      ],
+    ] as [[number, number, number], [number, number, number]][];
+  };
+
   return (
-    <group position={[0, 0, 0]} rotation={[0, 0.3, 0]}>
-      {layers.map((layer, li) => (
-        <group
-          key={`layer-${li}`}
-          ref={(el) => {
-            layersRef.current[li] = el;
-          }}
-        >
-          {layer.edges.map((e, ei) => (
+    <group ref={groupRef} position={[0, 0, 0]}>
+      {/* Conexões entre páginas */}
+      {connections.map((c, i) => (
+        <Line
+          key={`conn-${i}`}
+          points={[c.from, c.to] as [[number, number, number], [number, number, number]]}
+          color="#F5F2ED"
+          lineWidth={0.9}
+          transparent
+          opacity={0.35}
+          depthWrite={false}
+        />
+      ))}
+
+      {/* Páginas (retângulos wireframe) */}
+      {pages.map((p) => {
+        const edges = pageEdges(p);
+        const opacity = p.isCenter ? 0.9 : 0.6;
+        const color = p.isCenter ? "#F5F2ED" : "#F5F2ED";
+        return (
+          <group key={p.id}>
+            {edges.map((e, i) => (
+              <Line
+                key={`pe-${p.id}-${i}`}
+                points={e}
+                color={color}
+                lineWidth={p.isCenter ? 1.4 : 1.0}
+                transparent
+                opacity={opacity}
+                depthWrite={false}
+              />
+            ))}
+            {/* Apex vermelho na página central (marcador de "raiz") */}
+            {p.isCenter && (
+              <mesh position={[p.x, p.y + p.h / 2, 0]}>
+                <icosahedronGeometry args={[0.06, 0]} />
+                <meshBasicMaterial color="#FB3640" transparent opacity={1} />
+              </mesh>
+            )}
+          </group>
+        );
+      })}
+    </group>
+  );
+}
+
+/* -------------------- APP: dashboard (frame + widgets internos animando) -------------------- */
+
+function AppScene({ active }: { active: boolean }) {
+  const groupRef = useRef<Group>(null);
+  const barRefs = useRef<(Group | null)[]>([]);
+  const elapsed = useRef(0);
+  const speedRef = useRef(1);
+
+  // Frame externo: dashboard wide (4:3 horizontal)
+  const frameW = 4.2;
+  const frameH = 3.2;
+
+  // Layout interno: header bar (topo) + sidebar (esq) + main grid (centro com widgets)
+  const headerH = 0.5;
+  const sidebarW = 0.9;
+
+  // 4 widgets no main area (2x2 grid)
+  const mainAreaX = -frameW / 2 + sidebarW;
+  const mainAreaW = frameW - sidebarW;
+  const mainAreaTop = frameH / 2 - headerH;
+  const mainAreaBottom = -frameH / 2;
+  const mainAreaH = mainAreaTop - mainAreaBottom;
+
+  const widgets = useMemo(() => {
+    const cols = 2;
+    const rows = 2;
+    const gap = 0.15;
+    const wW = (mainAreaW - gap * (cols + 1)) / cols;
+    const wH = (mainAreaH - gap * (rows + 1)) / rows;
+    const arr: Array<{
+      x: number;
+      y: number;
+      w: number;
+      h: number;
+      isAccent: boolean;
+    }> = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = mainAreaX + gap + c * (wW + gap) + wW / 2;
+        const y = mainAreaTop - gap - r * (wH + gap) - wH / 2;
+        arr.push({ x, y, w: wW, h: wH, isAccent: r === 0 && c === 0 });
+      }
+    }
+    return arr;
+  }, [mainAreaX, mainAreaW, mainAreaH, mainAreaTop]);
+
+  // Barras animando dentro do widget accent (gráfico de barras)
+  const accentBars = useMemo(() => {
+    const w = widgets[0];
+    if (!w) return [];
+    const count = 5;
+    const gap = 0.04;
+    const totalW = w.w * 0.7;
+    const bw = (totalW - gap * (count - 1)) / count;
+    const startX = w.x - totalW / 2;
+    const baseY = w.y - w.h * 0.3;
+    return Array.from({ length: count }, (_, i) => ({
+      x: startX + i * (bw + gap) + bw / 2,
+      baseY,
+      width: bw,
+      phase: i * 0.4,
+    }));
+  }, [widgets]);
+
+  useFrame((_, delta) => {
+    speedRef.current = lerp(
+      speedRef.current,
+      active ? 1.6 : 1,
+      Math.min(1, delta * 4),
+    );
+    elapsed.current += delta * speedRef.current;
+    const t = elapsed.current;
+
+    if (groupRef.current) {
+      // Leve tilt 3D pra mostrar profundidade
+      groupRef.current.rotation.y = 0.15 + Math.sin(t * (TWO_PI / 12)) * 0.04;
+      groupRef.current.rotation.x = 0.08;
+    }
+
+    // Barras crescendo e descrescendo (data update)
+    accentBars.forEach((b, i) => {
+      const g = barRefs.current[i];
+      if (!g) return;
+      const heightT = (Math.sin(t * (TWO_PI / 3) + b.phase) + 1) / 2; // 0..1
+      const height = 0.1 + heightT * 0.55;
+      g.scale.y = height;
+      g.position.y = b.baseY + height / 2;
+    });
+  });
+
+  // Edges de um retângulo
+  const rectEdges = (
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+  ): [[number, number, number], [number, number, number]][] => {
+    const hw = w / 2;
+    const hh = h / 2;
+    return [
+      [
+        [x - hw, y + hh, 0],
+        [x + hw, y + hh, 0],
+      ],
+      [
+        [x + hw, y + hh, 0],
+        [x + hw, y - hh, 0],
+      ],
+      [
+        [x + hw, y - hh, 0],
+        [x - hw, y - hh, 0],
+      ],
+      [
+        [x - hw, y - hh, 0],
+        [x - hw, y + hh, 0],
+      ],
+    ];
+  };
+
+  // Frame externo
+  const frame = rectEdges(0, 0, frameW, frameH);
+
+  // Header bar interno
+  const headerEdges = rectEdges(0, frameH / 2 - headerH / 2, frameW, headerH);
+
+  // Sidebar
+  const sidebarEdges = rectEdges(
+    -frameW / 2 + sidebarW / 2,
+    mainAreaBottom + mainAreaH / 2,
+    sidebarW,
+    mainAreaH,
+  );
+
+  // 3 itens dentro do header (nav)
+  const headerNavY = frameH / 2 - headerH / 2;
+  const headerNavItems = [
+    { x: -frameW / 2 + 0.4, w: 0.5 },
+    { x: -frameW / 2 + 1.0, w: 0.4 },
+    { x: -frameW / 2 + 1.55, w: 0.3 },
+  ];
+
+  // 4 itens dentro da sidebar (menu)
+  const sidebarMenuItems = useMemo(() => {
+    const startY = mainAreaTop - 0.2;
+    return [0, 1, 2, 3].map((i) => ({
+      y: startY - i * 0.4,
+      isActive: i === 1,
+    }));
+  }, [mainAreaTop]);
+
+  return (
+    <group ref={groupRef} scale={0.5}>
+      {/* Frame externo */}
+      {frame.map((e, i) => (
+        <Line
+          key={`fr-${i}`}
+          points={e}
+          color="#F5F2ED"
+          lineWidth={1.4}
+          transparent
+          opacity={0.85}
+          depthWrite={false}
+        />
+      ))}
+
+      {/* Header bar */}
+      {headerEdges.map((e, i) => (
+        <Line
+          key={`hd-${i}`}
+          points={e}
+          color="#F5F2ED"
+          lineWidth={0.9}
+          transparent
+          opacity={0.5}
+          depthWrite={false}
+        />
+      ))}
+
+      {/* Header nav items (linhas pequenas) */}
+      {headerNavItems.map((item, i) => (
+        <Line
+          key={`hn-${i}`}
+          points={[
+            [item.x - item.w / 2, headerNavY, 0],
+            [item.x + item.w / 2, headerNavY, 0],
+          ]}
+          color="#F5F2ED"
+          lineWidth={1.2}
+          transparent
+          opacity={0.6}
+          depthWrite={false}
+        />
+      ))}
+
+      {/* Sidebar */}
+      {sidebarEdges.map((e, i) => (
+        <Line
+          key={`sb-${i}`}
+          points={e}
+          color="#F5F2ED"
+          lineWidth={0.9}
+          transparent
+          opacity={0.45}
+          depthWrite={false}
+        />
+      ))}
+
+      {/* Sidebar menu items */}
+      {sidebarMenuItems.map((m, i) => (
+        <Line
+          key={`sm-${i}`}
+          points={[
+            [-frameW / 2 + 0.2, m.y, 0],
+            [-frameW / 2 + sidebarW - 0.2, m.y, 0],
+          ]}
+          color={m.isActive ? "#FB3640" : "#F5F2ED"}
+          lineWidth={m.isActive ? 1.4 : 1.0}
+          transparent
+          opacity={m.isActive ? 0.9 : 0.55}
+          depthWrite={false}
+        />
+      ))}
+
+      {/* 4 widgets */}
+      {widgets.map((w, wi) => (
+        <group key={`w-${wi}`}>
+          {rectEdges(w.x, w.y, w.w, w.h).map((e, ei) => (
             <Line
-              key={`i-edge-${li}-${ei}`}
+              key={`we-${wi}-${ei}`}
               points={e}
               color="#F5F2ED"
-              lineWidth={1.1}
+              lineWidth={1.0}
               transparent
-              opacity={layer.opacity}
+              opacity={w.isAccent ? 0.75 : 0.5}
               depthWrite={false}
             />
-          ))}
-          {layer.nodes.map((p, ni) => (
-            <mesh key={`i-node-${li}-${ni}`} position={p}>
-              <icosahedronGeometry args={[0.04, 0]} />
-              <meshBasicMaterial
-                color="#F5F2ED"
-                transparent
-                opacity={layer.opacity + 0.15}
-              />
-            </mesh>
           ))}
         </group>
       ))}
 
-      {/* Conexões verticais (aparecem no hover/expand) */}
-      {verticalConnections.map((c, i) => (
-        <VerticalConnection key={`vc-${i}`} points={c} opacityRef={vertOpacityRef} />
-      ))}
-    </group>
-  );
-}
-
-function VerticalConnection({
-  points,
-  opacityRef,
-}: {
-  points: [[number, number, number], [number, number, number]];
-  opacityRef: React.MutableRefObject<number>;
-}) {
-  const matRef = useRef<{ opacity: number } | null>(null);
-
-  useFrame(() => {
-    if (matRef.current) matRef.current.opacity = opacityRef.current;
-  });
-
-  return (
-    <Line
-      points={points}
-      color="#F5F2ED"
-      lineWidth={0.8}
-      transparent
-      opacity={0}
-      depthWrite={false}
-      ref={(line) => {
-        matRef.current = (line?.material as { opacity: number } | undefined) ?? null;
-      }}
-    />
-  );
-}
-
-/* -------------------- APP -------------------- */
-
-const lineColorRed = new Color("#FB3640");
-
-function AppScene({ active }: { active: boolean }) {
-  const groupRef = useRef<Group>(null);
-  const coreRef = useRef<Mesh>(null);
-  const coreMatRef = useRef<MeshBasicMaterial>(null);
-  const elapsed = useRef(0);
-  const speedRef = useRef(1);
-
-  // 6 módulos satélite em arranjo octaédrico.
-  const modules = useMemo(() => {
-    const d = 1.5;
-    const positions: [number, number, number][] = [
-      [d, 0, 0],
-      [-d, 0, 0],
-      [0, 0, d],
-      [0, 0, -d],
-      [0, d, 0],
-      [0, -d, 0],
-    ];
-    return positions.map((p, i) => ({
-      pos: p,
-      seed: i * 1.3,
-      bobPeriod: 4 + i * 0.5,
-    }));
-  }, []);
-
-  // 6 conexões core ↔ módulo. Cada uma com fase de pulse offset.
-  const connections = useMemo(
-    () =>
-      modules.map((m, i) => ({
-        from: [0, 0, 0] as [number, number, number],
-        to: m.pos,
-        phase: i * (TWO_PI / 6),
-      })),
-    [modules],
-  );
-
-  const moduleRefs = useRef<(Group | null)[]>([]);
-  const connOpacities = useRef<number[]>(modules.map(() => 0.25));
-
-  useFrame((_, delta) => {
-    speedRef.current = lerp(speedRef.current, active ? 1.5 : 1, Math.min(1, delta * 4));
-    elapsed.current += delta * speedRef.current;
-    const t = elapsed.current;
-
-    // Rotação Y do grupo inteiro.
-    if (groupRef.current) {
-      groupRef.current.rotation.y = t * (TWO_PI / 18);
-    }
-
-    // Núcleo "respira" quando ativo.
-    if (coreRef.current) {
-      const baseScale = 1;
-      const pulse = active ? Math.sin(t * (TWO_PI / 2)) * 0.08 : 0;
-      coreRef.current.scale.setScalar(baseScale + pulse);
-    }
-
-    // Bob individual dos módulos.
-    modules.forEach((mod, i) => {
-      const g = moduleRefs.current[i];
-      if (!g) return;
-      g.position.set(
-        mod.pos[0],
-        mod.pos[1] + Math.sin(t * (TWO_PI / mod.bobPeriod) + mod.seed) * 0.06,
-        mod.pos[2],
-      );
-    });
-
-    // Pulse de "dados" percorre as 6 conexões em sequência.
-    // Cada conexão tem fase deslocada — uma onda passa por elas em loop de 4s.
-    connections.forEach((c, i) => {
-      const wave = Math.sin(t * (TWO_PI / 4) - c.phase);
-      const target = active
-        ? 0.3 + Math.max(0, wave) * 0.5
-        : 0.15 + Math.max(0, wave) * 0.35;
-      connOpacities.current[i] = lerp(
-        connOpacities.current[i],
-        target,
-        Math.min(1, delta * 8),
-      );
-    });
-  });
-
-  return (
-    <group ref={groupRef} rotation={[0.3, 0, 0]}>
-      {/* Conexões core ↔ módulos */}
-      {connections.map((c, i) => (
-        <ConnectionLine
-          key={`conn-${i}`}
-          from={c.from}
-          to={c.to}
-          opacityRef={connOpacities}
-          index={i}
-        />
-      ))}
-
-      {/* Núcleo central — icosaedro */}
-      <mesh ref={coreRef}>
-        <icosahedronGeometry args={[0.5, 0]} />
-        <meshBasicMaterial
-          ref={coreMatRef}
-          color="#F5F2ED"
-          wireframe
-          transparent
-          opacity={0.75}
-        />
-      </mesh>
-      {/* Apex vermelho do núcleo (1 vértice top) */}
-      <mesh position={[0, 0.5, 0]}>
-        <icosahedronGeometry args={[0.06, 0]} />
-        <meshBasicMaterial color={lineColorRed} transparent opacity={1} />
-      </mesh>
-
-      {/* 6 módulos satélite */}
-      {modules.map((mod, i) => (
+      {/* Barras animadas dentro do widget 0 (gráfico de barras) */}
+      {accentBars.map((b, i) => (
         <group
-          key={`mod-${i}`}
+          key={`bar-${i}`}
           ref={(el) => {
-            moduleRefs.current[i] = el;
+            barRefs.current[i] = el;
           }}
+          position={[b.x, b.baseY, 0.01]}
         >
           <mesh>
-            <boxGeometry args={[0.22, 0.22, 0.22]} />
-            <meshBasicMaterial color="#F5F2ED" wireframe transparent opacity={0.55} />
+            <planeGeometry args={[b.width, 1]} />
+            <meshBasicMaterial
+              color={i === 2 ? "#FB3640" : "#F5F2ED"}
+              transparent
+              opacity={i === 2 ? 0.85 : 0.6}
+            />
           </mesh>
         </group>
       ))}
     </group>
-  );
-}
-
-function ConnectionLine({
-  from,
-  to,
-  opacityRef,
-  index,
-}: {
-  from: [number, number, number];
-  to: [number, number, number];
-  opacityRef: React.MutableRefObject<number[]>;
-  index: number;
-}) {
-  const matRef = useRef<{ opacity: number } | null>(null);
-
-  useFrame(() => {
-    if (matRef.current) matRef.current.opacity = opacityRef.current[index];
-  });
-
-  return (
-    <Line
-      points={[from, to]}
-      color="#FB3640"
-      lineWidth={1.0}
-      transparent
-      opacity={0.25}
-      depthWrite={false}
-      ref={(line) => {
-        matRef.current = (line?.material as { opacity: number } | undefined) ?? null;
-      }}
-    />
   );
 }
