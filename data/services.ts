@@ -3,6 +3,9 @@
  *
  * Posicionamento (2026-06-05): CbM faz webdesign + websoftware. O leque
  * cobre desde Landing Pages até Aplicações Web (dashboards, sistemas).
+ *
+ * Dados normalizados pra UI homogênea: descrições com mesma estrutura
+ * (3 frases curtas), includes com 5 items, indicado pra ~1.5 linhas.
  */
 
 export type ServiceVariant = "landing" | "institutional" | "app";
@@ -16,9 +19,9 @@ export interface ServiceConfig {
   variant: ServiceVariant;
   /** Título do card (Panchang 700, 24-28px). */
   title: string;
-  /** Descrição teaser (3 linhas no estado colapsado). */
+  /** Descrição teaser (3 frases curtas no estado colapsado). */
   description: string;
-  /** Bullets de deliverables no estado expandido. */
+  /** Bullets de deliverables no estado expandido (sempre 5 items). */
   includes: string[];
   /** Perfil de cliente indicado (1-2 linhas, expandido). */
   indicatedFor: string;
@@ -51,17 +54,16 @@ export const SERVICES: ServiceConfig[] = [
     variant: "institutional",
     title: "Sites Institucionais",
     description:
-      "Presença digital completa. Estrutura, autoridade, profundidade.",
+      "Presença completa. Estrutura, autoridade, profundidade.",
     includes: [
       "Arquitetura de informação",
-      "Identidade aplicada",
+      "Design system aplicado",
       "5–12 páginas estruturadas",
-      "CMS leve",
-      "SEO técnico",
-      "Performance otimizada",
+      "SEO técnico e performance",
+      "CMS leve e handover",
     ],
     indicatedFor:
-      "Empresas que querem presença sólida e profunda — comunicando autoridade, produtos e cultura.",
+      "Empresas que querem presença sólida, comunicando autoridade, produtos e cultura.",
     mailSubject: "Interesse em Site Institucional",
   },
   {
@@ -70,17 +72,16 @@ export const SERVICES: ServiceConfig[] = [
     variant: "app",
     title: "Aplicações Web",
     description:
-      "Dashboards, sistemas, plataformas. Software com interface refinada.",
+      "Dashboards e sistemas. Software com interface refinada.",
     includes: [
       "Arquitetura de informação",
       "Design system próprio",
       "Componentes interativos",
-      "Estados e fluxos completos",
       "Integração de APIs",
-      "Performance otimizada",
+      "Performance e handover",
     ],
     indicatedFor:
-      "Empresas com processos digitais, equipes que precisam de ferramentas internas, ou produtos SaaS em construção.",
+      "Empresas com processos digitais, equipes que precisam de ferramentas internas, ou SaaS em formação.",
     mailSubject: "Interesse em Aplicação Web",
   },
 ];

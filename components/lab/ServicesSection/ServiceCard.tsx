@@ -82,7 +82,7 @@ export default function ServiceCard({
     <div
       ref={wrapperRef}
       data-service-card
-      className={`relative border bg-[#0E1810] transition-all duration-500 ease-out ${
+      className={`relative flex min-h-[540px] flex-col border bg-[#0E1810] transition-all duration-500 ease-out ${
         expanded
           ? "border-[#F5F2ED]/80 opacity-100"
           : isDimmed
@@ -126,7 +126,7 @@ export default function ServiceCard({
         onClick={onToggle}
         aria-expanded={expanded}
         aria-controls={`service-${service.slug}-details`}
-        className="relative block w-full p-7 text-left focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[-2px] focus-visible:outline-[#F5F2ED]"
+        className="relative flex w-full flex-1 flex-col p-7 text-left focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[-2px] focus-visible:outline-[#F5F2ED]"
       >
         {/* Numeração vertical: SERVIÇO eyebrow + número grande, red bar à esquerda */}
         <div className="flex items-start gap-3">
@@ -174,8 +174,8 @@ export default function ServiceCard({
           {service.description}
         </p>
 
-        {/* CTA inline com mais peso */}
-        <div className="mt-6 flex items-center gap-3 border-t border-[#F5F2ED]/10 pt-4">
+        {/* CTA inline — mt-auto empurra pro fundo do card (alinha entre todos) */}
+        <div className="mt-auto flex items-center gap-3 border-t border-[#F5F2ED]/10 pt-4">
           <p
             className="flex-1 text-[0.6rem] uppercase tracking-[0.35em] text-[#F5F2ED]/90"
             style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
