@@ -1,8 +1,9 @@
 "use client";
 
-import { type MutableRefObject, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
+import gsap from "gsap";
 import {
   BoxGeometry,
   CatmullRomCurve3,
@@ -19,36 +20,53 @@ const TWO_PI = Math.PI * 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /* ============================================================
-   SHARED — Expansion behavior (camera + scene)
+   SHARED — Expansion behavior via GSAP (mais determinístico)
    ============================================================ */
 
 /**
- * Hook compartilhado: ref que lerps 0 → 1 conforme `active` muda.
- * 0 = card colapsado, 1 = card expandido. Resposta ~0.7s.
+ * Aplica scale + tilt + cameraZ na expansão via GSAP.
  *
- * Usa ref pra activeRef pra garantir que o useFrame sempre lê o valor
- * atual de active (closure pode ficar stale em R3F em alguns casos).
+ * Por que GSAP em useEffect (não useFrame): mais determinístico,
+ * não depende de closure refresh em hooks customizados, e dá controle
+ * fino do easing/duração.
  */
-function useExpansion(active: boolean): MutableRefObject<number> {
-  const t = useRef(0);
-  const activeRef = useRef(active);
-  activeRef.current = active;
-  useFrame((_, delta) => {
-    const target = activeRef.current ? 1 : 0;
-    t.current = lerp(t.current, target, Math.min(1, delta * 1.6));
-  });
-  return t;
-}
-
-/**
- * Camera dolly-back quando expandido: z 6 → 8.5.
- * Renderiza como filho do Canvas pra ter acesso à camera via useThree.
- */
-function CameraExpander({ expT }: { expT: MutableRefObject<number> }) {
+function ExpansionRig({
+  active,
+  groupRef,
+}: {
+  active: boolean;
+  groupRef: React.RefObject<Group>;
+}) {
   const camera = useThree((s) => s.camera);
-  useFrame(() => {
-    camera.position.z = lerp(6, 8.5, expT.current);
-  });
+  const stateRef = useRef({ scale: 1, rotX: 0, posY: 0, camZ: 6 });
+  const tweenRef = useRef<gsap.core.Tween | null>(null);
+
+  useEffect(() => {
+    if (tweenRef.current) tweenRef.current.kill();
+    const target = active
+      ? { scale: 1.35, rotX: 0.28, posY: 0.25, camZ: 8.5 }
+      : { scale: 1, rotX: 0, posY: 0, camZ: 6 };
+
+    tweenRef.current = gsap.to(stateRef.current, {
+      ...target,
+      duration: 0.7,
+      ease: "power2.out",
+      onUpdate: () => {
+        const w = groupRef.current;
+        if (w) {
+          w.scale.setScalar(stateRef.current.scale);
+          w.rotation.x = stateRef.current.rotX;
+          w.position.y = stateRef.current.posY;
+        }
+        camera.position.z = stateRef.current.camZ;
+      },
+    });
+
+    return () => {
+      if (tweenRef.current) tweenRef.current.kill();
+    };
+  }, [active, camera, groupRef]);
+
   return null;
 }
 
@@ -93,7 +111,6 @@ function LandingScene({ active }: { active: boolean }) {
   const sparkRef = useRef<Mesh>(null);
   const elapsed = useRef(0);
   const speedRef = useRef(1);
-  const expT = useExpansion(active);
 
   // Página única + 4 sections horizontais internas (todas off-white agora).
   const pageW = 1.4;
@@ -151,13 +168,7 @@ function LandingScene({ active }: { active: boolean }) {
       g.position.y = Math.sin(t * 0.4) * 0.06;
     }
 
-    // Expansion: scale 1.0 → 1.35, tilt forward (X) 0 → 0.28 rad, leve orbit Y
-    const w = expansionRef.current;
-    if (w) {
-      w.scale.setScalar(1 + expT.current * 0.35);
-      w.rotation.x = expT.current * 0.28;
-      w.position.y = expT.current * 0.25;
-    }
+    // (Expansion agora é gerenciada via ExpansionRig com GSAP, não aqui)
 
     // Calcula em qual fase estamos do ciclo.
     const cyclePos = t % CYCLE;
@@ -245,7 +256,7 @@ function LandingScene({ active }: { active: boolean }) {
 
   return (
     <>
-      <CameraExpander expT={expT} />
+      <ExpansionRig active={active} groupRef={expansionRef} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.85}>
           {/* Frame externo da página */}
@@ -341,7 +352,6 @@ function InstitutionalScene({ active }: { active: boolean }) {
   const particlesRef = useRef<(Mesh | null)[]>([]);
   const elapsed = useRef(0);
   const speedRef = useRef(1);
-  const expT = useExpansion(active);
 
   // 6 andares empilhados verticalmente — lê como site com várias páginas.
   const floors = useMemo(() => {
@@ -388,12 +398,7 @@ function InstitutionalScene({ active }: { active: boolean }) {
       g.position.y = Math.sin(t * 0.4) * 0.08;
     }
 
-    // Expansion: scale + tilt forward
-    const w = expansionRef.current;
-    if (w) {
-      w.scale.setScalar(1 + expT.current * 0.12);
-      w.rotation.x = expT.current * 0.14;
-    }
+    // (Expansion gerenciada via ExpansionRig)
 
     particles.forEach((p, i) => {
       const mesh = particlesRef.current[i];
@@ -413,7 +418,7 @@ function InstitutionalScene({ active }: { active: boolean }) {
 
   return (
     <>
-      <CameraExpander expT={expT} />
+      <ExpansionRig active={active} groupRef={expansionRef} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.8}>
           {floors.map((f, i) => (
@@ -479,7 +484,6 @@ function AppScene({ active }: { active: boolean }) {
   const nodesRef = useRef<(Group | null)[]>([]);
   const elapsed = useRef(0);
   const speedRef = useRef(1);
-  const expT = useExpansion(active);
 
   const nodes = useMemo(() => {
     return [
@@ -531,12 +535,7 @@ function AppScene({ active }: { active: boolean }) {
       g.rotation.x = Math.sin(t * 0.3) * 0.06;
     }
 
-    // Expansion: scale + tilt forward
-    const w = expansionRef.current;
-    if (w) {
-      w.scale.setScalar(1 + expT.current * 0.12);
-      w.rotation.x = expT.current * 0.14;
-    }
+    // (Expansion gerenciada via ExpansionRig)
 
     nodes.forEach((n, i) => {
       const node = nodesRef.current[i];
@@ -549,7 +548,7 @@ function AppScene({ active }: { active: boolean }) {
 
   return (
     <>
-      <CameraExpander expT={expT} />
+      <ExpansionRig active={active} groupRef={expansionRef} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.95}>
           {tubes.map((g, i) => (
