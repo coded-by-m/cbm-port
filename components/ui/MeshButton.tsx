@@ -184,7 +184,7 @@ export const MeshButton = forwardRef<HTMLButtonElement, MeshButtonProps>(
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
         className={[
-          "word group relative inline-flex items-center gap-5 overflow-hidden border border-[#F5F2ED]/55 bg-[#000F08]/60 px-9 py-5 text-sm uppercase tracking-[0.3em] text-[#F5F2ED] backdrop-blur-sm transition-all duration-500 hover:border-[#F5F2ED] hover:bg-[#000F08]/80 sm:text-base",
+          "word group relative inline-flex items-center gap-5 overflow-hidden border border-[#F5F2ED]/55 bg-[#000F08]/60 px-9 py-5 text-sm uppercase tracking-[0.3em] text-[#F5F2ED] backdrop-blur-sm transition-colors duration-500 hover:border-[#F5F2ED] hover:bg-[#000F08]/80 sm:text-base",
           className,
         ]
           .filter(Boolean)

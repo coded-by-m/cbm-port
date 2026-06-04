@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { MeshButton } from "@/components/ui/MeshButton";
@@ -177,8 +184,9 @@ export default function PhilosophySection({ onComplete }: PhilosophySectionProps
   }, [goTo]);
 
   // Inicialização: todos os containers + words/ghosts/CTA começam invisíveis.
-  // Evita conflito entre React inline style e GSAP set/tween durante re-renders.
-  useEffect(() => {
+  // useLayoutEffect (não useEffect) — roda antes do primeiro paint, evitando
+  // que o usuário veja qualquer fragmento no estado default por um frame.
+  useLayoutEffect(() => {
     statementsRef.current.forEach((el) => {
       if (!el) return;
       gsap.set(el, { opacity: 0 });
@@ -372,17 +380,16 @@ export default function PhilosophySection({ onComplete }: PhilosophySectionProps
                   stmt.lines.map((line, lineIdx) => {
                     const words = line.split(" ");
                     return (
-                      <span key={lineIdx} className="block leading-tight">
+                      <span
+                        key={lineIdx}
+                        className="block leading-tight"
+                        style={{ whiteSpace: "pre-wrap" }}
+                      >
                         {words.map((word, j) => (
-                          <span
-                            key={j}
-                            className="word inline-block"
-                            style={{
-                              marginRight: j < words.length - 1 ? "0.3em" : 0,
-                            }}
-                          >
-                            {word}
-                          </span>
+                          <Fragment key={j}>
+                            <span className="word inline-block">{word}</span>
+                            {j < words.length - 1 ? " " : ""}
+                          </Fragment>
                         ))}
                       </span>
                     );
