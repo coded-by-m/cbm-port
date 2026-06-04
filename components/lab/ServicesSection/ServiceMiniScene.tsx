@@ -74,15 +74,14 @@ function LandingScene({ active }: { active: boolean }) {
   useFrame((_, delta) => {
     speedRef.current = lerp(
       speedRef.current,
-      active ? 1.8 : 1,
+      active ? 1.5 : 1,
       Math.min(1, delta * 4),
     );
     elapsed.current += delta * speedRef.current;
     const t = elapsed.current;
 
-    // Scroll vertical loop: o grupo interno desliza Y de -1.0 até totalHeight - 1.0.
-    // Velocidade lenta, infinito.
-    const scrollSpeed = 0.4;
+    // Scroll vertical loop — mais lento e contemplativo
+    const scrollSpeed = 0.22;
     const cycleHeight = sections.totalHeight;
     const yOffset = ((t * scrollSpeed) % cycleHeight);
     if (innerGroupRef.current) {
@@ -179,27 +178,25 @@ function InstitutionalScene({ active }: { active: boolean }) {
   const elapsed = useRef(0);
   const speedRef = useRef(1);
 
-  // Página central (raiz) + 4 páginas filhas + 1 página secundária ligada à raiz.
+  // Sitemap mais compacto pra caber no canvas (240x160).
   const pages = useMemo(() => {
     return [
-      { id: "root", x: 0, y: 1.4, w: 1.1, h: 0.7, isCenter: true },
-      { id: "child-1", x: -2.0, y: -0.4, w: 0.9, h: 0.6, isCenter: false },
-      { id: "child-2", x: -0.7, y: -0.4, w: 0.9, h: 0.6, isCenter: false },
-      { id: "child-3", x: 0.7, y: -0.4, w: 0.9, h: 0.6, isCenter: false },
-      { id: "child-4", x: 2.0, y: -0.4, w: 0.9, h: 0.6, isCenter: false },
-      // Página de detalhe (3º nível, conectada a child-2)
-      { id: "grand", x: -0.7, y: -1.8, w: 0.8, h: 0.5, isCenter: false },
+      { id: "root", x: 0, y: 1.1, w: 0.95, h: 0.6, isCenter: true },
+      { id: "child-1", x: -1.6, y: -0.3, w: 0.78, h: 0.52, isCenter: false },
+      { id: "child-2", x: -0.55, y: -0.3, w: 0.78, h: 0.52, isCenter: false },
+      { id: "child-3", x: 0.55, y: -0.3, w: 0.78, h: 0.52, isCenter: false },
+      { id: "child-4", x: 1.6, y: -0.3, w: 0.78, h: 0.52, isCenter: false },
+      { id: "grand", x: -0.55, y: -1.5, w: 0.68, h: 0.44, isCenter: false },
     ];
   }, []);
 
-  // Conexões: root↔children + child-2↔grand
   const connections = useMemo(
     () => [
-      { from: [0, 1.4 - 0.35, 0], to: [-2.0, -0.4 + 0.3, 0] },
-      { from: [0, 1.4 - 0.35, 0], to: [-0.7, -0.4 + 0.3, 0] },
-      { from: [0, 1.4 - 0.35, 0], to: [0.7, -0.4 + 0.3, 0] },
-      { from: [0, 1.4 - 0.35, 0], to: [2.0, -0.4 + 0.3, 0] },
-      { from: [-0.7, -0.4 - 0.3, 0], to: [-0.7, -1.8 + 0.25, 0] },
+      { from: [0, 1.1 - 0.3, 0], to: [-1.6, -0.3 + 0.26, 0] },
+      { from: [0, 1.1 - 0.3, 0], to: [-0.55, -0.3 + 0.26, 0] },
+      { from: [0, 1.1 - 0.3, 0], to: [0.55, -0.3 + 0.26, 0] },
+      { from: [0, 1.1 - 0.3, 0], to: [1.6, -0.3 + 0.26, 0] },
+      { from: [-0.55, -0.3 - 0.26, 0], to: [-0.55, -1.5 + 0.22, 0] },
     ],
     [],
   );
@@ -440,7 +437,7 @@ function AppScene({ active }: { active: boolean }) {
   }, [mainAreaTop]);
 
   return (
-    <group ref={groupRef} scale={0.5}>
+    <group ref={groupRef} scale={0.55}>
       {/* Frame externo */}
       {frame.map((e, i) => (
         <Line
