@@ -269,19 +269,12 @@ export function ProjectCard({
   const wrapperClassName =
     "pointer-events-auto fixed z-30 border border-[#F5F2ED]/30 bg-[#000F08]/85 backdrop-blur-md transition-colors duration-300 hover:border-[#F5F2ED]/60";
 
-  const cardInner = (
-    <>
-      <div ref={contentRef} className="px-5 pb-3 pt-5">
-        {renderContent(displayed)}
-      </div>
-      <div className="flex justify-center border-t border-[#F5F2ED]/10 px-5 py-3">
-        <SlideshowDots
-          slots={FRAGMENT_SLOTS}
-          activeSlug={activeSlug}
-          onSelect={onSelectSlide}
-        />
-      </div>
-    </>
+  // Conteúdo do card. Link envolve só o bloco de preview/texto — dots ficam
+  // de fora pra evitar <button> aninhado dentro de <a> (HTML inválido).
+  const contentBlock = (
+    <div ref={contentRef} className="px-5 pb-3 pt-5">
+      {renderContent(displayed)}
+    </div>
   );
 
   return (
@@ -292,12 +285,19 @@ export function ProjectCard({
     >
       {scrollStyle}
       {isComingSoon ? (
-        <div className="block">{cardInner}</div>
+        <div className="block">{contentBlock}</div>
       ) : (
         <Link href={`/cases/${displayed.slug}`} className="block">
-          {cardInner}
+          {contentBlock}
         </Link>
       )}
+      <div className="flex justify-center border-t border-[#F5F2ED]/10 px-5 py-3">
+        <SlideshowDots
+          slots={FRAGMENT_SLOTS}
+          activeSlug={activeSlug}
+          onSelect={onSelectSlide}
+        />
+      </div>
     </div>
   );
 }

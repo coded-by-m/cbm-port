@@ -18,10 +18,13 @@ import {
   FRAGMENT_MOTION,
 } from "@/components/lab/ProjectFragments/config";
 import { buildTower } from "./towerGeometry";
+import FragmentBaseRing from "./FragmentBaseRing";
+import FragmentGlow from "./FragmentGlow";
 import {
   APEX_INDEX,
   FRAGMENT_VISUAL,
   HOST_LAYER,
+  TOWER,
   type FragmentSlot,
 } from "./config";
 
@@ -30,8 +33,9 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 const projected = new Vector3();
 const apexColorBase = new Color(FRAGMENT_VISUAL.apexColor);
-const nodeColorBase = new Color(FRAGMENT_VISUAL.nodeColor);
-const apexColorScratch = new Color();
+const offWhite = new Color(FRAGMENT_VISUAL.nodeColor);
+const dimColor = new Color(FRAGMENT_VISUAL.dimColor);
+const colorScratch = new Color();
 
 export default function ProjectFragment({
   slot,
@@ -110,8 +114,10 @@ export default function ProjectFragment({
     const d = dim.current;
     const r = reveal.current;
 
-    // Multiplicador de opacidade: 1 normal, dimMultiplier quando dormente.
     const dimAtten = lerp(1, FRAGMENT_VISUAL.dimMultiplier, d);
+
+    // Cor dos edges/nodes: lerp off-white → terrain mid quando dim.
+    colorScratch.copy(offWhite).lerp(dimColor, d);
 
     const surfaceY = sampleHeight(slot.x, slot.z, t, HOST_LAYER);
     const bob =
@@ -126,7 +132,7 @@ export default function ProjectFragment({
           FRAGMENT_VISUAL.surfaceLift +
           bob +
           FRAGMENT_VISUAL.highlightLift * h,
-        slot.z,
+        slot.z + FRAGMENT_VISUAL.activePushZ * h,
       );
       const presence = slot.scale;
       group.scale.setScalar(
@@ -145,7 +151,10 @@ export default function ProjectFragment({
       dimAtten;
     lineRefs.forEach((ref) => {
       const line = ref.current;
-      if (line) (line.material as { opacity: number }).opacity = edgeOpacity;
+      if (!line) return;
+      const mat = line.material as { opacity: number; color: Color };
+      mat.opacity = edgeOpacity;
+      mat.color.copy(colorScratch);
     });
 
     const nodeOpacity =
@@ -159,10 +168,11 @@ export default function ProjectFragment({
     nodeMatRefs.forEach((ref, i) => {
       if (!ref.current) return;
       ref.current.opacity = nodeOpacity;
-      // Apex perde o vermelho conforme dim aumenta: lerp Color → off-white.
+      // Apex: lerp vermelho → off-white quando dim. Outros nós: off-white → terrain mid.
       if (i === APEX_INDEX) {
-        apexColorScratch.copy(apexColorBase).lerp(nodeColorBase, d);
-        ref.current.color.copy(apexColorScratch);
+        ref.current.color.copy(apexColorBase).lerp(offWhite, d);
+      } else {
+        ref.current.color.copy(colorScratch);
       }
     });
 
@@ -189,49 +199,55 @@ export default function ProjectFragment({
   });
 
   return (
-    <group ref={groupRef} position={[slot.x, 0, slot.z]}>
-      {/* Área de interação invisível. */}
-      <mesh position={[0, geom.apex[1] * 0.5, 0]} {...handlers}>
-        <sphereGeometry args={[FRAGMENT.baseRadius * 1.7, 8, 8]} />
-        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-      </mesh>
+    <>
+      <FragmentBaseRing slot={slot} isActive={isActive} />
+      <group ref={groupRef} position={[slot.x, 0, slot.z]}>
+        {/* Glow filho do group pra acompanhar position/scale do fragmento. */}
+        <FragmentGlow isActive={isActive} size={TOWER.apexHeight} />
 
-      {geom.edges.map((points, i) => (
-        <Line
-          key={`edge-${i}`}
-          ref={lineRefs[i]}
-          points={points}
-          color={FRAGMENT_VISUAL.edgeColor}
-          lineWidth={FRAGMENT_VISUAL.edgeWidth}
-          transparent
-          opacity={0}
-          depthWrite={false}
-          depthTest={false}
-        />
-      ))}
+        {/* Área de interação invisível. */}
+        <mesh position={[0, geom.apex[1] * 0.5, 0]} {...handlers}>
+          <sphereGeometry args={[FRAGMENT.baseRadius * 1.7, 8, 8]} />
+          <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+        </mesh>
 
-      {geom.nodes.map((position, i) => (
-        <mesh
-          key={`node-${i}`}
-          ref={nodeMeshRefs[i]}
-          position={position}
-          scale={i === APEX_INDEX ? 1.4 : 1}
-        >
-          <icosahedronGeometry args={[FRAGMENT.nodeRadius, 1]} />
-          <meshBasicMaterial
-            ref={nodeMatRefs[i]}
-            color={
-              i === APEX_INDEX
-                ? FRAGMENT_VISUAL.apexColor
-                : FRAGMENT_VISUAL.nodeColor
-            }
+        {geom.edges.map((points, i) => (
+          <Line
+            key={`edge-${i}`}
+            ref={lineRefs[i]}
+            points={points}
+            color={FRAGMENT_VISUAL.edgeColor}
+            lineWidth={FRAGMENT_VISUAL.edgeWidth}
             transparent
             opacity={0}
             depthWrite={false}
             depthTest={false}
           />
-        </mesh>
-      ))}
-    </group>
+        ))}
+
+        {geom.nodes.map((position, i) => (
+          <mesh
+            key={`node-${i}`}
+            ref={nodeMeshRefs[i]}
+            position={position}
+            scale={i === APEX_INDEX ? 1.4 : 1}
+          >
+            <icosahedronGeometry args={[FRAGMENT.nodeRadius, 1]} />
+            <meshBasicMaterial
+              ref={nodeMatRefs[i]}
+              color={
+                i === APEX_INDEX
+                  ? FRAGMENT_VISUAL.apexColor
+                  : FRAGMENT_VISUAL.nodeColor
+              }
+              transparent
+              opacity={0}
+              depthWrite={false}
+              depthTest={false}
+            />
+          </mesh>
+        ))}
+      </group>
+    </>
   );
 }

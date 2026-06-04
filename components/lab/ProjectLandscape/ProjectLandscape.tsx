@@ -5,14 +5,12 @@ import { useRouter } from "next/navigation";
 import { Canvas } from "@react-three/fiber";
 import { cases } from "@/data/cases";
 import { CAMERA, COLORS, FOG } from "@/components/lab/TerrainMesh/config";
-import { useScrollDriver } from "@/components/lab/ScrollCamera/useScrollDriver";
 import LandscapeScene from "./LandscapeScene";
 import { ProjectCard } from "./ProjectCard";
 import {
   FRAGMENT_SLOTS,
   INITIAL_ACTIVE_DELAY,
   INITIAL_ACTIVE_SLUG,
-  SCROLL_VH,
   SLIDESHOW,
 } from "./config";
 
@@ -22,18 +20,14 @@ type Direction = "left" | "right" | null;
 const MOBILE_BREAKPOINT = "(max-width: 767px)";
 
 /**
- * Paisagem Digital — orquestrador.
+ * Paisagem Digital — orquestrador (vista fixa).
  *
- * 3 fragmentos triangulares sobre o terreno, cada um um case. Auto-rotaciona
- * entre eles (release-on-interact) e expõe card flutuante (desktop) ou
- * bottom sheet (mobile). Direção do slide do card bate com posição espacial.
+ * 3 fragmentos triangulares sobre o terreno, todos visíveis ao mesmo tempo.
+ * Slideshow auto-rotativo destaca um por vez (release-on-interact). Card
+ * flutuante (desktop) ou bottom sheet (mobile) acompanha o ativo. Sem scroll
+ * interno, sem pan de câmera — narrativa é puramente via slideshow.
  */
 export default function ProjectLandscape() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const progress = useRef(0);
-
-  const [, setStarted] = useState(false);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [screenPos, setScreenPos] = useState<ScreenPos>(null);
   const [released, setReleased] = useState(false);
@@ -42,15 +36,11 @@ export default function ProjectLandscape() {
 
   const router = useRouter();
 
-  useScrollDriver(wrapperRef, contentRef, progress, setStarted);
-
-  // Ordem visual horizontal dos fragmentos (left → center → right).
   const orderedSlots = useMemo(
     () => [...FRAGMENT_SLOTS].sort((a, b) => a.x - b.x),
     [],
   );
 
-  // Detecta viewport mobile.
   useEffect(() => {
     const mql = window.matchMedia(MOBILE_BREAKPOINT);
     const apply = () => setIsMobile(mql.matches);
@@ -59,7 +49,6 @@ export default function ProjectLandscape() {
     return () => mql.removeEventListener("change", apply);
   }, []);
 
-  // Auto-ativa o fragmento inicial pouco depois da Paisagem entrar.
   useEffect(() => {
     const timer = setTimeout(() => {
       setActiveSlug((prev) => prev ?? INITIAL_ACTIVE_SLUG);
@@ -67,7 +56,6 @@ export default function ProjectLandscape() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Slideshow auto-rotativo — roda até a primeira interação real do usuário.
   useEffect(() => {
     if (released) return;
     const reduceMotion =
@@ -87,7 +75,6 @@ export default function ProjectLandscape() {
     return () => clearInterval(interval);
   }, [released, orderedSlots]);
 
-  // Calcula direção da transição baseado no delta de slot.x.
   const prevSlugRef = useRef<string | null>(null);
   useEffect(() => {
     if (!activeSlug) return;
@@ -103,7 +90,6 @@ export default function ProjectLandscape() {
   }, [activeSlug]);
 
   const handleHover = useCallback((slug: string | null) => {
-    // Hover real = "tomou controle". Pausa slideshow em definitivo.
     if (slug !== null) setReleased(true);
     setActiveSlug((prev) => {
       if (slug === null && prev !== null) return prev;
@@ -140,43 +126,31 @@ export default function ProjectLandscape() {
       : null;
 
   return (
-    <div
-      ref={wrapperRef}
-      className="absolute inset-0 overflow-y-auto overscroll-contain"
-    >
-      <div
-        ref={contentRef}
-        className="relative w-full"
-        style={{ height: `${SCROLL_VH}vh` }}
+    <div className="absolute inset-0 overflow-hidden">
+      <Canvas
+        frameloop="always"
+        gl={{ antialias: true, alpha: false }}
+        dpr={[1, 2]}
+        camera={{ position: [...CAMERA.position], fov: CAMERA.fov }}
+        style={{ background: COLORS.background }}
       >
-        <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
-          <Canvas
-            frameloop="always"
-            gl={{ antialias: true, alpha: false }}
-            dpr={[1, 2]}
-            camera={{ position: [...CAMERA.position], fov: CAMERA.fov }}
-            style={{ background: COLORS.background }}
-          >
-            <fog attach="fog" args={[FOG.color, FOG.near, FOG.far]} />
-            <LandscapeScene
-              progress={progress}
-              activeSlug={activeSlug}
-              onHover={handleHover}
-              onClick={handleClick}
-              onScreenPosition={handleScreenPosition}
-            />
-          </Canvas>
+        <fog attach="fog" args={[FOG.color, FOG.near, FOG.far]} />
+        <LandscapeScene
+          activeSlug={activeSlug}
+          onHover={handleHover}
+          onClick={handleClick}
+          onScreenPosition={handleScreenPosition}
+        />
+      </Canvas>
 
-          <ProjectCard
-            caseProject={activeCase}
-            pos={screenPos}
-            isMobile={isMobile}
-            direction={direction}
-            activeSlug={activeSlug}
-            onSelectSlide={handleSelectSlide}
-          />
-        </div>
-      </div>
+      <ProjectCard
+        caseProject={activeCase}
+        pos={screenPos}
+        isMobile={isMobile}
+        direction={direction}
+        activeSlug={activeSlug}
+        onSelectSlide={handleSelectSlide}
+      />
     </div>
   );
 }

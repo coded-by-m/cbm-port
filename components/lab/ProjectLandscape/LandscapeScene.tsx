@@ -1,27 +1,23 @@
 "use client";
 
-import { type MutableRefObject } from "react";
 import TerrainScene from "@/components/lab/TerrainMesh/TerrainScene";
 import ProjectFragment from "./ProjectFragment";
 import NetworkLine from "./NetworkLine";
-import { useProjectScrollCamera } from "./useProjectScrollCamera";
 import { FRAGMENT_SLOTS } from "./config";
 
 /**
- * Cena 3D da Paisagem Digital de Projetos.
+ * Cena 3D da Paisagem Digital de Projetos — vista fixa.
  *
- * Renderiza o terreno único + N fragmentos (um por case) + linha de rede
- * conectando os apexes + câmera dirigida pelo scroll. Eventos de hover/click
- * dos fragmentos sobem pro orquestrador via props.
+ * Terreno + 3 fragmentos + linha de rede. Câmera não se move (controlada pelo
+ * Canvas no orquestrador). Slideshow muda apenas o `activeSlug`; ativos
+ * avançam em z + cor; inativos recuam pra cor do terreno.
  */
 export default function LandscapeScene({
-  progress,
   activeSlug,
   onHover,
   onClick,
   onScreenPosition,
 }: {
-  progress: MutableRefObject<number>;
   activeSlug: string | null;
   onHover: (slug: string | null) => void;
   onClick: (slug: string) => void;
@@ -30,8 +26,6 @@ export default function LandscapeScene({
     pos: { x: number; y: number; visible: boolean } | null,
   ) => void;
 }) {
-  useProjectScrollCamera(progress);
-
   const anyActive = activeSlug !== null;
 
   return (

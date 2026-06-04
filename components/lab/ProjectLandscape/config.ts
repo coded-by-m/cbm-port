@@ -3,12 +3,13 @@ import { LAYERS } from "@/components/lab/TerrainMesh/config";
 /**
  * Posição e escala dos 3 fragmentos sobre o terreno.
  *
- * Layout em **arco de profundidade**: central na frente (z=+1.5, escala 1.4×)
- * e laterais ao fundo (z=-2, escala 1.0×). Quando a câmera passa pelo centro,
- * o fragmento ali aparece com presença visivelmente maior — destaque natural.
+ * Vista única, fixa. Central em x=0 z=0 (escala 2.6); laterais em x=±3 z=-1.5
+ * (escala 2.4). Os 3 cabem simultaneamente no viewport com FOV=42° em z=15.
+ * O leve recuo em z + scale menor dos laterais cria profundidade sem precisar
+ * pan de câmera.
  */
 export interface FragmentSlot {
-  /** Índice estável (0..N-1) usado para sincronizar com a câmera de scroll. */
+  /** Índice estável (0..N-1) usado para ordenação. */
   index: number;
   x: number;
   z: number;
@@ -21,9 +22,9 @@ export interface FragmentSlot {
 }
 
 export const FRAGMENT_SLOTS: FragmentSlot[] = [
-  { index: 0, x: -7, z: 0, scale: 2.6, seed: 17, slug: "machado-plataformas" },
+  { index: 0, x: -3, z: -1.5, scale: 2.4, seed: 17, slug: "machado-plataformas" },
   { index: 1, x: 0, z: 0, scale: 2.6, seed: 137, slug: "estudio-mendes" },
-  { index: 2, x: 7, z: 0, scale: 2.6, seed: 211, slug: "rota-clinica" },
+  { index: 2, x: 3, z: -1.5, scale: 2.4, seed: 211, slug: "rota-clinica" },
 ];
 
 /** Slug do fragmento que abre automaticamente quando a Paisagem entra. */
@@ -35,61 +36,76 @@ export const INITIAL_ACTIVE_DELAY = 1000;
 /**
  * Override visual dos fragmentos especificamente na Paisagem (vs Lab).
  *
- * Os valores em `lab/ProjectFragments/config.ts` foram tunados pra um
- * cenário com 9 fragmentos pequenos descobertos por exploração. Na
- * Paisagem temos apenas 3 e a câmera fica mais longe — então precisamos
- * de muito mais contraste e presença para o fragmento ler como "obra".
+ * Bumped opacities para separar do terreno (mesma técnica wireframe, mesma cor
+ * base — sem contraste, malhas se confundiam). Inativos puxam pra cor do
+ * terreno via lerp de cor (não só opacity).
  */
 export const FRAGMENT_VISUAL = {
   edgeColor: "#F5F2ED",
-  edgeNormalOpacity: 0.55,
+  edgeNormalOpacity: 0.85,
   edgeHighlightOpacity: 1.0,
-  edgeWidth: 1.8,
+  edgeWidth: 2.2,
   nodeColor: "#F5F2ED",
-  nodeNormalOpacity: 0.7,
+  nodeNormalOpacity: 0.95,
   nodeHighlightOpacity: 1.0,
   apexColor: "#FB3640",
-  /** Bump extra do apex no hover — virou a "cabeça" do fragmento. */
+  /** Cor pra qual edges/nodes de inativos puxam (tom de meio do terreno). */
+  dimColor: "#6b7a72",
+  /** Bump extra do apex no hover. */
   apexHighlightScale: 0.45,
-  /** Escala adicional aplicada ao destaque (multiplicador local). */
+  /** Escala adicional aplicada ao destaque. */
   highlightScale: 1.18,
-  /** Elevação adicional sobre o terreno (compensa a escala maior). */
+  /** Elevação sobre o terreno. */
   surfaceLift: 0.4,
   highlightLift: 0.18,
-  /** Multiplicador aplicado às opacidades quando há outro fragmento ativo. */
-  dimMultiplier: 0.55,
-  /** Velocidade do lerp do dim (mesma escala do highlight). */
+  /** Avanço em z (em direção à câmera) do ativo. */
+  activePushZ: 0.8,
+  /** Multiplicador de opacidade aplicado a inativos quando há ativo. */
+  dimMultiplier: 0.3,
+  /** Velocidade do lerp do dim. */
   dimLerpSpeed: 4,
 } as const;
 
 /**
  * Geometria da torre triangular ascendente.
  *
- * 3 níveis empilhados: base (3 nós) → meio rotacionado 60° (3 nós) → apex.
- * Total 7 nós, 15 arestas (3 base + 3 meio + 6 base↔meio em estrela + 3 meio↔apex).
+ * 3 níveis: base (3 nós) → meio rotacionado 60° (3 nós) → apex.
  */
 export const TOWER = {
   baseRadius: 0.34,
   midRadius: 0.22,
-  midHeight: 0.34,
-  apexHeight: 0.75,
+  midHeight: 0.4,
+  apexHeight: 0.95,
 } as const;
 
 /** Index do apex no array de nós retornado por `buildTower`. */
 export const APEX_INDEX = 6;
 
-/**
- * Linha de rede ligando os 3 apexes ao longo do horizonte.
- *
- * Lê o portfólio como sistema, não coleção. Segmentos adjacentes ao fragmento
- * ativo intensificam; os demais ficam discretos.
- */
+/** Linha de rede ligando os 3 apexes ao longo do horizonte. */
 export const NETWORK_LINE = {
   color: "#F5F2ED",
   baseOpacity: 0.1,
   activeOpacity: 0.55,
   lineWidth: 1.2,
   lerpSpeed: 4,
+} as const;
+
+/** Base ring discreto sob cada fragmento, ancorando ao terreno. */
+export const BASE_RING = {
+  pointCount: 12,
+  radiusFactor: 0.85,
+  color: "#F5F2ED",
+  baseOpacity: 0.25,
+  activeOpacity: 0.55,
+  pointSize: 0.04,
+  lerpSpeed: 4,
+} as const;
+
+/** Halo radial sutil atrás do fragmento ativo. */
+export const ACTIVE_GLOW = {
+  color: "#F5F2ED",
+  peakOpacity: 0.18,
+  sizeFactor: 2.4,
 } as const;
 
 /** Tempos do slideshow auto-rotativo. */
@@ -103,39 +119,13 @@ export const SLIDESHOW = {
 /** Layer do terreno que hospeda os fragmentos. */
 export const HOST_LAYER = LAYERS[0];
 
-/**
- * Keyframes da câmera de scroll.
- *
- * Em vez de pan linear em X, a câmera percorre 3 poses — uma por fragmento.
- * `useProjectScrollCamera` interpola com smoothstep entre cada par adjacente,
- * dando a sensação de "câmera respirando entre projetos".
- */
-export interface CameraKeyframe {
-  /** Progresso de scroll (0..1) em que essa pose é atingida. */
-  p: number;
-  pos: readonly [number, number, number];
-  tgt: readonly [number, number, number];
-}
-
-export const CAMERA_KEYFRAMES: CameraKeyframe[] = [
-  { p: 0.0, pos: [-4, 5.2, 13], tgt: [-7, -0.5, 0] },
-  { p: 0.5, pos: [0, 5.2, 13], tgt: [0, -0.5, 0] },
-  { p: 1.0, pos: [4, 5.2, 13], tgt: [7, -0.5, 0] },
-];
-
-/** Altura de scroll dedicada ao pan (em vh). */
-export const SCROLL_VH = 200;
-
 /** Card HTML ancorado ao fragmento ativo. */
 export const CARD = {
   offsetX: 32,
   offsetY: 28,
   margin: 24,
-  /** Largura desktop do card (px). */
   widthDesktop: 480,
-  /** Altura aproximada (px) — usado pra clamp. */
   heightDesktop: 280,
-  /** Duração do fade in/out do card (s). */
   fadeInDuration: 0.35,
   fadeOutDuration: 0.2,
 } as const;
