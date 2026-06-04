@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { type MutableRefObject, useMemo, useRef } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
 import {
   BoxGeometry,
@@ -19,7 +19,24 @@ const TWO_PI = Math.PI * 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /* Expansion: cada scene aplica direto no seu useFrame via activeRef
-   pattern. Targets: scale 1.0 → 1.4, rotX 0 → 0.3 rad, posY 0 → 0.3. */
+   pattern. Targets: scale 1.0 → 1.18 (sutil pra não cortar), rotX 0 → 0.25
+   rad, posY 0 → 0.2. Camera pullback z 6 → 7.2 compensa o crescimento. */
+
+/** Camera pullback usando activeRef pra fresh closure. */
+function CameraPullback({
+  activeRef,
+}: {
+  activeRef: MutableRefObject<boolean>;
+}) {
+  const camera = useThree((s) => s.camera);
+  const t = useRef(0);
+  useFrame((_, delta) => {
+    const target = activeRef.current ? 1 : 0;
+    t.current = lerp(t.current, target, Math.min(1, delta * 2.5));
+    camera.position.z = lerp(6, 7.2, t.current);
+  });
+  return null;
+}
 
 /**
  * Mini-scene 3D dentro do card de serviço.
@@ -128,9 +145,9 @@ function LandingScene({ active }: { active: boolean }) {
     expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
     const w = expansionRef.current;
     if (w) {
-      w.scale.setScalar(1 + expT.current * 0.4);
-      w.rotation.x = expT.current * 0.3;
-      w.position.y = expT.current * 0.3;
+      w.scale.setScalar(1 + expT.current * 0.18);
+      w.rotation.x = expT.current * 0.25;
+      w.position.y = expT.current * 0.2;
     }
 
     // Calcula em qual fase estamos do ciclo.
@@ -219,6 +236,7 @@ function LandingScene({ active }: { active: boolean }) {
 
   return (
     <>
+      <CameraPullback activeRef={activeRef} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.85}>
           {/* Frame externo da página */}
@@ -367,9 +385,9 @@ function InstitutionalScene({ active }: { active: boolean }) {
     expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
     const w = expansionRef.current;
     if (w) {
-      w.scale.setScalar(1 + expT.current * 0.4);
-      w.rotation.x = expT.current * 0.3;
-      w.position.y = expT.current * 0.3;
+      w.scale.setScalar(1 + expT.current * 0.18);
+      w.rotation.x = expT.current * 0.25;
+      w.position.y = expT.current * 0.2;
     }
 
     particles.forEach((p, i) => {
@@ -390,6 +408,7 @@ function InstitutionalScene({ active }: { active: boolean }) {
 
   return (
     <>
+      <CameraPullback activeRef={activeRef} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.8}>
           {floors.map((f, i) => (
@@ -513,9 +532,9 @@ function AppScene({ active }: { active: boolean }) {
     expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
     const w = expansionRef.current;
     if (w) {
-      w.scale.setScalar(1 + expT.current * 0.4);
-      w.rotation.x = expT.current * 0.3;
-      w.position.y = expT.current * 0.3;
+      w.scale.setScalar(1 + expT.current * 0.18);
+      w.rotation.x = expT.current * 0.25;
+      w.position.y = expT.current * 0.2;
     }
 
     nodes.forEach((n, i) => {
@@ -529,6 +548,7 @@ function AppScene({ active }: { active: boolean }) {
 
   return (
     <>
+      <CameraPullback activeRef={activeRef} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.95}>
           {tubes.map((g, i) => (
