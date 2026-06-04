@@ -19,12 +19,14 @@ import {
 import { buildTower } from "./towerGeometry";
 import FragmentBaseRing from "./FragmentBaseRing";
 import FragmentGlow from "./FragmentGlow";
-import FragmentBeam from "./FragmentBeam";
-import FragmentLabel from "./FragmentLabel";
+import FragmentAntenna from "./FragmentAntenna";
+import FragmentEdgePulse from "./FragmentEdgePulse";
+import FragmentRoots from "./FragmentRoots";
+import FragmentSonar from "./FragmentSonar";
+import FragmentFloor from "./FragmentFloor";
 import {
   APEX_INDEX,
   APEX_PULSE,
-  FRAGMENT_LABEL,
   FRAGMENT_VISUAL,
   HOST_LAYER,
   STATUS_VISUAL,
@@ -59,9 +61,6 @@ export default function ProjectFragment({
   const reveal = useFragmentBuild(0);
 
   const groupRef = useRef<Group>(null);
-  // Anchor group: mesma posição Y do groupRef (acompanha surface+bob) mas sem
-  // rotação nem scale. Carrega beam + label em unidades world reais.
-  const anchorRef = useRef<Group>(null);
   const lineRefs = useMemo(
     () => geom.edges.map(() => createRef<Line2>()),
     [geom],
@@ -125,28 +124,21 @@ export default function ProjectFragment({
       Math.sin(t * (TWO_PI / FRAGMENT_MOTION.bobPeriod) + slot.seed) *
       FRAGMENT_MOTION.bobAmplitude;
 
-    const groupY =
-      surfaceY +
-      FRAGMENT_VISUAL.surfaceLift +
-      bob +
-      FRAGMENT_VISUAL.highlightLift * h;
-    const groupZ = slot.z + FRAGMENT_VISUAL.activePushZ * h;
-
     const group = groupRef.current;
     if (group) {
-      group.position.set(slot.x, groupY, groupZ);
+      group.position.set(
+        slot.x,
+        surfaceY +
+          FRAGMENT_VISUAL.surfaceLift +
+          bob +
+          FRAGMENT_VISUAL.highlightLift * h,
+        slot.z + FRAGMENT_VISUAL.activePushZ * h,
+      );
       const presence = slot.scale;
       group.scale.setScalar(
         presence * (1 + (FRAGMENT_VISUAL.highlightScale - 1) * h) * r,
       );
       group.rotation.y = t * (TWO_PI / FRAGMENT_MOTION.yawPeriod);
-    }
-
-    // Anchor segue posição Y/Z do group mas sem rotação nem scale —
-    // beam + label permanecem em unidades world reais.
-    const anchor = anchorRef.current;
-    if (anchor) {
-      anchor.position.set(slot.x, groupY, groupZ);
     }
 
     const edgeOpacity =
@@ -215,20 +207,24 @@ export default function ProjectFragment({
   return (
     <>
       <FragmentBaseRing slot={slot} isActive={isActive} />
-      {/* Anchor group — segue surface+bob mas sem rotation/scale. Beam e
-          Label usam dimensões em unidades world reais (não escalam com fragmento). */}
-      <group ref={anchorRef} position={[slot.x, 0, slot.z]}>
-        <FragmentBeam isActive={isActive} baseY={geom.apex[1] * slot.scale} />
-        <FragmentLabel
-          index={slot.index}
-          isActive={isActive}
-          yPosition={geom.apex[1] * slot.scale + FRAGMENT_LABEL.yOffset}
-        />
-      </group>
-
       <group ref={groupRef} position={[slot.x, 0, slot.z]}>
         {/* Glow filho do group pra acompanhar position/scale do fragmento. */}
         <FragmentGlow isActive={isActive} size={TOWER.apexHeight} />
+
+        {/* Chão técnico (footprint transparente sob a torre). */}
+        <FragmentFloor geom={geom} isActive={isActive} />
+
+        {/* Antena 3D real saindo do apex (não sprite). */}
+        <FragmentAntenna isActive={isActive} baseY={geom.apex[1]} />
+
+        {/* Raízes descendo dos 3 nós da base. */}
+        <FragmentRoots geom={geom} isActive={isActive} />
+
+        {/* Pulso luminoso percorrendo as arestas em loop. */}
+        <FragmentEdgePulse geom={geom} isActive={isActive} />
+
+        {/* Sonar ao tornar-se ativo (wireframe expande). */}
+        <FragmentSonar geom={geom} isActive={isActive} />
 
         {/* Área de interação invisível. */}
         <mesh position={[0, geom.apex[1] * 0.5, 0]} {...handlers}>

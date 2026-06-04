@@ -172,29 +172,65 @@ export const APEX_PULSE = {
   activeAmplitude: 0.22,
 } as const;
 
-/** Feixe vertical de luz acima do apex (só quando ativo). */
-export const APEX_BEAM = {
-  /** Altura do feixe em unidades world (não escala com fragmento). */
-  height: 1.8,
-  /** Largura do sprite — fino, leitura de "agulha de sinal". */
-  width: 0.05,
-  /** Lerp do fade in/out. */
+/** Antena 3D vertical saindo do apex (linha real, sem sprite). */
+export const ANTENNA = {
+  /** Altura local (em coordenadas do group escalado). */
+  height: 0.6,
+  /** Largura da linha. */
+  lineWidth: 1.4,
+  /** Raio do nó no topo. */
+  topNodeRadius: 0.022,
+  color: "#F5F2ED",
+  baseOpacity: 0.4,
+  activeOpacity: 1.0,
   lerpSpeed: 4,
 } as const;
 
-/** Numeração técnica ao lado de cada fragmento. */
-export const FRAGMENT_LABEL = {
-  /** Tamanho da fonte em unidades world (não escala com fragmento). */
-  fontSize: 0.22,
-  /** Opacidade no estado normal — discreto, não compete com o fragmento. */
-  baseOpacity: 0.2,
-  /** Opacidade quando ativo. */
-  activeOpacity: 0.85,
-  /** Lerp da opacidade. */
+/** Pulso que percorre as arestas da torre. */
+export const EDGE_PULSE = {
+  /** Tempo (s) por aresta percorrida — total = pathSteps × timePerEdge. */
+  timePerEdge: 0.5,
+  /** Raio do ponto luminoso. */
+  radius: 0.045,
+  baseColor: "#F5F2ED",
+  activeColor: "#FB3640",
+  baseOpacity: 0.7,
+  activeOpacity: 1.0,
   lerpSpeed: 5,
-  /** Offset Y world em relação ao apex world (acima dele). */
-  yOffset: 0.45,
+} as const;
+
+/** Raízes que descem do fragmento pra dentro do terreno. */
+export const ROOTS = {
+  /** Profundidade local que as raízes descem. */
+  depth: 0.55,
+  lineWidth: 1.0,
+  bottomNodeRadius: 0.018,
   color: "#F5F2ED",
+  baseOpacity: 0.25,
+  activeOpacity: 0.55,
+  lerpSpeed: 4,
+} as const;
+
+/** Pulso sonar (wireframe que expande) ao tornar-se ativo. */
+export const SONAR = {
+  /** Duração total da expansão (s). */
+  duration: 0.8,
+  /** Scale final da expansão. */
+  finalScale: 2.0,
+  /** Opacidade inicial. */
+  startOpacity: 0.7,
+  lineWidth: 1.0,
+  color: "#F5F2ED",
+} as const;
+
+/** Chão técnico transparente sob o fragmento (footprint). */
+export const FLOOR = {
+  color: "#F5F2ED",
+  baseOpacity: 0.05,
+  activeOpacity: 0.12,
+  lerpSpeed: 4,
+  /** Y local (acima do terreno por uma fração pra evitar z-fighting). */
+  yOffset: 0.005,
 } as const;
 
 /** Modificadores visuais por status (publicado vs em breve). */
