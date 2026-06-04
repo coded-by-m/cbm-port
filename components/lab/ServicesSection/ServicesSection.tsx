@@ -66,6 +66,27 @@ export default function ServicesSection() {
     return () => obs.disconnect();
   }, []);
 
+  // Click fora dos cards fecha o expandido. Esc também.
+  useEffect(() => {
+    if (!expandedSlug) return;
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      if (!target.closest("[data-service-card]")) {
+        setExpandedSlug(null);
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setExpandedSlug(null);
+    };
+    document.addEventListener("click", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [expandedSlug]);
+
   return (
     <section
       data-cursor="triangle"

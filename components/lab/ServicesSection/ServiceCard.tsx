@@ -81,6 +81,7 @@ export default function ServiceCard({
   return (
     <div
       ref={wrapperRef}
+      data-service-card
       className={`relative border bg-[#0E1810] transition-all duration-500 ease-out ${
         expanded
           ? "scale-[1.02] border-[#F5F2ED]/80 opacity-100"
