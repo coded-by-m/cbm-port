@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useRef } from "react";
 import type { ServiceConfig } from "@/data/services";
 import ServiceMiniScene from "./ServiceMiniScene";
 import { useBorderDraw } from "./useBorderDraw";
@@ -9,9 +8,11 @@ import { useBorderDraw } from "./useBorderDraw";
 /**
  * Card individual de serviço.
  *
- * Dois estados: colapsado (compacto, ~420px alto) e expandido (~620px+ alto,
- * mostra deliverables + perfil + CTA mailto). Transição via GSAP. Border-draw
- * SVG ao entrar no viewport (stagger pelo `borderDelay` do orquestrador).
+ * Dois estados: colapsado (compacto) e expandido (mostra deliverables +
+ * perfil + CTA mailto). Toda a transição é CSS — sem GSAP nas dimensões:
+ *  - Expansão dos detalhes via grid-template-rows: 0fr ↔ 1fr (trick moderno)
+ *  - Scale + opacity via Tailwind classes condicionais
+ *  - Border-draw SVG na entrada do viewport (única animação JS)
  */
 export default function ServiceCard({
   service,
@@ -27,88 +28,24 @@ export default function ServiceCard({
   onToggle: () => void;
   borderDelay: number;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const detailsRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
 
   useBorderDraw(pathRef, { delay: borderDelay });
-
-  // Quando este card está inativo MAS outro está expandido: dim + shrink.
-  // Quando ESTE está expandido: leve scale up + opacity full.
-  // Quando nenhum expandido: estado neutro.
-  useEffect(() => {
-    const el = cardRef.current;
-    if (!el) return;
-    const reduceMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const dur = reduceMotion ? 0 : 0.5;
-
-    const isDimmed = someExpanded && !expanded;
-    const isHighlighted = expanded;
-
-    gsap.to(el, {
-      opacity: isDimmed ? 0.42 : 1,
-      scale: isHighlighted ? 1.02 : isDimmed ? 0.96 : 1,
-      duration: dur,
-      ease: "power2.out",
-    });
-  }, [expanded, someExpanded]);
-
-  // Anima a abertura/fechamento do detalhes via height: auto manual.
-  useEffect(() => {
-    const el = detailsRef.current;
-    if (!el) return;
-    const reduceMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    gsap.killTweensOf(el);
-
-    if (expanded) {
-      // Mede altura natural e anima até ela.
-      gsap.set(el, { height: "auto" });
-      const targetHeight = el.offsetHeight;
-      gsap.fromTo(
-        el,
-        { height: 0, opacity: 0 },
-        {
-          height: targetHeight,
-          opacity: 1,
-          duration: reduceMotion ? 0 : 0.55,
-          ease: "power2.out",
-          onComplete: () => {
-            // Após anim, libera pra height auto pra acomodar conteúdo dinâmico.
-            gsap.set(el, { height: "auto" });
-          },
-        },
-      );
-    } else {
-      const currentHeight = el.offsetHeight;
-      gsap.fromTo(
-        el,
-        { height: currentHeight, opacity: 1 },
-        {
-          height: 0,
-          opacity: 0,
-          duration: reduceMotion ? 0 : 0.4,
-          ease: "power2.in",
-        },
-      );
-    }
-  }, [expanded]);
 
   const mailHref = `mailto:contato.codedbym@gmail.com?subject=${encodeURIComponent(
     service.mailSubject,
   )}`;
 
+  const isDimmed = someExpanded && !expanded;
+
   return (
     <div
-      ref={cardRef}
-      className={`relative border bg-[#0E1810] transition-colors duration-500 ${
+      className={`relative border bg-[#0E1810] transition-all duration-500 ease-out ${
         expanded
-          ? "border-[#F5F2ED]/80"
-          : "border-[#1a2a1e] hover:border-[#F5F2ED]/35"
+          ? "scale-[1.02] border-[#F5F2ED]/80 opacity-100"
+          : isDimmed
+            ? "scale-[0.96] border-[#1a2a1e] opacity-40"
+            : "scale-100 border-[#1a2a1e] opacity-100 hover:border-[#F5F2ED]/35"
       }`}
       style={{ transformOrigin: "center center" }}
     >
@@ -187,68 +124,74 @@ export default function ServiceCard({
         </p>
       </button>
 
-      {/* Detalhes expandidos */}
+      {/* Detalhes expandidos — grid-template-rows trick: animação suave
+          de 0fr → 1fr sem precisar medir altura. */}
       <div
-        ref={detailsRef}
         id={`service-${service.slug}-details`}
         role="region"
         aria-label={`Detalhes do serviço ${service.title}`}
-        className="overflow-hidden"
-        style={{ height: 0, opacity: 0 }}
+        className="grid transition-[grid-template-rows] duration-500 ease-out"
+        style={{ gridTemplateRows: expanded ? "1fr" : "0fr" }}
       >
-        <div className="border-t border-[#F5F2ED]/10 px-6 pb-6 pt-5">
-          {/* INCLUI */}
-          <p
-            className="text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/55"
-            style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+        <div className="overflow-hidden">
+          <div
+            className={`border-t border-[#F5F2ED]/10 px-6 pb-6 pt-5 transition-opacity duration-300 ${
+              expanded ? "opacity-100 delay-200" : "opacity-0"
+            }`}
           >
-            Inclui
-          </p>
-          <ul
-            className="mt-3 space-y-1.5 text-[0.85rem] leading-relaxed text-[#F5F2ED]/80"
-            style={{ fontFamily: '"Satoshi", sans-serif' }}
-          >
-            {service.includes.map((item) => (
-              <li key={item} className="flex items-start gap-2">
-                <span aria-hidden className="mt-2 text-[#FB3640]">
-                  •
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-
-          {/* INDICADO PRA */}
-          <p
-            className="mt-5 text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/55"
-            style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
-          >
-            Indicado pra
-          </p>
-          <p
-            className="mt-2 text-[0.85rem] leading-relaxed text-[#F5F2ED]/75"
-            style={{ fontFamily: '"Satoshi", sans-serif' }}
-          >
-            {service.indicatedFor}
-          </p>
-
-          {/* CTA mailto */}
-          <a
-            href={mailHref}
-            className="group/cta mt-6 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/40 px-5 py-3 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED] transition-colors hover:border-[#F5F2ED] hover:bg-[#F5F2ED]/5 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[#F5F2ED]"
-          >
-            Conversar sobre este serviço
-            <svg
-              aria-hidden
-              width="11"
-              height="11"
-              viewBox="0 0 16 16"
-              fill="#FB3640"
-              className="inline-block group-hover/cta:animate-[spin_1.4s_linear_infinite]"
+            {/* INCLUI */}
+            <p
+              className="text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/55"
+              style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
             >
-              <polygon points="3,2 14,8 3,14" />
-            </svg>
-          </a>
+              Inclui
+            </p>
+            <ul
+              className="mt-3 space-y-1.5 text-[0.85rem] leading-relaxed text-[#F5F2ED]/80"
+              style={{ fontFamily: '"Satoshi", sans-serif' }}
+            >
+              {service.includes.map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <span aria-hidden className="mt-2 text-[#FB3640]">
+                    •
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* INDICADO PRA */}
+            <p
+              className="mt-5 text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/55"
+              style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+            >
+              Indicado pra
+            </p>
+            <p
+              className="mt-2 text-[0.85rem] leading-relaxed text-[#F5F2ED]/75"
+              style={{ fontFamily: '"Satoshi", sans-serif' }}
+            >
+              {service.indicatedFor}
+            </p>
+
+            {/* CTA mailto */}
+            <a
+              href={mailHref}
+              className="group/cta mt-6 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/40 px-5 py-3 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED] transition-colors hover:border-[#F5F2ED] hover:bg-[#F5F2ED]/5 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[#F5F2ED]"
+            >
+              Conversar sobre este serviço
+              <svg
+                aria-hidden
+                width="11"
+                height="11"
+                viewBox="0 0 16 16"
+                fill="#FB3640"
+                className="inline-block group-hover/cta:animate-[spin_1.4s_linear_infinite]"
+              >
+                <polygon points="3,2 14,8 3,14" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>
