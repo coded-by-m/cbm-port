@@ -93,17 +93,27 @@ export default function ServicesSection() {
       className="absolute inset-0 overflow-y-auto bg-[#000F08] py-24 sm:py-32"
       aria-labelledby="services-headline"
     >
-      {/* Background terrain mesh — bem transparente */}
+      {/* Background terrain mesh */}
       <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.22]">
         <TerrainBackground />
       </div>
 
+      {/* Vignette overlay — escurece bordas top e bottom pra dar profundidade */}
+      <div
+        className="pointer-events-none fixed inset-0 z-[1]"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(0,15,8,0.85) 0%, rgba(0,15,8,0) 22%, rgba(0,15,8,0) 78%, rgba(0,15,8,0.9) 100%)",
+        }}
+        aria-hidden
+      />
+
       <div className="relative z-10 mx-auto max-w-[1280px] px-6 sm:px-10">
         {/* Header */}
         <div ref={headerRef}>
-          {/* Eyebrow com red bar */}
+          {/* Eyebrow: número da seção + red bar + label */}
           <div
-            className="flex items-center gap-3 border-l-[1.5px] border-[#FB3640] pl-3"
+            className="flex items-center gap-4"
             style={{
               opacity: headerEntered ? 1 : 0,
               transform: headerEntered ? "translateY(0)" : "translateY(10px)",
@@ -111,8 +121,15 @@ export default function ServicesSection() {
               transitionDelay: "0ms",
             }}
           >
+            <span
+              className="text-[0.65rem] uppercase tracking-[0.35em] text-[#F5F2ED]/35"
+              style={{ fontFamily: '"Panchang", sans-serif', fontWeight: 500 }}
+            >
+              05
+            </span>
+            <span className="h-[1px] w-12 bg-[#FB3640]/70" aria-hidden />
             <p
-              className="text-[0.6rem] uppercase tracking-[0.4em] text-[#F5F2ED]/50"
+              className="text-[0.6rem] uppercase tracking-[0.4em] text-[#F5F2ED]/55"
               style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
             >
               Serviços
@@ -122,11 +139,11 @@ export default function ServicesSection() {
           {/* Headline */}
           <h2
             id="services-headline"
-            className="mt-5 text-[clamp(2rem,4vw,3.25rem)] leading-tight text-[#F5F2ED]"
+            className="mt-7 text-[clamp(2.2rem,4.5vw,3.6rem)] leading-[1.05] text-[#F5F2ED]"
             style={{
               fontFamily: '"Panchang", sans-serif',
               fontWeight: 700,
-              letterSpacing: "-0.02em",
+              letterSpacing: "-0.025em",
               opacity: headerEntered ? 1 : 0,
               transform: headerEntered ? "translateY(0)" : "translateY(14px)",
               transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
@@ -136,20 +153,27 @@ export default function ServicesSection() {
             Construímos presença digital.
           </h2>
 
-          {/* Sub */}
-          <p
-            className="mt-3 text-[clamp(1rem,1.4vw,1.25rem)] leading-relaxed text-[#F5F2ED]/60"
+          {/* Sub + decorative trail */}
+          <div
+            className="mt-5 flex items-center gap-5"
             style={{
-              fontFamily: '"Satoshi", sans-serif',
-              fontWeight: 300,
               opacity: headerEntered ? 1 : 0,
               transform: headerEntered ? "translateY(0)" : "translateY(12px)",
               transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
               transitionDelay: "240ms",
             }}
           >
-            Para empresas que levam a sério.
-          </p>
+            <p
+              className="max-w-xl text-[clamp(1rem,1.4vw,1.2rem)] leading-relaxed text-[#F5F2ED]/65"
+              style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 300 }}
+            >
+              Para empresas que levam a sério.
+            </p>
+            <span
+              className="hidden h-[1px] flex-1 bg-[#F5F2ED]/10 sm:block"
+              aria-hidden
+            />
+          </div>
         </div>
 
         {/* Cards row — desktop flex */}

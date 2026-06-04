@@ -126,36 +126,39 @@ export default function ServiceCard({
         onClick={onToggle}
         aria-expanded={expanded}
         aria-controls={`service-${service.slug}-details`}
-        className="relative block w-full p-6 text-left focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[-2px] focus-visible:outline-[#F5F2ED]"
+        className="relative block w-full p-7 text-left focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[-2px] focus-visible:outline-[#F5F2ED]"
       >
-        {/* Tratamento da numeração: red vertical line + SERVIÇO eyebrow + 01 */}
-        <div className="flex items-center gap-3 border-l-[1.5px] border-[#FB3640] pl-3">
-          <p
-            className="text-[0.5rem] uppercase tracking-[0.4em] text-[#F5F2ED]/40"
-            style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
-          >
-            Serviço
-          </p>
-          <p
-            className="text-[0.7rem] uppercase tracking-[0.4em] text-[#F5F2ED]/65"
-            style={{ fontFamily: '"Panchang", sans-serif', fontWeight: 600 }}
-          >
-            {service.index}
-          </p>
+        {/* Numeração vertical: SERVIÇO eyebrow + número grande, red bar à esquerda */}
+        <div className="flex items-start gap-3">
+          <div className="mt-1 h-7 w-[1.5px] bg-[#FB3640]" aria-hidden />
+          <div className="flex flex-col gap-0.5">
+            <p
+              className="text-[0.5rem] uppercase tracking-[0.4em] text-[#F5F2ED]/35"
+              style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+            >
+              Serviço
+            </p>
+            <p
+              className="text-[0.95rem] leading-none text-[#F5F2ED]/80"
+              style={{ fontFamily: '"Panchang", sans-serif', fontWeight: 600 }}
+            >
+              {service.index}
+            </p>
+          </div>
         </div>
 
         {/* Mini canvas 3D */}
-        <div className="mt-5 h-[160px] w-full overflow-hidden">
+        <div className="mt-6 h-[170px] w-full overflow-hidden">
           <ServiceMiniScene variant={service.variant} active={expanded} />
         </div>
 
         {/* Título */}
         <h3
-          className="mt-4 text-[1.5rem] leading-tight text-[#F5F2ED]"
+          className="mt-5 text-[1.55rem] leading-[1.1] text-[#F5F2ED]"
           style={{
             fontFamily: '"Panchang", sans-serif',
             fontWeight: 700,
-            letterSpacing: "-0.01em",
+            letterSpacing: "-0.015em",
           }}
         >
           {service.title}
@@ -163,27 +166,32 @@ export default function ServiceCard({
 
         {/* Descrição teaser */}
         <p
-          className="mt-3 text-[0.85rem] leading-relaxed text-[#F5F2ED]/65"
+          className="mt-3 text-[0.88rem] leading-[1.65] text-[#F5F2ED]/65"
           style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 400 }}
         >
           {service.description}
         </p>
 
-        {/* CTA inline (colapsado) ou seta indicando expandido */}
-        <p className="mt-5 inline-flex items-center gap-3 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED]/85">
-          {expanded ? "Recolher" : "Saber mais"}
+        {/* CTA inline com mais peso */}
+        <div className="mt-6 flex items-center gap-3 border-t border-[#F5F2ED]/10 pt-4">
+          <p
+            className="flex-1 text-[0.6rem] uppercase tracking-[0.35em] text-[#F5F2ED]/90"
+            style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+          >
+            {expanded ? "Recolher" : "Saber mais"}
+          </p>
           <svg
             aria-hidden
-            width="11"
-            height="11"
+            width="12"
+            height="12"
             viewBox="0 0 16 16"
             fill="#FB3640"
-            className="inline-block transition-transform duration-300"
+            className="transition-transform duration-300"
             style={{ transform: expanded ? "rotate(-90deg)" : "rotate(0deg)" }}
           >
             <polygon points="3,2 14,8 3,14" />
           </svg>
-        </p>
+        </div>
       </button>
 
       {/* Detalhes expandidos — grid-template-rows trick */}
@@ -195,29 +203,33 @@ export default function ServiceCard({
         style={{ gridTemplateRows: expanded ? "1fr" : "0fr" }}
       >
         <div className="overflow-hidden">
-          <div className="border-t border-[#F5F2ED]/10 px-6 pb-6 pt-5">
+          <div className="border-t border-[#F5F2ED]/10 px-7 pb-7 pt-6">
             {/* INCLUI label */}
-            <p
-              className="text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/55"
+            <div
+              className="flex items-center gap-3"
               style={{
-                fontFamily: '"Satoshi", sans-serif',
-                fontWeight: 500,
                 opacity: expanded ? 1 : 0,
                 transform: expanded ? "translateY(0)" : "translateY(6px)",
                 transition: "opacity 0.4s ease-out, transform 0.4s ease-out",
                 transitionDelay: `${detailStagger(0)}ms`,
               }}
             >
-              Inclui
-            </p>
+              <span className="h-[1px] w-6 bg-[#FB3640]/80" aria-hidden />
+              <p
+                className="text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/65"
+                style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+              >
+                Inclui
+              </p>
+            </div>
             <ul
-              className="mt-3 space-y-1.5 text-[0.85rem] leading-relaxed text-[#F5F2ED]/80"
+              className="mt-4 space-y-2 text-[0.88rem] leading-[1.6] text-[#F5F2ED]/85"
               style={{ fontFamily: '"Satoshi", sans-serif' }}
             >
               {service.includes.map((item, i) => (
                 <li
                   key={item}
-                  className="flex items-start gap-2"
+                  className="flex items-start gap-3"
                   style={{
                     opacity: expanded ? 1 : 0,
                     transform: expanded ? "translateY(0)" : "translateY(6px)",
@@ -225,30 +237,52 @@ export default function ServiceCard({
                     transitionDelay: `${detailStagger(1 + i)}ms`,
                   }}
                 >
-                  <span aria-hidden className="mt-2 text-[#FB3640]">
-                    •
-                  </span>
+                  <svg
+                    aria-hidden
+                    width="8"
+                    height="8"
+                    viewBox="0 0 16 16"
+                    fill="#FB3640"
+                    className="mt-1.5 flex-shrink-0"
+                  >
+                    <polygon points="3,2 14,8 3,14" />
+                  </svg>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
 
-            {/* INDICADO PRA */}
-            <p
-              className="mt-5 text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/55"
+            {/* Separator entre INCLUI e INDICADO PRA */}
+            <div
+              className="my-6 h-[1px] w-full bg-[#F5F2ED]/8"
+              aria-hidden
               style={{
-                fontFamily: '"Satoshi", sans-serif',
-                fontWeight: 500,
+                opacity: expanded ? 1 : 0,
+                transition: "opacity 0.4s ease-out",
+                transitionDelay: `${detailStagger(1 + service.includes.length) - 30}ms`,
+              }}
+            />
+
+            {/* INDICADO PRA */}
+            <div
+              className="flex items-center gap-3"
+              style={{
                 opacity: expanded ? 1 : 0,
                 transform: expanded ? "translateY(0)" : "translateY(6px)",
                 transition: "opacity 0.4s ease-out, transform 0.4s ease-out",
                 transitionDelay: `${detailStagger(1 + service.includes.length)}ms`,
               }}
             >
-              Indicado pra
-            </p>
+              <span className="h-[1px] w-6 bg-[#FB3640]/80" aria-hidden />
+              <p
+                className="text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/65"
+                style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+              >
+                Indicado pra
+              </p>
+            </div>
             <p
-              className="mt-2 text-[0.85rem] leading-relaxed text-[#F5F2ED]/75"
+              className="mt-3 text-[0.88rem] leading-[1.65] text-[#F5F2ED]/80"
               style={{
                 fontFamily: '"Satoshi", sans-serif',
                 opacity: expanded ? 1 : 0,
@@ -260,11 +294,13 @@ export default function ServiceCard({
               {service.indicatedFor}
             </p>
 
-            {/* CTA mailto */}
+            {/* CTA mailto — peso visual maior */}
             <a
               href={mailHref}
-              className="group/cta mt-6 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/40 px-5 py-3 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED] transition-colors hover:border-[#F5F2ED] hover:bg-[#F5F2ED]/5 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[#F5F2ED]"
+              className="group/cta mt-7 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/50 bg-[#F5F2ED]/[0.02] px-6 py-3.5 text-[0.6rem] uppercase tracking-[0.35em] text-[#F5F2ED] transition-colors hover:border-[#FB3640] hover:bg-[#FB3640]/[0.06] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[#F5F2ED]"
               style={{
+                fontFamily: '"Satoshi", sans-serif',
+                fontWeight: 500,
                 opacity: expanded ? 1 : 0,
                 transform: expanded ? "translateY(0)" : "translateY(6px)",
                 transition:
@@ -275,8 +311,8 @@ export default function ServiceCard({
               Conversar sobre este serviço
               <svg
                 aria-hidden
-                width="11"
-                height="11"
+                width="12"
+                height="12"
                 viewBox="0 0 16 16"
                 fill="#FB3640"
                 className="inline-block group-hover/cta:animate-[spin_1.4s_linear_infinite]"
