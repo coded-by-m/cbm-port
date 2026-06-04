@@ -153,9 +153,10 @@ function LandingScene({ active }: { active: boolean }) {
     expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
     const w = expansionRef.current;
     if (w) {
-      w.scale.setScalar(1 + expT.current * 0.2);
-      w.rotation.x = expT.current * 0.4;
-      w.position.y = expT.current * 0.35;
+      // Valores conservadores pra não cortar — visível mas subtle
+      w.scale.setScalar(1 + expT.current * 0.1);
+      w.rotation.x = expT.current * 0.2;
+      w.position.y = expT.current * 0.08;
     }
 
     // Calcula em qual fase estamos do ciclo.
@@ -393,9 +394,10 @@ function InstitutionalScene({ active }: { active: boolean }) {
     expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
     const w = expansionRef.current;
     if (w) {
-      w.scale.setScalar(1 + expT.current * 0.2);
-      w.rotation.x = expT.current * 0.4;
-      w.position.y = expT.current * 0.35;
+      // Valores conservadores pra não cortar — visível mas subtle
+      w.scale.setScalar(1 + expT.current * 0.1);
+      w.rotation.x = expT.current * 0.2;
+      w.position.y = expT.current * 0.08;
     }
 
     particles.forEach((p, i) => {
@@ -416,8 +418,8 @@ function InstitutionalScene({ active }: { active: boolean }) {
 
   return (
     <>
-      {/* Tower é mais alta — câmera começa mais longe pra caber */}
-      <CameraPullback activeRef={activeRef} baseZ={7.5} activeZ={8.5} />
+      {/* Tower é mais alta — câmera mais distante pra caber */}
+      <CameraPullback activeRef={activeRef} baseZ={8} activeZ={8.5} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.85}>
           {floors.map((f, i) => (
@@ -541,9 +543,10 @@ function AppScene({ active }: { active: boolean }) {
     expT.current = lerp(expT.current, expTarget, Math.min(1, delta * 2.5));
     const w = expansionRef.current;
     if (w) {
-      w.scale.setScalar(1 + expT.current * 0.2);
-      w.rotation.x = expT.current * 0.4;
-      w.position.y = expT.current * 0.35;
+      // Valores conservadores pra não cortar — visível mas subtle
+      w.scale.setScalar(1 + expT.current * 0.1);
+      w.rotation.x = expT.current * 0.2;
+      w.position.y = expT.current * 0.08;
     }
 
     nodes.forEach((n, i) => {
@@ -557,7 +560,8 @@ function AppScene({ active }: { active: boolean }) {
 
   return (
     <>
-      <CameraPullback activeRef={activeRef} />
+      {/* App mind map: nós em 3D — câmera moderada pra mostrar profundidade */}
+      <CameraPullback activeRef={activeRef} baseZ={6.5} activeZ={7} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.95}>
           {tubes.map((g, i) => (
