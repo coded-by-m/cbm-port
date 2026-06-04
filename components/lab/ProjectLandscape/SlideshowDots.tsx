@@ -18,7 +18,11 @@ export default function SlideshowDots({
   activeSlug: string | null;
   onSelect: (slug: string) => void;
 }) {
-  const ordered = [...slots].sort((a, b) => a.x - b.x);
+  // Ordena por ângulo orbital pra coincidir com a posição visual dos fragmentos.
+  const TWO_PI = Math.PI * 2;
+  const angleOf = (s: { x: number; z: number }) =>
+    ((Math.atan2(s.x, s.z) % TWO_PI) + TWO_PI) % TWO_PI;
+  const ordered = [...slots].sort((a, b) => angleOf(a) - angleOf(b));
 
   return (
     <div className="flex items-center gap-2" aria-label="Projetos">

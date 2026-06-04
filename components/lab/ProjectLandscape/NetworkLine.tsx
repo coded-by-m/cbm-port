@@ -16,12 +16,11 @@ import {
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /**
- * Linha sutil ligando os 3 apexes ao longo do horizonte.
+ * Linha sutil ligando os apexes ao longo do horizonte.
  *
- * Segmentos adjacentes ao fragmento ativo brilham (`activeOpacity`); os
- * demais permanecem discretos (`baseOpacity`). Geometria estática (computada
- * uma vez via sampleHeight em t=0) — o bob é amplitude 0.02 e o efeito na
- * linha seria imperceptível.
+ * Modo orbital: ordena por ângulo e fecha o loop (último → primeiro) — anel
+ * de conexão que envolve todo o portfólio. Segmentos adjacentes ao fragmento
+ * ativo brilham; os demais permanecem discretos.
  */
 export default function NetworkLine({
   slots,
@@ -30,11 +29,13 @@ export default function NetworkLine({
   slots: FragmentSlot[];
   activeSlug: string | null;
 }) {
-  // Ordena por Z (mais perto → mais longe) — adjacência espacial no corredor.
-  const ordered = useMemo(
-    () => [...slots].sort((a, b) => b.z - a.z),
-    [slots],
-  );
+  // Ordena por ângulo orbital — adjacência espacial no anel.
+  const ordered = useMemo(() => {
+    const TWO_PI = Math.PI * 2;
+    const angleOf = (s: FragmentSlot) =>
+      ((Math.atan2(s.x, s.z) % TWO_PI) + TWO_PI) % TWO_PI;
+    return [...slots].sort((a, b) => angleOf(a) - angleOf(b));
+  }, [slots]);
 
   // Computa apex world position de cada slot uma única vez (em t=0).
   const apexPoints = useMemo(
@@ -49,17 +50,20 @@ export default function NetworkLine({
     [ordered],
   );
 
-  // Pares de pontos para cada segmento entre slots adjacentes.
+  // Anel fechado: N segmentos (último→primeiro inclusive).
   const segments = useMemo(
     () =>
-      ordered.slice(0, -1).map((slot, i) => ({
-        from: slot,
-        to: ordered[i + 1],
-        points: [apexPoints[i], apexPoints[i + 1]] as [
-          [number, number, number],
-          [number, number, number],
-        ],
-      })),
+      ordered.map((slot, i) => {
+        const nextIdx = (i + 1) % ordered.length;
+        return {
+          from: slot,
+          to: ordered[nextIdx],
+          points: [apexPoints[i], apexPoints[nextIdx]] as [
+            [number, number, number],
+            [number, number, number],
+          ],
+        };
+      }),
     [ordered, apexPoints],
   );
 

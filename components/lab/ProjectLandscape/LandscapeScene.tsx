@@ -4,28 +4,28 @@ import { type MutableRefObject } from "react";
 import TerrainScene from "@/components/lab/TerrainMesh/TerrainScene";
 import ProjectFragment from "./ProjectFragment";
 import NetworkLine from "./NetworkLine";
-import { useTunnelCamera } from "./useTunnelCamera";
+import { useOrbitCamera } from "./useOrbitCamera";
 import { FRAGMENT_SLOTS } from "./config";
 
 /**
- * Cena 3D da Paisagem Digital — modo tunnel.
+ * Cena 3D da Paisagem Digital — modo orbital.
  *
- * Terreno + 6 fragmentos distribuídos em Z + linha de rede + câmera dirigida
- * pelo scroll (linearmente, sem keyframes em arco). Active deriva da posição
- * Z da câmera lá em cima (no orquestrador) — aqui só renderizamos.
+ * Terreno + 6 fragmentos em círculo + linha de rede + câmera orbital
+ * dirigida pelo `angleRef` do orquestrador. Active deriva do ângulo da
+ * câmera lá em cima (rAF poll) — aqui só renderizamos.
  */
 export default function LandscapeScene({
-  progress,
+  angleRef,
   activeSlug,
   onHover,
   onClick,
 }: {
-  progress: MutableRefObject<number>;
+  angleRef: MutableRefObject<number>;
   activeSlug: string | null;
   onHover: (slug: string | null) => void;
   onClick: (slug: string) => void;
 }) {
-  useTunnelCamera(progress);
+  useOrbitCamera(angleRef);
 
   const anyActive = activeSlug !== null;
 

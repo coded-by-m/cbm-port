@@ -22,48 +22,62 @@ export interface FragmentSlot {
 }
 
 /**
- * Layout em corredor de profundidade ("tunnel").
+ * Layout orbital — 6 fragmentos distribuídos em círculo ao redor de um centro.
  *
- * 6 fragmentos distribuídos ao longo de Z (espaçamento 5 unidades), com leve
- * serpentina em X (±1.5) pra quebrar a leitura de fila. A câmera percorre
- * o eixo Z conforme o usuário scrolla.
- *
- * Mais próximo (z=-2) é o que aparece primeiro; mais distante (z=-27) é o
- * último alcançável. Scale uniforme — distância da câmera + fog fazem o
- * trabalho de hierarquia visual.
+ * Ângulos a cada 60° (0°, 60°, 120°, 180°, 240°, 300°). Câmera orbita ao redor
+ * do centro à distância `ORBIT.cameraRadius`, sempre olhando para o centro.
+ * Drag horizontal rotaciona a câmera; auto-rotate lento quando ocioso.
  */
+function ringSlot(
+  index: number,
+  scaleSlug: { scale: number; seed: number; slug: string },
+): FragmentSlot {
+  const angle = index * ((Math.PI * 2) / 6);
+  const r = 3.5;
+  return {
+    index,
+    x: Math.sin(angle) * r,
+    z: Math.cos(angle) * r,
+    scale: scaleSlug.scale,
+    seed: scaleSlug.seed,
+    slug: scaleSlug.slug,
+  };
+}
+
 export const FRAGMENT_SLOTS: FragmentSlot[] = [
-  { index: 0, x: 0, z: -2, scale: 2.4, seed: 17, slug: "machado-plataformas" },
-  { index: 1, x: 1.5, z: -7, scale: 2.4, seed: 137, slug: "estudio-mendes" },
-  { index: 2, x: -1.5, z: -12, scale: 2.4, seed: 211, slug: "rota-clinica" },
-  { index: 3, x: 1.5, z: -17, scale: 2.4, seed: 73, slug: "industrial-tba" },
-  { index: 4, x: -1.5, z: -22, scale: 2.4, seed: 191, slug: "ecommerce-tba" },
-  { index: 5, x: 0, z: -27, scale: 2.4, seed: 257, slug: "education-tba" },
+  ringSlot(0, { scale: 2.4, seed: 17, slug: "machado-plataformas" }),
+  ringSlot(1, { scale: 2.4, seed: 137, slug: "estudio-mendes" }),
+  ringSlot(2, { scale: 2.4, seed: 211, slug: "rota-clinica" }),
+  ringSlot(3, { scale: 2.4, seed: 73, slug: "industrial-tba" }),
+  ringSlot(4, { scale: 2.4, seed: 191, slug: "ecommerce-tba" }),
+  ringSlot(5, { scale: 2.4, seed: 257, slug: "education-tba" }),
 ];
 
 /** Slug do fragmento que abre automaticamente quando a Paisagem entra. */
 export const INITIAL_ACTIVE_SLUG = "machado-plataformas";
 
 /**
- * Câmera percorre Z conforme o scroll.
+ * Câmera orbital ao redor do centro do círculo de fragmentos.
  *
- * Movimento linear single-axis (sem keyframes em arco / sem pan X). Active
- * deriva da posição Z da câmera — não há slideshow paralelo que possa
- * conflitar.
+ * - Auto-rotate lento até primeira interação real
+ * - Drag horizontal do mouse / swipe touch → rotaciona manualmente
+ * - Click no dot do card → tween GSAP do ângulo até o fragmento alvo
  */
-export const TUNNEL = {
-  /** Z inicial da câmera (em frente ao primeiro fragmento). */
-  startZ: 4,
-  /** Z final (depois do último fragmento). */
-  endZ: -30,
-  /** Altura da câmera. */
+export const ORBIT = {
+  /** Raio da câmera ao redor do centro. */
+  cameraRadius: 11,
+  /** Altura Y da câmera. */
   cameraY: 4.5,
   /** Y do target (ligeiramente abaixo pra criar tilt down sutil). */
-  targetY: 0.5,
-  /** Distância à frente da câmera onde o target fica (look-ahead). */
-  lookAhead: 10,
-  /** Altura de scroll dedicada (em vh). */
-  scrollVh: 350,
+  targetY: 0.4,
+  /** Velocidade do auto-rotate (rad/seg) — ~24s pra dar uma volta. */
+  autoRotateSpeed: 0.26,
+  /** Sensibilidade do drag (rad por pixel). */
+  dragSensitivity: 0.006,
+  /** Duração do snap pra um fragmento (s). */
+  snapDuration: 0.8,
+  /** Ângulo inicial da câmera (rad). Aponta pro primeiro fragmento. */
+  initialAngle: 0,
 } as const;
 
 /** Delay (ms) antes de auto-ativar o fragmento inicial — dá tempo do flip assentar. */

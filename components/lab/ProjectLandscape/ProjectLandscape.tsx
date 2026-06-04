@@ -3,44 +3,64 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Canvas } from "@react-three/fiber";
+import gsap from "gsap";
 import { cases } from "@/data/cases";
 import { CAMERA, COLORS, FOG } from "@/components/lab/TerrainMesh/config";
-import { useScrollDriver } from "@/components/lab/ScrollCamera/useScrollDriver";
 import LandscapeScene from "./LandscapeScene";
 import { ProjectCard } from "./ProjectCard";
-import { FRAGMENT_SLOTS, TUNNEL } from "./config";
+import { FRAGMENT_SLOTS, ORBIT } from "./config";
 
 type Direction = "left" | "right" | null;
 
 const MOBILE_BREAKPOINT = "(max-width: 767px)";
+const TWO_PI = Math.PI * 2;
+
+/** Diferença angular mais curta entre dois ângulos (em radianos). */
+function shortAngleDelta(from: number, to: number): number {
+  let diff = ((to - from) % TWO_PI + TWO_PI) % TWO_PI;
+  if (diff > Math.PI) diff -= TWO_PI;
+  return diff;
+}
+
+/** Normaliza ângulo pra [0, 2π). */
+function normalizeAngle(a: number): number {
+  return ((a % TWO_PI) + TWO_PI) % TWO_PI;
+}
+
+/** Ângulo orbital de cada slot (atan2 de x sobre z). */
+function angleOfSlot(slot: { x: number; z: number }): number {
+  return normalizeAngle(Math.atan2(slot.x, slot.z));
+}
 
 /**
- * Paisagem Digital — orquestrador (tunnel mode).
+ * Paisagem Digital — orquestrador (modo orbital).
  *
- * 6 fragmentos distribuídos em profundidade. Scroll vertical da Paisagem
- * move a câmera ao longo de Z (linear). Active deriva da posição Z atual
- * da câmera — o fragmento mais próximo no espaço Z vira o destacado.
- *
- * Sem slideshow auto-rotativo: a narrativa é puramente do scroll do usuário.
- * Card fixo no canto inferior direito (estável apesar da câmera em movimento).
+ * Câmera orbita ao redor de um centro de fragmentos em círculo. Auto-rotate
+ * lento até primeira interação; depois drag horizontal do mouse / touch
+ * controla. Click no dot snap-anima até o fragmento alvo. Active deriva do
+ * ângulo da câmera (rAF poll).
  */
 export default function ProjectLandscape() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const progress = useRef(0);
+  const angleRef = useRef<number>(ORBIT.initialAngle);
+  const draggingRef = useRef(false);
+  const lastPointerXRef = useRef(0);
+  const releasedRef = useRef(false);
+  const snapTweenRef = useRef<gsap.core.Tween | null>(null);
+  const lastTickRef = useRef<number | null>(null);
 
-  const [, setStarted] = useState(false);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [direction, setDirection] = useState<Direction>(null);
 
   const router = useRouter();
 
-  useScrollDriver(wrapperRef, contentRef, progress, setStarted);
-
-  // Ordem visual em Z (perto da câmera → longe).
-  const orderedSlots = useMemo(
-    () => [...FRAGMENT_SLOTS].sort((a, b) => b.z - a.z),
+  // Cada slot com seu ângulo orbital pré-computado (pra active lookup).
+  const slotAngles = useMemo(
+    () =>
+      FRAGMENT_SLOTS.map((slot) => ({
+        slug: slot.slug,
+        angle: angleOfSlot(slot),
+      })),
     [],
   );
 
@@ -52,34 +72,43 @@ export default function ProjectLandscape() {
     return () => mql.removeEventListener("change", apply);
   }, []);
 
-  // Deriva activeSlug da posição Z da câmera (que é função do scroll progress).
-  // rAF poll — só atualiza state quando o fragmento focado muda.
+  // rAF loop principal: auto-rotate + active derivation.
   useEffect(() => {
     let raf = 0;
-    const tick = () => {
-      const p = Math.max(0, Math.min(1, progress.current));
-      const smoothP = p * p * (3 - 2 * p);
-      const cameraZ = TUNNEL.startZ + (TUNNEL.endZ - TUNNEL.startZ) * smoothP;
+    const tick = (now: number) => {
+      const last = lastTickRef.current ?? now;
+      const delta = (now - last) / 1000;
+      lastTickRef.current = now;
 
-      // Fragmento focado = aquele cujo Z está mais próximo do camera Z.
-      let closest = orderedSlots[0];
-      let minDist = Math.abs(cameraZ - closest.z);
-      for (const slot of orderedSlots) {
-        const d = Math.abs(cameraZ - slot.z);
-        if (d < minDist) {
-          minDist = d;
-          closest = slot;
-        }
+      // Auto-rotate só quando não foi released e não está em snap/drag.
+      const autoActive =
+        !releasedRef.current &&
+        !draggingRef.current &&
+        snapTweenRef.current === null;
+      if (autoActive) {
+        angleRef.current += ORBIT.autoRotateSpeed * delta;
       }
 
-      setActiveSlug((prev) => (prev === closest.slug ? prev : closest.slug));
+      // Active = slot cuja ângulo mais se aproxima do ângulo da câmera atual.
+      const camAngle = normalizeAngle(angleRef.current);
+      let best = slotAngles[0];
+      let minDist = Math.abs(shortAngleDelta(camAngle, best.angle));
+      for (const sa of slotAngles) {
+        const d = Math.abs(shortAngleDelta(camAngle, sa.angle));
+        if (d < minDist) {
+          minDist = d;
+          best = sa;
+        }
+      }
+      setActiveSlug((prev) => (prev === best.slug ? prev : best.slug));
+
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [orderedSlots]);
+  }, [slotAngles]);
 
-  // Direção da transição do card baseada no delta de Z entre ativos.
+  // Direção da transição do card baseado em delta angular.
   const prevSlugRef = useRef<string | null>(null);
   useEffect(() => {
     if (!activeSlug) return;
@@ -88,46 +117,90 @@ export default function ProjectLandscape() {
       const prevSlot = FRAGMENT_SLOTS.find((s) => s.slug === prev);
       const nextSlot = FRAGMENT_SLOTS.find((s) => s.slug === activeSlug);
       if (prevSlot && nextSlot) {
-        // Indo "pra frente no túnel" = z mais negativo = direction right
-        setDirection(nextSlot.z < prevSlot.z ? "right" : "left");
+        const delta = shortAngleDelta(
+          angleOfSlot(prevSlot),
+          angleOfSlot(nextSlot),
+        );
+        setDirection(delta > 0 ? "right" : "left");
       }
     }
     prevSlugRef.current = activeSlug;
   }, [activeSlug]);
 
-  const handleHover = useCallback((slug: string | null) => {
-    // No tunnel mode hover é decorativo — o scroll controla o ativo.
-    // Ignoramos pra evitar conflito entre hover e scroll-derived active.
-    void slug;
+  // Drag handlers — operam direto no DOM via pointer events.
+  const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    releasedRef.current = true;
+    if (snapTweenRef.current) {
+      snapTweenRef.current.kill();
+      snapTweenRef.current = null;
+    }
+    draggingRef.current = true;
+    lastPointerXRef.current = e.clientX;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  }, []);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!draggingRef.current) return;
+    const dx = e.clientX - lastPointerXRef.current;
+    lastPointerXRef.current = e.clientX;
+    // Drag pra direita rotaciona "câmera pra esquerda" — sensação de empurrar o mundo.
+    angleRef.current -= dx * ORBIT.dragSensitivity;
+  }, []);
+
+  const handlePointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    draggingRef.current = false;
+    try {
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {
+      // Pointer já solto — ignora.
+    }
+  }, []);
+
+  // Snap pra fragmento via GSAP tween do ângulo.
+  const snapToSlug = useCallback((slug: string) => {
+    const slot = FRAGMENT_SLOTS.find((s) => s.slug === slug);
+    if (!slot) return;
+    releasedRef.current = true;
+    if (snapTweenRef.current) snapTweenRef.current.kill();
+
+    const target = angleOfSlot(slot);
+    const current = angleRef.current;
+    const delta = shortAngleDelta(normalizeAngle(current), target);
+    const final = current + delta;
+
+    const proxy = { v: current };
+    snapTweenRef.current = gsap.to(proxy, {
+      v: final,
+      duration: ORBIT.snapDuration,
+      ease: "power2.inOut",
+      onUpdate: () => {
+        angleRef.current = proxy.v;
+      },
+      onComplete: () => {
+        snapTweenRef.current = null;
+      },
+    });
+  }, []);
+
+  const handleHover = useCallback((_slug: string | null) => {
+    // Hover em fragmento é decorativo no modo orbital.
   }, []);
 
   const handleClick = useCallback(
     (slug: string) => {
+      releasedRef.current = true;
       const caseProject = cases.find((c) => c.slug === slug);
       if (!caseProject) return;
-      if (caseProject.status === "coming-soon") return;
-      router.push(`/cases/${slug}`);
+      if (caseProject.status === "coming-soon") {
+        // Coming-soon: snap pra ele em vez de navegar.
+        snapToSlug(slug);
+        return;
+      }
+      // Publicado: snap pra ele com leve delay antes de navegar (UX confirma escolha).
+      snapToSlug(slug);
+      setTimeout(() => router.push(`/cases/${slug}`), ORBIT.snapDuration * 1000);
     },
-    [router],
-  );
-
-  const handleSelectSlide = useCallback(
-    (slug: string) => {
-      // Click no dot: scrolla a Paisagem até a progress que corresponde ao slot.
-      const target = FRAGMENT_SLOTS.find((s) => s.slug === slug);
-      if (!target) return;
-      // Inverte smoothstep: dado z desejado, qual p produz isso?
-      // Aproximação: linear (smoothstep é monotônica, próximo o bastante pro click).
-      const linearP =
-        (target.z - TUNNEL.startZ) / (TUNNEL.endZ - TUNNEL.startZ);
-      const clamped = Math.max(0, Math.min(1, linearP));
-      const wrapper = wrapperRef.current;
-      const content = contentRef.current;
-      if (!wrapper || !content) return;
-      const totalScrollable = content.offsetHeight - wrapper.clientHeight;
-      wrapper.scrollTo({ top: totalScrollable * clamped, behavior: "smooth" });
-    },
-    [],
+    [router, snapToSlug],
   );
 
   const activeCase =
@@ -137,40 +210,36 @@ export default function ProjectLandscape() {
 
   return (
     <div
-      ref={wrapperRef}
-      className="absolute inset-0 overflow-y-auto overscroll-contain"
+      className="absolute inset-0 overflow-hidden touch-none select-none"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      style={{ cursor: "grab" }}
     >
-      <div
-        ref={contentRef}
-        className="relative w-full"
-        style={{ height: `${TUNNEL.scrollVh}vh` }}
+      <Canvas
+        frameloop="always"
+        gl={{ antialias: true, alpha: false }}
+        dpr={[1, 2]}
+        camera={{ position: [...CAMERA.position], fov: CAMERA.fov }}
+        style={{ background: COLORS.background }}
       >
-        <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
-          <Canvas
-            frameloop="always"
-            gl={{ antialias: true, alpha: false }}
-            dpr={[1, 2]}
-            camera={{ position: [...CAMERA.position], fov: CAMERA.fov }}
-            style={{ background: COLORS.background }}
-          >
-            <fog attach="fog" args={[FOG.color, FOG.near, FOG.far]} />
-            <LandscapeScene
-              progress={progress}
-              activeSlug={activeSlug}
-              onHover={handleHover}
-              onClick={handleClick}
-            />
-          </Canvas>
+        <fog attach="fog" args={[FOG.color, FOG.near, FOG.far]} />
+        <LandscapeScene
+          angleRef={angleRef}
+          activeSlug={activeSlug}
+          onHover={handleHover}
+          onClick={handleClick}
+        />
+      </Canvas>
 
-          <ProjectCard
-            caseProject={activeCase}
-            isMobile={isMobile}
-            direction={direction}
-            activeSlug={activeSlug}
-            onSelectSlide={handleSelectSlide}
-          />
-        </div>
-      </div>
+      <ProjectCard
+        caseProject={activeCase}
+        isMobile={isMobile}
+        direction={direction}
+        activeSlug={activeSlug}
+        onSelectSlide={snapToSlug}
+      />
     </div>
   );
 }
