@@ -19,9 +19,7 @@ import {
 import { buildTower } from "./towerGeometry";
 import FragmentBaseRing from "./FragmentBaseRing";
 import FragmentGlow from "./FragmentGlow";
-import FragmentAntenna from "./FragmentAntenna";
 import FragmentEdgePulse from "./FragmentEdgePulse";
-import FragmentRoots from "./FragmentRoots";
 import FragmentSonar from "./FragmentSonar";
 import FragmentFloor from "./FragmentFloor";
 import {
@@ -214,13 +212,7 @@ export default function ProjectFragment({
         {/* Chão técnico (footprint transparente sob a torre). */}
         <FragmentFloor geom={geom} isActive={isActive} />
 
-        {/* Antena 3D real saindo do apex (não sprite). */}
-        <FragmentAntenna isActive={isActive} baseY={geom.apex[1]} />
-
-        {/* Raízes descendo dos 3 nós da base. */}
-        <FragmentRoots geom={geom} isActive={isActive} />
-
-        {/* Pulso luminoso percorrendo as arestas em loop. */}
+        {/* Faísca suave percorrendo as arestas em loop lento. */}
         <FragmentEdgePulse geom={geom} isActive={isActive} />
 
         {/* Sonar ao tornar-se ativo (wireframe expande). */}

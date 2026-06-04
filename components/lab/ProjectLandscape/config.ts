@@ -172,42 +172,25 @@ export const APEX_PULSE = {
   activeAmplitude: 0.22,
 } as const;
 
-/** Antena 3D vertical saindo do apex (linha real, sem sprite). */
-export const ANTENNA = {
-  /** Altura local (em coordenadas do group escalado). */
-  height: 0.6,
-  /** Largura da linha. */
-  lineWidth: 1.4,
-  /** Raio do nó no topo. */
-  topNodeRadius: 0.022,
-  color: "#F5F2ED",
-  baseOpacity: 0.4,
-  activeOpacity: 1.0,
-  lerpSpeed: 4,
-} as const;
-
-/** Pulso que percorre as arestas da torre. */
+/**
+ * Faísca suave que percorre as arestas da torre.
+ *
+ * Visual de blur — duas camadas concêntricas: core pequeno + brilho largo
+ * com AdditiveBlending. Movimento lento (1.6s por aresta).
+ */
 export const EDGE_PULSE = {
-  /** Tempo (s) por aresta percorrida — total = pathSteps × timePerEdge. */
-  timePerEdge: 0.5,
-  /** Raio do ponto luminoso. */
-  radius: 0.045,
+  /** Tempo (s) por aresta percorrida — lento, contemplativo. */
+  timePerEdge: 1.6,
+  /** Raio do core (ponto central pequeno). */
+  coreRadius: 0.025,
+  /** Raio do halo (brilho suave ao redor). */
+  haloRadius: 0.11,
   baseColor: "#F5F2ED",
   activeColor: "#FB3640",
-  baseOpacity: 0.7,
-  activeOpacity: 1.0,
-  lerpSpeed: 5,
-} as const;
-
-/** Raízes que descem do fragmento pra dentro do terreno. */
-export const ROOTS = {
-  /** Profundidade local que as raízes descem. */
-  depth: 0.55,
-  lineWidth: 1.0,
-  bottomNodeRadius: 0.018,
-  color: "#F5F2ED",
-  baseOpacity: 0.25,
-  activeOpacity: 0.55,
+  coreBaseOpacity: 0.45,
+  coreActiveOpacity: 0.75,
+  haloBaseOpacity: 0.18,
+  haloActiveOpacity: 0.35,
   lerpSpeed: 4,
 } as const;
 
