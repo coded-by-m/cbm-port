@@ -25,11 +25,16 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 /**
  * Hook compartilhado: ref que lerps 0 → 1 conforme `active` muda.
  * 0 = card colapsado, 1 = card expandido. Resposta ~0.7s.
+ *
+ * Usa ref pra activeRef pra garantir que o useFrame sempre lê o valor
+ * atual de active (closure pode ficar stale em R3F em alguns casos).
  */
 function useExpansion(active: boolean): MutableRefObject<number> {
   const t = useRef(0);
+  const activeRef = useRef(active);
+  activeRef.current = active;
   useFrame((_, delta) => {
-    const target = active ? 1 : 0;
+    const target = activeRef.current ? 1 : 0;
     t.current = lerp(t.current, target, Math.min(1, delta * 1.6));
   });
   return t;
