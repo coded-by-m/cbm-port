@@ -171,11 +171,13 @@ export const APEX_PULSE = {
  */
 export const EDGE_PULSE = {
   /** Tempo (s) por aresta percorrida — lento, contemplativo. */
-  timePerEdge: 1.6,
-  /** Tamanho do sprite em unidades world. */
-  size: 0.35,
+  timePerEdge: 3.2,
+  /** Raio do tetraedro — bem pequeno, partícula discreta. */
+  size: 0.025,
   baseOpacity: 0.55,
-  activeOpacity: 0.95,
+  activeOpacity: 1.0,
+  /** Rotação contínua do tetraedro (rad/s). */
+  rotateSpeed: 0.45,
   lerpSpeed: 4,
 } as const;
 
@@ -215,6 +217,22 @@ export const SLIDESHOW = {
   holdDuration: 6000,
   /** Duração total da transição direcional do card (ms). */
   transitionDuration: 600,
+} as const;
+
+/** Hint inicial "Arraste pra explorar". */
+export const HINT = {
+  /** Delay (ms) após mount antes do hint aparecer. */
+  showDelay: 1800,
+  /** Tempo (ms) que o hint fica visível antes de fade automático. */
+  autoHideDelay: 8000,
+  /** Duração do fade in/out (s). */
+  fadeDuration: 0.6,
+} as const;
+
+/** Auto-rotate retomada após inatividade. */
+export const AUTO_RESUME = {
+  /** Tempo (ms) sem interação antes de retomar auto-rotate. */
+  idleThreshold: 8000,
 } as const;
 
 /** Layer do terreno que hospeda os fragmentos. */

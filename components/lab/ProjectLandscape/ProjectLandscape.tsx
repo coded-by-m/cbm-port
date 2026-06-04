@@ -10,52 +10,61 @@ import LandscapeScene from "./LandscapeScene";
 import { ProjectCard } from "./ProjectCard";
 import DevCameraControls from "./DevCameraControls";
 import DevCameraHUD from "./DevCameraHUD";
-import { FRAGMENT_SLOTS, ORBIT } from "./config";
+import LandscapeHint from "./LandscapeHint";
+import LandscapeProgressBar from "./LandscapeProgressBar";
+import {
+  AUTO_RESUME,
+  FRAGMENT_SLOTS,
+  HINT,
+  ORBIT,
+} from "./config";
 
 type Direction = "left" | "right" | null;
 
 const MOBILE_BREAKPOINT = "(max-width: 767px)";
 const TWO_PI = Math.PI * 2;
 
-/** Diferença angular mais curta entre dois ângulos (em radianos). */
 function shortAngleDelta(from: number, to: number): number {
   let diff = ((to - from) % TWO_PI + TWO_PI) % TWO_PI;
   if (diff > Math.PI) diff -= TWO_PI;
   return diff;
 }
 
-/** Normaliza ângulo pra [0, 2π). */
 function normalizeAngle(a: number): number {
   return ((a % TWO_PI) + TWO_PI) % TWO_PI;
 }
 
-/** Ângulo orbital de cada slot (atan2 de x sobre z). */
 function angleOfSlot(slot: { x: number; z: number }): number {
   return normalizeAngle(Math.atan2(slot.x, slot.z));
 }
 
 /**
- * Paisagem Digital — orquestrador (modo orbital).
+ * Paisagem Digital — orquestrador (orbital mode + UX completa).
  *
- * Câmera orbita ao redor de um centro de fragmentos em círculo. Auto-rotate
- * lento até primeira interação; depois drag horizontal do mouse / touch
- * controla. Click no dot snap-anima até o fragmento alvo. Active deriva do
- * ângulo da câmera (rAF poll).
+ * Estado de interação:
+ * - paused: auto-rotate pausado (não congelado pra sempre). Retomado após
+ *   AUTO_RESUME.idleThreshold ms sem interação.
+ * - lastInteractionTime: timestamp da última interação real (drag, click,
+ *   keyboard).
+ * - visitedSlugs: Set de slugs já visitados (pro end-of-tour state).
+ * - hoveredSlug: visual feedback de hover (não muda o card — apenas cursor).
+ * - activeSlug: drivado pelo ângulo da câmera; CARD sempre reflete isso.
  */
 export default function ProjectLandscape() {
   const angleRef = useRef<number>(ORBIT.initialAngle);
   const draggingRef = useRef(false);
   const lastPointerXRef = useRef(0);
-  const releasedRef = useRef(false);
+  const lastInteractionRef = useRef<number>(Date.now() + HINT.showDelay);
   const snapTweenRef = useRef<gsap.core.Tween | null>(null);
   const lastTickRef = useRef<number | null>(null);
-  // Slug em hover (sobrescreve o ativo derivado do ângulo enquanto presente).
-  const hoverSlugRef = useRef<string | null>(null);
 
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [direction, setDirection] = useState<Direction>(null);
   const [devCamera, setDevCamera] = useState(false);
+  const [visitedSlugs, setVisitedSlugs] = useState<Set<string>>(new Set());
+  const [showHint, setShowHint] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   const devCameraStateRef = useRef({
     radius: ORBIT.cameraRadius,
@@ -66,7 +75,6 @@ export default function ProjectLandscape() {
 
   const router = useRouter();
 
-  // Cada slot com seu ângulo orbital pré-computado (pra active lookup).
   const slotAngles = useMemo(
     () =>
       FRAGMENT_SLOTS.map((slot) => ({
@@ -76,6 +84,13 @@ export default function ProjectLandscape() {
     [],
   );
 
+  // Marca interação real (pra controlar auto-resume e hint).
+  const markInteraction = useCallback(() => {
+    lastInteractionRef.current = Date.now();
+    setShowHint(false);
+    setPaused(true);
+  }, []);
+
   useEffect(() => {
     const mql = window.matchMedia(MOBILE_BREAKPOINT);
     const apply = () => setIsMobile(mql.matches);
@@ -84,10 +99,24 @@ export default function ProjectLandscape() {
     return () => mql.removeEventListener("change", apply);
   }, []);
 
-  // Modo dev de câmera (DevCameraControls + DevCameraHUD) está disponível mas
-  // sem atalho de teclado ativo. Pra reativar, restaurar listener da tecla "C".
+  // Mostra o hint após delay; esconde automaticamente após HINT.autoHideDelay.
+  useEffect(() => {
+    const showTimer = setTimeout(() => {
+      // Só mostra se ninguém interagiu ainda.
+      if (Date.now() - lastInteractionRef.current >= HINT.showDelay - 50) {
+        setShowHint(true);
+      }
+    }, HINT.showDelay);
+    const hideTimer = setTimeout(() => {
+      setShowHint(false);
+    }, HINT.showDelay + HINT.autoHideDelay);
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
+  }, []);
 
-  // rAF loop principal: auto-rotate + active derivation.
+  // rAF loop principal: auto-rotate + active derivation + auto-resume + visited tracking.
   useEffect(() => {
     let raf = 0;
     const tick = (now: number) => {
@@ -95,42 +124,57 @@ export default function ProjectLandscape() {
       const delta = (now - last) / 1000;
       lastTickRef.current = now;
 
-      // Auto-rotate só quando não foi released e não está em snap/drag.
+      // Auto-rotate quando não pausado e não em drag/snap.
       const autoActive =
-        !releasedRef.current &&
+        !paused &&
         !draggingRef.current &&
-        snapTweenRef.current === null;
+        snapTweenRef.current === null &&
+        !devCamera;
       if (autoActive) {
         angleRef.current += ORBIT.autoRotateSpeed * delta;
       }
 
-      // Hover, se presente, tem prioridade sobre o ativo derivado do ângulo.
-      let nextSlug: string;
-      if (hoverSlugRef.current) {
-        nextSlug = hoverSlugRef.current;
-      } else {
-        // Active = slot cuja ângulo mais se aproxima do ângulo da câmera atual.
-        const camAngle = normalizeAngle(angleRef.current);
-        let best = slotAngles[0];
-        let minDist = Math.abs(shortAngleDelta(camAngle, best.angle));
-        for (const sa of slotAngles) {
-          const d = Math.abs(shortAngleDelta(camAngle, sa.angle));
-          if (d < minDist) {
-            minDist = d;
-            best = sa;
-          }
-        }
-        nextSlug = best.slug;
+      // Resume auto-rotate após idle.
+      if (
+        paused &&
+        !draggingRef.current &&
+        snapTweenRef.current === null &&
+        Date.now() - lastInteractionRef.current > AUTO_RESUME.idleThreshold
+      ) {
+        setPaused(false);
       }
-      setActiveSlug((prev) => (prev === nextSlug ? prev : nextSlug));
+
+      // Active = slot mais próximo do ângulo da câmera.
+      const camAngle = normalizeAngle(angleRef.current);
+      let best = slotAngles[0];
+      let minDist = Math.abs(shortAngleDelta(camAngle, best.angle));
+      for (const sa of slotAngles) {
+        const d = Math.abs(shortAngleDelta(camAngle, sa.angle));
+        if (d < minDist) {
+          minDist = d;
+          best = sa;
+        }
+      }
+
+      setActiveSlug((prev) => {
+        if (prev === best.slug) return prev;
+        // Adiciona ao visited.
+        setVisitedSlugs((s) => {
+          if (s.has(best.slug)) return s;
+          const next = new Set(s);
+          next.add(best.slug);
+          return next;
+        });
+        return best.slug;
+      });
 
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [slotAngles]);
+  }, [slotAngles, paused, devCamera]);
 
-  // Direção da transição do card baseado em delta angular.
+  // Direção da transição do card baseada em delta angular.
   const prevSlugRef = useRef<string | null>(null);
   useEffect(() => {
     if (!activeSlug) return;
@@ -149,90 +193,127 @@ export default function ProjectLandscape() {
     prevSlugRef.current = activeSlug;
   }, [activeSlug]);
 
-  // Drag handlers — operam direto no DOM via pointer events.
-  const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    releasedRef.current = true;
-    if (snapTweenRef.current) {
-      snapTweenRef.current.kill();
-      snapTweenRef.current = null;
-    }
-    draggingRef.current = true;
-    lastPointerXRef.current = e.clientX;
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  }, []);
-
-  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (!draggingRef.current) return;
-    const dx = e.clientX - lastPointerXRef.current;
-    lastPointerXRef.current = e.clientX;
-    // Drag pra direita rotaciona "câmera pra esquerda" — sensação de empurrar o mundo.
-    angleRef.current -= dx * ORBIT.dragSensitivity;
-  }, []);
-
-  const handlePointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    draggingRef.current = false;
-    try {
-      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-    } catch {
-      // Pointer já solto — ignora.
-    }
-  }, []);
-
-  // Snap pra fragmento via GSAP tween do ângulo.
-  const snapToSlug = useCallback((slug: string) => {
-    const slot = FRAGMENT_SLOTS.find((s) => s.slug === slug);
-    if (!slot) return;
-    releasedRef.current = true;
-    if (snapTweenRef.current) snapTweenRef.current.kill();
-
-    const target = angleOfSlot(slot);
-    const current = angleRef.current;
-    const delta = shortAngleDelta(normalizeAngle(current), target);
-    const final = current + delta;
-
-    const proxy = { v: current };
-    snapTweenRef.current = gsap.to(proxy, {
-      v: final,
-      duration: ORBIT.snapDuration,
-      ease: "power2.inOut",
-      onUpdate: () => {
-        angleRef.current = proxy.v;
-      },
-      onComplete: () => {
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      markInteraction();
+      if (snapTweenRef.current) {
+        snapTweenRef.current.kill();
         snapTweenRef.current = null;
-      },
-    });
-  }, []);
+      }
+      draggingRef.current = true;
+      lastPointerXRef.current = e.clientX;
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    },
+    [markInteraction],
+  );
 
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!draggingRef.current) return;
+      const dx = e.clientX - lastPointerXRef.current;
+      lastPointerXRef.current = e.clientX;
+      angleRef.current -= dx * ORBIT.dragSensitivity;
+      lastInteractionRef.current = Date.now();
+    },
+    [],
+  );
+
+  const handlePointerUp = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      draggingRef.current = false;
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch {
+        // ignore
+      }
+    },
+    [],
+  );
+
+  const snapToSlug = useCallback(
+    (slug: string) => {
+      const slot = FRAGMENT_SLOTS.find((s) => s.slug === slug);
+      if (!slot) return;
+      markInteraction();
+      if (snapTweenRef.current) snapTweenRef.current.kill();
+
+      const target = angleOfSlot(slot);
+      const current = angleRef.current;
+      const delta = shortAngleDelta(normalizeAngle(current), target);
+      const final = current + delta;
+
+      const proxy = { v: current };
+      snapTweenRef.current = gsap.to(proxy, {
+        v: final,
+        duration: ORBIT.snapDuration,
+        ease: "power2.inOut",
+        onUpdate: () => {
+          angleRef.current = proxy.v;
+        },
+        onComplete: () => {
+          snapTweenRef.current = null;
+        },
+      });
+    },
+    [markInteraction],
+  );
+
+  // Hover: SÓ cursor. Não muda activeSlug nem card.
   const handleHover = useCallback((slug: string | null) => {
-    // Hover override: enquanto cursor está sobre um fragmento, ele é o ativo.
-    // Quando sai, volta a derivar do ângulo da câmera.
-    hoverSlugRef.current = slug;
+    document.body.style.cursor = slug ? "pointer" : "";
   }, []);
 
   const handleClick = useCallback(
     (slug: string) => {
-      releasedRef.current = true;
       const caseProject = cases.find((c) => c.slug === slug);
       if (!caseProject) return;
-      if (caseProject.status === "coming-soon") {
-        // Coming-soon: snap pra ele em vez de navegar.
-        snapToSlug(slug);
-        return;
-      }
-      // Publicado: snap pra ele com leve delay antes de navegar (UX confirma escolha).
+      // Snap pra ele primeiro (sempre); navegação só pra publicados.
       snapToSlug(slug);
+      if (caseProject.status === "coming-soon") return;
       setTimeout(() => router.push(`/cases/${slug}`), ORBIT.snapDuration * 1000);
     },
     [router, snapToSlug],
   );
+
+  // Teclado: ← / → navega prev/next. Enter abre case. Esc retoma auto-rotate.
+  useEffect(() => {
+    const ordered = [...FRAGMENT_SLOTS].sort(
+      (a, b) => angleOfSlot(a) - angleOfSlot(b),
+    );
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
+
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        const currentIdx = ordered.findIndex((s) => s.slug === activeSlug);
+        const dir = e.key === "ArrowRight" ? 1 : -1;
+        const nextIdx =
+          (currentIdx + dir + ordered.length) % ordered.length;
+        snapToSlug(ordered[nextIdx].slug);
+      } else if (e.key === "Enter" || e.key === " ") {
+        const current = cases.find((c) => c.slug === activeSlug);
+        if (current && current.status !== "coming-soon") {
+          e.preventDefault();
+          router.push(`/cases/${current.slug}`);
+        }
+      } else if (e.key === "Escape") {
+        // Solta controle: retoma auto-rotate.
+        setPaused(false);
+        lastInteractionRef.current = 0;
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [activeSlug, router, snapToSlug]);
 
   const activeCase =
     activeSlug !== null
       ? cases.find((c) => c.slug === activeSlug) ?? null
       : null;
 
-  // Em dev mode, desativa os handlers de drag custom — OrbitControls assume.
+  const allVisited = visitedSlugs.size >= FRAGMENT_SLOTS.length;
+
   const wrapperHandlers = devCamera
     ? {}
     : {
@@ -266,13 +347,25 @@ export default function ProjectLandscape() {
         {devCamera && <DevCameraControls stateRef={devCameraStateRef} />}
       </Canvas>
 
-      <ProjectCard
-        caseProject={activeCase}
-        isMobile={isMobile}
-        direction={direction}
-        activeSlug={activeSlug}
-        onSelectSlide={snapToSlug}
-      />
+      {!devCamera && (
+        <>
+          <LandscapeProgressBar
+            slots={FRAGMENT_SLOTS}
+            activeSlug={activeSlug}
+            visitedSlugs={visitedSlugs}
+            onSelect={snapToSlug}
+          />
+          <LandscapeHint show={showHint} />
+          <ProjectCard
+            caseProject={activeCase}
+            isMobile={isMobile}
+            direction={direction}
+            activeSlug={activeSlug}
+            allVisited={allVisited}
+            onSelectSlide={snapToSlug}
+          />
+        </>
+      )}
 
       {devCamera && (
         <DevCameraHUD

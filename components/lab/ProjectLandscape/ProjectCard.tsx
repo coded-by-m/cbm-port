@@ -24,14 +24,25 @@ export function ProjectCard({
   isMobile,
   direction,
   activeSlug,
+  allVisited,
   onSelectSlide,
 }: {
   caseProject: CaseProject | null;
   isMobile: boolean;
   direction: Direction;
   activeSlug: string | null;
+  allVisited: boolean;
   onSelectSlide: (slug: string) => void;
 }) {
+  // Posição angular dos fragmentos (ordem visual no orbital).
+  const TWO_PI = Math.PI * 2;
+  const angleOf = (s: { x: number; z: number }) =>
+    ((Math.atan2(s.x, s.z) % TWO_PI) + TWO_PI) % TWO_PI;
+  const orderedSlots = [...FRAGMENT_SLOTS].sort(
+    (a, b) => angleOf(a) - angleOf(b),
+  );
+  const orderedIdx = (slug: string) =>
+    orderedSlots.findIndex((s) => s.slug === slug);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -103,9 +114,30 @@ export function ProjectCard({
     const isComingSoon = project.status === "coming-soon";
     const slot = FRAGMENT_SLOTS.find((s) => s.slug === project.slug);
     const seed = slot?.seed ?? 0;
+    const positionIdx = orderedIdx(project.slug);
+    const positionLabel =
+      positionIdx >= 0
+        ? `${String(positionIdx + 1).padStart(2, "0")} / ${String(orderedSlots.length).padStart(2, "0")}`
+        : "";
 
     return (
       <div className={isMobile ? "grid grid-cols-[auto_1fr] gap-4" : "flex flex-col gap-4"}>
+        {!isMobile && (
+          <div className="flex items-center justify-between border-b border-[#F5F2ED]/10 pb-3 -mt-1">
+            <p className="text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/55">
+              {positionLabel}
+            </p>
+            <span
+              className={`text-[0.5rem] uppercase tracking-[0.3em] ${
+                isComingSoon
+                  ? "text-[#F5F2ED]/40"
+                  : "text-[#FB3640]"
+              }`}
+            >
+              {isComingSoon ? "Em breve" : "Publicado"}
+            </span>
+          </div>
+        )}
         {/* Dual preview com scroll vertical contínuo. */}
         <div className={isMobile ? "flex gap-2" : "flex gap-3"}>
           <div className={isMobile ? "w-[100px]" : "flex-[3] min-w-0"}>
@@ -165,12 +197,17 @@ export function ProjectCard({
             {project.description}
           </p>
           {!isComingSoon && !isMobile && (
-            <p className="mt-2 inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED]/85">
+            <span className="mt-3 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/40 px-4 py-2 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED]/95 transition-colors group-hover/card:border-[#F5F2ED] group-hover/card:bg-[#F5F2ED]/5">
               Ver projeto
               <span aria-hidden style={{ color: "#FB3640" }}>
                 →
               </span>
-            </p>
+            </span>
+          )}
+          {isComingSoon && !isMobile && (
+            <span className="mt-3 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/15 px-4 py-2 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED]/45">
+              Vertente em formação
+            </span>
           )}
         </div>
       </div>
@@ -256,10 +293,20 @@ export function ProjectCard({
       style={{ opacity: 0, width: `${CARD.widthDesktop}px` }}
     >
       {scrollStyle}
+      {allVisited && (
+        <div className="flex items-center justify-center gap-3 border-b border-[#F5F2ED]/10 bg-[#FB3640]/8 px-5 py-2">
+          <span className="text-[0.5rem] uppercase tracking-[0.4em] text-[#FB3640]">
+            ✦ Tour completo
+          </span>
+          <span className="text-[0.55rem] uppercase tracking-[0.3em] text-[#F5F2ED]/55">
+            role pra continuar
+          </span>
+        </div>
+      )}
       {isComingSoon ? (
         <div className="block">{contentBlock}</div>
       ) : (
-        <Link href={`/cases/${displayed.slug}`} className="block">
+        <Link href={`/cases/${displayed.slug}`} className="block group/card">
           {contentBlock}
         </Link>
       )}
