@@ -22,19 +22,26 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
    pattern. Targets: scale 1.0 → 1.18 (sutil pra não cortar), rotX 0 → 0.25
    rad, posY 0 → 0.2. Camera pullback z 6 → 7.2 compensa o crescimento. */
 
-/** Camera pullback sutil pra evitar clipping nas bordas. */
+/**
+ * Camera pullback parametrizável (cada scene controla suas distâncias).
+ * Tower precisa de Z maior pra caber a altura toda; landing e app podem
+ * usar valores menores pra ficarem maiores na tela.
+ */
 function CameraPullback({
   activeRef,
+  baseZ = 6,
+  activeZ = 6.5,
 }: {
   activeRef: MutableRefObject<boolean>;
+  baseZ?: number;
+  activeZ?: number;
 }) {
   const camera = useThree((s) => s.camera);
   const t = useRef(0);
   useFrame((_, delta) => {
     const target = activeRef.current ? 1 : 0;
     t.current = lerp(t.current, target, Math.min(1, delta * 2.5));
-    // Pullback muito sutil — só pra dar respiro, não cancelar o crescimento
-    camera.position.z = lerp(6, 6.5, t.current);
+    camera.position.z = lerp(baseZ, activeZ, t.current);
   });
   return null;
 }
@@ -409,7 +416,8 @@ function InstitutionalScene({ active }: { active: boolean }) {
 
   return (
     <>
-      <CameraPullback activeRef={activeRef} />
+      {/* Tower é mais alta — câmera começa mais longe pra caber */}
+      <CameraPullback activeRef={activeRef} baseZ={7.5} activeZ={8.5} />
       <group ref={expansionRef}>
         <group ref={groupRef} scale={0.85}>
           {floors.map((f, i) => (

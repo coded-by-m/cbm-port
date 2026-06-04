@@ -147,12 +147,9 @@ export default function ServiceCard({
           </div>
         </div>
 
-        {/* Mini canvas 3D — largura fixa centralizada pra manter aspect ratio
-            estável. Canvas físico é mais alto (h-[230px]) com mt negativo
-            (-50px) pra permitir que o conteúdo 3D "invada" a área acima
-            sem afetar o layout do card. */}
+        {/* Mini canvas 3D — largura fixa centralizada (aspect ratio estável) */}
         <div className="mt-6 flex justify-center">
-          <div className="-mt-[50px] h-[230px] w-[260px]">
+          <div className="h-[170px] w-[260px] overflow-hidden">
             <ServiceMiniScene variant={service.variant} active={expanded} />
           </div>
         </div>
