@@ -147,9 +147,12 @@ export default function ServiceCard({
           </div>
         </div>
 
-        {/* Mini canvas 3D */}
-        <div className="mt-6 h-[170px] w-full overflow-hidden">
-          <ServiceMiniScene variant={service.variant} active={expanded} />
+        {/* Mini canvas 3D — largura fixa centralizada pra manter aspect ratio
+            estável quando o card expande (evita re-projection "teleport") */}
+        <div className="mt-6 flex justify-center">
+          <div className="h-[170px] w-[260px] overflow-hidden">
+            <ServiceMiniScene variant={service.variant} active={expanded} />
+          </div>
         </div>
 
         {/* Título */}
