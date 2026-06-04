@@ -19,10 +19,15 @@ import {
 import { buildTower } from "./towerGeometry";
 import FragmentBaseRing from "./FragmentBaseRing";
 import FragmentGlow from "./FragmentGlow";
+import FragmentBeam from "./FragmentBeam";
+import FragmentLabel from "./FragmentLabel";
 import {
   APEX_INDEX,
+  APEX_PULSE,
+  FRAGMENT_LABEL,
   FRAGMENT_VISUAL,
   HOST_LAYER,
+  STATUS_VISUAL,
   TOWER,
   type FragmentSlot,
 } from "./config";
@@ -39,12 +44,14 @@ export default function ProjectFragment({
   slot,
   isActive,
   anyActive,
+  isComingSoon,
   onHover,
   onClick,
 }: {
   slot: FragmentSlot;
   isActive: boolean;
   anyActive: boolean;
+  isComingSoon: boolean;
   onHover: (id: string | null) => void;
   onClick: (id: string) => void;
 }) {
@@ -105,6 +112,7 @@ export default function ProjectFragment({
     const r = reveal.current;
 
     const dimAtten = lerp(1, FRAGMENT_VISUAL.dimMultiplier, d);
+    const statusAtten = isComingSoon ? STATUS_VISUAL.comingSoonOpacityMul : 1;
 
     // Cor dos edges/nodes: lerp off-white → terrain mid quando dim.
     colorScratch.copy(offWhite).lerp(dimColor, d);
@@ -138,7 +146,8 @@ export default function ProjectFragment({
         h,
       ) *
       r *
-      dimAtten;
+      dimAtten *
+      statusAtten;
     lineRefs.forEach((ref) => {
       const line = ref.current;
       if (!line) return;
@@ -154,20 +163,43 @@ export default function ProjectFragment({
         h,
       ) *
       r *
-      dimAtten;
+      dimAtten *
+      statusAtten;
     nodeMatRefs.forEach((ref, i) => {
       if (!ref.current) return;
       ref.current.opacity = nodeOpacity;
-      // Apex: lerp vermelho → off-white quando dim. Outros nós: off-white → terrain mid.
       if (i === APEX_INDEX) {
-        ref.current.color.copy(apexColorBase).lerp(offWhite, d);
+        // "Em breve": apex perde vermelho permanentemente (vira off-white).
+        // Publicado: vermelho que perde saturação quando dim.
+        if (
+          isComingSoon &&
+          STATUS_VISUAL.comingSoonApexAsOffWhite
+        ) {
+          ref.current.color.copy(offWhite);
+        } else {
+          ref.current.color.copy(apexColorBase).lerp(offWhite, d);
+        }
       } else {
         ref.current.color.copy(colorScratch);
       }
     });
 
+    // Pulse do apex: scale oscilante (idle lento + sutil; ativo rápido + forte).
+    // Combinado com o bump existente do highlight (apexHighlightScale).
+    const idlePulse =
+      Math.sin((t * 2 * Math.PI) / APEX_PULSE.idlePeriod) *
+      (APEX_PULSE.idleAmplitude * 0.5);
+    const activePulse =
+      Math.sin((t * 2 * Math.PI) / APEX_PULSE.activePeriod) *
+      (APEX_PULSE.activeAmplitude * 0.5);
+    const pulse = 1 + lerp(idlePulse, activePulse, h);
+
     const apex = nodeMeshRefs[APEX_INDEX].current;
-    if (apex) apex.scale.setScalar(1 + FRAGMENT_VISUAL.apexHighlightScale * h);
+    if (apex) {
+      apex.scale.setScalar(
+        pulse * (1 + FRAGMENT_VISUAL.apexHighlightScale * h),
+      );
+    }
   });
 
   return (
@@ -176,6 +208,16 @@ export default function ProjectFragment({
       <group ref={groupRef} position={[slot.x, 0, slot.z]}>
         {/* Glow filho do group pra acompanhar position/scale do fragmento. */}
         <FragmentGlow isActive={isActive} size={TOWER.apexHeight} />
+
+        {/* Feixe vertical de luz acima do apex — só quando ativo. */}
+        <FragmentBeam isActive={isActive} baseY={geom.apex[1]} />
+
+        {/* Numeração técnica acima do apex. */}
+        <FragmentLabel
+          index={slot.index}
+          isActive={isActive}
+          yPosition={geom.apex[1] + FRAGMENT_LABEL.yOffset}
+        />
 
         {/* Área de interação invisível. */}
         <mesh position={[0, geom.apex[1] * 0.5, 0]} {...handlers}>

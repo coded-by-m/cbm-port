@@ -5,6 +5,7 @@ import TerrainScene from "@/components/lab/TerrainMesh/TerrainScene";
 import ProjectFragment from "./ProjectFragment";
 import NetworkLine from "./NetworkLine";
 import { useOrbitCameraConditional } from "./useOrbitCamera";
+import { cases } from "@/data/cases";
 import { FRAGMENT_SLOTS } from "./config";
 
 /**
@@ -35,16 +36,21 @@ export default function LandscapeScene({
   return (
     <>
       <TerrainScene />
-      {FRAGMENT_SLOTS.map((slot) => (
-        <ProjectFragment
-          key={slot.slug}
-          slot={slot}
-          isActive={activeSlug === slot.slug}
-          anyActive={anyActive}
-          onHover={onHover}
-          onClick={onClick}
-        />
-      ))}
+      {FRAGMENT_SLOTS.map((slot) => {
+        const caseProject = cases.find((c) => c.slug === slot.slug);
+        const isComingSoon = caseProject?.status === "coming-soon";
+        return (
+          <ProjectFragment
+            key={slot.slug}
+            slot={slot}
+            isActive={activeSlug === slot.slug}
+            anyActive={anyActive}
+            isComingSoon={isComingSoon}
+            onHover={onHover}
+            onClick={onClick}
+          />
+        );
+      })}
       <NetworkLine slots={FRAGMENT_SLOTS} activeSlug={activeSlug} />
     </>
   );

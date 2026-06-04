@@ -70,8 +70,8 @@ export const ORBIT = {
   cameraRadius: 13,
   /** Altura Y da câmera. */
   cameraY: 5,
-  /** Y do target — alinhado com o meio dos fragmentos (centralização vertical). */
-  targetY: 1.8,
+  /** Y do target — abaixo dos fragmentos pra empurrá-los pra cima no frame. */
+  targetY: 0.3,
   /** Velocidade do auto-rotate (rad/seg) — ~40s pra dar uma volta. */
   autoRotateSpeed: 0.157,
   /** Sensibilidade do drag (rad por pixel) — drag suave, controle fino. */
@@ -158,6 +158,51 @@ export const ACTIVE_GLOW = {
   color: "#F5F2ED",
   peakOpacity: 0.18,
   sizeFactor: 2.4,
+} as const;
+
+/** Pulsação do apex — "sinal vivo" sutil. */
+export const APEX_PULSE = {
+  /** Período (s) do ciclo no estado idle. */
+  idlePeriod: 3,
+  /** Amplitude (delta de scale) no idle. */
+  idleAmplitude: 0.12,
+  /** Período (s) quando ativo — mais rápido. */
+  activePeriod: 1.4,
+  /** Amplitude quando ativo — mais forte. */
+  activeAmplitude: 0.22,
+} as const;
+
+/** Feixe vertical de luz acima do apex (só quando ativo). */
+export const APEX_BEAM = {
+  /** Altura do feixe (unidades world). */
+  height: 3.5,
+  /** Largura do sprite. */
+  width: 0.12,
+  /** Lerp do fade in/out. */
+  lerpSpeed: 4,
+} as const;
+
+/** Numeração técnica ao lado de cada fragmento. */
+export const FRAGMENT_LABEL = {
+  /** Tamanho da fonte (unidades world). */
+  fontSize: 0.18,
+  /** Opacidade no estado normal. */
+  baseOpacity: 0.35,
+  /** Opacidade quando ativo. */
+  activeOpacity: 1.0,
+  /** Lerp da opacidade. */
+  lerpSpeed: 5,
+  /** Offset Y local em relação ao apex (acima dele). */
+  yOffset: 0.55,
+  color: "#F5F2ED",
+} as const;
+
+/** Modificadores visuais por status (publicado vs em breve). */
+export const STATUS_VISUAL = {
+  /** Multiplicador de opacidade para fragmentos "em breve". */
+  comingSoonOpacityMul: 0.65,
+  /** Apex em "em breve" perde cor vermelha (vira off-white). */
+  comingSoonApexAsOffWhite: true,
 } as const;
 
 /** Tempos do slideshow auto-rotativo. */
