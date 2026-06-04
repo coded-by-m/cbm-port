@@ -64,12 +64,12 @@ export const INITIAL_ACTIVE_SLUG = "machado-plataformas";
  * - Click no dot do card → tween GSAP do ângulo até o fragmento alvo
  */
 export const ORBIT = {
-  /** Raio da câmera ao redor do centro. */
-  cameraRadius: 11,
+  /** Raio da câmera ao redor do centro. Maior = mais respiro pros fragmentos. */
+  cameraRadius: 13,
   /** Altura Y da câmera. */
-  cameraY: 4.5,
-  /** Y do target (ligeiramente abaixo pra criar tilt down sutil). */
-  targetY: 0.4,
+  cameraY: 5,
+  /** Y do target — alinhado com o meio dos fragmentos (centralização vertical). */
+  targetY: 1.8,
   /** Velocidade do auto-rotate (rad/seg) — ~24s pra dar uma volta. */
   autoRotateSpeed: 0.26,
   /** Sensibilidade do drag (rad por pixel). */

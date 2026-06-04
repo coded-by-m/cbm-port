@@ -22,9 +22,17 @@ const _tgt = new Vector3();
  * orbital nem pitch — mantém a Paisagem lendo como horizonte coerente.
  */
 export function useOrbitCamera(angleRef: MutableRefObject<number>) {
+  useOrbitCameraConditional(angleRef, true);
+}
+
+export function useOrbitCameraConditional(
+  angleRef: MutableRefObject<number>,
+  enabled: boolean,
+) {
   const camera = useThree((state) => state.camera);
 
   useFrame(() => {
+    if (!enabled) return;
     const a = angleRef.current;
     _pos.set(
       Math.sin(a) * ORBIT.cameraRadius,

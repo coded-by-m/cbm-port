@@ -8,6 +8,8 @@ import { cases } from "@/data/cases";
 import { CAMERA, COLORS, FOG } from "@/components/lab/TerrainMesh/config";
 import LandscapeScene from "./LandscapeScene";
 import { ProjectCard } from "./ProjectCard";
+import DevCameraControls from "./DevCameraControls";
+import DevCameraHUD from "./DevCameraHUD";
 import { FRAGMENT_SLOTS, ORBIT } from "./config";
 
 type Direction = "left" | "right" | null;
@@ -51,6 +53,14 @@ export default function ProjectLandscape() {
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [direction, setDirection] = useState<Direction>(null);
+  const [devCamera, setDevCamera] = useState(false);
+
+  const devCameraStateRef = useRef({
+    radius: ORBIT.cameraRadius,
+    y: ORBIT.cameraY,
+    targetY: ORBIT.targetY,
+    angleDeg: (ORBIT.initialAngle * 180) / Math.PI,
+  });
 
   const router = useRouter();
 
@@ -70,6 +80,20 @@ export default function ProjectLandscape() {
     apply();
     mql.addEventListener("change", apply);
     return () => mql.removeEventListener("change", apply);
+  }, []);
+
+  // Toggle modo dev de câmera via tecla "C".
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      // Ignora se foco em input/textarea.
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
+      if (e.key === "c" || e.key === "C") {
+        setDevCamera((v) => !v);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   // rAF loop principal: auto-rotate + active derivation.
@@ -208,14 +232,21 @@ export default function ProjectLandscape() {
       ? cases.find((c) => c.slug === activeSlug) ?? null
       : null;
 
+  // Em dev mode, desativa os handlers de drag custom — OrbitControls assume.
+  const wrapperHandlers = devCamera
+    ? {}
+    : {
+        onPointerDown: handlePointerDown,
+        onPointerMove: handlePointerMove,
+        onPointerUp: handlePointerUp,
+        onPointerCancel: handlePointerUp,
+      };
+
   return (
     <div
       className="absolute inset-0 overflow-hidden touch-none select-none"
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
-      style={{ cursor: "grab" }}
+      {...wrapperHandlers}
+      style={{ cursor: devCamera ? "default" : "grab" }}
     >
       <Canvas
         frameloop="always"
@@ -230,7 +261,9 @@ export default function ProjectLandscape() {
           activeSlug={activeSlug}
           onHover={handleHover}
           onClick={handleClick}
+          devCamera={devCamera}
         />
+        {devCamera && <DevCameraControls stateRef={devCameraStateRef} />}
       </Canvas>
 
       <ProjectCard
@@ -240,6 +273,13 @@ export default function ProjectLandscape() {
         activeSlug={activeSlug}
         onSelectSlide={snapToSlug}
       />
+
+      {devCamera && (
+        <DevCameraHUD
+          stateRef={devCameraStateRef}
+          onExit={() => setDevCamera(false)}
+        />
+      )}
     </div>
   );
 }

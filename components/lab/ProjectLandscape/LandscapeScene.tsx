@@ -4,7 +4,7 @@ import { type MutableRefObject } from "react";
 import TerrainScene from "@/components/lab/TerrainMesh/TerrainScene";
 import ProjectFragment from "./ProjectFragment";
 import NetworkLine from "./NetworkLine";
-import { useOrbitCamera } from "./useOrbitCamera";
+import { useOrbitCameraConditional } from "./useOrbitCamera";
 import { FRAGMENT_SLOTS } from "./config";
 
 /**
@@ -19,13 +19,16 @@ export default function LandscapeScene({
   activeSlug,
   onHover,
   onClick,
+  devCamera,
 }: {
   angleRef: MutableRefObject<number>;
   activeSlug: string | null;
   onHover: (slug: string | null) => void;
   onClick: (slug: string) => void;
+  devCamera: boolean;
 }) {
-  useOrbitCamera(angleRef);
+  // Em dev mode, OrbitControls assume a câmera — não executa o hook orbital.
+  useOrbitCameraConditional(angleRef, !devCamera);
 
   const anyActive = activeSlug !== null;
 
