@@ -4,28 +4,53 @@ import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import {
   AdditiveBlending,
+  CanvasTexture,
   Color,
-  type Group,
-  type MeshBasicMaterial,
+  type SpriteMaterial,
+  type Sprite as ThreeSprite,
 } from "three";
 import { EDGE_PULSE } from "./config";
 import type { TowerGeometry } from "./towerGeometry";
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-const colorBase = new Color(EDGE_PULSE.baseColor);
-const colorActive = new Color(EDGE_PULSE.activeColor);
+
+const colorBase = new Color("#F5F2ED");
+const colorActive = new Color("#FB3640");
 const colorScratch = new Color();
 
+/** Textura singleton: ponto brilhante com fade suave nas bordas. */
+let cachedTexture: CanvasTexture | null = null;
+function getSparkTexture(): CanvasTexture {
+  if (cachedTexture) return cachedTexture;
+  const size = 128;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  if (ctx) {
+    // Centro super brilhante, falloff rápido — sensação de faísca de luz.
+    const cx = size / 2;
+    const cy = size / 2;
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, size / 2);
+    grad.addColorStop(0, "rgba(255, 255, 255, 1)");
+    grad.addColorStop(0.08, "rgba(255, 255, 255, 0.85)");
+    grad.addColorStop(0.25, "rgba(255, 255, 255, 0.35)");
+    grad.addColorStop(0.55, "rgba(255, 255, 255, 0.08)");
+    grad.addColorStop(1, "rgba(255, 255, 255, 0)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, size, size);
+  }
+  cachedTexture = new CanvasTexture(canvas);
+  return cachedTexture;
+}
+
 /**
- * Faísca suave percorrendo as arestas da torre.
+ * Faísca de luz percorrendo as arestas da torre.
  *
- * Duas camadas concêntricas:
- *  - core: pequeno ponto central (opacity ~0.45 base, ~0.75 ativo)
- *  - halo: bolha grande com AdditiveBlending (opacity baixa, faz o "blur")
- *
- * Caminho: 0→3→6→4→1→5→6→3→0→2→5→1→4→6→0 (atravessa todos os níveis).
- * Lento (1.6s por aresta) — total ≈22s no idle. Quando ativo acelera 1.4×
- * e a cor pende pra signal red.
+ * Sprite com textura radial procedural + AdditiveBlending — visual de
+ * partícula de luz real. Caminho passa por todos os níveis (base ↔ mid ↔ apex).
+ * Lento (1.6s por aresta) — total ≈22s loop. Acelera 1.4× quando ativo,
+ * cor pende pra signal red.
  */
 export default function FragmentEdgePulse({
   geom,
@@ -34,14 +59,18 @@ export default function FragmentEdgePulse({
   geom: TowerGeometry;
   isActive: boolean;
 }) {
-  const groupRef = useRef<Group>(null);
-  const coreMatRef = useRef<MeshBasicMaterial>(null);
-  const haloMatRef = useRef<MeshBasicMaterial>(null);
+  const spriteRef = useRef<ThreeSprite>(null);
+  const matRef = useRef<SpriteMaterial>(null);
   const elapsed = useRef(0);
-  const coreOpacity = useRef<number>(EDGE_PULSE.coreBaseOpacity);
-  const haloOpacity = useRef<number>(EDGE_PULSE.haloBaseOpacity);
+  const opacity = useRef<number>(EDGE_PULSE.baseOpacity);
   const colorMix = useRef<number>(0);
 
+  const texture = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    return getSparkTexture();
+  }, []);
+
+  // Caminho: 0,3,6,4,1,5,6,3,0,2,5,1,4,6,0 — atravessa todos os níveis.
   const path = useMemo<number[]>(
     () => [0, 3, 6, 4, 1, 5, 6, 3, 0, 2, 5, 1, 4, 6, 0],
     [],
@@ -61,35 +90,27 @@ export default function FragmentEdgePulse({
       totalEdges - 1,
       Math.floor(t / EDGE_PULSE.timePerEdge),
     );
-    const localT = (t - edgeIdx * EDGE_PULSE.timePerEdge) / EDGE_PULSE.timePerEdge;
+    const localT =
+      (t - edgeIdx * EDGE_PULSE.timePerEdge) / EDGE_PULSE.timePerEdge;
 
     const from = points[edgeIdx];
     const to = points[edgeIdx + 1];
 
-    const group = groupRef.current;
-    if (group) {
-      group.position.set(
+    const sprite = spriteRef.current;
+    if (sprite) {
+      sprite.position.set(
         lerp(from[0], to[0], localT),
         lerp(from[1], to[1], localT),
         lerp(from[2], to[2], localT),
       );
     }
 
-    const coreTarget = isActive
-      ? EDGE_PULSE.coreActiveOpacity
-      : EDGE_PULSE.coreBaseOpacity;
-    const haloTarget = isActive
-      ? EDGE_PULSE.haloActiveOpacity
-      : EDGE_PULSE.haloBaseOpacity;
-
-    coreOpacity.current = lerp(
-      coreOpacity.current,
-      coreTarget,
-      Math.min(1, delta * EDGE_PULSE.lerpSpeed),
-    );
-    haloOpacity.current = lerp(
-      haloOpacity.current,
-      haloTarget,
+    const targetOpacity = isActive
+      ? EDGE_PULSE.activeOpacity
+      : EDGE_PULSE.baseOpacity;
+    opacity.current = lerp(
+      opacity.current,
+      targetOpacity,
       Math.min(1, delta * EDGE_PULSE.lerpSpeed),
     );
 
@@ -100,45 +121,30 @@ export default function FragmentEdgePulse({
       Math.min(1, delta * EDGE_PULSE.lerpSpeed),
     );
 
-    colorScratch.copy(colorBase).lerp(colorActive, colorMix.current);
-
-    if (coreMatRef.current) {
-      coreMatRef.current.opacity = coreOpacity.current;
-      coreMatRef.current.color.copy(colorScratch);
-    }
-    if (haloMatRef.current) {
-      haloMatRef.current.opacity = haloOpacity.current;
-      haloMatRef.current.color.copy(colorScratch);
+    if (matRef.current) {
+      matRef.current.opacity = opacity.current;
+      colorScratch.copy(colorBase).lerp(colorActive, colorMix.current);
+      matRef.current.color.copy(colorScratch);
     }
   });
 
+  if (!texture) return null;
+
   return (
-    <group ref={groupRef}>
-      {/* Halo blurry: bola grande com Additive blending. */}
-      <mesh>
-        <icosahedronGeometry args={[EDGE_PULSE.haloRadius, 2]} />
-        <meshBasicMaterial
-          ref={haloMatRef}
-          color={EDGE_PULSE.baseColor}
-          transparent
-          opacity={EDGE_PULSE.haloBaseOpacity}
-          depthWrite={false}
-          depthTest={false}
-          blending={AdditiveBlending}
-        />
-      </mesh>
-      {/* Core: ponto central pequeno. */}
-      <mesh>
-        <icosahedronGeometry args={[EDGE_PULSE.coreRadius, 1]} />
-        <meshBasicMaterial
-          ref={coreMatRef}
-          color={EDGE_PULSE.baseColor}
-          transparent
-          opacity={EDGE_PULSE.coreBaseOpacity}
-          depthWrite={false}
-          depthTest={false}
-        />
-      </mesh>
-    </group>
+    <sprite
+      ref={spriteRef}
+      scale={[EDGE_PULSE.size, EDGE_PULSE.size, 1]}
+    >
+      <spriteMaterial
+        ref={matRef}
+        map={texture}
+        color={"#F5F2ED"}
+        transparent
+        opacity={EDGE_PULSE.baseOpacity}
+        depthWrite={false}
+        depthTest={false}
+        blending={AdditiveBlending}
+      />
+    </sprite>
   );
 }

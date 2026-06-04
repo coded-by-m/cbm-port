@@ -133,15 +133,6 @@ export const TOWER = {
 /** Index do apex no array de nós retornado por `buildTower`. */
 export const APEX_INDEX = 6;
 
-/** Linha de rede ligando os 3 apexes ao longo do horizonte. */
-export const NETWORK_LINE = {
-  color: "#F5F2ED",
-  baseOpacity: 0.1,
-  activeOpacity: 0.55,
-  lineWidth: 1.2,
-  lerpSpeed: 4,
-} as const;
-
 /** Base ring discreto sob cada fragmento, ancorando ao terreno. */
 export const BASE_RING = {
   pointCount: 12,
@@ -173,24 +164,18 @@ export const APEX_PULSE = {
 } as const;
 
 /**
- * Faísca suave que percorre as arestas da torre.
+ * Faísca que percorre as arestas da torre.
  *
- * Visual de blur — duas camadas concêntricas: core pequeno + brilho largo
- * com AdditiveBlending. Movimento lento (1.6s por aresta).
+ * Sprite com textura procedural radial (canvas gradient). Centro brilhante,
+ * borda fade — sensação de luz real, não geometria. Movimento lento.
  */
 export const EDGE_PULSE = {
   /** Tempo (s) por aresta percorrida — lento, contemplativo. */
   timePerEdge: 1.6,
-  /** Raio do core (ponto central pequeno). */
-  coreRadius: 0.025,
-  /** Raio do halo (brilho suave ao redor). */
-  haloRadius: 0.11,
-  baseColor: "#F5F2ED",
-  activeColor: "#FB3640",
-  coreBaseOpacity: 0.45,
-  coreActiveOpacity: 0.75,
-  haloBaseOpacity: 0.18,
-  haloActiveOpacity: 0.35,
+  /** Tamanho do sprite em unidades world. */
+  size: 0.35,
+  baseOpacity: 0.55,
+  activeOpacity: 0.95,
   lerpSpeed: 4,
 } as const;
 
@@ -240,8 +225,8 @@ export const CARD = {
   offsetX: 32,
   offsetY: 28,
   margin: 24,
-  widthDesktop: 480,
-  heightDesktop: 280,
+  widthDesktop: 600,
+  heightDesktop: 340,
   fadeInDuration: 0.35,
   fadeOutDuration: 0.2,
 } as const;

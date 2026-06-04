@@ -3,7 +3,6 @@
 import { type MutableRefObject } from "react";
 import TerrainScene from "@/components/lab/TerrainMesh/TerrainScene";
 import ProjectFragment from "./ProjectFragment";
-import NetworkLine from "./NetworkLine";
 import { useOrbitCameraConditional } from "./useOrbitCamera";
 import { cases } from "@/data/cases";
 import { FRAGMENT_SLOTS } from "./config";
@@ -51,7 +50,6 @@ export default function LandscapeScene({
           />
         );
       })}
-      <NetworkLine slots={FRAGMENT_SLOTS} activeSlug={activeSlug} />
     </>
   );
 }
