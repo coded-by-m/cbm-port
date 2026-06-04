@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { type MutableRefObject, useMemo, useRef } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
 import {
   BoxGeometry,
@@ -17,6 +17,35 @@ import type { ServiceVariant } from "@/data/services";
 
 const TWO_PI = Math.PI * 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+/* ============================================================
+   SHARED — Expansion behavior (camera + scene)
+   ============================================================ */
+
+/**
+ * Hook compartilhado: ref que lerps 0 → 1 conforme `active` muda.
+ * 0 = card colapsado, 1 = card expandido. Resposta ~0.7s.
+ */
+function useExpansion(active: boolean): MutableRefObject<number> {
+  const t = useRef(0);
+  useFrame((_, delta) => {
+    const target = active ? 1 : 0;
+    t.current = lerp(t.current, target, Math.min(1, delta * 1.6));
+  });
+  return t;
+}
+
+/**
+ * Camera dolly-back quando expandido: z 6 → 7.
+ * Renderiza como filho do Canvas pra ter acesso à camera via useThree.
+ */
+function CameraExpander({ expT }: { expT: MutableRefObject<number> }) {
+  const camera = useThree((s) => s.camera);
+  useFrame(() => {
+    camera.position.z = lerp(6, 7, expT.current);
+  });
+  return null;
+}
 
 /**
  * Mini-scene 3D dentro do card de serviço.
@@ -53,11 +82,13 @@ export default function ServiceMiniScene({
 
 function LandingScene({ active }: { active: boolean }) {
   const groupRef = useRef<Group>(null);
+  const expansionRef = useRef<Group>(null);
   const highlightGroupRef = useRef<Group>(null);
   const highlightMatRefs = useRef<{ opacity: number }[]>([]);
   const sparkRef = useRef<Mesh>(null);
   const elapsed = useRef(0);
   const speedRef = useRef(1);
+  const expT = useExpansion(active);
 
   // Página única + 4 sections horizontais internas (todas off-white agora).
   const pageW = 1.4;
@@ -113,6 +144,13 @@ function LandingScene({ active }: { active: boolean }) {
     if (g) {
       g.rotation.y = Math.sin(t * 0.25) * 0.18;
       g.position.y = Math.sin(t * 0.4) * 0.06;
+    }
+
+    // Expansion: scale 1.0 → 1.12, tilt forward (X) 0 → 0.14 rad
+    const w = expansionRef.current;
+    if (w) {
+      w.scale.setScalar(1 + expT.current * 0.12);
+      w.rotation.x = expT.current * 0.14;
     }
 
     // Calcula em qual fase estamos do ciclo.
@@ -200,9 +238,12 @@ function LandingScene({ active }: { active: boolean }) {
   ];
 
   return (
-    <group ref={groupRef} scale={0.85}>
-      {/* Frame externo da página */}
-      <lineSegments geometry={frameEdges}>
+    <>
+      <CameraExpander expT={expT} />
+      <group ref={expansionRef}>
+        <group ref={groupRef} scale={0.85}>
+          {/* Frame externo da página */}
+          <lineSegments geometry={frameEdges}>
         <lineBasicMaterial
           color="#F5F2ED"
           transparent
@@ -278,7 +319,9 @@ function LandingScene({ active }: { active: boolean }) {
           <meshBasicMaterial color="#FB3640" transparent opacity={1} />
         </mesh>
       </group>
-    </group>
+        </group>
+      </group>
+    </>
   );
 }
 
@@ -288,9 +331,11 @@ function LandingScene({ active }: { active: boolean }) {
 
 function InstitutionalScene({ active }: { active: boolean }) {
   const groupRef = useRef<Group>(null);
+  const expansionRef = useRef<Group>(null);
   const particlesRef = useRef<(Mesh | null)[]>([]);
   const elapsed = useRef(0);
   const speedRef = useRef(1);
+  const expT = useExpansion(active);
 
   // 6 andares empilhados verticalmente — lê como site com várias páginas.
   const floors = useMemo(() => {
@@ -337,6 +382,13 @@ function InstitutionalScene({ active }: { active: boolean }) {
       g.position.y = Math.sin(t * 0.4) * 0.08;
     }
 
+    // Expansion: scale + tilt forward
+    const w = expansionRef.current;
+    if (w) {
+      w.scale.setScalar(1 + expT.current * 0.12);
+      w.rotation.x = expT.current * 0.14;
+    }
+
     particles.forEach((p, i) => {
       const mesh = particlesRef.current[i];
       if (!mesh) return;
@@ -354,8 +406,11 @@ function InstitutionalScene({ active }: { active: boolean }) {
   });
 
   return (
-    <group ref={groupRef} scale={0.8}>
-      {floors.map((f, i) => (
+    <>
+      <CameraExpander expT={expT} />
+      <group ref={expansionRef}>
+        <group ref={groupRef} scale={0.8}>
+          {floors.map((f, i) => (
         <group key={`floor-${i}`} position={[0, f.y, 0]}>
           <lineSegments geometry={edgesGeoms[i]}>
             <lineBasicMaterial
@@ -402,7 +457,9 @@ function InstitutionalScene({ active }: { active: boolean }) {
           />
         </mesh>
       ))}
-    </group>
+        </group>
+      </group>
+    </>
   );
 }
 
@@ -412,9 +469,11 @@ function InstitutionalScene({ active }: { active: boolean }) {
 
 function AppScene({ active }: { active: boolean }) {
   const groupRef = useRef<Group>(null);
+  const expansionRef = useRef<Group>(null);
   const nodesRef = useRef<(Group | null)[]>([]);
   const elapsed = useRef(0);
   const speedRef = useRef(1);
+  const expT = useExpansion(active);
 
   const nodes = useMemo(() => {
     return [
@@ -466,6 +525,13 @@ function AppScene({ active }: { active: boolean }) {
       g.rotation.x = Math.sin(t * 0.3) * 0.06;
     }
 
+    // Expansion: scale + tilt forward
+    const w = expansionRef.current;
+    if (w) {
+      w.scale.setScalar(1 + expT.current * 0.12);
+      w.rotation.x = expT.current * 0.14;
+    }
+
     nodes.forEach((n, i) => {
       const node = nodesRef.current[i];
       if (!node) return;
@@ -476,8 +542,11 @@ function AppScene({ active }: { active: boolean }) {
   });
 
   return (
-    <group ref={groupRef} scale={0.95}>
-      {tubes.map((g, i) => (
+    <>
+      <CameraExpander expT={expT} />
+      <group ref={expansionRef}>
+        <group ref={groupRef} scale={0.95}>
+          {tubes.map((g, i) => (
         <mesh key={`tube-${i}`} geometry={g}>
           <meshBasicMaterial
             color="#F5F2ED"
@@ -512,6 +581,8 @@ function AppScene({ active }: { active: boolean }) {
           )}
         </group>
       ))}
-    </group>
+        </group>
+      </group>
+    </>
   );
 }
