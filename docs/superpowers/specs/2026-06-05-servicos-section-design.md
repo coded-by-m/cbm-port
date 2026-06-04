@@ -7,7 +7,9 @@
 
 ## Objetivo
 
-Apresentar os 3 produtos da CbM (Landing Pages, Sites Institucionais, Experiências Web) de forma clara comercial + visualmente coerente com o vocabulário da marca. Cards expandem inline (acordeon) revelando detalhes do serviço, com CTAs de contato específicos.
+Apresentar os 3 produtos da CbM (Landing Pages, Sites Institucionais, Aplicações Web) de forma clara comercial + visualmente coerente com o vocabulário da marca. Cards expandem inline (acordeon) revelando detalhes do serviço, com CTAs de contato específicos.
+
+**Reposicionamento (2026-06-05):** a CbM não é só webdesign — também constrói websoftware (dashboards, sistemas, plataformas). O card 03 reflete esse leque: "Aplicações Web" no lugar do antigo "Experiências Web".
 
 ## Estado da arte (input)
 
@@ -38,7 +40,7 @@ Apresentar os 3 produtos da CbM (Landing Pages, Sites Institucionais, Experiênc
 |---|--------|----------------------|-------------------|--------------|
 | 01 | Landing Pages | Sites de conversão. Foco em uma única ação. Performance e clareza. | Estratégia de conversão · Copywriting persuasivo · Design responsivo · Setup analytics · Deploy + handover | Empresas com produto único ou campanha específica |
 | 02 | Sites Institucionais | Presença digital completa. Estrutura, autoridade, profundidade. | Arquitetura de informação · Identidade aplicada · 5-12 páginas · CMS leve · SEO técnico · Performance | Empresas que querem presença sólida e profunda |
-| 03 | Experiências Web | Interfaces que surpreendem. Para quem quer se diferenciar. | Conceito visual original · WebGL/Three.js · Motion design · Storytelling interativo · Performance refinada | Marcas premium que querem se diferenciar pela experiência |
+| 03 | Aplicações Web | Dashboards, sistemas, plataformas. Software com interface refinada. | Arquitetura de informação · Design system próprio · Componentes interativos · Estados e fluxos · Integração de APIs · Performance otimizada | Empresas com processos internos digitais, equipes que precisam de ferramentas próprias, produtos SaaS |
 
 ---
 
@@ -197,23 +199,26 @@ Cada card monta seu próprio `<Canvas>`:
 
 **Câmera:** position [3, 1, 5], target [0, 0, 0] — ligeiro ângulo lateral pra mostrar a profundidade
 
-### Card 03 — Experiências Web
+### Card 03 — Aplicações Web
 
-**Conceito:** torre triangular complexa + órbita de pontos ao redor.
+**Conceito:** núcleo central (sistema) + módulos conectados orbitando (componentes). Lê como arquitetura de software: um core + nodes ligados.
 
 **Geometria:**
-- Torre central: similar à torre da Paisagem (3 níveis: base 3 nós + mid 3 nós + apex), escala 0.8
-- **Órbita externa:** 8 pontos pequenos circulando em 3 planos orbitais diferentes (alturas Y 0, 0.5, -0.5)
+- **Núcleo central:** icosaedro wireframe (escala 0.5), apex vermelho representando "estado central / banco de dados"
+- **6 módulos satélite:** pequenos cubos wireframe (escala 0.15) posicionados em 6 vértices ao redor do núcleo (octaédrico — 4 no plano horizontal + 1 acima + 1 abaixo)
+- **Conexões:** linhas finas vermelhas pulsando entre o núcleo e cada módulo (eco de "dados fluindo")
 
 **Material:**
-- Torre: lines off-white opacity 0.7, apex `#FB3640`
-- Pontos orbitais: meshes pequenos `#F5F2ED` opacity 0.4
+- Núcleo: lines off-white opacity 0.75, apex `#FB3640`
+- Módulos: lines off-white opacity 0.55
+- Conexões: `#FB3640` opacity 0.25 base, pulsando até 0.6 numa onda
 
 **Animação:**
-- **Idle:** torre rotaciona Y suave (yawPeriod 16s). Pontos orbitam em planos diferentes (períodos 12s, 18s, 24s)
-- **Hover/expand:** velocidade aumenta 1.5×, pontos têm leve glow ao passar perto da torre
+- **Idle:** grupo inteiro rotaciona Y devagar (yawPeriod 18s). Cada módulo tem leve bob individual (oscilação Y ±0.06 em períodos diferentes 4-7s)
+- **Pulse de dados:** uma onda de opacidade percorre as 6 conexões em sequência (loop 4s) — eco da faísca da Paisagem, mas em linhas
+- **Hover/expand:** rotação acelera 1.5×, núcleo "respira" (scale 1.0 → 1.08 → 1.0 num ciclo de 2s), pulse das conexões fica vermelho mais saturado
 
-**Câmera:** position [3, 2, 5], target [0, 0, 0]
+**Câmera:** position [3, 2, 5], target [0, 0, 0] — ligeiro ângulo lateral pra mostrar a estrutura tridimensional do sistema
 
 ---
 
@@ -249,7 +254,7 @@ Cada card tem uma **borda SVG sobreposta** que se desenha no scroll-in.
 - IntersectionObserver pro border-draw inicial
 
 ### 3. `ServiceMiniScene.tsx`
-- Props: `variant: "landing" | "institutional" | "experience"`, `active: boolean`
+- Props: `variant: "landing" | "institutional" | "app"`, `active: boolean`
 - Renderiza `<Canvas>` próprio
 - Switch interno renderiza a geometria + animação correta por variant
 
