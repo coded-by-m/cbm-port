@@ -12,6 +12,7 @@ import DevCameraControls from "./DevCameraControls";
 import DevCameraHUD from "./DevCameraHUD";
 import LandscapeHint from "./LandscapeHint";
 import LandscapeProgressBar from "./LandscapeProgressBar";
+import LandscapeArrows from "./LandscapeArrows";
 import {
   AUTO_RESUME,
   FRAGMENT_SLOTS,
@@ -275,22 +276,34 @@ export default function ProjectLandscape() {
     [router, snapToSlug],
   );
 
+  // Navega prev/next na ordem angular dos fragmentos.
+  // Usado por: setas do teclado, botões de seta laterais.
+  const goByDirection = useCallback(
+    (dir: 1 | -1) => {
+      const ordered = [...FRAGMENT_SLOTS].sort(
+        (a, b) => angleOfSlot(a) - angleOfSlot(b),
+      );
+      const currentIdx = ordered.findIndex((s) => s.slug === activeSlug);
+      const nextIdx = (currentIdx + dir + ordered.length) % ordered.length;
+      snapToSlug(ordered[nextIdx].slug);
+    },
+    [activeSlug, snapToSlug],
+  );
+  const goPrev = useCallback(() => goByDirection(-1), [goByDirection]);
+  const goNext = useCallback(() => goByDirection(1), [goByDirection]);
+
   // Teclado: ← / → navega prev/next. Enter abre case. Esc retoma auto-rotate.
   useEffect(() => {
-    const ordered = [...FRAGMENT_SLOTS].sort(
-      (a, b) => angleOfSlot(a) - angleOfSlot(b),
-    );
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
 
-      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+      if (e.key === "ArrowRight") {
         e.preventDefault();
-        const currentIdx = ordered.findIndex((s) => s.slug === activeSlug);
-        const dir = e.key === "ArrowRight" ? 1 : -1;
-        const nextIdx =
-          (currentIdx + dir + ordered.length) % ordered.length;
-        snapToSlug(ordered[nextIdx].slug);
+        goNext();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goPrev();
       } else if (e.key === "Enter" || e.key === " ") {
         const current = cases.find((c) => c.slug === activeSlug);
         if (current && current.status !== "coming-soon") {
@@ -305,7 +318,7 @@ export default function ProjectLandscape() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [activeSlug, router, snapToSlug]);
+  }, [activeSlug, router, goPrev, goNext]);
 
   const activeCase =
     activeSlug !== null
@@ -357,6 +370,7 @@ export default function ProjectLandscape() {
             visitedSlugs={visitedSlugs}
             onSelect={snapToSlug}
           />
+          <LandscapeArrows onPrev={goPrev} onNext={goNext} />
           <LandscapeHint show={showHint} />
           <ProjectCard
             caseProject={activeCase}

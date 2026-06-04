@@ -77,7 +77,7 @@ export const ORBIT = {
   /** Sensibilidade do drag (rad por pixel) — drag suave, controle fino. */
   dragSensitivity: 0.003,
   /** Duração do snap pra um fragmento (s) — lento, contemplativo. */
-  snapDuration: 2.8,
+  snapDuration: 4.2,
   /** Ângulo inicial da câmera (rad). Aponta pro primeiro fragmento. */
   initialAngle: 0,
   /** Amplitude da respiração ambiente (oscila Y). */
