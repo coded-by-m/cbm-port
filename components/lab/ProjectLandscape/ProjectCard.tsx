@@ -199,15 +199,35 @@ export function ProjectCard({
           {!isComingSoon && !isMobile && (
             <span className="mt-3 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/40 px-4 py-2 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED]/95 transition-colors group-hover/card:border-[#F5F2ED] group-hover/card:bg-[#F5F2ED]/5">
               Ver projeto
-              <span aria-hidden style={{ color: "#FB3640" }}>
-                →
-              </span>
+              <svg
+                aria-hidden
+                width="11"
+                height="11"
+                viewBox="0 0 16 16"
+                fill="#FB3640"
+                className="relative inline-block group-hover/card:animate-[spin_1.4s_linear_infinite]"
+              >
+                <polygon points="3,2 14,8 3,14" />
+              </svg>
             </span>
           )}
           {isComingSoon && !isMobile && (
-            <span className="mt-3 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/15 px-4 py-2 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED]/45">
-              Vertente em formação
-            </span>
+            <a
+              href="mailto:matheusmendes077@gmail.com?subject=Interesse no projeto"
+              className="mt-3 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/25 px-4 py-2 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED]/70 transition-colors hover:border-[#F5F2ED]/70 hover:text-[#F5F2ED]"
+            >
+              Conversar sobre primeiros projetos
+              <svg
+                aria-hidden
+                width="11"
+                height="11"
+                viewBox="0 0 16 16"
+                fill="#FB3640"
+                className="relative inline-block opacity-70 group-hover/card:opacity-100"
+              >
+                <polygon points="3,2 14,8 3,14" />
+              </svg>
+            </a>
           )}
         </div>
       </div>
@@ -291,15 +311,18 @@ export function ProjectCard({
       ref={wrapperRef}
       className={wrapperClassName}
       style={{ opacity: 0, width: `${CARD.widthDesktop}px` }}
+      role="complementary"
+      aria-label={`Projeto ativo: ${displayed.title}`}
+      aria-live="polite"
     >
       {scrollStyle}
       {allVisited && (
         <div className="flex items-center justify-center gap-3 border-b border-[#F5F2ED]/10 bg-[#FB3640]/8 px-5 py-2">
           <span className="text-[0.5rem] uppercase tracking-[0.4em] text-[#FB3640]">
-            ✦ Tour completo
+            ✦ Você viu tudo
           </span>
           <span className="text-[0.55rem] uppercase tracking-[0.3em] text-[#F5F2ED]/55">
-            role pra continuar
+            novos projetos em breve
           </span>
         </div>
       )}

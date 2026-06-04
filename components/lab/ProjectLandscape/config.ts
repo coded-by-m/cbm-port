@@ -80,6 +80,10 @@ export const ORBIT = {
   snapDuration: 2.8,
   /** Ângulo inicial da câmera (rad). Aponta pro primeiro fragmento. */
   initialAngle: 0,
+  /** Amplitude da respiração ambiente (oscila Y). */
+  breathAmp: 0.18,
+  /** Período da respiração (s). */
+  breathPeriod: 6,
 } as const;
 
 /** Delay (ms) antes de auto-ativar o fragmento inicial — dá tempo do flip assentar. */

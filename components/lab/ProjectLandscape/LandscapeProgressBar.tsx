@@ -42,18 +42,18 @@ export default function LandscapeProgressBar({
                 onClick={() => onSelect(slot.slug)}
                 aria-label={`Projeto ${idx}`}
                 aria-current={isActive ? "true" : undefined}
-                className="group relative"
+                className="group relative py-3"
               >
                 <span
                   className={`block h-[2px] transition-all duration-300 ${
                     isActive
-                      ? "w-12 bg-[#F5F2ED]"
+                      ? "w-14 bg-[#F5F2ED]"
                       : isVisited
-                        ? "w-8 bg-[#F5F2ED]/45 hover:bg-[#F5F2ED]/85"
-                        : "w-8 bg-[#F5F2ED]/15 hover:bg-[#F5F2ED]/55"
+                        ? "w-10 bg-[#F5F2ED]/45 hover:bg-[#F5F2ED]/85"
+                        : "w-10 bg-[#F5F2ED]/15 hover:bg-[#F5F2ED]/55"
                   }`}
                 />
-                <span className="absolute left-1/2 top-3 -translate-x-1/2 text-[0.5rem] uppercase tracking-[0.3em] text-[#F5F2ED]/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                <span className="absolute left-1/2 top-7 -translate-x-1/2 text-[0.5rem] uppercase tracking-[0.3em] text-[#F5F2ED]/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                   {`0${idx}`}
                 </span>
               </button>

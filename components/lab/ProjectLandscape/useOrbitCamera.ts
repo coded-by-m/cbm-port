@@ -1,12 +1,13 @@
 "use client";
 
-import { type MutableRefObject } from "react";
+import { type MutableRefObject, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { ORBIT } from "./config";
 
 const _pos = new Vector3();
 const _tgt = new Vector3();
+const TWO_PI = Math.PI * 2;
 
 /**
  * Câmera orbital ao redor do centro.
@@ -30,13 +31,19 @@ export function useOrbitCameraConditional(
   enabled: boolean,
 ) {
   const camera = useThree((state) => state.camera);
+  const elapsed = useRef(0);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!enabled) return;
+    elapsed.current += delta;
     const a = angleRef.current;
+    // Respiração ambiente sutil em Y — dá vida mesmo em pausa.
+    const breath =
+      Math.sin((elapsed.current * TWO_PI) / ORBIT.breathPeriod) *
+      ORBIT.breathAmp;
     _pos.set(
       Math.sin(a) * ORBIT.cameraRadius,
-      ORBIT.cameraY,
+      ORBIT.cameraY + breath,
       Math.cos(a) * ORBIT.cameraRadius,
     );
     _tgt.set(0, ORBIT.targetY, 0);

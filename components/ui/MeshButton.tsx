@@ -184,7 +184,7 @@ export const MeshButton = forwardRef<HTMLButtonElement, MeshButtonProps>(
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
         className={[
-          "word group relative inline-flex items-center gap-5 overflow-hidden border border-[#F5F2ED]/55 bg-[#000F08]/60 px-9 py-5 text-sm uppercase tracking-[0.3em] text-[#F5F2ED] backdrop-blur-sm transition-colors duration-500 hover:border-[#F5F2ED] hover:bg-[#000F08]/80 sm:text-base",
+          "word group relative inline-flex items-center gap-6 overflow-hidden border border-[#F5F2ED]/55 bg-[#000F08]/60 px-12 py-7 text-base uppercase tracking-[0.3em] text-[#F5F2ED] backdrop-blur-sm transition-colors duration-500 hover:border-[#F5F2ED] hover:bg-[#000F08]/80 sm:text-lg",
           className,
         ]
           .filter(Boolean)
@@ -233,13 +233,16 @@ export const MeshButton = forwardRef<HTMLButtonElement, MeshButtonProps>(
 
         <span className="relative">{label}</span>
         {showArrow && (
-          <span
+          <svg
             aria-hidden
-            className="relative inline-block transition-transform duration-500 ease-out group-hover:translate-x-2"
-            style={{ color: "#FB3640" }}
+            width="18"
+            height="18"
+            viewBox="0 0 16 16"
+            fill="#FB3640"
+            className="relative inline-block group-hover:animate-[spin_1.4s_linear_infinite]"
           >
-            →
-          </span>
+            <polygon points="3,2 14,8 3,14" />
+          </svg>
         )}
       </button>
     );

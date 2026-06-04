@@ -326,6 +326,8 @@ export default function ProjectLandscape() {
   return (
     <div
       className="absolute inset-0 overflow-hidden touch-none select-none"
+      role="region"
+      aria-label="Vitrine interativa de projetos. Use as setas do teclado para navegar."
       {...wrapperHandlers}
       style={{ cursor: devCamera ? "default" : "grab" }}
     >
