@@ -176,6 +176,23 @@ export default function PhilosophySection({ onComplete }: PhilosophySectionProps
     });
   }, [goTo]);
 
+  // Inicialização: todos os containers + words/ghosts/CTA começam invisíveis.
+  // Evita conflito entre React inline style e GSAP set/tween durante re-renders.
+  useEffect(() => {
+    statementsRef.current.forEach((el) => {
+      if (!el) return;
+      gsap.set(el, { opacity: 0 });
+      const innerWords = el.querySelectorAll(".word");
+      const innerGhost = el.querySelector(".ghost-number");
+      if (innerWords.length) {
+        gsap.set(innerWords, { opacity: 0, y: 28, filter: "blur(10px)" });
+      }
+      if (innerGhost) {
+        gsap.set(innerGhost, { opacity: 0, scale: 0.92, filter: "blur(14px)" });
+      }
+    });
+  }, []);
+
   // Auto-advance start
   useEffect(() => {
     const startDelay = setTimeout(() => goTo(0), 800);
@@ -318,9 +335,10 @@ export default function PhilosophySection({ onComplete }: PhilosophySectionProps
                 statementsRef.current[i] = el;
               }}
               className="absolute inset-0 flex flex-col items-center justify-center text-center"
-              style={{ opacity: 0 }}
             >
-              {/* Ghost number — atrás da frase, marca editorial. */}
+              {/* Ghost number — atrás da frase, marca editorial.
+                  Opacity inicial via useEffect/GSAP (não inline) pra evitar
+                  conflito com GSAP em re-renders. */}
               <span
                 className="ghost-number pointer-events-none absolute left-1/2 top-1/2 select-none"
                 style={{
@@ -331,7 +349,6 @@ export default function PhilosophySection({ onComplete }: PhilosophySectionProps
                   color: "rgba(245, 242, 237, 0.06)",
                   letterSpacing: "-0.05em",
                   transform: "translate(-50%, -50%)",
-                  opacity: 0,
                 }}
               >
                 {stmt.number}
@@ -352,16 +369,24 @@ export default function PhilosophySection({ onComplete }: PhilosophySectionProps
                     onClick={() => onCompleteRef.current?.()}
                   />
                 ) : stmt.lines ? (
-                  stmt.lines.map((line, lineIdx) => (
-                    <span key={lineIdx} className="block leading-tight">
-                      {line.split(" ").map((word, j) => (
-                        <span key={j} className="word inline-block">
-                          {word}
-                          {j < line.split(" ").length - 1 ? " " : ""}
-                        </span>
-                      ))}
-                    </span>
-                  ))
+                  stmt.lines.map((line, lineIdx) => {
+                    const words = line.split(" ");
+                    return (
+                      <span key={lineIdx} className="block leading-tight">
+                        {words.map((word, j) => (
+                          <span
+                            key={j}
+                            className="word inline-block"
+                            style={{
+                              marginRight: j < words.length - 1 ? "0.3em" : 0,
+                            }}
+                          >
+                            {word}
+                          </span>
+                        ))}
+                      </span>
+                    );
+                  })
                 ) : null}
               </p>
             </div>
