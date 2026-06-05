@@ -26,7 +26,8 @@ export interface Experiment {
     | "laboratorio"
     | "servicos"
     | "processo"
-    | "sobre";
+    | "sobre"
+    | "cta";
   /** O que o experimento valida. */
   description: string;
   /** "ready" = implementado e ativo; "planned" = placeholder preparado. */
@@ -123,6 +124,14 @@ export const EXPERIMENTS: Experiment[] = [
     status: "ready",
   },
   {
+    slug: "cta-section",
+    title: "CTA Final",
+    stage: "cta",
+    description:
+      "Clímax/conversão da Home. CTAFormation: 60 fragmentos triangulados convergem (scroll-driven) e formam o símbolo CbM com apex vermelho. Headlines cheeky com word-stagger + MeshButton pro WhatsApp + Footer.",
+    status: "ready",
+  },
+  {
     slug: "process-section",
     title: "Process Section",
     stage: "processo",
@@ -151,6 +160,7 @@ export const STAGE_LABEL: Record<Experiment["stage"], string> = {
   servicos: "Serviços",
   processo: "Processo",
   sobre: "Sobre",
+  cta: "CTA Final",
 };
 
 /** Ordem canônica dos estágios na jornada. */
@@ -164,4 +174,5 @@ export const STAGE_ORDER: Experiment["stage"][] = [
   "laboratorio",
   "processo",
   "sobre",
+  "cta",
 ];
