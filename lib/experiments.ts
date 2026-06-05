@@ -23,6 +23,7 @@ export interface Experiment {
     | "hero"
     | "problema"
     | "paisagem"
+    | "laboratorio"
     | "servicos"
     | "processo";
   /** O que o experimento valida. */
@@ -105,6 +106,14 @@ export const EXPERIMENTS: Experiment[] = [
     status: "ready",
   },
   {
+    slug: "lab-section",
+    title: "Lab Section",
+    stage: "laboratorio",
+    description:
+      "Teaser do Experience Lab na Home (zona 'bastidor'). Campo residual de fragmentos triangulados decorativos sobre o terreno + CTA pro /lab + métricas (experimentos, LOC, stack). Prova rigor técnico.",
+    status: "ready",
+  },
+  {
     slug: "process-section",
     title: "Process Section",
     stage: "processo",
@@ -129,6 +138,7 @@ export const STAGE_LABEL: Record<Experiment["stage"], string> = {
   hero: "Hero",
   problema: "Problema",
   paisagem: "Paisagem",
+  laboratorio: "Laboratório",
   servicos: "Serviços",
   processo: "Processo",
 };
@@ -141,5 +151,6 @@ export const STAGE_ORDER: Experiment["stage"][] = [
   "problema",
   "paisagem",
   "servicos",
+  "laboratorio",
   "processo",
 ];
