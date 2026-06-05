@@ -17,7 +17,14 @@ export interface Experiment {
   /** Nome exibido na central de experimentos. */
   title: string;
   /** Em que momento da home esta técnica entra. */
-  stage: "loading" | "intro" | "hero" | "problema" | "paisagem" | "servicos";
+  stage:
+    | "loading"
+    | "intro"
+    | "hero"
+    | "problema"
+    | "paisagem"
+    | "servicos"
+    | "processo";
   /** O que o experimento valida. */
   description: string;
   /** "ready" = implementado e ativo; "planned" = placeholder preparado. */
@@ -98,6 +105,14 @@ export const EXPERIMENTS: Experiment[] = [
     status: "ready",
   },
   {
+    slug: "process-section",
+    title: "Process Section",
+    stage: "processo",
+    description:
+      "Linha SVG narrativa conectando 4 etapas (Estratégia → Design → Código → Resultado). Scroll-driven: a linha vermelha se desenha via stroke-dashoffset e cada node triangular acende quando alcançado. 3D off, terrain residual sutil.",
+    status: "ready",
+  },
+  {
     slug: "services-section",
     title: "Services Section",
     stage: "servicos",
@@ -115,6 +130,7 @@ export const STAGE_LABEL: Record<Experiment["stage"], string> = {
   problema: "Problema",
   paisagem: "Paisagem",
   servicos: "Serviços",
+  processo: "Processo",
 };
 
 /** Ordem canônica dos estágios na jornada. */
@@ -125,4 +141,5 @@ export const STAGE_ORDER: Experiment["stage"][] = [
   "problema",
   "paisagem",
   "servicos",
+  "processo",
 ];
