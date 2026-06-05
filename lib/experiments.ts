@@ -17,7 +17,7 @@ export interface Experiment {
   /** Nome exibido na central de experimentos. */
   title: string;
   /** Em que momento da home esta técnica entra. */
-  stage: "loading" | "intro" | "hero" | "paisagem" | "servicos";
+  stage: "loading" | "intro" | "hero" | "problema" | "paisagem" | "servicos";
   /** O que o experimento valida. */
   description: string;
   /** "ready" = implementado e ativo; "planned" = placeholder preparado. */
@@ -90,6 +90,14 @@ export const EXPERIMENTS: Experiment[] = [
     status: "ready",
   },
   {
+    slug: "problem-section",
+    title: "Problem Section",
+    stage: "problema",
+    description:
+      "Field de cubos genéricos idênticos — argumento visual do diagnóstico. Conforme o scroll avança, o cubo central perde opacidade e uma torre triangulada com apex vermelho emerge no mesmo lugar.",
+    status: "ready",
+  },
+  {
     slug: "services-section",
     title: "Services Section",
     stage: "servicos",
@@ -104,6 +112,7 @@ export const STAGE_LABEL: Record<Experiment["stage"], string> = {
   loading: "Loading",
   intro: "Intro",
   hero: "Hero",
+  problema: "Problema",
   paisagem: "Paisagem",
   servicos: "Serviços",
 };
@@ -113,6 +122,7 @@ export const STAGE_ORDER: Experiment["stage"][] = [
   "loading",
   "intro",
   "hero",
+  "problema",
   "paisagem",
   "servicos",
 ];
