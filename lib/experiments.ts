@@ -25,7 +25,8 @@ export interface Experiment {
     | "paisagem"
     | "laboratorio"
     | "servicos"
-    | "processo";
+    | "processo"
+    | "sobre";
   /** O que o experimento valida. */
   description: string;
   /** "ready" = implementado e ativo; "planned" = placeholder preparado. */
@@ -114,6 +115,14 @@ export const EXPERIMENTS: Experiment[] = [
     status: "ready",
   },
   {
+    slug: "about-section",
+    title: "About Section",
+    stage: "sobre",
+    description:
+      "Seção Sobre da Home — humaniza a marca. Símbolo CbM wireframe + manifesto + fundador (Matheus Mendes, Florianópolis) + 3 valores (Precisão · Elegância · Detalhismo). Terrain residual estático, entry-animated.",
+    status: "ready",
+  },
+  {
     slug: "process-section",
     title: "Process Section",
     stage: "processo",
@@ -141,6 +150,7 @@ export const STAGE_LABEL: Record<Experiment["stage"], string> = {
   laboratorio: "Laboratório",
   servicos: "Serviços",
   processo: "Processo",
+  sobre: "Sobre",
 };
 
 /** Ordem canônica dos estágios na jornada. */
@@ -153,4 +163,5 @@ export const STAGE_ORDER: Experiment["stage"][] = [
   "servicos",
   "laboratorio",
   "processo",
+  "sobre",
 ];

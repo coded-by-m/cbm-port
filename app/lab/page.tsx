@@ -67,6 +67,10 @@ const EXPERIMENT_COMPONENTS: Record<string, ComponentType> = {
     () => import("@/components/lab/LabSection").then((m) => m.LabSection),
     { ssr: false },
   ),
+  "about-section": dynamic(
+    () => import("@/components/lab/AboutSection").then((m) => m.AboutSection),
+    { ssr: false },
+  ),
 };
 
 /**
