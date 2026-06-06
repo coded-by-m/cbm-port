@@ -321,9 +321,9 @@ export function HomeExperience() {
         />
       </LazySection>
 
-      {/* 8 — Convite / CTA Final (+ Footer). Scroll-driven, 240vh + footer.
+      {/* 8 — Convite / CTA Final (+ Footer). Scroll-driven, 200vh + footer.
           Finale: entra por wipe; subir do topo volta pro Sobre. */}
-      <LazySection minHeight="240vh" chapterIndex={8}>
+      <LazySection minHeight="200vh" chapterIndex={8}>
         <CTASection
           inPage
           live={activeChapter === 8}

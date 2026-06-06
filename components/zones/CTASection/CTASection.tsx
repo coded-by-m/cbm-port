@@ -48,17 +48,21 @@ export default function CTASection({
   const lastHRef = useRef(false);
   const lastBRef = useRef(false);
   const lastCRef = useRef(false);
+  const lastCueRef = useRef(false);
   const [headlinesIn, setHeadlinesIn] = useState(false);
   const [bodyIn, setBodyIn] = useState(false);
   const [ctaIn, setCtaIn] = useState(false);
+  const [cueOut, setCueOut] = useState(false);
 
-  // Mesma lógica de antes; só a fonte do `p` mudou (helper relativo à seção).
+  // Conteúdo antecipado (entra mais cedo no scroll) pra encurtar a sensação
+  // de transição. O cue "role" some assim que a headline começa a entrar.
   useSectionScrollProgress(trackRef, (p) => {
     progressRef.current = Math.max(0, Math.min(1, p));
 
-    const h = p > 0.5;
-    const b = p > 0.62;
-    const c = p > 0.82;
+    const h = p > 0.42;
+    const b = p > 0.55;
+    const c = p > 0.75;
+    const cue = p > 0.38;
     if (h !== lastHRef.current) {
       lastHRef.current = h;
       setHeadlinesIn(h);
@@ -70,6 +74,10 @@ export default function CTASection({
     if (c !== lastCRef.current) {
       lastCRef.current = c;
       setCtaIn(c);
+    }
+    if (cue !== lastCueRef.current) {
+      lastCueRef.current = cue;
+      setCueOut(cue);
     }
   });
 
@@ -129,7 +137,7 @@ export default function CTASection({
       }`}
       aria-labelledby="cta-headline"
     >
-      <div ref={trackRef} className="relative h-[240vh]">
+      <div ref={trackRef} className="relative h-[200vh]">
         <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
           {/* Formação 3D — campo ambiente + energia convergindo pro CTA. */}
           <div className="pointer-events-none absolute inset-0 z-0">
@@ -204,11 +212,31 @@ export default function CTASection({
               }}
             >
               <MeshButton
-                label="Iniciar Projeto"
+                label="Começar meu projeto"
                 onClick={() => window.open(WHATSAPP, "_blank", "noopener")}
-                aria-label="Iniciar projeto pelo WhatsApp"
+                aria-label="Começar meu projeto pelo WhatsApp"
               />
             </div>
+          </div>
+
+          {/* Cue de scroll — guia o usuário no trecho inicial; some quando o
+              conteúdo entra. */}
+          <div
+            className="pointer-events-none absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5"
+            style={{
+              opacity: cueOut ? 0 : 1,
+              transform: cueOut ? "translateY(8px)" : "translateY(0)",
+              transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+            }}
+            aria-hidden
+          >
+            <span
+              className="text-[0.6rem] uppercase tracking-[0.35em] text-[#F5F2ED]/55"
+              style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+            >
+              Role para continuar
+            </span>
+            <span className="block h-2.5 w-2.5 rotate-45 animate-bounce border-b border-r border-[#FB3640]" />
           </div>
         </div>
       </div>
