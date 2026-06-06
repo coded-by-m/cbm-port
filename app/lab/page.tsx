@@ -2,6 +2,7 @@
 
 import { useState, type ComponentType } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { EXPERIMENTS, STAGE_LABEL, STAGE_ORDER } from "@/lib/experiments";
 
 /**
@@ -109,7 +110,16 @@ export default function LabPage() {
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-6 sm:p-10">
         <header className="flex items-start justify-between gap-6">
           <div>
-            <p className="text-[0.65rem] uppercase tracking-[0.4em] text-neutral-500">
+            <Link
+              href="/"
+              className="pointer-events-auto inline-flex items-center gap-2 text-[0.65rem] uppercase tracking-[0.3em] text-neutral-400 transition-colors hover:text-neutral-100"
+            >
+              <span className="text-[#FB3640]" aria-hidden>
+                ←
+              </span>
+              Início
+            </Link>
+            <p className="mt-3 text-[0.65rem] uppercase tracking-[0.4em] text-neutral-500">
               Coded by M
             </p>
             <h1 className="mt-2 text-sm font-light uppercase tracking-[0.3em] text-neutral-300">

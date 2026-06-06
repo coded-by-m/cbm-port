@@ -115,6 +115,35 @@ export function HomeExperience() {
     [],
   );
 
+  // Retorno na sessão (voltar de /cases ou /lab): pula a intro travada e, se
+  // houver alvo no hash (#projetos), posiciona direto na Paisagem — nunca
+  // re-prende o usuário nos 12s da intro.
+  useEffect(() => {
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem("cbm-intro-seen") === "1";
+    } catch {}
+    const target = window.location.hash === "#projetos" ? 4 : null;
+    if (seen || target !== null) setIntroDone(true);
+    if (target !== null) {
+      const t = setTimeout(() => {
+        document
+          .querySelector('[data-chapter-index="4"]')
+          ?.scrollIntoView({ block: "start" });
+        history.replaceState(null, "", window.location.pathname);
+      }, 100);
+      return () => clearTimeout(t);
+    }
+  }, []);
+
+  // Marca a intro como vista nesta sessão.
+  useEffect(() => {
+    if (!introDone) return;
+    try {
+      sessionStorage.setItem("cbm-intro-seen", "1");
+    } catch {}
+  }, [introDone]);
+
   useEffect(() => {
     if (introDone) return;
     const html = document.documentElement;
