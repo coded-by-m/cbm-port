@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
-import { AdditiveBlending, type Group, type Mesh, type MeshBasicMaterial } from "three";
+import type { Group, Mesh, MeshBasicMaterial } from "three";
 import {
   COLORS,
   LINE_WIDTH,
@@ -28,60 +28,10 @@ function useGlobalPointer() {
   return ref;
 }
 
-/** Faísca 3D percorrendo as arestas de um stroke (eco do edge-pulse do site). */
-function StrokePulse({
-  points,
-  color,
-  offset,
-}: {
-  points: readonly [number, number, number][];
-  color: string;
-  offset: number;
-}) {
-  const meshRef = useRef<Mesh>(null);
-  const elapsed = useRef(offset);
-  const TIME_PER_SEG = 1.0;
-
-  useFrame((_, delta) => {
-    elapsed.current += delta;
-    const segCount = Math.max(1, points.length - 1);
-    const total = segCount * TIME_PER_SEG;
-    const tt = elapsed.current % total;
-    const ei = Math.min(segCount - 1, Math.floor(tt / TIME_PER_SEG));
-    const localT = (tt - ei * TIME_PER_SEG) / TIME_PER_SEG;
-    const from = points[ei];
-    const to = points[ei + 1];
-    const m = meshRef.current;
-    if (m && from && to) {
-      m.position.set(
-        lerp(from[0], to[0], localT),
-        lerp(from[1], to[1], localT),
-        lerp(from[2], to[2], localT),
-      );
-      m.rotation.x += delta * 0.8;
-      m.rotation.y += delta * 0.6;
-    }
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <tetrahedronGeometry args={[0.05, 0]} />
-      <meshBasicMaterial
-        color={color}
-        transparent
-        opacity={0.95}
-        blending={AdditiveBlending}
-        depthWrite={false}
-      />
-    </mesh>
-  );
-}
-
 /**
  * A marca CbM como objeto 3D: strokes (off-white) + diagonal signal-red +
- * nós que pulsam + faíscas percorrendo as arestas. Faz tilt/parallax suave
- * seguindo o cursor (global) e respira no idle. Reusa a geometria da logo
- * do TriangleLoader.
+ * nós que pulsam. Faz tilt/parallax suave seguindo o cursor (global) e respira
+ * no idle. Reusa a geometria da logo do TriangleLoader.
  */
 function Mark() {
   const groupRef = useRef<Group>(null);
@@ -139,16 +89,6 @@ function Mark() {
             opacity={0.95}
           />
         </mesh>
-      ))}
-
-      {/* Faíscas percorrendo cada stroke da marca. */}
-      {LOGO_STROKES.map((s, i) => (
-        <StrokePulse
-          key={`pulse-${i}`}
-          points={s.points}
-          color={s.color}
-          offset={i * 0.55}
-        />
       ))}
     </group>
   );
