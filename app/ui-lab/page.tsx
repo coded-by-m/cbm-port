@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { CaseHero } from "@/components/case/CaseHero";
 import { CaseOverview } from "@/components/case/CaseOverview";
-import { CaseGallery } from "@/components/case/CaseGallery";
+import { CaseScreens } from "@/components/case/CaseScreens";
 import { CaseReturnCTA } from "@/components/case/CaseReturnCTA";
 import { getCaseBySlug } from "@/data/cases";
 
@@ -1912,7 +1912,7 @@ export default function UILabPage() {
               {(() => {
                 const project = getCaseBySlug("machado-plataformas");
                 if (!project) return null;
-                return <CaseGallery project={project} />;
+                return <CaseScreens project={project} />;
               })()}
             </div>
           </div>
