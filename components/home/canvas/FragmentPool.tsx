@@ -38,15 +38,31 @@ type Layout = (i: number, t: Target) => void;
 
 // ── Layouts por capítulo (a narrativa do "barro") ──
 
-const cluster: Layout = (i, t) => {
-  // 0 Logo — aglomerado apertado no centro (a marca).
-  t.px = rng(i, 1) * 1.6;
-  t.py = 1.2 + rng(i, 2) * 1.4;
-  t.pz = rng(i, 3) * 1.2;
-  t.rx = rng(i, 4) * 3;
-  t.ry = rng(i, 5) * 3;
+const markM: Layout = (i, t) => {
+  // 0 Logo — fragmentos formam a marca "M" (4 traços: vertical esq, diagonal
+  // ↘, diagonal ↗, vertical dir). Bookend com a formação do Convite.
+  const per = N / 4;
+  const seg = Math.floor(i / per);
+  const u = (i % per) / (per - 1); // 0..1 dentro do traço
+  const jz = rng(i, 3) * 0.35;
+  if (seg === 0) {
+    t.px = -2.2;
+    t.py = 0.6 + u * 3;
+  } else if (seg === 1) {
+    t.px = -2.2 + u * 2.2;
+    t.py = 3.6 - u * 2.1;
+  } else if (seg === 2) {
+    t.px = u * 2.2;
+    t.py = 1.5 + u * 2.1;
+  } else {
+    t.px = 2.2;
+    t.py = 3.6 - u * 3;
+  }
+  t.pz = jz;
+  t.rx = rng(i, 4) * 1.5;
+  t.ry = rng(i, 5) * 1.5;
   t.rz = 0;
-  t.s = 0.5 + hash(i, 6) * 0.3;
+  t.s = 0.42 + hash(i, 6) * 0.18;
 };
 
 const cloud: Layout = (i, t) => {
@@ -143,7 +159,7 @@ const symbol: Layout = (i, t) => {
 };
 
 const LAYOUTS: Layout[] = [
-  cluster, // 0 Logo
+  markM, // 0 Logo
   cloud, // 1 Manifesto
   grid, // 2 Problema
   triCluster, // 3 Serviços

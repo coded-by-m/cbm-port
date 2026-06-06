@@ -10,7 +10,7 @@ import type { CameraKey } from "./CameraRig";
  * (pos [0,5.2,15], target [0,-0.8,-0.6], fov 42).
  */
 export const CHAPTER_CAMERA_KEYS: CameraKey[] = [
-  { pos: [0, 7, 20], target: [0, 0, 0], fov: 38 }, // 0 Logo — establishing
+  { pos: [0, 2.4, 11], target: [0, 1.9, 0], fov: 42 }, // 0 Logo — enquadra a marca M
   { pos: [0, 5.5, 15], target: [0, -0.5, -1], fov: 42 }, // 1 Manifesto
   { pos: [-4, 4, 12], target: [-1, -0.5, -2], fov: 45 }, // 2 Problema — desce no campo
   { pos: [4, 5, 13], target: [1, -0.5, -1], fov: 44 }, // 3 Serviços
