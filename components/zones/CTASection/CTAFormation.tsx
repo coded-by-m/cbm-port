@@ -24,9 +24,9 @@ const FOCAL = new Vector3(0, -2.7, 0);
 /** Repulsão local PONTUAL do cursor (raio pequeno): só os bem próximos fogem. */
 const REPEL_RADIUS = 1.4;
 const REPEL_STRENGTH = 1.5;
-/** Limites do voo (wrap quando o fragmento sai). */
-const BOUND_X = 8;
-const BOUND_Y = 5;
+/** Limites do voo (wrap quando o fragmento sai) — perto do que a câmera vê. */
+const BOUND_X = 5.5;
+const BOUND_Y = 3.4;
 
 function mulberry32(seed: number) {
   let a = seed >>> 0;
@@ -81,8 +81,8 @@ function Formation({
 }: {
   progressRef: MutableRefObject<number>;
 }) {
-  const COUNT = 22;
-  const RED = 7;
+  const COUNT = 28;
+  const RED = 9;
 
   const specs = useMemo<FragSpec[]>(() => {
     const rand = mulberry32(20260606);
@@ -107,7 +107,7 @@ function Formation({
         rand() * 2 - 1,
       ).normalize();
       // Velocidade de voo (varia direção/sentido; mais horizontal).
-      const speed = 0.45 + rand() * 0.7;
+      const speed = 0.3 + rand() * 0.45;
       const ang = rand() * Math.PI * 2;
       list.push({
         seed: 17 + i * 53,
@@ -189,7 +189,8 @@ function FieldFragment({
 
   useFrame((state, delta) => {
     const p = clamp01(progressRef.current);
-    const fadeIn = clamp01(p / 0.1);
+    // Campo já visível ao chegar (piso) — sobe rápido nos primeiros %.
+    const fadeIn = clamp01(0.55 + p / 0.06);
     const conv = spec.red ? easeInOut(clamp01((p - 0.35) / 0.5)) : 0;
 
     // Voo contínuo: velocidade + wrap nas bordas (reaparece do lado oposto).
@@ -233,12 +234,12 @@ function FieldFragment({
       g.rotateOnAxis(spec.axis, (0.3 + (1 - conv) * 0.3) * delta);
     }
 
-    const edgeOp = (spec.red ? lerp(0.2, 0.85, conv) : 0.22) * fadeIn;
+    const edgeOp = (spec.red ? lerp(0.32, 0.9, conv) : 0.34) * fadeIn;
     edgeRefs.forEach((ref) => {
       const line = ref.current;
       if (line) (line.material as { opacity: number }).opacity = edgeOp;
     });
-    const nodeOp = (spec.red ? lerp(0.3, 0.95, conv) : 0.32) * fadeIn;
+    const nodeOp = (spec.red ? lerp(0.4, 0.95, conv) : 0.42) * fadeIn;
     frag.nodes.forEach((_n, i) => {
       const mat = nodeMatRefs[i].current;
       if (!mat) return;
