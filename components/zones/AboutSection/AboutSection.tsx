@@ -213,9 +213,9 @@ export default function AboutSection({
               construir uma presença digital à altura da empresa por trás dela.
             </h2>
 
-            {/* Fundador */}
+            {/* Fundador — bloco-assinatura com accent vermelho à esquerda. */}
             <div
-              className="mt-9 max-w-lg border-t border-[#F5F2ED]/10 pt-7"
+              className="mt-9 max-w-lg border-l-2 border-[#FB3640]/45 pl-6"
               style={reveal(340, 12)}
             >
               <p
@@ -265,7 +265,7 @@ export default function AboutSection({
           className="mt-16 grid grid-cols-1 gap-px overflow-hidden border border-[#F5F2ED]/10 bg-[#F5F2ED]/10 sm:grid-cols-3"
           style={reveal(460, 12)}
         >
-          {VALUES.map((v) => (
+          {VALUES.map((v, i) => (
             <div
               key={v.title}
               className="group/v relative bg-[#000F08] p-7 transition-colors duration-300 hover:bg-[#070B08]"
@@ -274,6 +274,12 @@ export default function AboutSection({
                 aria-hidden
                 className="absolute right-3 top-3 h-2.5 w-2.5 border-r border-t border-[#FB3640] opacity-0 transition-opacity duration-300 group-hover/v:opacity-100"
               />
+              <p
+                className="mb-3 text-[0.6rem] tabular-nums tracking-[0.3em] text-[#FB3640]/70"
+                style={{ fontFamily: '"Panchang", sans-serif', fontWeight: 600 }}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </p>
               <p
                 className="text-[clamp(1.15rem,1.8vw,1.5rem)] text-[#F5F2ED] transition-colors duration-300 group-hover/v:text-[#FB3640]"
                 style={{
