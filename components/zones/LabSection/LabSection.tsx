@@ -145,9 +145,9 @@ export default function LabSection({
       className="absolute inset-0 overflow-hidden bg-[#000F08]"
       aria-labelledby="lab-headline"
     >
-      {/* Campo residual de fragmentos */}
+      {/* Campo residual de fragmentos — congela fora do capítulo ativo. */}
       <div className="pointer-events-none absolute inset-0 z-0">
-        <LabResidualField />
+        <LabResidualField active={!!live} />
       </div>
 
       {/* Vignette */}

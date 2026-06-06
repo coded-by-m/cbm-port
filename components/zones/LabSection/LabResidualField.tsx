@@ -43,9 +43,15 @@ const FRAGMENTS = [
  * Puramente ambiente: sem hover, sem click. Câmera estática teleobjetiva,
  * yaw muito lento por fragmento, fade-in escalonado na entrada.
  */
-export default function LabResidualField() {
+export default function LabResidualField({
+  active = true,
+}: {
+  /** `false` → congela o render loop (não gasta GPU fora do capítulo ativo). */
+  active?: boolean;
+} = {}) {
   return (
     <Canvas
+      frameloop={active ? "always" : "never"}
       gl={{ antialias: true, alpha: true }}
       dpr={[1, 1.5]}
       camera={{ position: [4, 3, 14], fov: 35 }}
