@@ -240,7 +240,7 @@ function CameraRig({
     const wantX = lerp(STATION_X[seg], STATION_X[seg + 1], eased);
     const nearest = Math.round(dwellFloat);
     const nearFocus = clamp01(1 - Math.abs(dwellFloat - nearest) / 0.5);
-    const wantZ = lerp(10.5, 9.4, nearFocus);
+    const wantZ = lerp(10.5, 9.0, nearFocus);
 
     const k = Math.min(1, delta * 3.5);
     camera.position.x += (wantX - camera.position.x) * k;
@@ -323,7 +323,7 @@ function Station({
 
     if (innerRef.current) {
       innerRef.current.rotation.y = t * (TWO_PI / 48) * (1 + f * 0.5);
-      innerRef.current.scale.setScalar(lerp(1, 1.08, f));
+      innerRef.current.scale.setScalar(lerp(1, 1.16, f));
     }
     if (groupRef.current) {
       groupRef.current.position.y = STATION_Y + Math.sin(t * 0.6 + index) * 0.04;
