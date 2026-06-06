@@ -20,7 +20,30 @@ export function BrowserFrame({
           <span className="h-2.5 w-2.5 rounded-full bg-[#F5F2ED]/25" />
         </span>
         {url && (
-          <span className="ml-1 truncate rounded-sm bg-[#F5F2ED]/[0.06] px-3 py-1 font-body text-[10px] tracking-wide text-[#F5F2ED]/50">
+          <span className="ml-1 inline-flex items-center gap-1.5 truncate rounded-sm bg-[#F5F2ED]/[0.06] px-3 py-1 font-body text-[10px] tracking-wide text-[#F5F2ED]/50">
+            <svg
+              width="8"
+              height="8"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden
+              className="flex-shrink-0"
+            >
+              <rect
+                x="3"
+                y="7"
+                width="10"
+                height="7"
+                rx="1"
+                stroke="currentColor"
+                strokeWidth="1.4"
+              />
+              <path
+                d="M5 7V5a3 3 0 0 1 6 0v2"
+                stroke="currentColor"
+                strokeWidth="1.4"
+              />
+            </svg>
             {url}
           </span>
         )}

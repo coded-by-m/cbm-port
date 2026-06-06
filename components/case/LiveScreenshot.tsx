@@ -11,11 +11,14 @@ export function LiveScreenshot({
   alt,
   fallback = null,
   durationSec = 35,
+  lazy = false,
 }: {
   src?: string;
   alt: string;
   fallback?: ReactNode;
   durationSec?: number;
+  /** Abaixo da dobra → carrega só quando perto (perf). Hero deve ficar eager. */
+  lazy?: boolean;
 }) {
   const [errored, setErrored] = useState(false);
   if (!src || errored) return <>{fallback}</>;
@@ -25,6 +28,8 @@ export function LiveScreenshot({
       <img
         src={src}
         alt={alt}
+        loading={lazy ? "lazy" : "eager"}
+        decoding="async"
         onError={() => setErrored(true)}
         className="live-shot absolute left-0 top-0 w-full object-cover object-top"
         style={{ animationDuration: `${durationSec}s` }}

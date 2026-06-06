@@ -20,9 +20,12 @@ export function CaseScreens({ project }: { project: CaseProject }) {
           className="block h-px w-5 flex-shrink-0"
           style={{ background: "rgba(251,54,64,0.4)" }}
         />
-        <p className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red/70">
-          As Telas
-        </p>
+        <h2 className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red/70">
+          As Telas{" "}
+          <span className="tabular-nums text-cbm-gray-600">
+            · {String(shots.length).padStart(2, "0")}
+          </span>
+        </h2>
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
@@ -47,6 +50,8 @@ export function CaseScreens({ project }: { project: CaseProject }) {
                   src={src}
                   alt=""
                   aria-hidden
+                  loading="lazy"
+                  decoding="async"
                   className={`w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02] ${
                     wide ? "aspect-[16/7]" : "aspect-[16/10]"
                   }`}

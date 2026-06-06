@@ -45,6 +45,7 @@ export function CaseResponsive({ project }: { project: CaseProject }) {
                   src={mobile}
                   alt={`${project.title} — site mobile`}
                   durationSec={28}
+                  lazy
                   fallback={
                     <div className="flex h-full w-full items-center justify-center bg-[#070B08] opacity-20">
                       <LogoMark size={32} />

@@ -59,10 +59,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
       </div>
 
       {/* Text side */}
-      <div
-        className="relative z-10 flex flex-col justify-between px-6 py-12 sm:px-12 sm:py-16 xl:px-16 xl:py-20"
-        style={{ borderRight: "1px solid rgba(245,242,237,0.06)" }}
-      >
+      <div className="relative z-10 flex flex-col justify-between px-6 py-12 sm:px-12 sm:py-16 lg:border-r lg:border-[#F5F2ED]/[0.06] xl:px-16 xl:py-20">
         <div>
           <div className="mb-6 flex items-center gap-3" style={step(0)}>
             <span
