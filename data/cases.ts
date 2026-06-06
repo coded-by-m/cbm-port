@@ -38,6 +38,7 @@ export const cases: CaseProject[] = [
       "/cases/machado/gallery-5.webp",
     ],
     status: "published",
+    siteUrl: "machadoplataformas.com.br",
     preview: {
       desktop: "/cases/machado/desktop-tall.webp",
       mobile: "/cases/machado/mobile-tall.webp",

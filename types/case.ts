@@ -27,6 +27,8 @@ export interface CaseProject {
    *  - "coming-soon": fragmento renderiza mas card mostra "Em breve" e click é no-op
    */
   status?: "published" | "coming-soon";
+  /** Domínio exibido na barra do BrowserFrame (ex.: "machadoplataformas.com.br"). */
+  siteUrl?: string;
   /**
    * Imagens de preview mostradas no card de hover da Paisagem.
    * - desktop: screenshot da home/landing (aspect ~16:10)
