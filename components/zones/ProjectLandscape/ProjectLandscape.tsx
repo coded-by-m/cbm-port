@@ -330,10 +330,13 @@ export default function ProjectLandscape({
     (slug: string) => {
       const caseProject = cases.find((c) => c.slug === slug);
       if (!caseProject) return;
-      // Snap pra ele primeiro (sempre); navegação só pra publicados.
-      snapToSlug(slug);
-      if (caseProject.status === "coming-soon") return;
-      setTimeout(() => router.push(`/cases/${slug}`), ORBIT.snapDuration * 1000);
+      // "Em breve" não navega — só centraliza o fragmento.
+      if (caseProject.status === "coming-soon") {
+        snapToSlug(slug);
+        return;
+      }
+      // Publicado → vai direto pra página do projeto (sem esperar o snap).
+      router.push(`/cases/${slug}`);
     },
     [router, snapToSlug],
   );
@@ -487,6 +490,9 @@ export default function ProjectLandscape({
           <div
             onPointerEnter={handleCardEnter}
             onPointerMove={handleCardMove}
+            // Impede o drag da vitrine de capturar o ponteiro aqui — senão o
+            // setPointerCapture do wrapper engole o clique do card (Link).
+            onPointerDown={(e) => e.stopPropagation()}
           >
             <ProjectCard
               caseProject={activeCase}

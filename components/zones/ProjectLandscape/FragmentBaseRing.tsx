@@ -5,7 +5,12 @@ import { useFrame } from "@react-three/fiber";
 import type { Mesh, MeshBasicMaterial } from "three";
 import { sampleHeight } from "@/components/zones/TerrainMesh/geometry";
 import { FRAGMENT } from "@/components/zones/ProjectFragments/config";
-import { BASE_RING, HOST_LAYER, type FragmentSlot } from "./config";
+import {
+  BASE_RING,
+  FRAGMENT_VISUAL,
+  HOST_LAYER,
+  type FragmentSlot,
+} from "./config";
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -36,6 +41,7 @@ export default function FragmentBaseRing({
   const meshRefs = useRef<(Mesh | null)[]>([]);
   const matRefs = useRef<(MeshBasicMaterial | null)[]>([]);
   const opacity = useRef<number>(BASE_RING.baseOpacity);
+  const highlight = useRef(0);
   const elapsed = useRef(0);
 
   useFrame((_, delta) => {
@@ -49,15 +55,25 @@ export default function FragmentBaseRing({
       Math.min(1, delta * BASE_RING.lerpSpeed),
     );
 
+    // Acompanha o avanço em z do fragmento ativo (mesmo `activePushZ` da torre),
+    // pra o anel não descolar pra trás quando o ativo vem em direção à câmera.
+    highlight.current = lerp(
+      highlight.current,
+      isActive ? 1 : 0,
+      Math.min(1, delta * BASE_RING.lerpSpeed),
+    );
+    const pushZ = FRAGMENT_VISUAL.activePushZ * highlight.current;
+
     // Cada ponto repousa na altura do terreno naquele (x, z).
     positions.forEach(([dx, dz], i) => {
       const mesh = meshRefs.current[i];
       const mat = matRefs.current[i];
       if (!mesh || !mat) return;
+      const lz = dz + pushZ;
       const worldX = slot.x + dx;
-      const worldZ = slot.z + dz;
+      const worldZ = slot.z + lz;
       const y = sampleHeight(worldX, worldZ, t, HOST_LAYER) + 0.02;
-      mesh.position.set(dx, y, dz);
+      mesh.position.set(dx, y, lz);
       mat.opacity = opacity.current;
     });
   });
@@ -71,6 +87,7 @@ export default function FragmentBaseRing({
             meshRefs.current[i] = el;
           }}
           position={[dx, 0, dz]}
+          renderOrder={2}
         >
           <icosahedronGeometry args={[BASE_RING.pointSize, 0]} />
           <meshBasicMaterial
@@ -81,6 +98,7 @@ export default function FragmentBaseRing({
             transparent
             opacity={BASE_RING.baseOpacity}
             depthWrite={false}
+            depthTest={false}
           />
         </mesh>
       ))}

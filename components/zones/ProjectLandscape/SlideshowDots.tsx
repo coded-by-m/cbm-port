@@ -39,7 +39,7 @@ export default function SlideshowDots({
             }}
             className={`h-2 w-2 rounded-full border transition-all duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[#F5F2ED] ${
               isActive
-                ? "border-[#F5F2ED] bg-[#F5F2ED] opacity-100"
+                ? "scale-110 border-[#FB3640] bg-[#FB3640] opacity-100"
                 : "border-[#F5F2ED]/40 bg-transparent opacity-50 hover:border-[#F5F2ED]/80 hover:opacity-100"
             }`}
             aria-label={`Projeto ${slot.slug}`}

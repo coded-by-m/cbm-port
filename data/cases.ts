@@ -13,7 +13,13 @@ export const cases: CaseProject[] = [
       tipo: "Site Institucional",
       ano: "2025",
     },
-    heroImages: ["", "", "", "", ""],
+    heroImages: [
+      "/cases/machado/hero-1.webp",
+      "/cases/machado/hero-2.webp",
+      "/cases/machado/hero-3.webp",
+      "/cases/machado/hero-4.webp",
+      "/cases/machado/hero-5.webp",
+    ],
     overview: {
       heading: "O que foi construído e por quê",
       body: [
@@ -24,7 +30,13 @@ export const cases: CaseProject[] = [
       challenge:
         "Empresa técnica de alto valor percebido como commodity. Presença digital genérica não refletia a capacidade real do negócio.",
     },
-    gallery: ["", "", "", "", ""],
+    gallery: [
+      "/cases/machado/gallery-1.webp",
+      "/cases/machado/gallery-2.webp",
+      "/cases/machado/gallery-3.webp",
+      "/cases/machado/gallery-4.webp",
+      "/cases/machado/gallery-5.webp",
+    ],
     status: "published",
     preview: {
       desktop: "/cases/machado/desktop-tall.webp",

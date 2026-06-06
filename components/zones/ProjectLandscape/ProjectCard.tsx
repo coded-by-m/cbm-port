@@ -45,11 +45,14 @@ export function ProjectCard({
     orderedSlots.findIndex((s) => s.slug === slug);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const borderPathRef = useRef<SVGPathElement>(null);
+  const firstShownRef = useRef(false); // cascata/border-draw só na 1ª aparição
 
   // Conteúdo "exibido" — separado da prop pra permitir slide-out → swap → slide-in.
   const [displayed, setDisplayed] = useState<CaseProject | null>(caseProject);
 
-  // Fade do wrapper desktop conforme caseProject existe ou não.
+  // Fade do wrapper desktop + (na 1ª aparição) cascata dos elementos internos
+  // e border-draw da moldura.
   useEffect(() => {
     const el = wrapperRef.current;
     if (!el || isMobile) return;
@@ -61,6 +64,61 @@ export function ProjectCard({
       duration: shouldShow ? CARD.fadeInDuration : CARD.fadeOutDuration,
       ease: shouldShow ? "power3.out" : "power2.in",
     });
+
+    if (!shouldShow) {
+      firstShownRef.current = false; // reseta → reanima na próxima entrada
+      return;
+    }
+    if (firstShownRef.current) return;
+    firstShownRef.current = true;
+
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const staggerEls = el.querySelectorAll(".card-stagger");
+    const path = borderPathRef.current;
+
+    if (reduceMotion) {
+      gsap.set(staggerEls, { opacity: 1, y: 0 });
+      if (path) path.style.opacity = "0";
+      return;
+    }
+
+    // Cascata: preview → título → descrição → CTA entram escalonados.
+    gsap.fromTo(
+      staggerEls,
+      { opacity: 0, y: 12 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        stagger: 0.08,
+        delay: 0.15,
+        ease: "power2.out",
+      },
+    );
+
+    // Border-draw: a moldura se desenha e depois cede pra borda CSS.
+    if (path) {
+      path.setAttribute("pathLength", "1");
+      path.style.strokeDasharray = "1 1";
+      path.style.strokeDashoffset = "1";
+      path.style.opacity = "0.7";
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        duration: 0.9,
+        delay: 0.1,
+        ease: "power2.out",
+        onComplete: () => {
+          gsap.to(path, {
+            opacity: 0,
+            duration: 0.6,
+            delay: 0.3,
+            ease: "power2.in",
+          });
+        },
+      });
+    }
   }, [caseProject, isMobile]);
 
   // Slide direcional ao trocar de projeto.
@@ -124,24 +182,38 @@ export function ProjectCard({
     return (
       <div className={isMobile ? "grid grid-cols-[auto_1fr] gap-4" : "flex flex-col gap-4"}>
         {!isMobile && (
-          <div className="flex items-center justify-between border-b border-[#F5F2ED]/10 pb-3 -mt-1">
-            <p className="text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/55">
+          <div className="card-stagger flex items-center justify-between border-b border-[#F5F2ED]/10 pb-3 -mt-1">
+            <p className="text-[0.6rem] uppercase tracking-[0.4em] tabular-nums text-[#F5F2ED]/55">
               {positionLabel}
             </p>
             <span
-              className={`text-[0.5rem] uppercase tracking-[0.3em] ${
+              className={`inline-flex items-center gap-1.5 border px-2 py-[3px] text-[0.5rem] uppercase tracking-[0.3em] ${
                 isComingSoon
-                  ? "text-[#F5F2ED]/40"
-                  : "text-[#FB3640]"
+                  ? "border-[#F5F2ED]/15 text-[#F5F2ED]/45"
+                  : "border-[#FB3640]/40 text-[#FB3640]"
               }`}
             >
+              <span
+                className="h-1 w-1 rounded-full"
+                style={{
+                  backgroundColor: isComingSoon ? "#97938b" : "#FB3640",
+                  animation: isComingSoon
+                    ? undefined
+                    : "card-status-pulse 1.8s ease-in-out infinite",
+                }}
+              />
               {isComingSoon ? "Em breve" : "Publicado"}
             </span>
           </div>
         )}
         {/* Dual preview com scroll vertical contínuo. */}
-        <div className={isMobile ? "flex gap-2" : "flex gap-3"}>
+        <div className={`card-stagger ${isMobile ? "flex gap-2" : "flex gap-3"}`}>
           <div className={isMobile ? "w-[100px]" : "flex-[3] min-w-0"}>
+            {!isMobile && (
+              <p className="mb-1.5 text-[0.5rem] uppercase tracking-[0.3em] text-[#F5F2ED]/40">
+                Desktop
+              </p>
+            )}
             {project.preview && !isComingSoon ? (
               <div className="relative aspect-[16/10] w-full overflow-hidden border border-[#F5F2ED]/20">
                 <ImageWithFallback
@@ -161,6 +233,11 @@ export function ProjectCard({
             )}
           </div>
           <div className={isMobile ? "w-[44px]" : "flex-1 min-w-0"}>
+            {!isMobile && (
+              <p className="mb-1.5 text-[0.5rem] uppercase tracking-[0.3em] text-[#F5F2ED]/40">
+                Mobile
+              </p>
+            )}
             {project.preview && !isComingSoon ? (
               <div className="relative aspect-[9/16] w-full overflow-hidden border border-[#F5F2ED]/20">
                 <ImageWithFallback
@@ -178,7 +255,7 @@ export function ProjectCard({
         </div>
 
         {/* Texto */}
-        <div className="flex min-w-0 flex-col gap-1.5">
+        <div className="card-stagger flex min-w-0 flex-col gap-1.5">
           <p className="text-[0.55rem] uppercase tracking-[0.4em] text-[#97938b]">
             {isComingSoon
               ? `Em breve · ${project.meta.setor}`
@@ -198,15 +275,15 @@ export function ProjectCard({
             {project.description}
           </p>
           {!isComingSoon && !isMobile && (
-            <span className="mt-3 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/40 px-4 py-2 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED]/95 transition-colors group-hover/card:border-[#F5F2ED] group-hover/card:bg-[#F5F2ED]/5">
+            <span className="mt-4 flex w-full items-center justify-between gap-3 border border-[#FB3640]/50 bg-[#FB3640]/[0.08] px-5 py-3 text-[0.62rem] font-medium uppercase tracking-[0.32em] text-[#F5F2ED] transition-all duration-300 group-hover/card:border-[#FB3640] group-hover/card:bg-[#FB3640]">
               Ver projeto
               <svg
                 aria-hidden
-                width="11"
-                height="11"
+                width="12"
+                height="12"
                 viewBox="0 0 16 16"
-                fill="#FB3640"
-                className="relative inline-block group-hover/card:animate-[spin_1.4s_linear_infinite]"
+                fill="#F5F2ED"
+                className="transition-transform duration-300 group-hover/card:translate-x-1.5"
               >
                 <polygon points="3,2 14,8 3,14" />
               </svg>
@@ -244,7 +321,11 @@ export function ProjectCard({
         100% { transform: translateY(0%); }
       }
       .card-preview-img {
-        animation: card-preview-img-scroll 18s ease-in-out infinite;
+        animation: card-preview-img-scroll 30s ease-in-out infinite;
+      }
+      @keyframes card-status-pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.35; transform: scale(0.7); }
       }
       @media (prefers-reduced-motion: reduce) {
         .card-preview-img { animation: none !important; }
@@ -298,8 +379,9 @@ export function ProjectCard({
   }
 
   const isComingSoon = displayed.status === "coming-soon";
+  const ghostNum = String(orderedIdx(displayed.slug) + 1).padStart(2, "0");
   const wrapperClassName =
-    "pointer-events-auto fixed bottom-6 right-6 z-30 border border-[#F5F2ED]/30 bg-[#000F08]/85 backdrop-blur-md transition-colors duration-300 hover:border-[#F5F2ED]/60";
+    "pointer-events-auto fixed bottom-6 right-6 z-30 overflow-hidden border border-[#F5F2ED]/30 bg-[#000F08]/85 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.85)] backdrop-blur-md transition-colors duration-300 hover:border-[#F5F2ED]/60";
 
   const contentBlock = (
     <div ref={contentRef} className="px-5 pb-3 pt-5">
@@ -321,29 +403,73 @@ export function ProjectCard({
       aria-live="polite"
     >
       {scrollStyle}
-      {allVisited && (
-        <div className="flex items-center justify-center gap-3 border-b border-[#F5F2ED]/10 bg-[#FB3640]/8 px-5 py-2">
-          <span className="text-[0.5rem] uppercase tracking-[0.4em] text-[#FB3640]">
-            ✦ Você viu tudo
-          </span>
-          <span className="text-[0.55rem] uppercase tracking-[0.3em] text-[#F5F2ED]/55">
-            novos projetos em breve
-          </span>
-        </div>
-      )}
-      {isComingSoon ? (
-        <div className="block">{contentBlock}</div>
-      ) : (
-        <Link href={`/cases/${displayed.slug}`} className="block group/card">
-          {contentBlock}
-        </Link>
-      )}
-      <div className="flex justify-center border-t border-[#F5F2ED]/10 px-5 py-3">
-        <SlideshowDots
-          slots={FRAGMENT_SLOTS}
-          activeSlug={activeSlug}
-          onSelect={onSelectSlide}
+
+      {/* Número-fantasma editorial — posição do projeto, fraco atrás (contido
+          no canto sup-direito pra não fatiar o layout). */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute right-4 top-3 z-0 select-none leading-none"
+        style={{
+          fontFamily: '"Panchang", sans-serif',
+          fontWeight: 700,
+          fontSize: "3.4rem",
+          color: "rgba(245,242,237,0.07)",
+        }}
+      >
+        {ghostNum}
+      </span>
+
+      {/* Moldura que se desenha (border-draw) na entrada, depois cede pra CSS. */}
+      <svg
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[1] h-full w-full"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <path
+          ref={borderPathRef}
+          d="M 0,0 L 100,0 L 100,100 L 0,100 Z"
+          stroke="#F5F2ED"
+          strokeWidth={0.6}
+          fill="none"
+          vectorEffect="non-scaling-stroke"
+          style={{ opacity: 0 }}
         />
+      </svg>
+
+      {/* Brackets técnicos nos cantos (HUD frame). Top-left em signal-red. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-20">
+        <span className="absolute left-1.5 top-1.5 h-2.5 w-2.5 border-l border-t border-[#FB3640]" />
+        <span className="absolute right-1.5 top-1.5 h-2.5 w-2.5 border-r border-t border-[#F5F2ED]/40" />
+        <span className="absolute bottom-1.5 left-1.5 h-2.5 w-2.5 border-b border-l border-[#F5F2ED]/40" />
+        <span className="absolute bottom-1.5 right-1.5 h-2.5 w-2.5 border-b border-r border-[#F5F2ED]/40" />
+      </div>
+
+      <div className="relative z-10">
+        {allVisited && (
+          <div className="flex items-center justify-center gap-3 border-b border-[#F5F2ED]/10 bg-[#FB3640]/8 px-5 py-2">
+            <span className="text-[0.5rem] uppercase tracking-[0.4em] text-[#FB3640]">
+              ✦ Você viu tudo
+            </span>
+            <span className="text-[0.55rem] uppercase tracking-[0.3em] text-[#F5F2ED]/55">
+              novos projetos em breve
+            </span>
+          </div>
+        )}
+        {isComingSoon ? (
+          <div className="block">{contentBlock}</div>
+        ) : (
+          <Link href={`/cases/${displayed.slug}`} className="block group/card">
+            {contentBlock}
+          </Link>
+        )}
+        <div className="flex justify-center border-t border-[#F5F2ED]/10 px-5 py-3">
+          <SlideshowDots
+            slots={FRAGMENT_SLOTS}
+            activeSlug={activeSlug}
+            onSelect={onSelectSlide}
+          />
+        </div>
       </div>
     </div>
   );
