@@ -25,7 +25,7 @@ export function CaseScreens({ project }: { project: CaseProject }) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
         {shots.map((src, i) => {
           const wide = i % 3 === 0; // a cada 3, painel largo
           return (
@@ -34,10 +34,14 @@ export function CaseScreens({ project }: { project: CaseProject }) {
               delay={(i % 2) * 90}
               className={wide ? "sm:col-span-2" : ""}
             >
-              <div className="group relative overflow-hidden border border-[#F5F2ED]/10 bg-[#070B08]">
+              <div className="group relative overflow-hidden border border-[#F5F2ED]/15 bg-[#070B08] shadow-[0_14px_34px_-14px_rgba(0,0,0,0.7)] transition-colors duration-300 hover:border-[#F5F2ED]/30">
                 {/* brackets HUD */}
-                <span className="pointer-events-none absolute left-1.5 top-1.5 z-10 h-2.5 w-2.5 border-l border-t border-[#F5F2ED]/40" />
-                <span className="pointer-events-none absolute bottom-1.5 right-1.5 z-10 h-2.5 w-2.5 border-b border-r border-[#FB3640]/70" />
+                <span className="pointer-events-none absolute left-2 top-2 z-10 h-3 w-3 border-l border-t border-[#F5F2ED]/45" />
+                <span className="pointer-events-none absolute bottom-2 right-2 z-10 h-3 w-3 border-b border-r border-[#FB3640]/75" />
+                {/* índice da tela — reforça a separação entre as telas */}
+                <span className="pointer-events-none absolute right-3 top-2.5 z-10 font-display text-[10px] tracking-[0.25em] text-[#F5F2ED]/40 tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 {/* biome-ignore lint/a11y/useAltText: decorativo */}
                 <img
                   src={src}

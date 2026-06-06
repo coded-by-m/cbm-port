@@ -7,7 +7,7 @@ import { ProjectFacts } from "@/components/case/ProjectFacts";
 import { BrowserFrame } from "@/components/case/BrowserFrame";
 import { LiveScreenshot } from "@/components/case/LiveScreenshot";
 import { LogoMark } from "@/components/ui/LogoMark";
-import { MeshButton } from "@/components/ui/MeshButton";
+import { CaseLiveButton } from "@/components/case/CaseLiveButton";
 
 // Mesh triangulado sutil atrás do hero (toque 3D, coesão com a Home).
 const TerrainBackground = dynamic(
@@ -98,16 +98,11 @@ export function CaseHero({ project }: { project: CaseProject }) {
           </div>
         </div>
 
-        <div className="mt-10" style={step(4)}>
-          <MeshButton
-            label="Ver a construção"
-            onClick={() =>
-              document
-                .getElementById("overview")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
-          />
-        </div>
+        {project.siteUrl && (
+          <div className="mt-10" style={step(4)}>
+            <CaseLiveButton url={project.siteUrl} />
+          </div>
+        )}
       </div>
 
       {/* Visual side — browser frame com o desktop rolando */}
