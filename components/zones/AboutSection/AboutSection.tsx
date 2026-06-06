@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { LogoMark } from "@/components/ui/LogoMark";
 
 const AboutTerrain = dynamic(() => import("./AboutTerrain"), { ssr: false });
+const AboutMark = dynamic(() => import("./AboutMark"), { ssr: false });
 
 /**
  * Seção SOBRE da Home — humaniza a marca (zona 9).
@@ -125,7 +125,9 @@ export default function AboutSection({
   const reveal = (delay: number, y = 14) => ({
     opacity: entered ? 1 : 0,
     transform: entered ? "translateY(0)" : `translateY(${y}px)`,
-    transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
+    filter: entered ? "blur(0px)" : "blur(8px)",
+    transition:
+      "opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.7s ease-out",
     transitionDelay: `${delay}ms`,
   });
 
@@ -143,9 +145,9 @@ export default function AboutSection({
       <div
         className={`pointer-events-none ${
           inPage ? "absolute" : "fixed"
-        } inset-0 z-0 opacity-[0.08]`}
+        } inset-0 z-0 opacity-[0.14]`}
       >
-        <AboutTerrain />
+        <AboutTerrain active={!!live} />
       </div>
       <div
         className={`pointer-events-none ${
@@ -169,16 +171,19 @@ export default function AboutSection({
             className="flex justify-center md:justify-start"
             style={reveal(0, 16)}
           >
-            <div className="group relative grid h-[200px] w-[200px] place-items-center border border-[#F5F2ED]/10 transition-colors duration-500 hover:border-[#F5F2ED]/30 sm:h-[240px] sm:w-[240px]">
+            <div className="group relative h-[260px] w-[260px] border border-[#F5F2ED]/10 transition-colors duration-500 hover:border-[#F5F2ED]/30 sm:h-[320px] sm:w-[320px]">
               <span
-                className="absolute left-3 top-3 h-3 w-3 border-l border-t border-[#FB3640]/50 transition-colors duration-500 group-hover:border-[#FB3640]"
+                className="absolute left-3 top-3 z-10 h-3 w-3 border-l border-t border-[#FB3640]/50 transition-colors duration-500 group-hover:border-[#FB3640]"
                 aria-hidden
               />
               <span
-                className="absolute bottom-3 right-3 h-3 w-3 border-b border-r border-[#FB3640]/50 transition-colors duration-500 group-hover:border-[#FB3640]"
+                className="absolute bottom-3 right-3 z-10 h-3 w-3 border-b border-r border-[#FB3640]/50 transition-colors duration-500 group-hover:border-[#FB3640]"
                 aria-hidden
               />
-              <LogoMark size={84} />
+              {/* Símbolo CbM 3D interativo (tilt/parallax no cursor). */}
+              <div className="absolute inset-0">
+                <AboutMark active={!!live} />
+              </div>
             </div>
           </div>
 
@@ -261,7 +266,14 @@ export default function AboutSection({
           style={reveal(460, 12)}
         >
           {VALUES.map((v) => (
-            <div key={v.title} className="group/v bg-[#000F08] p-7">
+            <div
+              key={v.title}
+              className="group/v relative bg-[#000F08] p-7 transition-colors duration-300 hover:bg-[#070B08]"
+            >
+              <span
+                aria-hidden
+                className="absolute right-3 top-3 h-2.5 w-2.5 border-r border-t border-[#FB3640] opacity-0 transition-opacity duration-300 group-hover/v:opacity-100"
+              />
               <p
                 className="text-[clamp(1.15rem,1.8vw,1.5rem)] text-[#F5F2ED] transition-colors duration-300 group-hover/v:text-[#FB3640]"
                 style={{

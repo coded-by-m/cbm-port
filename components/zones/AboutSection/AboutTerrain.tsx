@@ -9,9 +9,15 @@ import { LAYERS, FOG } from "@/components/zones/TerrainMesh/config";
  * sem controle cinematográfico — só a respiração própria das camadas. A
  * seção compõe com opacity baixa (~8%): textura mínima, zero distração.
  */
-export default function AboutTerrain() {
+export default function AboutTerrain({
+  active = true,
+}: {
+  /** `false` → congela o render loop (não gasta GPU fora do capítulo ativo). */
+  active?: boolean;
+} = {}) {
   return (
     <Canvas
+      frameloop={active ? "always" : "never"}
       gl={{ antialias: true, alpha: true }}
       dpr={[1, 1.5]}
       camera={{ position: [0, 4, 14], fov: 42 }}
