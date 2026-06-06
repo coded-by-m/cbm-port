@@ -28,3 +28,7 @@ yarn-error.log*
 .codex/
 .impeccable/
 .playwright-mcp/
+
+# Playwright MCP artifacts
+.playwright-mcp/
+/test-*.png
