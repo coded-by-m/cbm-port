@@ -99,21 +99,22 @@ export default function Footer() {
         <FooterLandscape active={inView} />
       </div>
 
-      {/* Wordmark gigante (marca d'água atravessando a base) */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] flex items-end justify-center overflow-hidden">
+      {/* Monograma gigante (marca d'água atravessando a base) — "CbM" mantém a
+          altura sem transbordar como o nome inteiro fazia. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-[2vh] z-[1] flex items-end justify-center overflow-hidden">
         <span
-          className="select-none whitespace-nowrap leading-[0.76] text-[#F5F2ED]"
+          className="select-none whitespace-nowrap leading-[0.72] text-[#F5F2ED]"
           style={{
             fontFamily: PAN,
             fontWeight: 800,
-            fontSize: "19vw",
-            letterSpacing: "-0.04em",
-            opacity: entered ? 0.07 : 0,
+            fontSize: "26vw",
+            letterSpacing: "-0.03em",
+            opacity: entered ? 0.08 : 0,
             transform: entered ? "translateY(0)" : "translateY(44px)",
             transition: "opacity 1.1s ease-out, transform 1.1s ease-out",
           }}
         >
-          Coded by M
+          CbM
         </span>
       </div>
 
