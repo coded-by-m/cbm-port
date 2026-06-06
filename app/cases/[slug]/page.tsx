@@ -38,7 +38,7 @@ export default function CasePage({
       <CaseOverview project={project} />
       <CaseScreens project={project} />
       <CaseResponsive project={project} />
-      <CaseReturnCTA />
+      <CaseReturnCTA siteUrl={project.siteUrl} />
       <style>{`
         @keyframes case-fade-in { from { opacity: 0 } to { opacity: 1 } }
         .case-fade-in { animation: case-fade-in 0.5s ease-out both; }
