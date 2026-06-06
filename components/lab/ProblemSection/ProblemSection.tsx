@@ -46,7 +46,6 @@ interface Beat {
 const DRAW_END = 0.56;
 const OUTRO_START = 0.64;
 const OUTRO_END = 0.9;
-const smoothstep = (x: number) => x * x * (3 - 2 * x);
 
 const BEATS: Beat[] = [
   {
@@ -90,12 +89,9 @@ export default function ProblemSection({
   // Últimos valores emitidos — guard anti re-render por frame.
   const lastBeatRef = useRef(-1);
   const lastReadyRef = useRef(false);
-  const lastOutroRef = useRef(-1);
   const [isMobile, setIsMobile] = useState(false);
   const [activeBeat, setActiveBeat] = useState(0);
   const [readyToAdvance, setReadyToAdvance] = useState(false);
-  // Outro (0 = torre isolada, 1 = Serviços montado por cima).
-  const [outroProgress, setOutroProgress] = useState(0);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
@@ -113,18 +109,12 @@ export default function ProblemSection({
     const p = Math.max(0, Math.min(1, raw / DRAW_END));
     progressRef.current = p;
 
-    // Fase 2 — outro: cubos somem + Serviços monta.
+    // Fase 2 — outro: cubos somem (outroRef → GenericGrid).
     const outro = Math.max(
       0,
       Math.min(1, (raw - OUTRO_START) / (OUTRO_END - OUTRO_START)),
     );
     outroRef.current = outro;
-    // Quantiza pra evitar re-render a cada pixel (passo ~1%).
-    const outroQ = Math.round(outro * 100) / 100;
-    if (outroQ !== lastOutroRef.current) {
-      lastOutroRef.current = outroQ;
-      setOutroProgress(outroQ);
-    }
 
     let nextBeat = 0;
     for (let i = 0; i < BEATS.length; i++) {
