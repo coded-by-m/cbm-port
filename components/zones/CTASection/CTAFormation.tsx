@@ -1,15 +1,16 @@
 "use client";
 
-import { type MutableRefObject, useMemo, useRef } from "react";
+import { createRef, type MutableRefObject, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { Line } from "@react-three/drei";
 import {
-  EdgesGeometry,
   type Group,
-  type LineBasicMaterial,
   type Mesh,
-  TetrahedronGeometry,
+  type MeshBasicMaterial,
   Vector3,
 } from "three";
+import type { Line2 } from "three-stdlib";
+import { buildFragment } from "@/components/zones/ProjectFragments/geometry";
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -21,7 +22,6 @@ const SIGNAL = "#FB3640";
 /** Ponto de convergência da energia — área do CTA (baixo-centro). */
 const FOCAL = new Vector3(0, -2.7, 0);
 
-/** PRNG determinístico (mulberry32) — posições estáveis entre montagens. */
 function mulberry32(seed: number) {
   let a = seed >>> 0;
   return () => {
@@ -32,29 +32,29 @@ function mulberry32(seed: number) {
   };
 }
 
-interface Particle {
+interface FragSpec {
+  seed: number;
   home: Vector3;
   final: Vector3;
   axis: Vector3;
   red: boolean;
   drift: number;
   phase: number;
+  scale: number;
 }
 
 /**
- * CTAFormation (refatorado) — finale sem cobrir o texto.
- *
- * Campo triangulado AMBIENTE na periferia (zona central-superior fica vazia
- * pra headline respirar) + uma leva de fragmentos VERMELHOS que CONVERGEM pro
- * ponto do CTA conforme o scroll (energia fluindo pro botão), com um núcleo
- * vermelho que acende ao formar. Parallax sutil no cursor.
+ * CTAFormation (refatorado) — finale: usa os FRAGMENTOS reais dos Projetos
+ * (mesma geometria triangulada) como "vários projetos construídos" flutuando
+ * na periferia (centro limpo pra headline), e uma leva de fragmentos vermelhos
+ * que CONVERGEM pro CTA com o scroll = "o seu projeto se formando". Núcleo
+ * vermelho acende no foco; parallax sutil no cursor. Congela fora do ativo.
  */
 export default function CTAFormation({
   progressRef,
   active = true,
 }: {
   progressRef: MutableRefObject<number>;
-  /** `false` → congela o render loop (não gasta GPU fora do capítulo ativo). */
   active?: boolean;
 }) {
   return (
@@ -75,20 +75,14 @@ function Formation({
 }: {
   progressRef: MutableRefObject<number>;
 }) {
-  const COUNT = 56;
-  const RED = 16; // fragmentos que convergem pro CTA
+  const COUNT = 22;
+  const RED = 7;
 
-  const tetraEdges = useMemo(
-    () => new EdgesGeometry(new TetrahedronGeometry(0.15)),
-    [],
-  );
-
-  const particles = useMemo<Particle[]>(() => {
+  const specs = useMemo<FragSpec[]>(() => {
     const rand = mulberry32(20260606);
-    const list: Particle[] = [];
+    const list: FragSpec[] = [];
     for (let i = 0; i < COUNT; i++) {
-      // Home dispersa, EVITANDO a zona central-superior (onde fica o texto):
-      // se cair lá, empurra pros lados.
+      // Home dispersa, evitando a zona central-superior (texto).
       let x = (rand() * 2 - 1) * 7;
       const y = (rand() * 2 - 1) * 4;
       const z = (rand() * 2 - 1) * 2;
@@ -110,32 +104,29 @@ function Formation({
         rand() * 2 - 1,
       ).normalize();
       list.push({
+        seed: 17 + i * 53,
         home,
         final,
         axis,
         red,
-        drift: 0.18 + rand() * 0.3,
+        drift: 0.16 + rand() * 0.28,
         phase: rand() * Math.PI * 2,
+        scale: red ? 0.46 : 0.36 + rand() * 0.12,
       });
     }
     return list;
   }, []);
 
-  const groupRefs = useRef<(Group | null)[]>([]);
-  const matRefs = useRef<(LineBasicMaterial | null)[]>([]);
   const fieldRef = useRef<Group>(null);
   const coreRef = useRef<Mesh>(null);
   const coreMatRef = useRef<{ opacity: number } | null>(null);
   const elapsed = useRef(0);
-  const _v = useMemo(() => new Vector3(), []);
 
   useFrame((state, delta) => {
     elapsed.current += delta;
     const t = elapsed.current;
     const p = clamp01(progressRef.current);
-    const fadeIn = clamp01(p / 0.1);
 
-    // Parallax do campo inteiro com o cursor (sutil).
     if (fieldRef.current) {
       const k = Math.min(1, delta * 2);
       fieldRef.current.position.x +=
@@ -144,29 +135,6 @@ function Formation({
         (state.pointer.y * 0.3 - fieldRef.current.position.y) * k;
     }
 
-    particles.forEach((pt, i) => {
-      const g = groupRefs.current[i];
-      if (!g) return;
-      let conv = 0;
-      if (pt.red) {
-        conv = easeInOut(clamp01((p - 0.35) / 0.5));
-      }
-      _v.lerpVectors(pt.home, pt.final, conv);
-      const amp = (1 - conv) * pt.drift;
-      g.position.set(
-        _v.x + Math.sin(t * 0.5 + pt.phase) * amp,
-        _v.y + Math.cos(t * 0.45 + pt.phase) * amp,
-        _v.z,
-      );
-      g.rotateOnAxis(pt.axis, (0.4 + (1 - conv) * 0.5) * delta);
-      const mat = matRefs.current[i];
-      if (mat) {
-        const base = pt.red ? lerp(0.25, 0.95, conv) : 0.26;
-        mat.opacity = base * fadeIn;
-      }
-    });
-
-    // Núcleo vermelho no foco do CTA — acende ao convergir.
     if (coreMatRef.current) {
       const reveal = clamp01((p - 0.75) / 0.2);
       coreMatRef.current.opacity = reveal * (0.8 + Math.sin(t * 2.2) * 0.2);
@@ -179,26 +147,8 @@ function Formation({
 
   return (
     <group ref={fieldRef}>
-      {particles.map((pt, i) => (
-        <group
-          key={i}
-          ref={(el) => {
-            groupRefs.current[i] = el;
-          }}
-          position={pt.home}
-        >
-          <lineSegments geometry={tetraEdges}>
-            <lineBasicMaterial
-              ref={(el) => {
-                matRefs.current[i] = el;
-              }}
-              color={pt.red ? SIGNAL : OFF_WHITE}
-              transparent
-              opacity={0}
-              depthWrite={false}
-            />
-          </lineSegments>
-        </group>
+      {specs.map((s, i) => (
+        <FieldFragment key={i} spec={s} progressRef={progressRef} />
       ))}
 
       {/* Núcleo vermelho de energia no ponto do CTA. */}
@@ -214,6 +164,92 @@ function Formation({
           depthWrite={false}
         />
       </mesh>
+    </group>
+  );
+}
+
+/** Um fragmento (geometria real dos Projetos) — ambiente ou convergindo. */
+function FieldFragment({
+  spec,
+  progressRef,
+}: {
+  spec: FragSpec;
+  progressRef: MutableRefObject<number>;
+}) {
+  const frag = useMemo(() => buildFragment(spec.seed), [spec.seed]);
+  const groupRef = useRef<Group>(null);
+  const edgeRefs = useMemo(
+    () => frag.edges.map(() => createRef<Line2>()),
+    [frag],
+  );
+  const nodeMatRefs = useMemo(
+    () => frag.nodes.map(() => createRef<MeshBasicMaterial>()),
+    [frag],
+  );
+  const elapsed = useRef(spec.phase);
+  const _v = useMemo(() => new Vector3(), []);
+
+  useFrame((_, delta) => {
+    elapsed.current += delta;
+    const t = elapsed.current;
+    const p = clamp01(progressRef.current);
+    const fadeIn = clamp01(p / 0.1);
+    const conv = spec.red ? easeInOut(clamp01((p - 0.35) / 0.5)) : 0;
+
+    _v.lerpVectors(spec.home, spec.final, conv);
+    const amp = (1 - conv) * spec.drift;
+    const g = groupRef.current;
+    if (g) {
+      g.position.set(
+        _v.x + Math.sin(t * 0.5 + spec.phase) * amp,
+        _v.y + Math.cos(t * 0.45 + spec.phase) * amp,
+        _v.z,
+      );
+      g.rotateOnAxis(spec.axis, (0.3 + (1 - conv) * 0.4) * delta);
+    }
+
+    const edgeOp = (spec.red ? lerp(0.2, 0.85, conv) : 0.22) * fadeIn;
+    edgeRefs.forEach((ref) => {
+      const line = ref.current;
+      if (line) (line.material as { opacity: number }).opacity = edgeOp;
+    });
+    const nodeOp = (spec.red ? lerp(0.3, 0.95, conv) : 0.32) * fadeIn;
+    frag.nodes.forEach((_n, i) => {
+      const mat = nodeMatRefs[i].current;
+      if (!mat) return;
+      mat.opacity = i === 3 ? nodeOp : nodeOp * 0.7;
+    });
+  });
+
+  return (
+    <group ref={groupRef} position={spec.home} scale={spec.scale}>
+      {frag.edges.map((points, i) => (
+        <Line
+          key={`e-${i}`}
+          ref={edgeRefs[i]}
+          points={points}
+          color={spec.red ? SIGNAL : OFF_WHITE}
+          lineWidth={1.1}
+          transparent
+          opacity={0}
+          depthWrite={false}
+        />
+      ))}
+      {frag.nodes.map((position, i) => {
+        const isApex = i === 3;
+        return (
+          <mesh key={`n-${i}`} position={position}>
+            <icosahedronGeometry args={[isApex ? 0.04 : 0.025, 1]} />
+            <meshBasicMaterial
+              ref={nodeMatRefs[i]}
+              color={isApex && spec.red ? SIGNAL : OFF_WHITE}
+              transparent
+              opacity={0}
+              depthWrite={false}
+            />
+          </mesh>
+        );
+      })}
     </group>
   );
 }
