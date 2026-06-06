@@ -21,6 +21,9 @@ const OFF_WHITE = "#F5F2ED";
 const SIGNAL = "#FB3640";
 /** Ponto de convergência da energia — área do CTA (baixo-centro). */
 const FOCAL = new Vector3(0, -2.7, 0);
+/** Repulsão local do cursor (igual à 1ª seção): raio e força do empurrão. */
+const REPEL_RADIUS = 2.8;
+const REPEL_STRENGTH = 1.6;
 
 function mulberry32(seed: number) {
   let a = seed >>> 0;
@@ -122,18 +125,10 @@ function Formation({
   const coreMatRef = useRef<{ opacity: number } | null>(null);
   const elapsed = useRef(0);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     elapsed.current += delta;
     const t = elapsed.current;
     const p = clamp01(progressRef.current);
-
-    if (fieldRef.current) {
-      const k = Math.min(1, delta * 2);
-      fieldRef.current.position.x +=
-        (state.pointer.x * 0.4 - fieldRef.current.position.x) * k;
-      fieldRef.current.position.y +=
-        (state.pointer.y * 0.3 - fieldRef.current.position.y) * k;
-    }
 
     if (coreMatRef.current) {
       const reveal = clamp01((p - 0.75) / 0.2);
@@ -189,22 +184,43 @@ function FieldFragment({
   const elapsed = useRef(spec.phase);
   const _v = useMemo(() => new Vector3(), []);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     elapsed.current += delta;
     const t = elapsed.current;
     const p = clamp01(progressRef.current);
     const fadeIn = clamp01(p / 0.1);
     const conv = spec.red ? easeInOut(clamp01((p - 0.35) / 0.5)) : 0;
 
+    // Posição-base: convergência (vermelhos) + drift sutil.
     _v.lerpVectors(spec.home, spec.final, conv);
     const amp = (1 - conv) * spec.drift;
+    const bx = _v.x + Math.sin(t * 0.5 + spec.phase) * amp;
+    const by = _v.y + Math.cos(t * 0.45 + spec.phase) * amp;
+    const bz = _v.z;
+
+    // Repulsão local do cursor (igual à 1ª seção): cursor no plano de
+    // profundidade do fragmento → empurra pra longe com falloff.
+    const camZ = state.camera.position.z || 9.5;
+    const depthScale = (camZ - bz) / camZ;
+    const cwx = state.pointer.x * (state.viewport.width / 2) * depthScale;
+    const cwy = state.pointer.y * (state.viewport.height / 2) * depthScale;
+    let tx = bx;
+    let ty = by;
+    const ddx = bx - cwx;
+    const ddy = by - cwy;
+    const dd = Math.hypot(ddx, ddy);
+    if (dd < REPEL_RADIUS && dd > 1e-4) {
+      const force = (1 - dd / REPEL_RADIUS) * REPEL_STRENGTH;
+      tx += (ddx / dd) * force;
+      ty += (ddy / dd) * force;
+    }
+
     const g = groupRef.current;
     if (g) {
-      g.position.set(
-        _v.x + Math.sin(t * 0.5 + spec.phase) * amp,
-        _v.y + Math.cos(t * 0.45 + spec.phase) * amp,
-        _v.z,
-      );
+      const ease = Math.min(1, delta * 5);
+      g.position.x += (tx - g.position.x) * ease;
+      g.position.y += (ty - g.position.y) * ease;
+      g.position.z += (bz - g.position.z) * ease;
       g.rotateOnAxis(spec.axis, (0.3 + (1 - conv) * 0.4) * delta);
     }
 
