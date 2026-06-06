@@ -21,9 +21,12 @@ const OFF_WHITE = "#F5F2ED";
 const SIGNAL = "#FB3640";
 /** Ponto de convergência da energia — área do CTA (baixo-centro). */
 const FOCAL = new Vector3(0, -2.7, 0);
-/** Repulsão local do cursor (igual à 1ª seção): raio e força do empurrão. */
-const REPEL_RADIUS = 2.8;
-const REPEL_STRENGTH = 1.6;
+/** Repulsão local PONTUAL do cursor (raio pequeno): só os bem próximos fogem. */
+const REPEL_RADIUS = 1.4;
+const REPEL_STRENGTH = 1.5;
+/** Limites do voo (wrap quando o fragmento sai). */
+const BOUND_X = 8;
+const BOUND_Y = 5;
 
 function mulberry32(seed: number) {
   let a = seed >>> 0;
@@ -41,8 +44,8 @@ interface FragSpec {
   final: Vector3;
   axis: Vector3;
   red: boolean;
-  drift: number;
-  phase: number;
+  vx: number;
+  vy: number;
   scale: number;
 }
 
@@ -85,14 +88,11 @@ function Formation({
     const rand = mulberry32(20260606);
     const list: FragSpec[] = [];
     for (let i = 0; i < COUNT; i++) {
-      // Home dispersa, evitando a zona central-superior (texto).
-      let x = (rand() * 2 - 1) * 7;
-      const y = (rand() * 2 - 1) * 4;
-      const z = (rand() * 2 - 1) * 2;
-      if (Math.abs(x) < 2.7 && y > -1.4) {
-        x = Math.sign(x || 1) * (2.7 + rand() * 4);
-      }
-      const home = new Vector3(x, y, z);
+      const home = new Vector3(
+        (rand() * 2 - 1) * BOUND_X,
+        (rand() * 2 - 1) * BOUND_Y,
+        (rand() * 2 - 1) * 2,
+      );
       const red = i < RED;
       const final = red
         ? new Vector3(
@@ -106,15 +106,18 @@ function Formation({
         rand() * 2 - 1,
         rand() * 2 - 1,
       ).normalize();
+      // Velocidade de voo (varia direção/sentido; mais horizontal).
+      const speed = 0.45 + rand() * 0.7;
+      const ang = rand() * Math.PI * 2;
       list.push({
         seed: 17 + i * 53,
         home,
         final,
         axis,
         red,
-        drift: 0.16 + rand() * 0.28,
-        phase: rand() * Math.PI * 2,
-        scale: red ? 0.46 : 0.36 + rand() * 0.12,
+        vx: Math.cos(ang) * speed,
+        vy: Math.sin(ang) * speed * 0.7,
+        scale: red ? 0.46 : 0.34 + rand() * 0.12,
       });
     }
     return list;
@@ -181,47 +184,53 @@ function FieldFragment({
     () => frag.nodes.map(() => createRef<MeshBasicMaterial>()),
     [frag],
   );
-  const elapsed = useRef(spec.phase);
-  const _v = useMemo(() => new Vector3(), []);
+  const posRef = useRef(spec.home.clone());
+  const repelRef = useRef(new Vector3());
 
   useFrame((state, delta) => {
-    elapsed.current += delta;
-    const t = elapsed.current;
     const p = clamp01(progressRef.current);
     const fadeIn = clamp01(p / 0.1);
     const conv = spec.red ? easeInOut(clamp01((p - 0.35) / 0.5)) : 0;
 
-    // Posição-base: convergência (vermelhos) + drift sutil.
-    _v.lerpVectors(spec.home, spec.final, conv);
-    const amp = (1 - conv) * spec.drift;
-    const bx = _v.x + Math.sin(t * 0.5 + spec.phase) * amp;
-    const by = _v.y + Math.cos(t * 0.45 + spec.phase) * amp;
-    const bz = _v.z;
+    // Voo contínuo: velocidade + wrap nas bordas (reaparece do lado oposto).
+    const pos = posRef.current;
+    pos.x += spec.vx * delta;
+    pos.y += spec.vy * delta;
+    if (pos.x > BOUND_X) pos.x = -BOUND_X;
+    else if (pos.x < -BOUND_X) pos.x = BOUND_X;
+    if (pos.y > BOUND_Y) pos.y = -BOUND_Y;
+    else if (pos.y < -BOUND_Y) pos.y = BOUND_Y;
 
-    // Repulsão local do cursor (igual à 1ª seção): cursor no plano de
-    // profundidade do fragmento → empurra pra longe com falloff.
+    // Vermelhos: puxados pro foco do CTA conforme converge.
+    const bx = spec.red ? lerp(pos.x, spec.final.x, conv) : pos.x;
+    const by = spec.red ? lerp(pos.y, spec.final.y, conv) : pos.y;
+    const bz = spec.red ? lerp(pos.z, spec.final.z, conv) : pos.z;
+
+    // Repulsão local PONTUAL do cursor (raio pequeno): cursor no plano de
+    // profundidade → empurra pra longe com falloff; volta suave ao sair.
     const camZ = state.camera.position.z || 9.5;
     const depthScale = (camZ - bz) / camZ;
     const cwx = state.pointer.x * (state.viewport.width / 2) * depthScale;
     const cwy = state.pointer.y * (state.viewport.height / 2) * depthScale;
-    let tx = bx;
-    let ty = by;
     const ddx = bx - cwx;
     const ddy = by - cwy;
     const dd = Math.hypot(ddx, ddy);
+    let rx = 0;
+    let ry = 0;
     if (dd < REPEL_RADIUS && dd > 1e-4) {
       const force = (1 - dd / REPEL_RADIUS) * REPEL_STRENGTH;
-      tx += (ddx / dd) * force;
-      ty += (ddy / dd) * force;
+      rx = (ddx / dd) * force;
+      ry = (ddy / dd) * force;
     }
+    const rep = repelRef.current;
+    const ease = Math.min(1, delta * 6);
+    rep.x += (rx - rep.x) * ease;
+    rep.y += (ry - rep.y) * ease;
 
     const g = groupRef.current;
     if (g) {
-      const ease = Math.min(1, delta * 5);
-      g.position.x += (tx - g.position.x) * ease;
-      g.position.y += (ty - g.position.y) * ease;
-      g.position.z += (bz - g.position.z) * ease;
-      g.rotateOnAxis(spec.axis, (0.3 + (1 - conv) * 0.4) * delta);
+      g.position.set(bx + rep.x, by + rep.y, bz);
+      g.rotateOnAxis(spec.axis, (0.3 + (1 - conv) * 0.3) * delta);
     }
 
     const edgeOp = (spec.red ? lerp(0.2, 0.85, conv) : 0.22) * fadeIn;
