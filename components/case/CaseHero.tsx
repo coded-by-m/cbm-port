@@ -118,9 +118,9 @@ export function CaseHero({ project }: { project: CaseProject }) {
       </div>
 
       {/* Visual side — browser frame com o desktop rolando */}
-      <div className="relative z-10 flex min-h-[320px] items-center justify-center p-6 sm:p-10 lg:min-h-0">
+      <div className="relative z-10 flex min-h-[380px] items-center justify-center p-6 sm:p-8 lg:min-h-0">
         <div
-          className="w-full max-w-[640px]"
+          className="w-full max-w-[860px]"
           style={reduce ? {} : {
             opacity: entered ? 1 : 0,
             transform: entered ? "scale(1)" : "scale(0.97)",
