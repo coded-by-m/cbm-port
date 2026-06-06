@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Reveal } from "@/components/case/Reveal";
 
 export function CaseReturnCTA() {
   return (
@@ -9,6 +10,7 @@ export function CaseReturnCTA() {
         borderTop: "1px solid rgba(245,242,237,0.06)",
       }}
     >
+      <Reveal className="flex flex-col items-center gap-5">
       <p className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red/60">
         Continuar Explorando
       </p>
@@ -34,6 +36,7 @@ export function CaseReturnCTA() {
       >
         ← Explorar a Paisagem
       </Link>
+      </Reveal>
     </section>
   );
 }
