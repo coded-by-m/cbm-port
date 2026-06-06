@@ -1,18 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
-import { HOME_CHAPTERS } from "@/lib/homeChapters";
+import { ChapterRail } from "@/components/home/ChapterRail";
+import { InteractionCue } from "@/components/home/InteractionCue";
+import { ChapterSection } from "@/components/home/ChapterSection";
+import { HOME_CONTENT } from "@/lib/homeContent";
+import { useActiveChapter } from "@/hooks/useActiveChapter";
 
 /**
  * Rota DEV do HomeCanvas (spec 2026-06-06-homecanvas-shared-design).
  *
- * Isolada de propósito: a Home real (`/`) fica intocada enquanto o canvas
- * compartilhado + os morphs são construídos aqui incrementalmente. Quando
- * tiver paridade, vira o default de `/` e os canvas por-zona saem.
+ * Candidata à Home final: o `HomeCanvas` (1 contexto WebGL — terreno + pool de
+ * fragmentos morphando + câmera scroll-driven) como fundo 3D unificado, com o
+ * conteúdo HTML de cada capítulo por cima + as affordances (trilha + cue).
+ * SEM o dip de transição: aqui os morphs do pool SÃO a transição.
  *
- * Passo 2: 9 seções roláveis alimentam o `progressRef` (0..1); o CameraRig
- * dentro do canvas interpola a câmera entre os capítulos conforme o scroll.
+ * Isolada de `/` até atingir paridade; então vira o default e os canvas
+ * por-zona saem.
  */
 const HomeCanvas = dynamic(
   () => import("@/components/home/canvas/HomeCanvas").then((m) => m.HomeCanvas),
@@ -21,17 +26,15 @@ const HomeCanvas = dynamic(
 
 export default function HomeCanvasDevPage() {
   const progressRef = useRef(0);
-  const [activeLabel, setActiveLabel] = useState(HOME_CHAPTERS[0].label);
+  const activeChapter = useActiveChapter();
 
   useEffect(() => {
     let raf = 0;
     const compute = () => {
       raf = 0;
       const max = document.body.scrollHeight - window.innerHeight;
-      const p = max > 0 ? window.scrollY / max : 0;
-      progressRef.current = Math.max(0, Math.min(1, p));
-      const idx = Math.round(progressRef.current * (HOME_CHAPTERS.length - 1));
-      setActiveLabel(HOME_CHAPTERS[idx].label);
+      progressRef.current =
+        max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(compute);
@@ -44,33 +47,27 @@ export default function HomeCanvasDevPage() {
     };
   }, []);
 
+  const jumpTo = (i: number) =>
+    document
+      .querySelector(`[data-chapter-index="${i}"]`)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+
   return (
     <main className="relative bg-[#000F08]">
       <HomeCanvas progressRef={progressRef} />
+      <ChapterRail active={activeChapter} onJump={jumpTo} />
+      <InteractionCue active={activeChapter} onSkipIntro={() => jumpTo(2)} />
 
-      {/* HUD dev fixo */}
+      {HOME_CONTENT.map((content, i) => (
+        <ChapterSection key={i} content={content} index={i} />
+      ))}
+
       <p
-        className="pointer-events-none fixed left-6 top-6 z-10 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED]/45"
+        className="pointer-events-none fixed bottom-6 left-6 z-[60] text-[0.55rem] uppercase tracking-[0.3em] text-[#F5F2ED]/25"
         style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
       >
-        HomeCanvas · passo 2 — camera rig · {activeLabel}
+        HomeCanvas · dev
       </p>
-
-      {/* Espaçadores roláveis — um por capítulo (placeholder pro conteúdo HTML
-          real, que entra quando as cenas forem migradas). */}
-      {HOME_CHAPTERS.map((ch, i) => (
-        <section
-          key={ch.id}
-          className="relative z-[1] flex h-screen items-center justify-center"
-        >
-          <span
-            className="pointer-events-none text-[0.6rem] uppercase tracking-[0.4em] text-[#F5F2ED]/25"
-            style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
-          >
-            {String(i + 1).padStart(2, "0")} · {ch.label}
-          </span>
-        </section>
-      ))}
     </main>
   );
 }
