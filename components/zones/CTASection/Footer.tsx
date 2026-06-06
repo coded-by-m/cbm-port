@@ -8,9 +8,13 @@ import { LogoMark } from "@/components/ui/LogoMark";
  * sem 3D. Logo + nav + localização/handle + copyright.
  */
 const NAV = [
-  { label: "Projetos", href: "/lab" },
+  { label: "Início", href: "/" },
   { label: "Laboratório", href: "/lab" },
-  { label: "Sobre", href: "/lab" },
+  {
+    label: "Instagram",
+    href: "https://instagram.com/codedbymstudio",
+    external: true,
+  },
   { label: "Contato", href: "https://wa.me/5548988354350", external: true },
 ];
 
@@ -62,7 +66,15 @@ export default function Footer() {
             <span className="uppercase tracking-[0.2em]">
               Florianópolis, BR
             </span>
-            <span className="tracking-[0.1em]">@codedbymstudio</span>
+            <a
+              href="https://instagram.com/codedbymstudio"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="triangle"
+              className="tracking-[0.1em] transition-colors hover:text-[#F5F2ED]/75"
+            >
+              @codedbymstudio
+            </a>
           </div>
           <div
             className="flex flex-col gap-1 sm:flex-row sm:gap-6 sm:text-right"

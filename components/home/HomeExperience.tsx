@@ -321,9 +321,14 @@ export function HomeExperience() {
         />
       </LazySection>
 
-      {/* 8 — Convite / CTA Final (+ Footer). Scroll-driven, 240vh + footer. */}
+      {/* 8 — Convite / CTA Final (+ Footer). Scroll-driven, 240vh + footer.
+          Finale: entra por wipe; subir do topo volta pro Sobre. */}
       <LazySection minHeight="240vh" chapterIndex={8}>
-        <CTASection inPage />
+        <CTASection
+          inPage
+          live={activeChapter === 8}
+          onBack={() => guidedScroll(7, "up")}
+        />
       </LazySection>
     </main>
   );

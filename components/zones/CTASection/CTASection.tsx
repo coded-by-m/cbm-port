@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { MeshButton } from "@/components/ui/MeshButton";
 import { useSectionScrollProgress } from "@/hooks/useSectionScrollProgress";
@@ -29,11 +29,19 @@ const HEAD_2 = ["Para", "2014."];
  */
 export default function CTASection({
   inPage = false,
+  live,
+  onBack,
 }: {
   inPage?: boolean;
+  /** Capítulo ativo → congela o canvas fora dele + arma o wipe de voltar. */
+  live?: boolean;
+  /** Rolar ↑ no TOPO → capítulo anterior (wipe pro Sobre). */
+  onBack?: () => void;
 } = {}) {
   // Container de scroll interno (só usado no modo /lab).
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const onBackRef = useRef(onBack);
+  onBackRef.current = onBack;
   // Trilho alto (h-[240vh]) — fonte do progress nos dois modos.
   const trackRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
@@ -73,6 +81,45 @@ export default function CTASection({
     transitionDelay: `${i * 70}ms`,
   });
 
+  // Wipe ao subir do TOPO → capítulo anterior (Sobre). É a finale (com footer),
+  // então só trata o topo↑; descer rola livre até o footer.
+  useEffect(() => {
+    if (!inPage || !live) return;
+    const el = scrollerRef.current;
+    if (!el) return;
+    let cooldown = false;
+    let accum = 0;
+    let resetTimer: ReturnType<typeof setTimeout> | null = null;
+    const onWheel = (e: WheelEvent) => {
+      if (cooldown) return;
+      const rect = el.getBoundingClientRect();
+      const atTop = rect.top >= -2;
+      if (e.deltaY < 0 && atTop) {
+        e.preventDefault();
+        if (resetTimer) clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+          accum = 0;
+        }, 200);
+        accum += e.deltaY;
+        if (accum < -90) {
+          cooldown = true;
+          setTimeout(() => {
+            cooldown = false;
+          }, 1100);
+          accum = 0;
+          onBackRef.current?.();
+        }
+      } else {
+        accum = 0;
+      }
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      if (resetTimer) clearTimeout(resetTimer);
+    };
+  }, [inPage, live]);
+
   return (
     <section
       ref={scrollerRef}
@@ -84,9 +131,9 @@ export default function CTASection({
     >
       <div ref={trackRef} className="relative h-[240vh]">
         <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
-          {/* Formação 3D */}
+          {/* Formação 3D — campo ambiente + energia convergindo pro CTA. */}
           <div className="pointer-events-none absolute inset-0 z-0">
-            <CTAFormation progressRef={progressRef} />
+            <CTAFormation progressRef={progressRef} active={!!live} />
           </div>
 
           {/* Vignette pra legibilidade da copy sobre o símbolo */}
