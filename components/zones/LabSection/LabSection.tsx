@@ -10,35 +10,57 @@ const LabResidualField = dynamic(() => import("./LabResidualField"), {
   ssr: false,
 });
 
+const SCROLL_THRESHOLD = 150;
+const SCROLL_COOLDOWN = 1100;
+
 /**
- * Seção LABORATÓRIO da Home — teaser do Experience Lab (zona 7).
+ * Seção LABORATÓRIO da Home — teaser do Experience Lab.
  *
- * Momento de "bastidor": prova rigor técnico e cria curiosidade pra `/lab`.
- * Campo residual de fragmentos triangulados decorativo ao fundo + conteúdo
- * (eyebrow/headline/sub/CTA) + bloco de métricas.
- *
- * Entry-animated (IntersectionObserver) — zona leve, sem scroll-driven.
+ * Tela única wipe-connected: o wheel navega entre capítulos (↓ Sobre, ↑
+ * Processo) via wipe, nunca trava no meio. Entrada sincronizada com o wipe
+ * (`live`). Campo residual de fragmentos ao fundo + conteúdo + métricas.
  */
-export default function LabSection() {
+export default function LabSection({
+  live,
+  onForward,
+  onBack,
+}: {
+  /** Capítulo ativo → entrada sincronizada + wheel-jack ligado. */
+  live?: boolean;
+  /** Wheel ↓ → próximo capítulo (wipe pro Sobre). */
+  onForward?: () => void;
+  /** Wheel ↑ → capítulo anterior (wipe pro Processo). */
+  onBack?: () => void;
+} = {}) {
   const router = useRouter();
-  const rootRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [entered, setEntered] = useState(false);
+  const onForwardRef = useRef(onForward);
+  onForwardRef.current = onForward;
+  const onBackRef = useRef(onBack);
+  onBackRef.current = onBack;
 
   const readyCount = EXPERIMENTS.filter((e) => e.status === "ready").length;
 
   const metrics = [
     { value: String(readyCount), label: "Experimentos" },
-    { value: "~12k", label: "Linhas de código" },
+    { value: "100%", label: "Código próprio" },
     { value: "R3F · GSAP · TS", label: "Stack" },
   ];
 
+  // Entrada: sincronizada com o wipe (`live`); IntersectionObserver de fallback
+  // (caso renderize sem `live`).
   useEffect(() => {
-    const el = rootRef.current;
+    if (live) {
+      setEntered(true);
+      return;
+    }
+    const el = sectionRef.current;
     if (!el) return;
-    const reduceMotion =
+    const reduce =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) {
+    if (reduce) {
       setEntered(true);
       return;
     }
@@ -55,7 +77,59 @@ export default function LabSection() {
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [live]);
+
+  // Wheel-jack: tela única → o wheel navega o capítulo (wipe). Só quando ativa.
+  useEffect(() => {
+    if (!live) return;
+    const el = sectionRef.current;
+    if (!el) return;
+    let accum = 0;
+    let resetTimer: ReturnType<typeof setTimeout> | null = null;
+    let cooldown = false;
+    const fire = (dir: number) => {
+      cooldown = true;
+      setTimeout(() => {
+        cooldown = false;
+      }, SCROLL_COOLDOWN);
+      if (dir > 0) onForwardRef.current?.();
+      else onBackRef.current?.();
+    };
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      if (cooldown) return;
+      if (resetTimer) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        accum = 0;
+      }, 250);
+      accum += e.deltaY;
+      if (Math.abs(accum) < SCROLL_THRESHOLD) return;
+      const dir = accum > 0 ? 1 : -1;
+      accum = 0;
+      fire(dir);
+    };
+    let touchY = 0;
+    const onTouchStart = (e: TouchEvent) => {
+      touchY = e.touches[0].clientY;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      if (cooldown) return;
+      const dy = touchY - e.touches[0].clientY;
+      if (Math.abs(dy) < 40) return;
+      touchY = e.touches[0].clientY;
+      fire(dy > 0 ? 1 : -1);
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+      if (resetTimer) clearTimeout(resetTimer);
+    };
+  }, [live]);
 
   const reveal = (delay: number, y = 14) => ({
     opacity: entered ? 1 : 0,
@@ -66,6 +140,7 @@ export default function LabSection() {
 
   return (
     <section
+      ref={sectionRef}
       data-cursor="triangle"
       className="absolute inset-0 overflow-hidden bg-[#000F08]"
       aria-labelledby="lab-headline"
@@ -85,10 +160,7 @@ export default function LabSection() {
         aria-hidden
       />
 
-      <div
-        ref={rootRef}
-        className="relative z-10 flex h-full flex-col justify-center px-6 sm:px-10"
-      >
+      <div className="relative z-10 flex h-full flex-col justify-center px-6 sm:px-10">
         <div className="mx-auto w-full max-w-[1200px]">
           {/* Conteúdo principal */}
           <div className="max-w-xl">
@@ -112,24 +184,24 @@ export default function LabSection() {
                 ...reveal(120),
               }}
             >
-              Onde validamos antes de construir.
+              Validamos a técnica antes de construir.
             </h2>
 
             <p
-              className="mt-5 max-w-md text-[clamp(1rem,1.35vw,1.15rem)] leading-relaxed text-[#F5F2ED]/60"
+              className="mt-5 max-w-md text-[clamp(1rem,1.35vw,1.15rem)] leading-relaxed text-[#F5F2ED]/65"
               style={{
                 fontFamily: '"Satoshi", sans-serif',
                 fontWeight: 300,
                 ...reveal(240, 12),
               }}
             >
-              {readyCount} experimentos técnicos pra reduzir risco e garantir
-              entrega.
+              {readyCount} experimentos isolados — cada efeito e interação é
+              provado aqui antes de entrar num projeto real.
             </p>
 
             <div className="mt-9" style={reveal(360, 12)}>
               <MeshButton
-                label="Visitar Laboratório"
+                label="Entrar no Laboratório"
                 onClick={() => router.push("/lab")}
                 aria-label="Visitar o Experience Lab"
               />
@@ -142,9 +214,9 @@ export default function LabSection() {
             style={reveal(480, 12)}
           >
             {metrics.map((m) => (
-              <div key={m.label}>
+              <div key={m.label} className="group/metric">
                 <p
-                  className="text-[clamp(1.6rem,2.6vw,2.4rem)] leading-none text-[#F5F2ED]"
+                  className="text-[clamp(1.6rem,2.6vw,2.4rem)] leading-none text-[#F5F2ED] transition-colors duration-300 group-hover/metric:text-[#FB3640]"
                   style={{
                     fontFamily: '"Panchang", sans-serif',
                     fontWeight: 800,

@@ -193,11 +193,12 @@ export function HomeExperience() {
     };
   }, [introDone, guidedScroll]);
 
-  // Projetos (4) e Processo (5) são 100vh wheel-jacked. Ao virar o capítulo
-  // ativo vindo por scroll livre (ex.: subindo do Laboratório), snapam pra
-  // preencher a viewport — entrar neles nunca deixa o usuário no meio.
+  // Projetos (4), Processo (5) e Laboratório (6) são 100vh wheel-jacked. Ao
+  // virar o capítulo ativo vindo por scroll livre (ex.: subindo do Sobre),
+  // snapam pra preencher a viewport — entrar neles nunca deixa no meio.
   useEffect(() => {
-    if (activeChapter !== 4 && activeChapter !== 5) return;
+    if (activeChapter !== 4 && activeChapter !== 5 && activeChapter !== 6)
+      return;
     const el = document.querySelector(
       `[data-chapter-index="${activeChapter}"]`,
     );
@@ -298,10 +299,14 @@ export function HomeExperience() {
         />
       </LazySection>
 
-      {/* 6 — Laboratório (teaser /lab). */}
+      {/* 6 — Laboratório (teaser /lab). Tela única wipe-connected (wheel ↑↓). */}
       <LazySection minHeight="100vh" chapterIndex={6}>
         <ViewportZone>
-          <LabSection />
+          <LabSection
+            live={activeChapter === 6}
+            onBack={() => guidedScroll(5, "up")}
+            onForward={() => guidedScroll(7, "down")}
+          />
         </ViewportZone>
       </LazySection>
 

@@ -30,6 +30,10 @@ const FRAGMENTS = [
   { x: 5.6, z: -0.6, seed: 257, scale: 0.54, delay: 1.08 },
   { x: -4.2, z: 2.6, seed: 307, scale: 0.5, delay: 1.26 },
   { x: 1.8, z: 2.8, seed: 359, scale: 0.52, delay: 1.44 },
+  // Camada mais ao fundo — profundidade extra (menores/mais dim).
+  { x: -6.6, z: 3.6, seed: 401, scale: 0.42, delay: 1.6 },
+  { x: 6.9, z: 3.2, seed: 449, scale: 0.46, delay: 1.75, accent: true },
+  { x: 0.2, z: -3.4, seed: 487, scale: 0.46, delay: 1.9 },
 ];
 
 /**
@@ -97,7 +101,7 @@ function ResidualFragment({
 
     edgeRefs.forEach((ref) => {
       const line = ref.current;
-      if (line) (line.material as { opacity: number }).opacity = 0.25 * reveal;
+      if (line) (line.material as { opacity: number }).opacity = 0.3 * reveal;
     });
     frag.nodes.forEach((_n, i) => {
       const mat = nodeMatRefs[i].current;
