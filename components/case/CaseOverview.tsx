@@ -4,6 +4,8 @@ import { Reveal } from "@/components/case/Reveal";
 export function CaseOverview({ project }: { project: CaseProject }) {
   const { heading, body, challenge } = project.overview;
 
+  if (!heading && body.length === 0 && !challenge) return null;
+
   return (
     <section
       id="overview"

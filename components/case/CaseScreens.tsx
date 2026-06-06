@@ -34,7 +34,7 @@ export function CaseScreens({ project }: { project: CaseProject }) {
               delay={(i % 2) * 90}
               className={wide ? "sm:col-span-2" : ""}
             >
-              <div className="group relative overflow-hidden border border-[#F5F2ED]/12 bg-[#070B08]">
+              <div className="group relative overflow-hidden border border-[#F5F2ED]/10 bg-[#070B08]">
                 {/* brackets HUD */}
                 <span className="pointer-events-none absolute left-1.5 top-1.5 z-10 h-2.5 w-2.5 border-l border-t border-[#F5F2ED]/40" />
                 <span className="pointer-events-none absolute bottom-1.5 right-1.5 z-10 h-2.5 w-2.5 border-b border-r border-[#FB3640]/70" />

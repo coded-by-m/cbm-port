@@ -21,16 +21,28 @@ const TerrainBackground = dynamic(
 export function CaseHero({ project }: { project: CaseProject }) {
   // Cascata de entrada no load.
   const [entered, setEntered] = useState(false);
+  const [reduce, setReduce] = useState(false);
   useEffect(() => {
+    const r =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (r) {
+      setReduce(true);
+      setEntered(true);
+      return;
+    }
     const t = setTimeout(() => setEntered(true), 80);
     return () => clearTimeout(t);
   }, []);
 
-  const step = (i: number) => ({
-    opacity: entered ? 1 : 0,
-    transform: entered ? "translateY(0)" : "translateY(14px)",
-    transition: `opacity 0.7s ease-out ${i * 90}ms, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${i * 90}ms`,
-  });
+  const step = (i: number) =>
+    reduce
+      ? {}
+      : {
+          opacity: entered ? 1 : 0,
+          transform: entered ? "translateY(0)" : "translateY(14px)",
+          transition: `opacity 0.7s ease-out ${i * 90}ms, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${i * 90}ms`,
+        };
 
   return (
     <section
@@ -109,7 +121,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
       <div className="relative z-10 flex min-h-[320px] items-center justify-center p-6 sm:p-10 lg:min-h-0">
         <div
           className="w-full max-w-[640px]"
-          style={{
+          style={reduce ? {} : {
             opacity: entered ? 1 : 0,
             transform: entered ? "scale(1)" : "scale(0.97)",
             transition:

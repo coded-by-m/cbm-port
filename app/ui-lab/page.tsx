@@ -1907,7 +1907,7 @@ export default function UILabPage() {
 
           {/* ── Gallery */}
           <div>
-            <CLabel>Case Gallery — grid assimétrico de prints</CLabel>
+            <CLabel>Case Screens — grade de telas</CLabel>
             <div style={{ border: "1px solid rgba(245,242,237,0.07)" }}>
               {(() => {
                 const project = getCaseBySlug("machado-plataformas");
