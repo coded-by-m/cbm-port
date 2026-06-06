@@ -1,4 +1,5 @@
 import type { CaseProject } from "@/types/case";
+import { Reveal } from "@/components/case/Reveal";
 
 export function CaseOverview({ project }: { project: CaseProject }) {
   const { heading, body, challenge } = project.overview;
@@ -15,7 +16,7 @@ export function CaseOverview({ project }: { project: CaseProject }) {
       <div className="mx-auto flex max-w-[1200px] flex-col gap-12 lg:flex-row lg:items-start lg:gap-24">
 
         {/* Left — editorial text */}
-        <div className="flex-1">
+        <Reveal className="flex-1">
           <div className="mb-6 flex items-center gap-3">
             <span
               className="block h-px w-5 flex-shrink-0"
@@ -43,10 +44,10 @@ export function CaseOverview({ project }: { project: CaseProject }) {
               </p>
             ))}
           </div>
-        </div>
+        </Reveal>
 
         {/* Right — challenge block */}
-        <div className="w-full lg:w-[280px] lg:flex-shrink-0">
+        <Reveal className="w-full lg:w-[280px] lg:flex-shrink-0" delay={120}>
           <div className="border border-cbm-gray-800 p-6">
             <p className="mb-3 font-body text-[8px] uppercase tracking-[0.35em] text-cbm-gray-600">
               Desafio
@@ -55,7 +56,7 @@ export function CaseOverview({ project }: { project: CaseProject }) {
               {challenge}
             </p>
           </div>
-        </div>
+        </Reveal>
 
       </div>
     </section>
