@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { cases, getCaseBySlug } from "@/data/cases";
 import { CaseHero } from "@/components/case/CaseHero";
 import { CaseOverview } from "@/components/case/CaseOverview";
-import { CaseGallery } from "@/components/case/CaseGallery";
+import { CaseScreens } from "@/components/case/CaseScreens";
+import { CaseResponsive } from "@/components/case/CaseResponsive";
 import { CaseReturnCTA } from "@/components/case/CaseReturnCTA";
 
 export function generateStaticParams() {
@@ -32,11 +33,17 @@ export default function CasePage({
   if (!project) notFound();
 
   return (
-    <main style={{ background: "#000F08", minHeight: "100vh" }}>
+    <main className="case-fade-in" style={{ background: "#000F08", minHeight: "100vh" }}>
       <CaseHero project={project} />
       <CaseOverview project={project} />
-      <CaseGallery project={project} />
+      <CaseScreens project={project} />
+      <CaseResponsive project={project} />
       <CaseReturnCTA />
+      <style>{`
+        @keyframes case-fade-in { from { opacity: 0 } to { opacity: 1 } }
+        .case-fade-in { animation: case-fade-in 0.5s ease-out both; }
+        @media (prefers-reduced-motion: reduce) { .case-fade-in { animation: none; } }
+      `}</style>
     </main>
   );
 }
