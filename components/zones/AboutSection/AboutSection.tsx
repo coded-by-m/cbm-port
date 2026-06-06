@@ -300,6 +300,27 @@ export default function AboutSection({
           ))}
         </div>
       </div>
+
+      {/* Hint de scroll no fim do Sobre — espelha o cue do Convite; sinaliza
+          que o finale vem a seguir. Aparece com a entrada da seção. */}
+      <div
+        className="pointer-events-none absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5"
+        style={{
+          opacity: entered ? 1 : 0,
+          transform: entered ? "translateY(0)" : "translateY(8px)",
+          transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+          transitionDelay: "640ms",
+        }}
+        aria-hidden
+      >
+        <span
+          className="text-[0.6rem] uppercase tracking-[0.35em] text-[#F5F2ED]/55"
+          style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+        >
+          Role para continuar
+        </span>
+        <span className="block h-2.5 w-2.5 rotate-45 animate-bounce border-b border-r border-[#FB3640]" />
+      </div>
     </section>
   );
 }
