@@ -4,6 +4,7 @@ import type { RefObject } from "react";
 import { Canvas } from "@react-three/fiber";
 import { CAMERA, COLORS, FOG } from "@/components/lab/TerrainMesh/config";
 import { ConnectiveSubstrate } from "./ConnectiveSubstrate";
+import { FragmentPool } from "./FragmentPool";
 import { CameraRig } from "./CameraRig";
 import { CHAPTER_CAMERA_KEYS } from "./cameraKeys";
 
@@ -38,6 +39,7 @@ export function HomeCanvas({
         <fog attach="fog" args={[FOG.color, FOG.near, FOG.far]} />
         <CameraRig keys={CHAPTER_CAMERA_KEYS} progressRef={progressRef} />
         <ConnectiveSubstrate />
+        <FragmentPool progressRef={progressRef} />
       </Canvas>
     </div>
   );
