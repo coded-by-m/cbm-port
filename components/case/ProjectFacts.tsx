@@ -10,19 +10,19 @@ export function ProjectFacts({ meta }: { meta: CaseMeta }) {
 
   return (
     <div
-      className="mt-10 border-t pt-8"
-      style={{ borderColor: "rgba(245,242,237,0.06)" }}
+      className="mt-9 border-t pt-7"
+      style={{ borderColor: "rgba(245,242,237,0.08)" }}
     >
-      <p className="mb-5 font-body text-[8px] uppercase tracking-[0.35em] text-cbm-gray-600">
+      <p className="mb-6 font-body text-[9px] uppercase tracking-[0.35em] text-cbm-gray-400">
         Projeto
       </p>
-      <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+      <div className="grid grid-cols-2 gap-x-8 gap-y-6 max-w-[440px]">
         {fields.map(({ label, value }) => (
           <div key={label}>
-            <p className="font-body text-[8px] uppercase tracking-[0.3em] text-cbm-gray-600">
+            <p className="font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-600">
               {label}
             </p>
-            <p className="mt-1 font-body text-[13px] font-medium text-cbm-gray-100">
+            <p className="mt-1.5 font-body text-[15px] font-medium text-cbm-gray-100">
               {value}
             </p>
           </div>

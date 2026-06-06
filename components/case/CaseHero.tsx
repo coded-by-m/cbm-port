@@ -87,7 +87,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
           </h1>
 
           <p
-            className="mt-6 max-w-[360px] font-body text-[14px] font-light leading-[1.78] text-cbm-gray-400"
+            className="mt-7 max-w-[460px] font-body text-[15px] font-light leading-[1.7] text-cbm-gray-200 sm:text-[17px]"
             style={step(2)}
           >
             {project.description}
