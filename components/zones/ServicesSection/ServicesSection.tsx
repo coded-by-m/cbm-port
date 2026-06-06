@@ -30,12 +30,78 @@ const TerrainBackground = dynamic(
  */
 export default function ServicesSection({
   inPage = false,
+  live,
+  onForward,
+  onBack,
 }: {
   inPage?: boolean;
+  /** Capítulo ativo (na Home) → entrada sincronizada com o wipe de chegada. */
+  live?: boolean;
+  /** Rolar ↓ no FIM da seção → próximo capítulo (wipe pra Projetos). */
+  onForward?: () => void;
+  /** Rolar ↑ no TOPO → capítulo anterior (wipe pro Problema). */
+  onBack?: () => void;
 } = {}) {
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const [headerEntered, setHeaderEntered] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const onForwardRef = useRef(onForward);
+  onForwardRef.current = onForward;
+  const onBackRef = useRef(onBack);
+  onBackRef.current = onBack;
+
+  // Entrada sincronizada: assim que a seção fica ativa (logo após o wipe
+  // revelar), dispara a entrada — não espera só o IntersectionObserver.
+  useEffect(() => {
+    if (live) setHeaderEntered(true);
+  }, [live]);
+
+  // Wipe nas BORDAS: a seção rola livre por dentro (cards), mas ao chegar no
+  // fim e rolar ↓ → wipe pro próximo capítulo; no topo e rolar ↑ → wipe pro
+  // anterior. Assim nunca trava no meio do scroll entre seções.
+  useEffect(() => {
+    if (!inPage || !live) return;
+    const el = sectionRef.current;
+    if (!el) return;
+    let cooldown = false;
+    let accum = 0;
+    let resetTimer: ReturnType<typeof setTimeout> | null = null;
+    const fire = (fn?: () => void) => {
+      cooldown = true;
+      setTimeout(() => {
+        cooldown = false;
+      }, 1100);
+      accum = 0;
+      fn?.();
+    };
+    const onWheel = (e: WheelEvent) => {
+      if (cooldown) return;
+      const rect = el.getBoundingClientRect();
+      const atBottom = rect.bottom <= window.innerHeight + 2;
+      const atTop = rect.top >= -2;
+      if (resetTimer) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        accum = 0;
+      }, 200);
+      if (e.deltaY > 0 && atBottom) {
+        e.preventDefault();
+        accum += e.deltaY;
+        if (accum > 90) fire(onForwardRef.current);
+      } else if (e.deltaY < 0 && atTop) {
+        e.preventDefault();
+        accum += e.deltaY;
+        if (accum < -90) fire(onBackRef.current);
+      } else {
+        accum = 0; // no meio → scroll livre
+      }
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      if (resetTimer) clearTimeout(resetTimer);
+    };
+  }, [inPage, live]);
 
   // Renderiza só os cards do breakpoint ativo. Antes, desktop (lg:flex) E
   // mobile (lg:hidden) montavam os 3 ServiceCards CADA → 6 mini-scenes
@@ -114,6 +180,7 @@ export default function ServicesSection({
 
   return (
     <section
+      ref={sectionRef}
       data-cursor="triangle"
       className={`bg-[#000F08] py-24 sm:py-32 ${
         inPage ? "relative min-h-screen" : "absolute inset-0 overflow-y-auto"
@@ -158,7 +225,7 @@ export default function ServicesSection({
               className="text-[0.65rem] uppercase tracking-[0.35em] text-[#F5F2ED]/35"
               style={{ fontFamily: '"Panchang", sans-serif', fontWeight: 500 }}
             >
-              05
+              04
             </span>
             <span className="h-[1px] w-12 bg-[#FB3640]/70" aria-hidden />
             <p
@@ -209,6 +276,31 @@ export default function ServicesSection({
           </div>
         </div>
 
+        {/* Hint claro — convida a abrir um card; some quando algo expande. */}
+        <div
+          className="mt-8 flex items-center gap-2.5"
+          style={{
+            opacity: headerEntered && !someExpanded ? 1 : 0,
+            transform: headerEntered ? "translateY(0)" : "translateY(8px)",
+            transition: "opacity 0.45s ease-out, transform 0.6s ease-out",
+            transitionDelay: someExpanded ? "0ms" : "380ms",
+            pointerEvents: "none",
+          }}
+          aria-hidden
+        >
+          <span
+            className="h-[1px] w-6 bg-[#FB3640]/70"
+            style={{ animation: "svc-hint-pulse 2s ease-in-out infinite" }}
+          />
+          <p
+            className="text-[0.6rem] uppercase tracking-[0.35em] text-[#F5F2ED]/45"
+            style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+          >
+            Clique em um serviço para explorar
+          </p>
+          <style>{`@keyframes svc-hint-pulse { 0%,100% { opacity: 0.5; transform: scaleX(1); } 50% { opacity: 1; transform: scaleX(1.6); } }`}</style>
+        </div>
+
         {/* Cards — só o breakpoint ativo monta (evita canvas em dobro). */}
         {isDesktop ? (
           <div className="mt-16 flex items-start gap-6">
@@ -228,6 +320,7 @@ export default function ServicesSection({
                   onToggle={() => handleToggle(service.slug)}
                   borderDelay={i * 0.15}
                   enterDelay={400 + i * 150}
+                  play={headerEntered}
                 />
               </div>
             ))}
@@ -243,6 +336,7 @@ export default function ServicesSection({
                 onToggle={() => handleToggle(service.slug)}
                 borderDelay={i * 0.15}
                 enterDelay={400 + i * 150}
+                play={headerEntered}
               />
             ))}
           </div>

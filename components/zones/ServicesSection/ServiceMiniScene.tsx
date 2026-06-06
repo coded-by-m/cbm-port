@@ -57,9 +57,13 @@ function CameraPullback({
 export default function ServiceMiniScene({
   variant,
   active,
+  hovered = false,
 }: {
   variant: ServiceVariant;
   active: boolean;
+  /** Hover no card (colapsado) → a cena "acorda" (gira mais rápido), sem a
+   *  expansão completa que só o `active` (expandido) dispara. */
+  hovered?: boolean;
 }) {
   return (
     <Canvas
@@ -68,9 +72,13 @@ export default function ServiceMiniScene({
       camera={{ position: [0, 0, 6], fov: 38 }}
       style={{ background: "transparent" }}
     >
-      {variant === "landing" && <LandingScene active={active} />}
-      {variant === "institutional" && <InstitutionalScene active={active} />}
-      {variant === "app" && <AppScene active={active} />}
+      {variant === "landing" && (
+        <LandingScene active={active} hovered={hovered} />
+      )}
+      {variant === "institutional" && (
+        <InstitutionalScene active={active} hovered={hovered} />
+      )}
+      {variant === "app" && <AppScene active={active} hovered={hovered} />}
     </Canvas>
   );
 }
@@ -79,7 +87,13 @@ export default function ServiceMiniScene({
    LANDING — Página única flutuante (simplicidade)
    ============================================================ */
 
-function LandingScene({ active }: { active: boolean }) {
+function LandingScene({
+  active,
+  hovered = false,
+}: {
+  active: boolean;
+  hovered?: boolean;
+}) {
   const groupRef = useRef<Group>(null);
   const expansionRef = useRef<Group>(null);
   const highlightGroupRef = useRef<Group>(null);
@@ -136,7 +150,7 @@ function LandingScene({ active }: { active: boolean }) {
   useFrame((_, delta) => {
     speedRef.current = lerp(
       speedRef.current,
-      active ? 1.6 : 1,
+      active ? 1.6 : hovered ? 1.3 : 1,
       Math.min(1, delta * 4),
     );
     elapsed.current += delta * speedRef.current;
@@ -335,7 +349,13 @@ function LandingScene({ active }: { active: boolean }) {
    INSTITUTIONAL — Torre 3D de andares (várias páginas/seções)
    ============================================================ */
 
-function InstitutionalScene({ active }: { active: boolean }) {
+function InstitutionalScene({
+  active,
+  hovered = false,
+}: {
+  active: boolean;
+  hovered?: boolean;
+}) {
   const groupRef = useRef<Group>(null);
   const expansionRef = useRef<Group>(null);
   const particlesRef = useRef<(Mesh | null)[]>([]);
@@ -378,7 +398,7 @@ function InstitutionalScene({ active }: { active: boolean }) {
   useFrame((_, delta) => {
     speedRef.current = lerp(
       speedRef.current,
-      active ? 1.5 : 1,
+      active ? 1.5 : hovered ? 1.3 : 1,
       Math.min(1, delta * 4),
     );
     elapsed.current += delta * speedRef.current;
@@ -479,7 +499,13 @@ function InstitutionalScene({ active }: { active: boolean }) {
    APP — Mind map 3D com tubos curvos (sistema interconectado)
    ============================================================ */
 
-function AppScene({ active }: { active: boolean }) {
+function AppScene({
+  active,
+  hovered = false,
+}: {
+  active: boolean;
+  hovered?: boolean;
+}) {
   const groupRef = useRef<Group>(null);
   const expansionRef = useRef<Group>(null);
   const nodesRef = useRef<(Group | null)[]>([]);
@@ -527,7 +553,7 @@ function AppScene({ active }: { active: boolean }) {
   useFrame((_, delta) => {
     speedRef.current = lerp(
       speedRef.current,
-      active ? 1.4 : 1,
+      active ? 1.4 : hovered ? 1.25 : 1,
       Math.min(1, delta * 4),
     );
     elapsed.current += delta * speedRef.current;

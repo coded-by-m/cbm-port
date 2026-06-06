@@ -36,17 +36,15 @@ export function ChapterRail({
             aria-current={isActive ? "true" : undefined}
             aria-label={`Ir para ${chapter.label}`}
             data-cursor="triangle"
-            className="group flex items-center gap-3 bg-transparent"
+            className="group flex items-center gap-3 bg-transparent py-1 pl-3"
           >
             <span
-              className="text-[0.5rem] uppercase tracking-[0.3em] tabular-nums transition-all duration-300 group-hover:opacity-100"
-              style={{
-                fontFamily: '"Satoshi", sans-serif',
-                fontWeight: 500,
-                color: isActive ? "rgba(245,242,237,0.9)" : "rgba(245,242,237,0.5)",
-                opacity: isActive ? 1 : 0,
-                transform: isActive ? "translateX(0)" : "translateX(4px)",
-              }}
+              className={`text-[0.5rem] uppercase tracking-[0.3em] tabular-nums transition-all duration-300 ${
+                isActive
+                  ? "translate-x-0 text-[#F5F2ED]/90 opacity-100"
+                  : "translate-x-1 text-[#F5F2ED]/50 opacity-0 group-hover:translate-x-0 group-hover:text-[#F5F2ED]/85 group-hover:opacity-100"
+              }`}
+              style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
             >
               {chapter.label}
             </span>
@@ -55,7 +53,9 @@ export function ChapterRail({
               width="9"
               height="9"
               viewBox="0 0 10 10"
-              className="transition-all duration-300"
+              className={`transition-all duration-300 ${
+                isActive || isPast ? "" : "opacity-40 group-hover:opacity-90"
+              }`}
               style={{
                 transform: isActive ? "scale(1.5) rotate(0deg)" : "scale(1)",
               }}
@@ -66,7 +66,7 @@ export function ChapterRail({
                 fill={isActive || isPast ? SIGNAL : "transparent"}
                 stroke={isActive || isPast ? SIGNAL : OFF_WHITE}
                 strokeWidth="1"
-                opacity={isActive ? 1 : isPast ? 0.55 : 0.3}
+                opacity={isActive ? 1 : isPast ? 0.55 : 1}
               />
             </svg>
           </button>

@@ -19,6 +19,9 @@ const _matrix = new Matrix4();
 const _quat = new Quaternion();
 const _scale = new Vector3();
 
+/** Raio de influência do cursor (unidades de mundo no plano da partícula). */
+const REPEL_RADIUS = 1.7;
+
 /**
  * Triângulo unitário equilátero (altura 0.866). Compartilhado por todas as
  * camadas — cada instância é posicionada/escalada por `setMatrixAt`.
@@ -36,14 +39,14 @@ function createUnitTriangleGeo(): BufferGeometry {
 }
 
 /**
- * Uma camada de mini-triângulos em profundidade.
+ * Uma camada de mini-triângulos em profundidade, que REAGEM ao cursor: cada
+ * triângulo perto do mouse é empurrado pra longe (repulsão com falloff) e volta
+ * suave à posição de origem quando o cursor se afasta. Não é parallax global —
+ * é interação local, partícula por partícula.
  *
- * Posições e rotações geradas uma única vez. A camada gira lentamente em
- * torno de Y (parallax discreto entre planos). `depthWrite=false` para não
- * ocultar a estrutura do logo.
- *
- * Trianguladas em vez de pontos: amarra o vocabulário visual com
- * ExitParticles e os triângulos do TerrainBackground que vem em seguida.
+ * O cursor (state.pointer ∈ [-1,1]) é mapeado pro mundo no plano de cada
+ * partícula (correção de profundidade via `depthScale`), pra reagir onde ele
+ * visualmente está. Cada triângulo também gira devagar no próprio eixo (vivo).
  */
 function ParticleLayer({
   layer,
@@ -57,28 +60,34 @@ function ParticleLayer({
   const instances = useMemo(() => {
     const [spreadX, spreadY] = layer.spread;
     const [near, far] = layer.depth;
-    return Array.from({ length: layer.count }, () => ({
-      pos: new Vector3(
+    return Array.from({ length: layer.count }, () => {
+      const pos = new Vector3(
         (Math.random() * 2 - 1) * spreadX,
         (Math.random() * 2 - 1) * spreadY,
         near + Math.random() * (far - near),
-      ),
-      axis: new Vector3(
-        Math.random() - 0.5,
-        Math.random() - 0.5,
-        Math.random() - 0.5,
-      ).normalize(),
-      rotation: Math.random() * Math.PI * 2,
-    }));
+      );
+      return {
+        home: pos,
+        cur: pos.clone(),
+        axis: new Vector3(
+          Math.random() - 0.5,
+          Math.random() - 0.5,
+          Math.random() - 0.5,
+        ).normalize(),
+        rotation: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 0.4,
+      };
+    });
   }, [layer]);
 
+  // Matriz inicial (posições de origem).
   useEffect(() => {
     const mesh = ref.current;
     if (!mesh) return;
     instances.forEach((inst, i) => {
       _quat.setFromAxisAngle(inst.axis, inst.rotation);
       _scale.setScalar(layer.size);
-      _matrix.compose(inst.pos, _quat, _scale);
+      _matrix.compose(inst.home, _quat, _scale);
       mesh.setMatrixAt(i, _matrix);
     });
     mesh.instanceMatrix.needsUpdate = true;
@@ -87,15 +96,39 @@ function ParticleLayer({
   useFrame((state, delta) => {
     const mesh = ref.current;
     if (!mesh) return;
-    mesh.rotation.y += layer.drift * delta;
 
-    // Parallax interativo: a camada segue o cursor (state.pointer ∈ [-1,1]),
-    // proporcional ao seu `parallax` (foreground reage mais). Lerp suaviza.
-    const tx = state.pointer.x * layer.parallax;
-    const ty = state.pointer.y * layer.parallax;
-    const k = Math.min(1, delta * 3);
-    mesh.position.x += (tx - mesh.position.x) * k;
-    mesh.position.y += (ty - mesh.position.y) * k;
+    const camZ = state.camera.position.z || 6;
+    const halfW = state.viewport.width / 2;
+    const halfH = state.viewport.height / 2;
+    const ease = Math.min(1, delta * 5);
+
+    instances.forEach((inst, i) => {
+      // Cursor no plano de profundidade desta partícula.
+      const depthScale = (camZ - inst.home.z) / camZ;
+      const cwx = state.pointer.x * halfW * depthScale;
+      const cwy = state.pointer.y * halfH * depthScale;
+
+      let tx = inst.home.x;
+      let ty = inst.home.y;
+      const dx = inst.home.x - cwx;
+      const dy = inst.home.y - cwy;
+      const d = Math.hypot(dx, dy);
+      if (d < REPEL_RADIUS && d > 1e-4) {
+        const force = (1 - d / REPEL_RADIUS) * layer.repel;
+        tx += (dx / d) * force;
+        ty += (dy / d) * force;
+      }
+
+      inst.cur.x += (tx - inst.cur.x) * ease;
+      inst.cur.y += (ty - inst.cur.y) * ease;
+
+      inst.rotation += inst.spin * delta;
+      _quat.setFromAxisAngle(inst.axis, inst.rotation);
+      _scale.setScalar(layer.size);
+      _matrix.compose(inst.cur, _quat, _scale);
+      mesh.setMatrixAt(i, _matrix);
+    });
+    mesh.instanceMatrix.needsUpdate = true;
   });
 
   return (
@@ -112,12 +145,9 @@ function ParticleLayer({
 }
 
 /**
- * Profundidade cinematográfica do loader.
- *
- * Três camadas (background / midground / foreground) renderizadas fora dos
- * grupos de fit e rotação: não escalam nem giram com a logo. Discreto — a
- * estrutura continua sendo o foco; as partículas só estabelecem que esse é
- * um mundo triangulado.
+ * Campo de partículas trianguladas do loader — três camadas em profundidade
+ * (background / midground / foreground) que reagem ao cursor. Estabelece que
+ * esse é um mundo triangulado e que ele responde ao usuário.
  */
 export default function Particles() {
   const geometry = useMemo(createUnitTriangleGeo, []);

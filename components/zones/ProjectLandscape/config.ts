@@ -76,6 +76,11 @@ export const ORBIT = {
   autoRotateSpeed: 0.07,
   /** Sensibilidade do drag (rad por pixel) — drag suave, controle fino. */
   dragSensitivity: 0.003,
+  /** Atrito da inércia ao soltar o drag (fator de decay por ~frame @60fps).
+      Menor = para mais rápido. */
+  inertiaFriction: 0.93,
+  /** Abaixo desta velocidade (rad/s) a inércia para e cede pro auto-rotate. */
+  inertiaCutoff: 0.06,
   /** Duração do snap pra um fragmento (s) — equilíbrio entre rápido e suave. */
   snapDuration: 2,
   /** Ângulo inicial da câmera (rad). Aponta pro primeiro fragmento. */
@@ -117,7 +122,7 @@ export const FRAGMENT_VISUAL = {
   /** Avanço em z (em direção à câmera) do ativo. */
   activePushZ: 0.8,
   /** Multiplicador de opacidade aplicado a inativos quando há ativo. */
-  dimMultiplier: 0.3,
+  dimMultiplier: 0.24,
   /** Velocidade do lerp do dim. */
   dimLerpSpeed: 4,
 } as const;
@@ -151,8 +156,8 @@ export const BASE_RING = {
 /** Halo radial sutil atrás do fragmento ativo. */
 export const ACTIVE_GLOW = {
   color: "#F5F2ED",
-  peakOpacity: 0.18,
-  sizeFactor: 2.4,
+  peakOpacity: 0.26,
+  sizeFactor: 2.7,
 } as const;
 
 /** Pulsação do apex — "sinal vivo" sutil. */

@@ -29,6 +29,7 @@ export default function ServiceCard({
   onToggle,
   borderDelay,
   enterDelay = 0,
+  play = false,
 }: {
   service: ServiceConfig;
   expanded: boolean;
@@ -37,38 +38,19 @@ export default function ServiceCard({
   borderDelay: number;
   /** ms de delay na entrada por viewport — stagger entre cards. */
   enterDelay?: number;
+  /** Disparo de entrada vindo da seção (sincroniza com o wipe de chegada). */
+  play?: boolean;
 }) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const [entered, setEntered] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   useBorderDraw(pathRef, { delay: borderDelay });
 
-  // IntersectionObserver — anima entrada do card.
+  // Entrada disparada pela seção (`play`) — sincronizada com o wipe de chegada.
   useEffect(() => {
-    const el = wrapperRef.current;
-    if (!el) return;
-    const reduceMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) {
-      setEntered(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            setEntered(true);
-            obs.disconnect();
-          }
-        }
-      },
-      { threshold: 0.15 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+    if (play) setEntered(true);
+  }, [play]);
 
   const isDimmed = someExpanded && !expanded;
   const mailHref = `mailto:contato.codedbym@gmail.com?subject=${encodeURIComponent(
@@ -80,13 +62,14 @@ export default function ServiceCard({
 
   return (
     <div
-      ref={wrapperRef}
       data-service-card
-      className={`relative flex min-h-[540px] flex-col border bg-[#0E1810] transition-all duration-500 ease-out ${
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={`relative flex min-h-[540px] flex-col border bg-[#0E1810] transition-all duration-[600ms] ease-[cubic-bezier(0.33,1,0.68,1)] ${
         expanded
           ? "border-[#F5F2ED]/80 opacity-100"
           : isDimmed
-            ? "scale-[0.96] border-[#1a2a1e] opacity-40"
+            ? "scale-[0.95] border-[#1a2a1e] opacity-40 blur-[2px]"
             : "scale-100 border-[#1a2a1e] opacity-100 hover:-translate-y-1 hover:border-[#F5F2ED]/40"
       }`}
       style={{
@@ -150,7 +133,11 @@ export default function ServiceCard({
         {/* Mini canvas 3D — largura fixa centralizada (aspect ratio estável) */}
         <div className="mt-6 flex justify-center">
           <div className="h-[170px] w-[260px] overflow-hidden">
-            <ServiceMiniScene variant={service.variant} active={expanded} />
+            <ServiceMiniScene
+              variant={service.variant}
+              active={expanded}
+              hovered={hovered}
+            />
           </div>
         </div>
 
@@ -201,7 +188,7 @@ export default function ServiceCard({
         id={`service-${service.slug}-details`}
         role="region"
         aria-label={`Detalhes do serviço ${service.title}`}
-        className="grid transition-[grid-template-rows] duration-500 ease-out"
+        className="grid transition-[grid-template-rows] duration-[600ms] ease-[cubic-bezier(0.33,1,0.68,1)]"
         style={{ gridTemplateRows: expanded ? "1fr" : "0fr" }}
       >
         <div className="overflow-hidden">

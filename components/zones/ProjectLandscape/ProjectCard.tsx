@@ -57,8 +57,9 @@ export function ProjectCard({
     gsap.killTweensOf(el);
     gsap.to(el, {
       opacity: shouldShow ? 1 : 0,
+      y: shouldShow ? 0 : 16, // sobe ao surgir, desce ao sair
       duration: shouldShow ? CARD.fadeInDuration : CARD.fadeOutDuration,
-      ease: shouldShow ? "power2.out" : "power2.in",
+      ease: shouldShow ? "power3.out" : "power2.in",
     });
   }, [caseProject, isMobile]);
 
@@ -310,7 +311,11 @@ export function ProjectCard({
     <div
       ref={wrapperRef}
       className={wrapperClassName}
-      style={{ opacity: 0, width: `${CARD.widthDesktop}px` }}
+      style={{
+        opacity: 0,
+        transform: "translateY(16px)",
+        width: `${CARD.widthDesktop}px`,
+      }}
       role="complementary"
       aria-label={`Projeto ativo: ${displayed.title}`}
       aria-live="polite"

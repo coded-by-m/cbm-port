@@ -42,21 +42,29 @@ const colorScratch = new Color();
 
 export default function ProjectFragment({
   slot,
+  index,
   isActive,
   anyActive,
   isComingSoon,
+  revealPlay = true,
   onHover,
   onClick,
 }: {
   slot: FragmentSlot;
+  /** Posição no círculo — escalona a montagem (stagger). */
+  index: number;
   isActive: boolean;
   anyActive: boolean;
   isComingSoon: boolean;
+  /** Capítulo ativo → dispara a montagem sincronizada com o wipe de chegada. */
+  revealPlay?: boolean;
   onHover: (id: string | null) => void;
   onClick: (id: string) => void;
 }) {
   const geom = useMemo(() => buildTower(slot.seed), [slot.seed]);
-  const reveal = useFragmentBuild(0);
+  // Montagem escalonada disparada na chegada do capítulo (não no mount), com
+  // atraso curto pra montar conforme o wipe revela a vitrine.
+  const reveal = useFragmentBuild(index, { play: revealPlay, startDelay: 0.3 });
 
   const groupRef = useRef<Group>(null);
   const lineRefs = useMemo(

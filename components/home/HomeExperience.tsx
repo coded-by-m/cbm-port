@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
+import gsap from "gsap";
 import { LazySection } from "./LazySection";
 import { ChapterRail } from "./ChapterRail";
 import { InteractionCue } from "./InteractionCue";
@@ -79,6 +80,41 @@ export function HomeExperience() {
   // Intro travada: o scroll fica bloqueado até a marca terminar de construir.
   const [introDone, setIntroDone] = useState(false);
 
+  // Transição guiada Logo ↔ Manifesto: WIPE DIRECIONAL. Um painel na cor da
+  // marca varre a tela na direção do scroll (desce → varre pra cima; sobe →
+  // varre pra baixo), o conteúdo troca no meio (coberto) e o painel varre pra
+  // fora revelando o destino. Premium e bidirecional — nada de "piscar".
+  const wipeRef = useRef<HTMLDivElement>(null);
+  const transitioningRef = useRef(false);
+  const guidedScroll = useCallback(
+    (targetChapter: number, dir: "down" | "up") => {
+      const panel = wipeRef.current;
+      if (transitioningRef.current || !panel) return;
+      transitioningRef.current = true;
+      const startY = dir === "down" ? 100 : -100;
+      const endY = dir === "down" ? -100 : 100;
+      gsap.killTweensOf(panel);
+      gsap.set(panel, { yPercent: startY, visibility: "visible" });
+      const tl = gsap.timeline({
+        onComplete: () => {
+          gsap.set(panel, { visibility: "hidden" });
+          transitioningRef.current = false;
+        },
+      });
+      // Cobre (acelera pra dentro).
+      tl.to(panel, { yPercent: 0, duration: 0.42, ease: "power3.in" });
+      // Troca o conteúdo por baixo da cobertura.
+      tl.add(() => {
+        document
+          .querySelector(`[data-chapter-index="${targetChapter}"]`)
+          ?.scrollIntoView({ block: "start" });
+      });
+      // Revela (desacelera pra fora).
+      tl.to(panel, { yPercent: endY, duration: 0.5, ease: "power3.out" });
+    },
+    [],
+  );
+
   useEffect(() => {
     if (introDone) return;
     const html = document.documentElement;
@@ -96,23 +132,79 @@ export function HomeExperience() {
       if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "].includes(e.key))
         e.preventDefault();
     };
-    const opts: AddEventListenerOptions = { passive: false };
+    // capture: true → bloqueia na fase de captura, antes de qualquer handler
+    // interno (canvas/snap) — não tem como furar o bloqueio.
+    const opts: AddEventListenerOptions = { passive: false, capture: true };
     window.addEventListener("wheel", block, opts);
     window.addEventListener("touchmove", block, opts);
-    window.addEventListener("keydown", blockKeys);
+    window.addEventListener("keydown", blockKeys, true);
 
-    // Fallback: destrava após 8s mesmo se o onComplete não disparar.
-    const fail = setTimeout(() => setIntroDone(true), 8000);
+    // Fallback: destrava após 12s mesmo se o onComplete não disparar.
+    const fail = setTimeout(() => setIntroDone(true), 12000);
 
     return () => {
       html.style.overflow = prevHtml;
       body.style.overflow = prevBody;
       window.removeEventListener("wheel", block, opts);
       window.removeEventListener("touchmove", block, opts);
-      window.removeEventListener("keydown", blockKeys);
+      window.removeEventListener("keydown", blockKeys, true);
       clearTimeout(fail);
     };
   }, [introDone]);
+
+  // Snap Logo → Manifesto: estando no Logo, qualquer scroll pra baixo leva
+  // suave e EXATO até o Manifesto (cap. 1), sem parar no meio do caminho.
+  // Só atua enquanto o usuário está no topo (Logo); depois disso, scroll livre.
+  useEffect(() => {
+    if (!introDone) return;
+    const atLogo = () => window.scrollY < window.innerHeight * 0.5;
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaY > 0 && atLogo()) {
+        e.preventDefault();
+        guidedScroll(1, "down");
+      }
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (["ArrowDown", "PageDown", " "].includes(e.key) && atLogo()) {
+        e.preventDefault();
+        guidedScroll(1, "down");
+      }
+    };
+    let touchY = 0;
+    const onTouchStart = (e: TouchEvent) => {
+      touchY = e.touches[0].clientY;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (touchY - e.touches[0].clientY > 8 && atLogo()) {
+        e.preventDefault();
+        guidedScroll(1, "down");
+      }
+    };
+    const opts: AddEventListenerOptions = { passive: false };
+    window.addEventListener("wheel", onWheel, opts);
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, opts);
+    return () => {
+      window.removeEventListener("wheel", onWheel, opts);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove, opts);
+    };
+  }, [introDone, guidedScroll]);
+
+  // Projetos (cap. 4) é 100vh wheel-jacked. Ao virar o capítulo ativo vindo
+  // por scroll livre (ex.: subindo do Processo), snapa pra preencher a viewport
+  // — entrar nela nunca deixa o usuário no meio do caminho.
+  useEffect(() => {
+    if (activeChapter !== 4) return;
+    const el = document.querySelector('[data-chapter-index="4"]');
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (Math.abs(rect.top) > 8) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [activeChapter]);
 
   // Navega pro capítulo i (clique na trilha).
   const jumpTo = (i: number) => {
@@ -125,6 +217,14 @@ export function HomeExperience() {
     <main className="bg-[#000F08]">
       {/* Transição conectiva: dip na cor da marca esconde a emenda entre cenas. */}
       <ChapterTransition />
+
+      {/* Painel do wipe direcional Logo ↔ Manifesto (varrido por GSAP). */}
+      <div
+        ref={wipeRef}
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-[50] bg-[#000F08]"
+        style={{ visibility: "hidden" }}
+      />
 
       {/* Affordances só aparecem DEPOIS da intro (reveal limpo). */}
       {introDone && (
@@ -140,26 +240,48 @@ export function HomeExperience() {
         <LogoIntro onComplete={() => setIntroDone(true)} />
       </LazySection>
 
-      {/* 1 — Manifesto. As 3 frases-manifesto, capítulo próprio. */}
+      {/* 1 — Manifesto. As 3 frases-manifesto, capítulo próprio. `onBack`:
+          na 1ª frase, scroll↑ volta pro Logo com a mesma transição. */}
       <LazySection minHeight="100vh" chapterIndex={1}>
-        <ManifestoIntro />
+        <ManifestoIntro
+          live={activeChapter === 1}
+          onBack={() => guidedScroll(0, "up")}
+          onForward={() => guidedScroll(2, "down")}
+        />
       </LazySection>
 
-      {/* 2 — Problema. Scroll-driven, 520vh. (Serviços desacoplado.) */}
-      <LazySection minHeight="520vh" chapterIndex={2}>
-        <ProblemSection inPage />
+      {/* 2 — Problema. Beat-stepper (100vh): 4 beats, anti-skip, torre
+          constrói por beat. Entra/sai pelo wipe. (Serviços desacoplado.) */}
+      <LazySection minHeight="100vh" chapterIndex={2}>
+        <ProblemSection
+          inPage
+          live={activeChapter === 2}
+          onBack={() => guidedScroll(1, "up")}
+          onForward={() => guidedScroll(3, "down")}
+        />
       </LazySection>
 
-      {/* 3 — Serviços (desacoplado, standalone). 3 cards expansíveis. */}
+      {/* 3 — Serviços. Scroll livre nos cards; wipe nas bordas (fim → Projetos,
+          topo → Problema) pra não travar no meio. Entrada sincronizada. */}
       <LazySection minHeight="100vh" chapterIndex={3}>
-        <ServicesSection inPage />
+        <ServicesSection
+          inPage
+          live={activeChapter === 3}
+          onForward={() => guidedScroll(4, "down")}
+          onBack={() => guidedScroll(2, "up")}
+        />
       </LazySection>
 
-      {/* 4 — Projetos (orbital). Dona única da vitrine.
-          `active` só quando é o capítulo na tela → congela o orbital fora dela. */}
+      {/* 4 — Projetos (orbital). Dona única da vitrine. `active` só no capítulo
+          ativo (congela fora). Wheel navega por wipe (↑ Serviços, ↓ Processo);
+          drag/setas giram a vitrine. */}
       <LazySection minHeight="100vh" chapterIndex={4}>
         <ViewportZone>
-          <ProjectLandscape active={activeChapter === 4} />
+          <ProjectLandscape
+            active={activeChapter === 4}
+            onForward={() => guidedScroll(5, "down")}
+            onBack={() => guidedScroll(3, "up")}
+          />
         </ViewportZone>
       </LazySection>
 

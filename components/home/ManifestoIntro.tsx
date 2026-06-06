@@ -18,20 +18,21 @@ const PhilosophySection = dynamic(
  * PhilosophySection sequestra o wheel pra avançar as frases — daí a conclusão
  * precisar rolar a página programaticamente pra soltar o usuário.
  */
-export function ManifestoIntro() {
+export function ManifestoIntro({
+  onBack,
+  onForward,
+  live,
+}: {
+  onBack?: () => void;
+  onForward?: () => void;
+  live?: boolean;
+}) {
   return (
     <div
       data-cursor="triangle"
       className="relative h-screen w-full overflow-hidden bg-[#000F08]"
     >
-      <PhilosophySection
-        onComplete={() =>
-          window.scrollTo({
-            top: window.scrollY + window.innerHeight,
-            behavior: "smooth",
-          })
-        }
-      />
+      <PhilosophySection onComplete={onForward} onBack={onBack} live={live} />
     </div>
   );
 }

@@ -132,37 +132,37 @@ export const MOTION = {
 export const PARTICLE_LAYERS = [
   {
     name: "background",
-    count: 44,
+    count: 62,
     size: 0.08,
     opacity: 0.12,
     spread: [9, 9] as const,
     depth: [-9, -4] as const,
     color: "#5a5750",
     drift: 0.006,
-    /** Deslocamento (unidades de mundo) que a camada segue o cursor. Mais
-        profundo = reage menos (parallax de profundidade). */
-    parallax: 0.25,
+    /** Força da repulsão ao cursor (unidades de mundo que a partícula é
+        empurrada no contato). Foreground reage mais. */
+    repel: 0.5,
   },
   {
     name: "midground",
-    count: 24,
+    count: 34,
     size: 0.11,
     opacity: 0.18,
     spread: [6, 6] as const,
     depth: [-3, -1] as const,
     color: "#736f66",
     drift: 0.011,
-    parallax: 0.6,
+    repel: 1.1,
   },
   {
     name: "foreground",
-    count: 8,
+    count: 13,
     size: 0.15,
     opacity: 0.1,
     spread: [5, 4] as const,
     depth: [1.5, 3.5] as const,
     color: "#97938b",
     drift: 0.017,
-    parallax: 1.2,
+    repel: 1.9,
   },
 ] as const;

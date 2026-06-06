@@ -58,8 +58,14 @@ function angleOfSlot(slot: { x: number; z: number }): number {
  */
 export default function ProjectLandscape({
   active = true,
+  onForward,
+  onBack,
 }: {
   active?: boolean;
+  /** Wheel ↓ na vitrine → próximo capítulo (wipe). */
+  onForward?: () => void;
+  /** Wheel ↑ na vitrine → capítulo anterior (wipe). */
+  onBack?: () => void;
 } = {}) {
   const angleRef = useRef<number>(ORBIT.initialAngle);
   const draggingRef = useRef(false);
@@ -67,6 +73,12 @@ export default function ProjectLandscape({
   const lastInteractionRef = useRef<number>(Date.now() + HINT.showDelay);
   const snapTweenRef = useRef<gsap.core.Tween | null>(null);
   const lastTickRef = useRef<number | null>(null);
+  const velRef = useRef(0); // velocidade angular (rad/s) p/ inércia
+  const lastAngleRef = useRef<number>(ORBIT.initialAngle);
+  const onForwardRef = useRef(onForward);
+  onForwardRef.current = onForward;
+  const onBackRef = useRef(onBack);
+  onBackRef.current = onBack;
 
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -164,9 +176,24 @@ export default function ProjectLandscape({
         !draggingRef.current &&
         snapTweenRef.current === null &&
         !devCamera;
-      if (autoActive) {
-        angleRef.current += ORBIT.autoRotateSpeed * delta;
+
+      if (draggingRef.current) {
+        // Velocidade angular instantânea (rad/s) suavizada — base da inércia.
+        const inst =
+          (angleRef.current - lastAngleRef.current) / Math.max(delta, 1e-4);
+        velRef.current += (inst - velRef.current) * 0.35;
+      } else if (
+        snapTweenRef.current === null &&
+        Math.abs(velRef.current) > ORBIT.inertiaCutoff
+      ) {
+        // Inércia: continua girando com a velocidade do flick, desacelerando.
+        angleRef.current += velRef.current * delta;
+        velRef.current *= Math.pow(ORBIT.inertiaFriction, delta * 60);
+      } else {
+        velRef.current = 0;
+        if (autoActive) angleRef.current += ORBIT.autoRotateSpeed * delta;
       }
+      lastAngleRef.current = angleRef.current;
 
       // Resume auto-rotate após idle.
       if (
@@ -235,6 +262,8 @@ export default function ProjectLandscape({
         snapTweenRef.current = null;
       }
       draggingRef.current = true;
+      velRef.current = 0; // pega no grab → mata a inércia anterior
+      lastAngleRef.current = angleRef.current;
       lastPointerXRef.current = e.clientX;
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     },
@@ -353,6 +382,40 @@ export default function ProjectLandscape({
     return () => window.removeEventListener("keydown", onKey);
   }, [activeSlug, router, goPrev, goNext]);
 
+  // Wheel = navegar capítulo (wipe). Drag/setas = girar a vitrine. Como o
+  // orbital usa drag (não wheel), o wheel fica livre pra sair da seção sem
+  // travar no meio do scroll. Anti-skip: acúmulo + cooldown.
+  useEffect(() => {
+    if (!active) return;
+    let cooldown = false;
+    let accum = 0;
+    let resetTimer: ReturnType<typeof setTimeout> | null = null;
+    const onWheel = (e: WheelEvent) => {
+      if (devCamera) return;
+      e.preventDefault();
+      if (cooldown) return;
+      accum += e.deltaY;
+      if (resetTimer) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        accum = 0;
+      }, 200);
+      if (Math.abs(accum) < 110) return;
+      const dir = accum > 0 ? 1 : -1;
+      accum = 0;
+      cooldown = true;
+      setTimeout(() => {
+        cooldown = false;
+      }, 1100);
+      if (dir > 0) onForwardRef.current?.();
+      else onBackRef.current?.();
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      if (resetTimer) clearTimeout(resetTimer);
+    };
+  }, [active, devCamera]);
+
   const activeCase =
     activeSlug !== null
       ? cases.find((c) => c.slug === activeSlug) ?? null
@@ -391,6 +454,7 @@ export default function ProjectLandscape({
           onHover={handleHover}
           onClick={handleClick}
           devCamera={devCamera}
+          revealPlay={active}
         />
         {devCamera && <DevCameraControls stateRef={devCameraStateRef} />}
       </Canvas>

@@ -20,12 +20,15 @@ export default function LandscapeScene({
   onHover,
   onClick,
   devCamera,
+  revealPlay = true,
 }: {
   angleRef: MutableRefObject<number>;
   activeSlug: string | null;
   onHover: (slug: string | null) => void;
   onClick: (slug: string) => void;
   devCamera: boolean;
+  /** Capítulo ativo → dispara a montagem escalonada dos fragmentos. */
+  revealPlay?: boolean;
 }) {
   // Em dev mode, OrbitControls assume a câmera — não executa o hook orbital.
   useOrbitCameraConditional(angleRef, !devCamera);
@@ -35,16 +38,18 @@ export default function LandscapeScene({
   return (
     <>
       <TerrainScene />
-      {FRAGMENT_SLOTS.map((slot) => {
+      {FRAGMENT_SLOTS.map((slot, i) => {
         const caseProject = cases.find((c) => c.slug === slot.slug);
         const isComingSoon = caseProject?.status === "coming-soon";
         return (
           <ProjectFragment
             key={slot.slug}
             slot={slot}
+            index={i}
             isActive={activeSlug === slot.slug}
             anyActive={anyActive}
             isComingSoon={isComingSoon}
+            revealPlay={revealPlay}
             onHover={onHover}
             onClick={onClick}
           />

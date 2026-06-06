@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
 const TriangleLoader = dynamic(
@@ -8,20 +8,33 @@ const TriangleLoader = dynamic(
   { ssr: false },
 );
 
+/** Tempo (ms) entre a marca terminar de construir e o selo "Coded by M"
+ *  aparecer — só então o scroll é liberado (a intro concluiu de verdade). */
+const SETTLE_MS = 1100;
+
 /**
- * Capítulo 1 — Logo (intro travada). A marca CbM se constrói (TriangleLoader)
- * e descansa com o selo "Coded by M". Enquanto constrói, o scroll da página
- * fica travado (HomeExperience). Ao terminar (`onComplete`), o scroll é
- * liberado e aparece o indicador "role para continuar".
+ * Capítulo 1 — Logo (intro travada). A marca CbM se constrói (TriangleLoader),
+ * descansa com o selo "Coded by M" e SÓ ENTÃO o scroll é liberado, com o
+ * indicador "Role para continuar". O usuário não passa pro Manifesto sem a
+ * animação concluir (build + selo).
  *
- * @param onComplete chamado quando a construção da marca termina.
+ * @param onComplete chamado quando a intro conclui (libera o scroll na Home).
  */
 export function LogoIntro({ onComplete }: { onComplete?: () => void }) {
-  const [built, setBuilt] = useState(false);
+  const [built, setBuilt] = useState(false); // marca construída → selo aparece
+  const [ready, setReady] = useState(false); // intro concluída → scroll liberado
+  const doneRef = useRef(false);
 
   const handleBuilt = () => {
+    if (doneRef.current) return;
+    doneRef.current = true;
     setBuilt(true);
-    onComplete?.();
+    // Segura o destrave até o selo concluir de aparecer — aí libera o scroll
+    // e mostra o "Role para continuar" (no mesmo instante, sem contradição).
+    window.setTimeout(() => {
+      setReady(true);
+      onComplete?.();
+    }, SETTLE_MS);
   };
 
   return (
@@ -41,10 +54,11 @@ export function LogoIntro({ onComplete }: { onComplete?: () => void }) {
         </p>
       </div>
 
-      {/* Indicador "role para continuar" — só após o build (scroll liberado). */}
+      {/* Indicador "role para continuar" — só quando o scroll é liberado
+          (ready), pra não convidar a rolar com o lock ainda ativo. */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-8 z-10 flex flex-col items-center gap-2.5"
-        style={{ opacity: built ? 1 : 0, transition: "opacity 0.8s ease 0.3s" }}
+        style={{ opacity: ready ? 1 : 0, transition: "opacity 0.6s ease" }}
       >
         <span
           className="text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/45"
