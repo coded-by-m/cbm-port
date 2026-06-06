@@ -310,9 +310,15 @@ export function HomeExperience() {
         </ViewportZone>
       </LazySection>
 
-      {/* 7 — Sobre. `inPage`: relative min-h-screen (sem scroller interno). */}
+      {/* 7 — Sobre. `relative min-h-screen`; scroll livre com wipe nas bordas
+          (topo → Laboratório, fim → Convite). */}
       <LazySection minHeight="100vh" chapterIndex={7}>
-        <AboutSection inPage />
+        <AboutSection
+          inPage
+          live={activeChapter === 7}
+          onBack={() => guidedScroll(6, "up")}
+          onForward={() => guidedScroll(8, "down")}
+        />
       </LazySection>
 
       {/* 8 — Convite / CTA Final (+ Footer). Scroll-driven, 240vh + footer. */}

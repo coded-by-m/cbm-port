@@ -27,13 +27,32 @@ const VALUES = [
  */
 export default function AboutSection({
   inPage = false,
+  live,
+  onForward,
+  onBack,
 }: {
   inPage?: boolean;
+  /** Capítulo ativo → entrada sincronizada com o wipe + wipe nas bordas. */
+  live?: boolean;
+  /** Rolar ↓ no FIM → próximo capítulo (wipe pro Convite). */
+  onForward?: () => void;
+  /** Rolar ↑ no TOPO → capítulo anterior (wipe pro Laboratório). */
+  onBack?: () => void;
 } = {}) {
   const rootRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [entered, setEntered] = useState(false);
+  const onForwardRef = useRef(onForward);
+  onForwardRef.current = onForward;
+  const onBackRef = useRef(onBack);
+  onBackRef.current = onBack;
 
+  // Entrada: sincronizada com o wipe (`live`); IntersectionObserver de fallback.
   useEffect(() => {
+    if (live) {
+      setEntered(true);
+      return;
+    }
     const el = rootRef.current;
     if (!el) return;
     const reduceMotion =
@@ -56,7 +75,52 @@ export default function AboutSection({
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [live]);
+
+  // Wipe nas BORDAS (como o Serviços): rola livre por dentro; no fim ↓ → wipe
+  // pro próximo capítulo, no topo ↑ → wipe pro anterior. Não trava no meio.
+  useEffect(() => {
+    if (!inPage || !live) return;
+    const el = sectionRef.current;
+    if (!el) return;
+    let cooldown = false;
+    let accum = 0;
+    let resetTimer: ReturnType<typeof setTimeout> | null = null;
+    const fire = (fn?: () => void) => {
+      cooldown = true;
+      setTimeout(() => {
+        cooldown = false;
+      }, 1100);
+      accum = 0;
+      fn?.();
+    };
+    const onWheel = (e: WheelEvent) => {
+      if (cooldown) return;
+      const rect = el.getBoundingClientRect();
+      const atBottom = rect.bottom <= window.innerHeight + 2;
+      const atTop = rect.top >= -2;
+      if (resetTimer) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        accum = 0;
+      }, 200);
+      if (e.deltaY > 0 && atBottom) {
+        e.preventDefault();
+        accum += e.deltaY;
+        if (accum > 90) fire(onForwardRef.current);
+      } else if (e.deltaY < 0 && atTop) {
+        e.preventDefault();
+        accum += e.deltaY;
+        if (accum < -90) fire(onBackRef.current);
+      } else {
+        accum = 0;
+      }
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      if (resetTimer) clearTimeout(resetTimer);
+    };
+  }, [inPage, live]);
 
   const reveal = (delay: number, y = 14) => ({
     opacity: entered ? 1 : 0,
@@ -67,6 +131,7 @@ export default function AboutSection({
 
   return (
     <section
+      ref={sectionRef}
       data-cursor="default"
       className={`bg-[#000F08] ${
         inPage ? "relative min-h-screen" : "absolute inset-0 overflow-y-auto"
@@ -104,13 +169,13 @@ export default function AboutSection({
             className="flex justify-center md:justify-start"
             style={reveal(0, 16)}
           >
-            <div className="relative grid h-[200px] w-[200px] place-items-center border border-[#F5F2ED]/10 sm:h-[240px] sm:w-[240px]">
+            <div className="group relative grid h-[200px] w-[200px] place-items-center border border-[#F5F2ED]/10 transition-colors duration-500 hover:border-[#F5F2ED]/30 sm:h-[240px] sm:w-[240px]">
               <span
-                className="absolute left-3 top-3 h-3 w-3 border-l border-t border-[#FB3640]/50"
+                className="absolute left-3 top-3 h-3 w-3 border-l border-t border-[#FB3640]/50 transition-colors duration-500 group-hover:border-[#FB3640]"
                 aria-hidden
               />
               <span
-                className="absolute bottom-3 right-3 h-3 w-3 border-b border-r border-[#FB3640]/50"
+                className="absolute bottom-3 right-3 h-3 w-3 border-b border-r border-[#FB3640]/50 transition-colors duration-500 group-hover:border-[#FB3640]"
                 aria-hidden
               />
               <LogoMark size={84} />
@@ -140,8 +205,7 @@ export default function AboutSection({
               }}
             >
               A Coded by M une design, tecnologia e pensamento estrutural pra
-              construir presença digital que reflete a qualidade real das
-              empresas.
+              construir uma presença digital à altura da empresa por trás dela.
             </h2>
 
             {/* Fundador */}
@@ -197,9 +261,9 @@ export default function AboutSection({
           style={reveal(460, 12)}
         >
           {VALUES.map((v) => (
-            <div key={v.title} className="bg-[#000F08] p-7">
+            <div key={v.title} className="group/v bg-[#000F08] p-7">
               <p
-                className="text-[clamp(1.15rem,1.8vw,1.5rem)] text-[#F5F2ED]"
+                className="text-[clamp(1.15rem,1.8vw,1.5rem)] text-[#F5F2ED] transition-colors duration-300 group-hover/v:text-[#FB3640]"
                 style={{
                   fontFamily: '"Panchang", sans-serif',
                   fontWeight: 500,
