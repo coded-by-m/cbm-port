@@ -2,6 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import {
+  useSectionScrollProgress,
+  scrollToSectionProgress,
+} from "@/hooks/useSectionScrollProgress";
 
 const ProcessJourney = dynamic(() => import("./ProcessJourney"), {
   ssr: false,
@@ -50,10 +54,23 @@ const STEPS: Step[] = [
 const OFF_WHITE = "#F5F2ED";
 const SIGNAL = "#FB3640";
 
-export default function ProcessSection() {
+/**
+ * @param inPage `false` (default) → scroller interno (uso isolado no /lab).
+ *   `true` → fluxo de página (Home), lê o scroll relativo da seção.
+ */
+export default function ProcessSection({
+  inPage = false,
+}: {
+  inPage?: boolean;
+} = {}) {
+  // Container de scroll interno (só usado no modo /lab).
   const scrollerRef = useRef<HTMLDivElement>(null);
+  // Trilho alto (h-[560vh]) — fonte do progress nos dois modos.
+  const trackRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
   const scrollingRef = useRef(false);
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastStepRef = useRef(-1);
   const [activeStep, setActiveStep] = useState(0);
   const [headerEntered, setHeaderEntered] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -85,62 +102,54 @@ export default function ProcessSection() {
   }, []);
 
   // Scroll progress → câmera (via ref) + etapa ativa + estado de scrolling.
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-
-    let lastStep = -1;
+  // Mesma lógica de antes; só a fonte do `raw` mudou (helper relativo à seção).
+  useSectionScrollProgress(trackRef, (raw) => {
     const last = STEPS.length - 1;
-    let idleTimer: ReturnType<typeof setTimeout> | null = null;
+    progressRef.current = Math.max(0, Math.min(1, raw));
 
-    const handleScroll = () => {
-      const maxScroll = el.scrollHeight - el.clientHeight;
-      const raw = maxScroll > 0 ? el.scrollTop / maxScroll : 0;
-      progressRef.current = Math.max(0, Math.min(1, raw));
+    // Scrolling ativo → após ~160ms sem evento, considera parado (idle).
+    scrollingRef.current = true;
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = setTimeout(() => {
+      scrollingRef.current = false;
+    }, 160);
 
-      // Scrolling ativo → após ~160ms sem evento, considera parado (idle).
-      scrollingRef.current = true;
-      if (idleTimer) clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => {
-        scrollingRef.current = false;
-      }, 160);
+    const step = Math.max(
+      0,
+      Math.min(last, Math.round(progressRef.current * last)),
+    );
+    if (step !== lastStepRef.current) {
+      lastStepRef.current = step;
+      setActiveStep(step);
+    }
+  });
 
-      const step = Math.max(
-        0,
-        Math.min(last, Math.round(progressRef.current * last)),
-      );
-      if (step !== lastStep) {
-        lastStep = step;
-        setActiveStep(step);
-      }
-    };
-
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+  // Limpa o idle timer ao desmontar.
+  useEffect(() => {
     return () => {
-      el.removeEventListener("scroll", handleScroll);
-      if (idleTimer) clearTimeout(idleTimer);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     };
   }, []);
 
   // Click no indicator → scrolla até o centro daquela etapa.
   const goToStep = (i: number) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const maxScroll = el.scrollHeight - el.clientHeight;
     const target = i / (STEPS.length - 1);
-    el.scrollTo({ top: target * maxScroll, behavior: "smooth" });
+    scrollToSectionProgress(trackRef, target, inPage ? null : scrollerRef.current);
   };
 
   return (
     <section
       ref={scrollerRef}
       data-cursor="default"
-      className="absolute inset-0 overflow-y-auto bg-[#000F08]"
+      className={`bg-[#000F08] ${
+        inPage ? "relative" : "absolute inset-0 overflow-y-auto"
+      }`}
       aria-labelledby="process-headline"
-      style={{ scrollSnapType: "y mandatory" }}
+      // scroll-snap só faz efeito no scroller interno (lab); na Home o
+      // scroller é a janela.
+      style={inPage ? undefined : { scrollSnapType: "y mandatory" }}
     >
-      <div className="relative h-[560vh]">
+      <div ref={trackRef} className="relative h-[560vh]">
         {/* Snap markers — "travadinha"/ponto de chegada em cada estação.
             Posicionados no scrollTop que centraliza cada forma. proximity =
             pega suave só quando o usuário para perto, sem forçar. */}

@@ -2,13 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import {
+  useSectionScrollProgress,
+  scrollToSectionProgress,
+} from "@/hooks/useSectionScrollProgress";
 
 const GenericGrid = dynamic(() => import("./GenericGrid"), { ssr: false });
-const ServicesSection = dynamic(
-  () =>
-    import("@/components/lab/ServicesSection").then((m) => m.ServicesSection),
-  { ssr: false },
-);
 
 /**
  * Seção PROBLEMA da Home — diagnóstico narrativo em 4 beats.
@@ -72,11 +71,26 @@ const BEATS: Beat[] = [
   },
 ];
 
-export default function ProblemSection() {
+/**
+ * @param inPage `false` (default) → scroller interno (uso isolado no /lab).
+ *   `true` → fluxo de página (Home), lê o scroll relativo da seção.
+ */
+export default function ProblemSection({
+  inPage = false,
+}: {
+  inPage?: boolean;
+} = {}) {
+  // Container de scroll interno (só usado no modo /lab).
   const scrollerRef = useRef<HTMLDivElement>(null);
+  // Trilho alto (h-[520vh]) — fonte do progress nos dois modos.
+  const trackRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
   const outroRef = useRef(0);
   const hoveredRef = useRef(false);
+  // Últimos valores emitidos — guard anti re-render por frame.
+  const lastBeatRef = useRef(-1);
+  const lastReadyRef = useRef(false);
+  const lastOutroRef = useRef(-1);
   const [isMobile, setIsMobile] = useState(false);
   const [activeBeat, setActiveBeat] = useState(0);
   const [readyToAdvance, setReadyToAdvance] = useState(false);
@@ -91,90 +105,65 @@ export default function ProblemSection() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  // Scroll progress + active beat.
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
+  // Scroll progress relativo da seção (interno no /lab, janela na Home) → beats,
+  // construção da torre e outro. A matemática (thresholds, fases) é a mesma de
+  // antes; só a fonte do `raw` mudou.
+  useSectionScrollProgress(trackRef, (raw) => {
+    // Fase 1 — torre se constrói.
+    const p = Math.max(0, Math.min(1, raw / DRAW_END));
+    progressRef.current = p;
 
-    const computeBeat = (p: number) => {
-      let beat = 0;
-      for (let i = 0; i < BEATS.length; i++) {
-        if (p >= BEATS[i].start) beat = i;
-      }
-      return beat;
-    };
+    // Fase 2 — outro: cubos somem + Serviços monta.
+    const outro = Math.max(
+      0,
+      Math.min(1, (raw - OUTRO_START) / (OUTRO_END - OUTRO_START)),
+    );
+    outroRef.current = outro;
+    // Quantiza pra evitar re-render a cada pixel (passo ~1%).
+    const outroQ = Math.round(outro * 100) / 100;
+    if (outroQ !== lastOutroRef.current) {
+      lastOutroRef.current = outroQ;
+      setOutroProgress(outroQ);
+    }
 
-    let lastBeat = -1;
-    let lastReady = false;
-    let lastOutro = -1;
+    let nextBeat = 0;
+    for (let i = 0; i < BEATS.length; i++) {
+      if (p >= BEATS[i].start) nextBeat = i;
+    }
+    if (nextBeat !== lastBeatRef.current) {
+      lastBeatRef.current = nextBeat;
+      setActiveBeat(nextBeat);
+    }
+    const nextReady = p >= 0.95 && outro < 0.05;
+    if (nextReady !== lastReadyRef.current) {
+      lastReadyRef.current = nextReady;
+      setReadyToAdvance(nextReady);
+    }
+  });
 
-    const handleScroll = () => {
-      const maxScroll = el.scrollHeight - el.clientHeight;
-      const raw = maxScroll > 0 ? el.scrollTop / maxScroll : 0;
-
-      // Fase 1 — torre se constrói.
-      const p = Math.max(0, Math.min(1, raw / DRAW_END));
-      progressRef.current = p;
-
-      // Fase 2 — outro: cubos somem + Serviços monta.
-      const outro = Math.max(
-        0,
-        Math.min(1, (raw - OUTRO_START) / (OUTRO_END - OUTRO_START)),
-      );
-      outroRef.current = outro;
-      // Quantiza pra evitar re-render a cada pixel (passo ~1%).
-      const outroQ = Math.round(outro * 100) / 100;
-      if (outroQ !== lastOutro) {
-        lastOutro = outroQ;
-        setOutroProgress(outroQ);
-      }
-
-      const nextBeat = computeBeat(p);
-      if (nextBeat !== lastBeat) {
-        lastBeat = nextBeat;
-        setActiveBeat(nextBeat);
-      }
-      const nextReady = p >= 0.95 && outro < 0.05;
-      if (nextReady !== lastReady) {
-        lastReady = nextReady;
-        setReadyToAdvance(nextReady);
-      }
-    };
-
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Click no indicator vai pro beat. Calcula scrollTop equivalente.
+  // Click no indicator vai pro beat (raw = p * DRAW_END).
   const goToBeat = (beatIdx: number) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const maxScroll = el.scrollHeight - el.clientHeight;
-    // Inverso de p = raw / DRAW_END → raw = p * DRAW_END.
-    const targetProgress = BEATS[beatIdx].start + 0.02;
-    const targetScroll = targetProgress * DRAW_END * maxScroll;
-    el.scrollTo({ top: targetScroll, behavior: "smooth" });
+    const targetRaw = (BEATS[beatIdx].start + 0.02) * DRAW_END;
+    scrollToSectionProgress(trackRef, targetRaw, inPage ? null : scrollerRef.current);
   };
 
   // Click no centro quando a torre está pronta: scrolla pro outro.
   const advance = () => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const maxScroll = el.scrollHeight - el.clientHeight;
-    el.scrollTo({ top: OUTRO_END * maxScroll, behavior: "smooth" });
+    scrollToSectionProgress(trackRef, OUTRO_END, inPage ? null : scrollerRef.current);
   };
 
   return (
     <section
       ref={scrollerRef}
       data-cursor="default"
-      className="absolute inset-0 overflow-y-auto bg-[#000F08]"
+      className={`bg-[#000F08] ${
+        inPage ? "relative" : "absolute inset-0 overflow-y-auto"
+      }`}
       aria-labelledby="problem-headline"
     >
       {/* Altura generosa: ~420vh de travel espalha os 4 beats por bastante
           scroll, então cada frase exige movimento deliberado (anti-flick). */}
-      <div className="relative h-[520vh]">
+      <div ref={trackRef} className="relative h-[520vh]">
         <div className="sticky top-0 flex h-screen w-full items-center">
           {/* Canvas no fundo */}
           <div className="pointer-events-none absolute inset-0 z-0">
@@ -366,24 +355,9 @@ export default function ProblemSection() {
             })}
           </nav>
 
-          {/* Outro — Serviços monta por cima conforme os cubos somem.
-              Fade-in com o outroProgress; só monta quando o outro começa.
-              IMPORTANTE: pointerEvents só liberam quando o fade termina
-              (>= 1). Antes disso o overlay (que é um scroller próprio)
-              roubaria o wheel e travaria o scroll do container pai no meio
-              da transição. */}
-          {outroProgress > 0.02 && (
-            <div
-              className="absolute inset-0 z-20"
-              style={{
-                opacity: smoothstep(outroProgress),
-                pointerEvents: outroProgress >= 1 ? "auto" : "none",
-              }}
-              aria-hidden={outroProgress < 1}
-            >
-              <ServicesSection />
-            </div>
-          )}
+          {/* Serviços foi DESACOPLADO: agora é capítulo próprio na Home, com
+              transição independente. O outro do Problema só faz os cubos
+              sumirem (via outroRef → GenericGrid), deixando a torre isolada. */}
         </div>
       </div>
     </section>

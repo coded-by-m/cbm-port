@@ -51,7 +51,16 @@ function angleOfSlot(slot: { x: number; z: number }): number {
  * - hoveredSlug: visual feedback de hover (não muda o card — apenas cursor).
  * - activeSlug: drivado pelo ângulo da câmera; CARD sempre reflete isso.
  */
-export default function ProjectLandscape() {
+/**
+ * @param active `true` (default) → cena viva. `false` (Home, fora do capítulo
+ *   ativo) → congela o render loop e o auto-rotate, pra não girar fora da tela
+ *   nem gastar GPU. Mata a "ativação prematura".
+ */
+export default function ProjectLandscape({
+  active = true,
+}: {
+  active?: boolean;
+} = {}) {
   const angleRef = useRef<number>(ORBIT.initialAngle);
   const draggingRef = useRef(false);
   const lastPointerXRef = useRef(0);
@@ -124,6 +133,7 @@ export default function ProjectLandscape() {
 
   // Mostra o hint após delay; esconde automaticamente após HINT.autoHideDelay.
   useEffect(() => {
+    if (!active) return; // não dispara o hint fora da tela
     const showTimer = setTimeout(() => {
       // Só mostra se ninguém interagiu ainda.
       if (Date.now() - lastInteractionRef.current >= HINT.showDelay - 50) {
@@ -137,7 +147,7 @@ export default function ProjectLandscape() {
       clearTimeout(showTimer);
       clearTimeout(hideTimer);
     };
-  }, []);
+  }, [active]);
 
   // rAF loop principal: auto-rotate + active derivation + auto-resume + visited tracking.
   useEffect(() => {
@@ -147,8 +157,9 @@ export default function ProjectLandscape() {
       const delta = (now - last) / 1000;
       lastTickRef.current = now;
 
-      // Auto-rotate quando não pausado e não em drag/snap.
+      // Auto-rotate quando ativo (capítulo na tela), não pausado e não em drag/snap.
       const autoActive =
+        active &&
         !paused &&
         !draggingRef.current &&
         snapTweenRef.current === null &&
@@ -195,7 +206,7 @@ export default function ProjectLandscape() {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [slotAngles, paused, devCamera]);
+  }, [slotAngles, paused, devCamera, active]);
 
   // Direção da transição do card baseada em delta angular.
   const prevSlugRef = useRef<string | null>(null);
@@ -367,7 +378,7 @@ export default function ProjectLandscape() {
       style={{ cursor: devCamera ? "default" : "grab" }}
     >
       <Canvas
-        frameloop="always"
+        frameloop={active ? "always" : "never"}
         gl={{ antialias: true, alpha: false }}
         dpr={[1, 2]}
         camera={{ position: [...CAMERA.position], fov: CAMERA.fov }}

@@ -41,7 +41,15 @@ type Phase = "logo" | "philosophy" | "flipping" | "landscape";
  * conteúdo já está pintado. Crítico pra que o flip aconteça sobre conteúdo
  * pronto, não sobre Canvas em loading.
  */
-export default function OpeningSequence() {
+/**
+ * @param inPage `true` na Home (esconde a DevPhaseTimeline, que é ferramenta
+ *   de iteração só do /lab). Default `false` → mostra no lab (em dev).
+ */
+export default function OpeningSequence({
+  inPage = false,
+}: {
+  inPage?: boolean;
+} = {}) {
   const logoRef = useRef<HTMLDivElement>(null);
   const philosophyRef = useRef<HTMLDivElement>(null);
   const flipCardRef = useRef<HTMLDivElement>(null);
@@ -59,8 +67,14 @@ export default function OpeningSequence() {
   }, []);
 
   const handlePhilosophyComplete = useCallback(() => {
+    if (inPage) {
+      // Herói aparado (Home): sem flip pra vitrine — a Paisagem é dona dos
+      // projetos. Libera o scroll-jack do manifesto rolando pra próxima seção.
+      window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+      return;
+    }
     setPhase("flipping");
-  }, []);
+  }, [inPage]);
 
   const handleFlipComplete = useCallback(() => {
     setPhase("landscape");
@@ -102,7 +116,7 @@ export default function OpeningSequence() {
 
   return (
     <>
-      <DevPhaseTimeline active={phase} onJump={handleDevJump} />
+      {!inPage && <DevPhaseTimeline active={phase} onJump={handleDevJump} />}
 
       {/* Logo phase: render isolado (sem flip wrapper). */}
       {showLogo && (
@@ -174,7 +188,9 @@ export default function OpeningSequence() {
                 transform: `rotate3d(${FLIP.AXIS_X}, ${FLIP.AXIS_Y}, 0, 180deg)`,
               }}
             >
-              {showLandscape && <ProjectLandscape />}
+              {/* Na Home (`inPage`) a vitrine NUNCA monta aqui — vive só na
+                  seção Paisagem (evita duplicação + contexto WebGL extra). */}
+              {showLandscape && !inPage && <ProjectLandscape />}
             </div>
           </div>
         </div>

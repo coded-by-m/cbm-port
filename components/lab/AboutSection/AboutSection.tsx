@@ -20,7 +20,16 @@ const VALUES = [
   { title: "Detalhismo", desc: "O acabamento é o produto." },
 ];
 
-export default function AboutSection() {
+/**
+ * @param inPage `false` (default) → scroller interno (uso isolado no /lab).
+ *   `true` → fluxo de página (Home): `relative min-h-screen` (sem scroller
+ *   interno que prenderia o scroll) e fundos `absolute` presos à seção.
+ */
+export default function AboutSection({
+  inPage = false,
+}: {
+  inPage?: boolean;
+} = {}) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [entered, setEntered] = useState(false);
 
@@ -59,15 +68,24 @@ export default function AboutSection() {
   return (
     <section
       data-cursor="default"
-      className="absolute inset-0 overflow-y-auto bg-[#000F08]"
+      className={`bg-[#000F08] ${
+        inPage ? "relative min-h-screen" : "absolute inset-0 overflow-y-auto"
+      }`}
       aria-labelledby="about-headline"
     >
-      {/* Terrain residual sutil */}
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.08]">
+      {/* Terrain residual sutil. Na Home (`inPage`) os fundos são `absolute`
+          pra ficarem presos à seção; isolados (lab) são `fixed` no viewport. */}
+      <div
+        className={`pointer-events-none ${
+          inPage ? "absolute" : "fixed"
+        } inset-0 z-0 opacity-[0.08]`}
+      >
         <AboutTerrain />
       </div>
       <div
-        className="pointer-events-none fixed inset-0 z-[1]"
+        className={`pointer-events-none ${
+          inPage ? "absolute" : "fixed"
+        } inset-0 z-[1]`}
         style={{
           background:
             "linear-gradient(180deg, rgba(0,15,8,0.7) 0%, rgba(0,15,8,0) 26%, rgba(0,15,8,0) 74%, rgba(0,15,8,0.85) 100%)",

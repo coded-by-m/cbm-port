@@ -23,10 +23,35 @@ const TerrainBackground = dynamic(
  *
  * Background: TerrainScene transparente.
  */
-export default function ServicesSection() {
+/**
+ * @param inPage `false` (default) → scroller interno (uso isolado no /lab).
+ *   `true` → fluxo de página (Home): `relative` sem scroller interno e fundos
+ *   `absolute` presos à seção.
+ */
+export default function ServicesSection({
+  inPage = false,
+}: {
+  inPage?: boolean;
+} = {}) {
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const [headerEntered, setHeaderEntered] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
+
+  // Renderiza só os cards do breakpoint ativo. Antes, desktop (lg:flex) E
+  // mobile (lg:hidden) montavam os 3 ServiceCards CADA → 6 mini-scenes
+  // (6 contextos WebGL). Renderizar um só corta isso pela metade.
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(min-width: 1024px)").matches
+      : true,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const apply = () => setIsDesktop(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   const handleToggle = (slug: string) => {
     setExpandedSlug((prev) => (prev === slug ? null : slug));
@@ -90,17 +115,25 @@ export default function ServicesSection() {
   return (
     <section
       data-cursor="triangle"
-      className="absolute inset-0 overflow-y-auto bg-[#000F08] py-24 sm:py-32"
+      className={`bg-[#000F08] py-24 sm:py-32 ${
+        inPage ? "relative min-h-screen" : "absolute inset-0 overflow-y-auto"
+      }`}
       aria-labelledby="services-headline"
     >
-      {/* Background terrain mesh */}
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.22]">
+      {/* Background terrain mesh. Na Home (`inPage`) é `absolute` preso à seção. */}
+      <div
+        className={`pointer-events-none ${
+          inPage ? "absolute" : "fixed"
+        } inset-0 z-0 opacity-[0.22]`}
+      >
         <TerrainBackground />
       </div>
 
       {/* Vignette overlay — escurece bordas top e bottom pra dar profundidade */}
       <div
-        className="pointer-events-none fixed inset-0 z-[1]"
+        className={`pointer-events-none ${
+          inPage ? "absolute" : "fixed"
+        } inset-0 z-[1]`}
         style={{
           background:
             "linear-gradient(180deg, rgba(0,15,8,0.85) 0%, rgba(0,15,8,0) 22%, rgba(0,15,8,0) 78%, rgba(0,15,8,0.9) 100%)",
@@ -176,18 +209,34 @@ export default function ServicesSection() {
           </div>
         </div>
 
-        {/* Cards row — desktop flex */}
-        <div className="mt-16 hidden items-start gap-6 lg:flex">
-          {SERVICES.map((service, i) => (
-            <div
-              key={service.slug}
-              className="min-w-0"
-              style={{
-                flex: `${flexGrowFor(service.slug)} 1 0`,
-                transition: "flex 0.5s cubic-bezier(0.33, 1, 0.68, 1)",
-              }}
-            >
+        {/* Cards — só o breakpoint ativo monta (evita canvas em dobro). */}
+        {isDesktop ? (
+          <div className="mt-16 flex items-start gap-6">
+            {SERVICES.map((service, i) => (
+              <div
+                key={service.slug}
+                className="min-w-0"
+                style={{
+                  flex: `${flexGrowFor(service.slug)} 1 0`,
+                  transition: "flex 0.5s cubic-bezier(0.33, 1, 0.68, 1)",
+                }}
+              >
+                <ServiceCard
+                  service={service}
+                  expanded={expandedSlug === service.slug}
+                  someExpanded={someExpanded}
+                  onToggle={() => handleToggle(service.slug)}
+                  borderDelay={i * 0.15}
+                  enterDelay={400 + i * 150}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-16 flex flex-col gap-4">
+            {SERVICES.map((service, i) => (
               <ServiceCard
+                key={service.slug}
                 service={service}
                 expanded={expandedSlug === service.slug}
                 someExpanded={someExpanded}
@@ -195,24 +244,9 @@ export default function ServicesSection() {
                 borderDelay={i * 0.15}
                 enterDelay={400 + i * 150}
               />
-            </div>
-          ))}
-        </div>
-
-        {/* Cards stack mobile/tablet */}
-        <div className="mt-16 flex flex-col gap-4 lg:hidden">
-          {SERVICES.map((service, i) => (
-            <ServiceCard
-              key={service.slug}
-              service={service}
-              expanded={expandedSlug === service.slug}
-              someExpanded={someExpanded}
-              onToggle={() => handleToggle(service.slug)}
-              borderDelay={i * 0.15}
-              enterDelay={400 + i * 150}
-            />
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

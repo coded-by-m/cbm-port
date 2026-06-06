@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { MeshButton } from "@/components/ui/MeshButton";
+import { useSectionScrollProgress } from "@/hooks/useSectionScrollProgress";
 import Footer from "./Footer";
 
 const CTAFormation = dynamic(() => import("./CTAFormation"), { ssr: false });
@@ -22,47 +23,47 @@ const WHATSAPP =
 const HEAD_1 = ["Seu", "site", "atual", "está", "ótimo."];
 const HEAD_2 = ["Para", "2014."];
 
-export default function CTASection() {
+/**
+ * @param inPage `false` (default) → scroller interno (uso isolado no /lab).
+ *   `true` → fluxo de página (Home), lê o scroll relativo da seção.
+ */
+export default function CTASection({
+  inPage = false,
+}: {
+  inPage?: boolean;
+} = {}) {
+  // Container de scroll interno (só usado no modo /lab).
   const scrollerRef = useRef<HTMLDivElement>(null);
+  // Trilho alto (h-[240vh]) — fonte do progress nos dois modos.
+  const trackRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
+  const lastHRef = useRef(false);
+  const lastBRef = useRef(false);
+  const lastCRef = useRef(false);
   const [headlinesIn, setHeadlinesIn] = useState(false);
   const [bodyIn, setBodyIn] = useState(false);
   const [ctaIn, setCtaIn] = useState(false);
 
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
+  // Mesma lógica de antes; só a fonte do `p` mudou (helper relativo à seção).
+  useSectionScrollProgress(trackRef, (p) => {
+    progressRef.current = Math.max(0, Math.min(1, p));
 
-    let lastH = false;
-    let lastB = false;
-    let lastC = false;
-
-    const handleScroll = () => {
-      const maxScroll = el.scrollHeight - el.clientHeight;
-      const p = maxScroll > 0 ? el.scrollTop / maxScroll : 0;
-      progressRef.current = Math.max(0, Math.min(1, p));
-
-      const h = p > 0.5;
-      const b = p > 0.62;
-      const c = p > 0.82;
-      if (h !== lastH) {
-        lastH = h;
-        setHeadlinesIn(h);
-      }
-      if (b !== lastB) {
-        lastB = b;
-        setBodyIn(b);
-      }
-      if (c !== lastC) {
-        lastC = c;
-        setCtaIn(c);
-      }
-    };
-
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, []);
+    const h = p > 0.5;
+    const b = p > 0.62;
+    const c = p > 0.82;
+    if (h !== lastHRef.current) {
+      lastHRef.current = h;
+      setHeadlinesIn(h);
+    }
+    if (b !== lastBRef.current) {
+      lastBRef.current = b;
+      setBodyIn(b);
+    }
+    if (c !== lastCRef.current) {
+      lastCRef.current = c;
+      setCtaIn(c);
+    }
+  });
 
   const wordStyle = (i: number, shown: boolean) => ({
     display: "inline-block",
@@ -76,10 +77,12 @@ export default function CTASection() {
     <section
       ref={scrollerRef}
       data-cursor="triangle"
-      className="absolute inset-0 overflow-y-auto bg-[#000F08]"
+      className={`bg-[#000F08] ${
+        inPage ? "relative" : "absolute inset-0 overflow-y-auto"
+      }`}
       aria-labelledby="cta-headline"
     >
-      <div className="relative h-[240vh]">
+      <div ref={trackRef} className="relative h-[240vh]">
         <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
           {/* Formação 3D */}
           <div className="pointer-events-none absolute inset-0 z-0">
