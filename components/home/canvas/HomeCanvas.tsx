@@ -1,8 +1,11 @@
 "use client";
 
+import type { RefObject } from "react";
 import { Canvas } from "@react-three/fiber";
 import { CAMERA, COLORS, FOG } from "@/components/lab/TerrainMesh/config";
 import { ConnectiveSubstrate } from "./ConnectiveSubstrate";
+import { CameraRig } from "./CameraRig";
+import { CHAPTER_CAMERA_KEYS } from "./cameraKeys";
 
 /**
  * HomeCanvas — o ÚNICO contexto WebGL da Home (alvo do spec
@@ -10,12 +13,19 @@ import { ConnectiveSubstrate } from "./ConnectiveSubstrate";
  * HTML; as cenas de cada capítulo renderizam aqui dentro (substituindo os 8
  * `<Canvas>` por-zona) e a câmera transiciona entre elas.
  *
- * Estado atual: SCAFFOLD (Passo 1) — só o `ConnectiveSubstrate` (terreno
- * persistente). Câmera estática (config do terreno); o `CameraRig` e as cenas
- * por capítulo entram nos próximos passos. Vive isolado em `/homecanvas` até
- * ter paridade com a Home atual.
+ * Estado atual: Passo 2 — `ConnectiveSubstrate` (terreno persistente) +
+ * `CameraRig` dirigido pelo scroll (`progressRef`). As cenas por capítulo e os
+ * morphs entram nos próximos passos. Vive isolado em `/homecanvas` até ter
+ * paridade com a Home atual.
+ *
+ * @param progressRef progresso 0..1 ao longo da página (do scroll), lido pelo
+ *   CameraRig pra interpolar a câmera entre os capítulos.
  */
-export function HomeCanvas() {
+export function HomeCanvas({
+  progressRef,
+}: {
+  progressRef: RefObject<number>;
+}) {
   return (
     <div className="fixed inset-0 z-0">
       <Canvas
@@ -26,6 +36,7 @@ export function HomeCanvas() {
         style={{ background: COLORS.background }}
       >
         <fog attach="fog" args={[FOG.color, FOG.near, FOG.far]} />
+        <CameraRig keys={CHAPTER_CAMERA_KEYS} progressRef={progressRef} />
         <ConnectiveSubstrate />
       </Canvas>
     </div>
