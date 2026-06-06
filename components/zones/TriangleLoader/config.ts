@@ -97,15 +97,15 @@ export const LINE_WIDTH = 2.0;
  * Pontos surgem → strokes estruturais desenham linearmente → diagonal vermelha cruza.
  */
 export const TIMING = {
-  startDelay: 0.45,
-  pointPop: 0.6,
-  pointStagger: 0.22,
-  strokeDraw: 0.8,
-  strokeStagger: 0.12,
-  signalDelay: 0.25,
-  signalDraw: 0.85,
-  signalShift: 0.85,
-  settle: 0.5,
+  startDelay: 0.25,
+  pointPop: 0.4,
+  pointStagger: 0.12,
+  strokeDraw: 0.5,
+  strokeStagger: 0.08,
+  signalDelay: 0.15,
+  signalDraw: 0.55,
+  signalShift: 0.55,
+  settle: 0.3,
 } as const;
 
 /**
@@ -139,6 +139,9 @@ export const PARTICLE_LAYERS = [
     depth: [-9, -4] as const,
     color: "#5a5750",
     drift: 0.006,
+    /** Deslocamento (unidades de mundo) que a camada segue o cursor. Mais
+        profundo = reage menos (parallax de profundidade). */
+    parallax: 0.25,
   },
   {
     name: "midground",
@@ -149,6 +152,7 @@ export const PARTICLE_LAYERS = [
     depth: [-3, -1] as const,
     color: "#736f66",
     drift: 0.011,
+    parallax: 0.6,
   },
   {
     name: "foreground",
@@ -159,5 +163,6 @@ export const PARTICLE_LAYERS = [
     depth: [1.5, 3.5] as const,
     color: "#97938b",
     drift: 0.017,
+    parallax: 1.2,
   },
 ] as const;

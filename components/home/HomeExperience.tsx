@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
 import { LazySection } from "./LazySection";
@@ -75,8 +76,45 @@ function ViewportZone({ children }: { children: ReactNode }) {
  */
 export function HomeExperience() {
   const activeChapter = useActiveChapter();
+  // Intro travada: o scroll fica bloqueado até a marca terminar de construir.
+  const [introDone, setIntroDone] = useState(false);
 
-  // Navega pro capítulo i (clique na trilha / "pular intro").
+  useEffect(() => {
+    if (introDone) return;
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtml = html.style.overflow;
+    const prevBody = body.style.overflow;
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    window.scrollTo(0, 0);
+
+    // Bloqueia o input de scroll do usuário (overflow:hidden sozinho não basta
+    // dependendo do scroller raiz). Teclas de rolagem também.
+    const block = (e: Event) => e.preventDefault();
+    const blockKeys = (e: KeyboardEvent) => {
+      if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "].includes(e.key))
+        e.preventDefault();
+    };
+    const opts: AddEventListenerOptions = { passive: false };
+    window.addEventListener("wheel", block, opts);
+    window.addEventListener("touchmove", block, opts);
+    window.addEventListener("keydown", blockKeys);
+
+    // Fallback: destrava após 8s mesmo se o onComplete não disparar.
+    const fail = setTimeout(() => setIntroDone(true), 8000);
+
+    return () => {
+      html.style.overflow = prevHtml;
+      body.style.overflow = prevBody;
+      window.removeEventListener("wheel", block, opts);
+      window.removeEventListener("touchmove", block, opts);
+      window.removeEventListener("keydown", blockKeys);
+      clearTimeout(fail);
+    };
+  }, [introDone]);
+
+  // Navega pro capítulo i (clique na trilha).
   const jumpTo = (i: number) => {
     document
       .querySelector(`[data-chapter-index="${i}"]`)
@@ -88,14 +126,18 @@ export function HomeExperience() {
       {/* Transição conectiva: dip na cor da marca esconde a emenda entre cenas. */}
       <ChapterTransition />
 
-      {/* Affordances: trilha global (onde estou) + cue por seção (o que faço). */}
-      <ChapterRail active={activeChapter} onJump={jumpTo} />
-      {/* "Pular intro" salta Logo + Manifesto direto pro Problema (cap. 2). */}
-      <InteractionCue active={activeChapter} onSkipIntro={() => jumpTo(2)} />
+      {/* Affordances só aparecem DEPOIS da intro (reveal limpo). */}
+      {introDone && (
+        <>
+          <ChapterRail active={activeChapter} onJump={jumpTo} />
+          <InteractionCue active={activeChapter} />
+        </>
+      )}
 
-      {/* 0 — Logo. A marca se constrói. Eager: above the fold. */}
+      {/* 0 — Logo. A marca se constrói (intro travada). Ao terminar, destrava
+          o scroll e revela o indicador "role para continuar". */}
       <LazySection minHeight="100vh" eager chapterIndex={0}>
-        <LogoIntro />
+        <LogoIntro onComplete={() => setIntroDone(true)} />
       </LazySection>
 
       {/* 1 — Manifesto. As 3 frases-manifesto, capítulo próprio. */}

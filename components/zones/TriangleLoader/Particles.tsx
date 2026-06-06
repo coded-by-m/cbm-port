@@ -84,10 +84,18 @@ function ParticleLayer({
     mesh.instanceMatrix.needsUpdate = true;
   }, [instances, layer.size]);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     const mesh = ref.current;
     if (!mesh) return;
     mesh.rotation.y += layer.drift * delta;
+
+    // Parallax interativo: a camada segue o cursor (state.pointer ∈ [-1,1]),
+    // proporcional ao seu `parallax` (foreground reage mais). Lerp suaviza.
+    const tx = state.pointer.x * layer.parallax;
+    const ty = state.pointer.y * layer.parallax;
+    const k = Math.min(1, delta * 3);
+    mesh.position.x += (tx - mesh.position.x) * k;
+    mesh.position.y += (ty - mesh.position.y) * k;
   });
 
   return (

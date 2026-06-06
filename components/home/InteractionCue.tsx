@@ -16,13 +16,7 @@ const SIGNAL = "#FB3640";
  * Na Abertura, além do verbo, oferece "Pular intro" — o manifesto sequestra o
  * scroll, então um escape explícito é control & freedom.
  */
-export function InteractionCue({
-  active,
-  onSkipIntro,
-}: {
-  active: number;
-  onSkipIntro: () => void;
-}) {
+export function InteractionCue({ active }: { active: number }) {
   const chapter = HOME_CHAPTERS[active];
   const [visible, setVisible] = useState(true);
   const idleRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -50,7 +44,6 @@ export function InteractionCue({
   }, []);
 
   if (!chapter.cue) return null;
-  const isOpening = active === 0;
 
   return (
     <div
@@ -71,17 +64,6 @@ export function InteractionCue({
         >
           {chapter.cue}
         </span>
-        {isOpening && (
-          <button
-            type="button"
-            onClick={onSkipIntro}
-            data-cursor="triangle"
-            className="pointer-events-auto ml-2 border-l border-[#F5F2ED]/20 pl-3 text-[0.6rem] uppercase tracking-[0.32em] text-[#F5F2ED]/45 transition-colors hover:text-[#F5F2ED]/90"
-            style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
-          >
-            Pular intro →
-          </button>
-        )}
       </div>
     </div>
   );

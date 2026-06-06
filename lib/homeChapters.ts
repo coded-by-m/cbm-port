@@ -15,7 +15,7 @@ export interface HomeChapter {
 }
 
 export const HOME_CHAPTERS: HomeChapter[] = [
-  { id: "logo", label: "Logo", cue: "A marca se constrói" },
+  { id: "logo", label: "Logo", cue: null }, // intro travada; o LogoIntro mostra o próprio "role para continuar"
   { id: "manifesto", label: "Manifesto", cue: "Role para avançar o manifesto" },
   { id: "problema", label: "Problema", cue: "Role para revelar" },
   { id: "servicos", label: "Serviços", cue: "Clique para abrir cada serviço" },
