@@ -16,33 +16,33 @@ import { useActiveChapter } from "@/hooks/useActiveChapter";
  * scroll da página em vez de um scroller interno.
  */
 const ProblemSection = dynamic(
-  () => import("@/components/lab/ProblemSection").then((m) => m.ProblemSection),
+  () => import("@/components/zones/ProblemSection").then((m) => m.ProblemSection),
   { ssr: false },
 );
 const ServicesSection = dynamic(
   () =>
-    import("@/components/lab/ServicesSection").then((m) => m.ServicesSection),
+    import("@/components/zones/ServicesSection").then((m) => m.ServicesSection),
   { ssr: false },
 );
 const ProjectLandscape = dynamic(
   () =>
-    import("@/components/lab/ProjectLandscape").then((m) => m.ProjectLandscape),
+    import("@/components/zones/ProjectLandscape").then((m) => m.ProjectLandscape),
   { ssr: false },
 );
 const LabSection = dynamic(
-  () => import("@/components/lab/LabSection").then((m) => m.LabSection),
+  () => import("@/components/zones/LabSection").then((m) => m.LabSection),
   { ssr: false },
 );
 const ProcessSection = dynamic(
-  () => import("@/components/lab/ProcessSection").then((m) => m.ProcessSection),
+  () => import("@/components/zones/ProcessSection").then((m) => m.ProcessSection),
   { ssr: false },
 );
 const AboutSection = dynamic(
-  () => import("@/components/lab/AboutSection").then((m) => m.AboutSection),
+  () => import("@/components/zones/AboutSection").then((m) => m.AboutSection),
   { ssr: false },
 );
 const CTASection = dynamic(
-  () => import("@/components/lab/CTASection").then((m) => m.CTASection),
+  () => import("@/components/zones/CTASection").then((m) => m.CTASection),
   { ssr: false },
 );
 

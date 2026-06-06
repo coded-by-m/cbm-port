@@ -11,68 +11,68 @@ import { EXPERIMENTS, STAGE_LABEL, STAGE_ORDER } from "@/lib/experiments";
 const EXPERIMENT_COMPONENTS: Record<string, ComponentType> = {
   "opening-sequence": dynamic(
     () =>
-      import("@/components/lab/OpeningSequence").then(
+      import("@/components/zones/OpeningSequence").then(
         (m) => m.OpeningSequence,
       ),
     { ssr: false },
   ),
   pyramid: dynamic(
     () =>
-      import("@/components/lab/Pyramid").then((m) => m.Pyramid),
+      import("@/components/zones/Pyramid").then((m) => m.Pyramid),
     { ssr: false },
   ),
   "triangle-loader": dynamic(
-    () => import("@/components/lab/TriangleLoader").then((m) => m.TriangleLoader),
+    () => import("@/components/zones/TriangleLoader").then((m) => m.TriangleLoader),
     { ssr: false },
   ),
   "triangle-lines": dynamic(
-    () => import("@/components/lab/TriangleLines").then((m) => m.TriangleLines),
+    () => import("@/components/zones/TriangleLines").then((m) => m.TriangleLines),
     { ssr: false },
   ),
   "terrain-mesh": dynamic(
-    () => import("@/components/lab/TerrainMesh").then((m) => m.TerrainMesh),
+    () => import("@/components/zones/TerrainMesh").then((m) => m.TerrainMesh),
     { ssr: false },
   ),
   "project-fragments": dynamic(
     () =>
-      import("@/components/lab/ProjectFragments").then(
+      import("@/components/zones/ProjectFragments").then(
         (m) => m.ProjectFragments,
       ),
     { ssr: false },
   ),
   "html-overlay": dynamic(
-    () => import("@/components/lab/HtmlOverlay").then((m) => m.HtmlOverlay),
+    () => import("@/components/zones/HtmlOverlay").then((m) => m.HtmlOverlay),
     { ssr: false },
   ),
   "scroll-camera": dynamic(
-    () => import("@/components/lab/ScrollCamera").then((m) => m.ScrollCamera),
+    () => import("@/components/zones/ScrollCamera").then((m) => m.ScrollCamera),
     { ssr: false },
   ),
   "problem-section": dynamic(
     () =>
-      import("@/components/lab/ProblemSection").then((m) => m.ProblemSection),
+      import("@/components/zones/ProblemSection").then((m) => m.ProblemSection),
     { ssr: false },
   ),
   "services-section": dynamic(
     () =>
-      import("@/components/lab/ServicesSection").then((m) => m.ServicesSection),
+      import("@/components/zones/ServicesSection").then((m) => m.ServicesSection),
     { ssr: false },
   ),
   "process-section": dynamic(
     () =>
-      import("@/components/lab/ProcessSection").then((m) => m.ProcessSection),
+      import("@/components/zones/ProcessSection").then((m) => m.ProcessSection),
     { ssr: false },
   ),
   "lab-section": dynamic(
-    () => import("@/components/lab/LabSection").then((m) => m.LabSection),
+    () => import("@/components/zones/LabSection").then((m) => m.LabSection),
     { ssr: false },
   ),
   "about-section": dynamic(
-    () => import("@/components/lab/AboutSection").then((m) => m.AboutSection),
+    () => import("@/components/zones/AboutSection").then((m) => m.AboutSection),
     { ssr: false },
   ),
   "cta-section": dynamic(
-    () => import("@/components/lab/CTASection").then((m) => m.CTASection),
+    () => import("@/components/zones/CTASection").then((m) => m.CTASection),
     { ssr: false },
   ),
 };

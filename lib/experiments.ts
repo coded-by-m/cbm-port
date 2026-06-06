@@ -3,7 +3,7 @@
  *
  * O Experience Lab valida riscos técnicos antes do site principal
  * (ver docs/06-technical-feasibility.md). Cada novo experimento deve ser
- * adicionado aqui e implementado em `components/lab/<Nome>`.
+ * adicionado aqui e implementado em `components/zones/<Nome>`.
  *
  * Ordem: pela jornada da home — cada item aparece na sequência em que sua
  * técnica entra em cena no site real (loading → intro → hero → paisagem).

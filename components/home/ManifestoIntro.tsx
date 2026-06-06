@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 const PhilosophySection = dynamic(
   () =>
-    import("@/components/lab/PhilosophySection").then(
+    import("@/components/zones/PhilosophySection").then(
       (m) => m.PhilosophySection,
     ),
   { ssr: false },

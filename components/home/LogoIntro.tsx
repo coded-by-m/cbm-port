@@ -4,7 +4,7 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 
 const TriangleLoader = dynamic(
-  () => import("@/components/lab/TriangleLoader/TriangleLoader"),
+  () => import("@/components/zones/TriangleLoader/TriangleLoader"),
   { ssr: false },
 );
 
