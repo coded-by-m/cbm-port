@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import type { CaseProject } from "@/types/case";
@@ -8,6 +7,7 @@ import { ProjectFacts } from "@/components/case/ProjectFacts";
 import { BrowserFrame } from "@/components/case/BrowserFrame";
 import { LiveScreenshot } from "@/components/case/LiveScreenshot";
 import { LogoMark } from "@/components/ui/LogoMark";
+import { MeshButton } from "@/components/ui/MeshButton";
 
 // Mesh triangulado sutil atrás do hero (toque 3D, coesão com a Home).
 const TerrainBackground = dynamic(
@@ -99,21 +99,14 @@ export function CaseHero({ project }: { project: CaseProject }) {
         </div>
 
         <div className="mt-10" style={step(4)}>
-          <Link
-            href="#overview"
-            className="group inline-flex cursor-pointer flex-col items-start gap-[3px]"
-          >
-            <span className="inline-flex items-center gap-[6px] font-display text-[11px] font-semibold uppercase tracking-[0.15em] text-cbm-white/90 transition-colors duration-200 group-hover:text-cbm-white">
-              Ver o Case
-              <span
-                className="text-[10px] leading-none opacity-75 transition-[opacity,transform] duration-200 group-hover:translate-x-[2px] group-hover:opacity-100"
-                aria-hidden="true"
-              >
-                ↓
-              </span>
-            </span>
-            <span className="block h-px w-full origin-left scale-x-0 bg-cbm-red transition-transform duration-[350ms] ease-out group-hover:scale-x-100" />
-          </Link>
+          <MeshButton
+            label="Ver a construção"
+            onClick={() =>
+              document
+                .getElementById("overview")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+          />
         </div>
       </div>
 
