@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, type RefObject } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 import { useFrame } from "@react-three/fiber";
 import {
   Color,
@@ -14,6 +14,7 @@ import {
 /** Quantidade de fragmentos no pool (o mesmo conjunto se remodela em todos os capítulos). */
 const N = 72;
 const SIGNAL = "#FB3640";
+const OFF_WHITE = "#F5F2ED";
 
 /** Pseudo-random estável por índice (sem Math.random → layout determinístico). */
 const hash = (i: number, seed = 1) => {
@@ -166,7 +167,20 @@ export function FragmentPool({
 }) {
   const meshRef = useRef<InstancedMesh>(null);
   const geometry = useMemo(() => new TetrahedronGeometry(0.5), []);
-  const color = useMemo(() => new Color(SIGNAL), []);
+  const elapsed = useRef(0);
+
+  // Cor por instância: maioria off-white, ~22% signal-red (linguagem dos
+  // fragmentos do lab — só vermelho é pesado demais). Setado uma vez.
+  useEffect(() => {
+    const mesh = meshRef.current;
+    if (!mesh) return;
+    const c = new Color();
+    for (let i = 0; i < N; i++) {
+      c.set(hash(i, 99) > 0.78 ? SIGNAL : OFF_WHITE);
+      mesh.setColorAt(i, c);
+    }
+    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+  }, []);
 
   // Estado atual amortecido de cada instância.
   const cur = useMemo(
@@ -192,6 +206,7 @@ export function FragmentPool({
   useFrame((_, delta) => {
     const mesh = meshRef.current;
     if (!mesh) return;
+    elapsed.current += delta;
 
     const last = LAYOUTS.length - 1;
     const p = Math.max(0, Math.min(1, progressRef.current ?? 0)) * last;
@@ -223,7 +238,12 @@ export function FragmentPool({
       c.s += (ts - c.s) * k;
 
       dummy.position.copy(c.pos);
-      dummy.rotation.copy(c.rot);
+      // Rotação do layout + spin idle lento (fragmentos vivos sem deriva).
+      dummy.rotation.set(
+        c.rot.x + elapsed.current * 0.05,
+        c.rot.y + elapsed.current * (0.08 + hash(i, 77) * 0.12),
+        c.rot.z,
+      );
       dummy.scale.setScalar(c.s);
       dummy.updateMatrix();
       mesh.setMatrixAt(i, dummy.matrix);
@@ -238,7 +258,7 @@ export function FragmentPool({
       args={[geometry, undefined, N]}
       frustumCulled={false}
     >
-      <meshBasicMaterial color={color} wireframe transparent opacity={0.6} />
+      <meshBasicMaterial wireframe transparent opacity={0.55} />
     </instancedMesh>
   );
 }
