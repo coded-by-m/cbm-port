@@ -83,21 +83,39 @@ export default function ProjectFragment({
   const highlight = useRef(0);
   const dim = useRef(0);
   const elapsed = useRef(0);
+  // Posição do pointer-down — pra distinguir TOQUE (navega) de DRAG (não navega).
+  const downRef = useRef<{ x: number; y: number } | null>(null);
 
+  type PtrEvt = {
+    stopPropagation: () => void;
+    clientX: number;
+    clientY: number;
+  };
   const handlers = {
-    onPointerOver: (e: { stopPropagation: () => void }) => {
+    onPointerOver: (e: PtrEvt) => {
       e.stopPropagation();
       onHover(slot.slug);
       document.body.style.cursor = "pointer";
     },
-    onPointerOut: (e: { stopPropagation: () => void }) => {
+    onPointerOut: (e: PtrEvt) => {
       e.stopPropagation();
       onHover(null);
       document.body.style.cursor = "";
     },
-    onPointerDown: (e: { stopPropagation: () => void }) => {
+    onPointerDown: (e: PtrEvt) => {
       e.stopPropagation();
-      onClick(slot.slug);
+      downRef.current = { x: e.clientX, y: e.clientY };
+    },
+    onPointerUp: (e: PtrEvt) => {
+      e.stopPropagation();
+      const d = downRef.current;
+      downRef.current = null;
+      if (!d) return;
+      // Só navega se foi um toque (sem arrastar) — evita ir pro projeto ao
+      // tentar girar a paisagem começando em cima de um fragmento.
+      if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 6) {
+        onClick(slot.slug);
+      }
     },
   };
 
@@ -228,7 +246,7 @@ export default function ProjectFragment({
 
         {/* Área de interação invisível. */}
         <mesh position={[0, geom.apex[1] * 0.5, 0]} {...handlers}>
-          <sphereGeometry args={[FRAGMENT.baseRadius * 1.7, 8, 8]} />
+          <sphereGeometry args={[FRAGMENT.baseRadius * 1.1, 8, 8]} />
           <meshBasicMaterial transparent opacity={0} depthWrite={false} />
         </mesh>
 

@@ -6,6 +6,7 @@ import { CaseOverview } from "@/components/case/CaseOverview";
 import { CaseScreens } from "@/components/case/CaseScreens";
 import { CaseResponsive } from "@/components/case/CaseResponsive";
 import { CaseReturnCTA } from "@/components/case/CaseReturnCTA";
+import { CaseBackButton } from "@/components/case/CaseBackButton";
 
 export function generateStaticParams() {
   return cases.map((c) => ({ slug: c.slug }));
@@ -34,6 +35,7 @@ export default function CasePage({
 
   return (
     <main className="case-fade-in" style={{ background: "#000F08", minHeight: "100vh" }}>
+      <CaseBackButton />
       <CaseHero project={project} />
       <CaseOverview project={project} />
       <CaseScreens project={project} />
