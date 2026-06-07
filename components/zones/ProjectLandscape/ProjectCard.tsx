@@ -55,7 +55,16 @@ export function ProjectCard({
   // e border-draw da moldura.
   useEffect(() => {
     const el = wrapperRef.current;
-    if (!el || isMobile) return;
+    if (!el) return;
+    if (isMobile) {
+      // O bottom-sheet é sempre visível. `isMobile` pode virar `true` só após o
+      // 1º render (matchMedia em effect) — nesse intervalo o caminho desktop
+      // abaixo roda e deixa `opacity:0`/`transform` inline no MESMO nó. Limpa,
+      // senão o card "some" no mobile.
+      gsap.killTweensOf(el);
+      gsap.set(el, { opacity: 1, clearProps: "transform" });
+      return;
+    }
     const shouldShow = !!caseProject;
     gsap.killTweensOf(el);
     gsap.to(el, {

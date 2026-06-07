@@ -3,7 +3,7 @@
 import { type MutableRefObject, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Vector3 } from "three";
-import { ORBIT } from "./config";
+import { MOBILE_MAX_WIDTH, ORBIT, ORBIT_MOBILE } from "./config";
 
 const _pos = new Vector3();
 const _tgt = new Vector3();
@@ -31,22 +31,30 @@ export function useOrbitCameraConditional(
   enabled: boolean,
 ) {
   const camera = useThree((state) => state.camera);
+  // Largura do canvas (px) → enquadramento mobile vs desktop.
+  const width = useThree((state) => state.size.width);
   const elapsed = useRef(0);
 
   useFrame((_, delta) => {
     if (!enabled) return;
     elapsed.current += delta;
     const a = angleRef.current;
+    // Enquadramento responsivo: retrato estreito usa raio menor + target mais
+    // baixo (ativo legível e empurrado pra cima, acima do card).
+    const mobile = width <= MOBILE_MAX_WIDTH;
+    const cameraRadius = mobile ? ORBIT_MOBILE.cameraRadius : ORBIT.cameraRadius;
+    const cameraY = mobile ? ORBIT_MOBILE.cameraY : ORBIT.cameraY;
+    const targetY = mobile ? ORBIT_MOBILE.targetY : ORBIT.targetY;
     // Respiração ambiente sutil em Y — dá vida mesmo em pausa.
     const breath =
       Math.sin((elapsed.current * TWO_PI) / ORBIT.breathPeriod) *
       ORBIT.breathAmp;
     _pos.set(
-      Math.sin(a) * ORBIT.cameraRadius,
-      ORBIT.cameraY + breath,
-      Math.cos(a) * ORBIT.cameraRadius,
+      Math.sin(a) * cameraRadius,
+      cameraY + breath,
+      Math.cos(a) * cameraRadius,
     );
-    _tgt.set(0, ORBIT.targetY, 0);
+    _tgt.set(0, targetY, 0);
 
     camera.position.copy(_pos);
     camera.lookAt(_tgt);

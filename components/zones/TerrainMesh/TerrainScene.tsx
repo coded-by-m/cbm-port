@@ -22,12 +22,18 @@ import { FIT_RADIUS, LAYERS } from "./config";
  * pra que o hook de hover possa converter coordenadas de mundo em coordenadas
  * locais do terreno.
  */
-export default function TerrainScene() {
+export default function TerrainScene({
+  cinematic = true,
+}: {
+  /** `false` quando embutido numa cena com câmera própria (Paisagem orbital):
+   *  evita que o drift cinematográfico sobrescreva o controlador da cena-mãe. */
+  cinematic?: boolean;
+} = {}) {
   const fitRef = useRef<Group>(null);
   const scaleRef = useRef<number>(1);
 
   useResponsiveFit(fitRef, FIT_RADIUS);
-  useCinematicCamera();
+  useCinematicCamera(cinematic);
   const hoverRef = useCursorHover(scaleRef);
 
   // Mantém scaleRef alinhado com a escala atual do grupo a cada frame.

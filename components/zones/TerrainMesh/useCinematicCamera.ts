@@ -15,16 +15,24 @@ const [targetX, targetY, targetZ] = CAMERA.target;
  * profundidade diferentes, o leve deslocamento lateral já produz paralaxe
  * entre elas. Sensação de observação — nunca de voo.
  */
-export function useCinematicCamera() {
+/**
+ * @param enabled `false` quando o terreno é embutido em uma cena que já controla
+ *   a câmera (ex.: a Paisagem orbital). Dois controladores escrevendo a câmera
+ *   no mesmo frame brigam — o último a rodar vence e o orbital "perde", deixando
+ *   o fragmento ativo fora de quadro. Desligado aqui, o orbital é dono único.
+ */
+export function useCinematicCamera(enabled = true) {
   const { camera } = useThree();
   const elapsed = useRef(0);
 
   useEffect(() => {
+    if (!enabled) return;
     camera.position.set(baseX, baseY, baseZ);
     camera.lookAt(targetX, targetY, targetZ);
-  }, [camera]);
+  }, [camera, enabled]);
 
   useFrame((_, delta) => {
+    if (!enabled) return;
     elapsed.current += delta;
     const t = elapsed.current;
 

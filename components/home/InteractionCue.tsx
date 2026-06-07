@@ -19,7 +19,20 @@ const SIGNAL = "#FB3640";
 export function InteractionCue({ active }: { active: number }) {
   const chapter = HOME_CHAPTERS[active];
   const [visible, setVisible] = useState(true);
+  // No mobile, a seção Projetos tem um bottom-sheet card (rico, altura variável)
+  // que ocupa o mesmo rodapé da cue. Aqui a cue é redundante — o LandscapeHint
+  // ("Arraste pra explorar") e o card já comunicam o gesto — então a ocultamos
+  // pra não colidir.
+  const [hideForCard, setHideForCard] = useState(false);
   const idleRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)");
+    const apply = () => setHideForCard(mql.matches && chapter?.id === "projetos");
+    apply();
+    mql.addEventListener("change", apply);
+    return () => mql.removeEventListener("change", apply);
+  }, [chapter?.id]);
 
   // Reaparece ao trocar de capítulo; auto-esconde após a leitura.
   useEffect(() => {
@@ -43,7 +56,7 @@ export function InteractionCue({ active }: { active: number }) {
     };
   }, []);
 
-  if (!chapter.cue) return null;
+  if (!chapter.cue || hideForCard) return null;
 
   return (
     <div

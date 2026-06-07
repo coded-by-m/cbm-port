@@ -91,6 +91,30 @@ export const ORBIT = {
   breathPeriod: 6,
 } as const;
 
+/**
+ * Overrides da órbita no retrato (mobile). *Enhancement pra baixo*: o desktop
+ * (`ORBIT`) fica congelado; aqui só ajustamos o enquadramento pra tela estreita.
+ *
+ * Estratégia "constelação compacta": aperta o anel (`ringScale` < 1, via x/z dos
+ * slots — invariante ao ângulo, então não quebra active/snap/dots) pra os
+ * vizinhos serem insinuados nas bordas, puxa a câmera pra perto (ativo legível)
+ * e abaixa o `targetY` pra empurrar o fragmento ativo pra metade superior,
+ * acima do bottom-sheet card.
+ */
+export const ORBIT_MOBILE = {
+  /** Raio da câmera (mais perto que o desktop → ativo maior). */
+  cameraRadius: 10,
+  /** Altura Y da câmera. */
+  cameraY: 4.2,
+  /** Y do target — empurra o ativo pra cima sem cortar o apex no topo. */
+  targetY: -0.9,
+  /** Multiplicador do raio do anel (aperta a constelação). */
+  ringScale: 0.7,
+} as const;
+
+/** Largura (px) abaixo da qual usamos o enquadramento mobile. Casa com o card. */
+export const MOBILE_MAX_WIDTH = 767;
+
 /** Delay (ms) antes de auto-ativar o fragmento inicial — dá tempo do flip assentar. */
 export const INITIAL_ACTIVE_DELAY = 1000;
 
