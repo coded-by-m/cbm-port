@@ -58,8 +58,9 @@ export function CaseHero({ project }: { project: CaseProject }) {
         <TerrainBackground />
       </div>
 
-      {/* Text side */}
-      <div className="relative z-10 flex flex-col justify-between px-6 py-12 sm:px-12 sm:py-16 lg:border-r lg:border-[#F5F2ED]/[0.06] xl:px-16 xl:py-20">
+      {/* Text side. `pt-20` no mobile dá folga pro CaseBackButton fixo
+          (top-5, ~54px de altura) não sobrepor o eyebrow. */}
+      <div className="relative z-10 flex flex-col justify-between px-6 pb-12 pt-20 sm:px-12 sm:py-16 lg:border-r lg:border-[#F5F2ED]/[0.06] xl:px-16 xl:py-20">
         <div>
           <div className="mb-6 flex items-center gap-3" style={step(0)}>
             <span
@@ -74,9 +75,12 @@ export function CaseHero({ project }: { project: CaseProject }) {
           <h1
             className="font-display font-black uppercase text-cbm-white"
             style={{
-              fontSize: "clamp(32px,4.5vw,60px)",
+              // vw maior → encolhe no mobile (cabe "PLATAFORMAS" em 1 linha)
+              // sem mexer no teto desktop (continua clampando em 60px).
+              fontSize: "clamp(28px,7vw,60px)",
               letterSpacing: "-0.03em",
               lineHeight: 0.95,
+              overflowWrap: "break-word",
               ...step(1),
             }}
           >
