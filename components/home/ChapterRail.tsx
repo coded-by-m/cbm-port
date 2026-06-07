@@ -134,17 +134,22 @@ export function ChapterRail({
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
       >
-        {/* Painel de fundo (só no hover) */}
+        {/* Painel de fundo (só no hover) — glass + brackets HUD */}
         <div
-          className="pointer-events-none absolute -inset-y-2 right-[-8px] left-0 rounded-md border transition-opacity duration-300"
+          className="pointer-events-none absolute -inset-y-2.5 left-[-6px] right-[-8px] rounded-md border transition-opacity duration-300"
           style={{
             opacity: open ? 1 : 0,
-            background: "rgba(0,15,8,0.86)",
-            borderColor: "rgba(245,242,237,0.08)",
-            backdropFilter: "blur(8px)",
+            background:
+              "linear-gradient(270deg, rgba(0,15,8,0.94) 0%, rgba(0,15,8,0.72) 100%)",
+            borderColor: "rgba(245,242,237,0.1)",
+            backdropFilter: "blur(10px)",
+            boxShadow: "0 22px 55px -22px rgba(0,0,0,0.65)",
           }}
           aria-hidden
-        />
+        >
+          <span className="absolute left-1.5 top-1.5 h-2 w-2 border-l border-t border-[#FB3640]/55" />
+          <span className="absolute bottom-1.5 right-1.5 h-2 w-2 border-b border-r border-[#FB3640]/55" />
+        </div>
 
         {/* Linha base + fill + cabeça (indicador deslizante) */}
         <div
@@ -175,6 +180,19 @@ export function ChapterRail({
           aria-hidden
         />
 
+        {/* Barra ativa deslizante (esquerda do menu aberto) */}
+        <div
+          className="pointer-events-none absolute left-0 w-[2px] rounded-full transition-[top,opacity] duration-300 ease-out"
+          style={{
+            top: shown * ROW + 8,
+            height: ROW - 16,
+            background: SIGNAL,
+            boxShadow: `0 0 9px ${SIGNAL}`,
+            opacity: open ? 1 : 0,
+          }}
+          aria-hidden
+        />
+
         {HOME_CHAPTERS.map((ch, i) => {
           const isActive = i === shown;
           const isPast = i < shown;
@@ -199,39 +217,52 @@ export function ChapterRail({
                     : "transparent",
               }}
             >
-              <span
-                className="whitespace-nowrap text-[0.5rem] tabular-nums tracking-[0.15em] transition-opacity duration-200"
+              <div
+                className="flex items-center gap-2.5 transition-[opacity,transform] duration-300 ease-out"
                 style={{
-                  fontFamily: SAT,
-                  fontWeight: 600,
                   opacity: open ? 1 : 0,
-                  color: isActive ? SIGNAL : "rgba(251,54,64,0.5)",
+                  transform: open ? "translateX(0)" : "translateX(10px)",
+                  transitionDelay: open ? `${i * 22}ms` : "0ms",
                 }}
               >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span
-                className="whitespace-nowrap text-[0.62rem] uppercase tracking-[0.22em] transition-opacity duration-200"
-                style={{
-                  fontFamily: SAT,
-                  fontWeight: 500,
-                  opacity: open ? 1 : 0,
-                  color: isActive
-                    ? "rgba(245,242,237,0.98)"
-                    : isRowHover
-                      ? "rgba(245,242,237,0.9)"
-                      : "rgba(245,242,237,0.55)",
-                }}
-              >
-                {ch.label}
-              </span>
+                <span
+                  className="whitespace-nowrap text-[0.5rem] tabular-nums tracking-[0.15em]"
+                  style={{
+                    fontFamily: SAT,
+                    fontWeight: 600,
+                    color: isActive ? SIGNAL : "rgba(251,54,64,0.5)",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span
+                  className="whitespace-nowrap text-[0.62rem] uppercase tracking-[0.22em]"
+                  style={{
+                    fontFamily: SAT,
+                    fontWeight: 500,
+                    color: isActive
+                      ? "rgba(245,242,237,0.98)"
+                      : isRowHover
+                        ? "rgba(245,242,237,0.9)"
+                        : "rgba(245,242,237,0.55)",
+                  }}
+                >
+                  {ch.label}
+                </span>
+              </div>
               <svg
                 aria-hidden
                 width="9"
                 height="9"
                 viewBox="0 0 10 10"
                 className="shrink-0 transition-transform duration-300"
-                style={{ transform: isActive ? "scale(1.5)" : "scale(1)" }}
+                style={{
+                  transform: isActive
+                    ? "scale(1.5)"
+                    : isRowHover
+                      ? "scale(1.25)"
+                      : "scale(1)",
+                }}
               >
                 <polygon
                   points="9,1 9,9 1,5"
