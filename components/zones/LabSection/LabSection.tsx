@@ -108,25 +108,33 @@ export default function LabSection({
       accum = 0;
       fire(dir);
     };
+    // Touch: 1 swipe = 1 navegação. `fired` trava no gesto, libera no touchend.
     let touchY = 0;
+    let fired = false;
     const onTouchStart = (e: TouchEvent) => {
       touchY = e.touches[0].clientY;
+      fired = false;
     };
     const onTouchMove = (e: TouchEvent) => {
       e.preventDefault();
-      if (cooldown) return;
+      if (fired || cooldown) return;
       const dy = touchY - e.touches[0].clientY;
-      if (Math.abs(dy) < 40) return;
-      touchY = e.touches[0].clientY;
+      if (Math.abs(dy) < 45) return;
+      fired = true;
       fire(dy > 0 ? 1 : -1);
+    };
+    const onTouchEnd = () => {
+      fired = false;
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     el.addEventListener("touchstart", onTouchStart, { passive: true });
     el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd, { passive: true });
     return () => {
       el.removeEventListener("wheel", onWheel);
       el.removeEventListener("touchstart", onTouchStart);
       el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
       if (resetTimer) clearTimeout(resetTimer);
     };
   }, [live]);

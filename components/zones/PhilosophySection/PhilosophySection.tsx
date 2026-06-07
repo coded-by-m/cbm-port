@@ -254,38 +254,19 @@ export default function PhilosophySection({
     return () => window.removeEventListener("keydown", onKey);
   }, [next, prev]);
 
-  // Scroll/wheel para avançar — acumula delta antes de disparar, evitando
-  // que micro-scrolls (trackpad) ou rajadas de wheel pulem várias frases.
+  // Wheel + TOUCH para avançar — 1 gesto = 1 frase (anti-skip). O wheel
+  // acumula delta (evita micro-scroll/rajada pular); o touch trava por gesto.
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    let accum = 0;
-    let resetTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      if (scrollCooldown.current || transitioning.current) return;
-
-      // Reset do acúmulo se o usuário parou de scrollar por um momento.
-      if (resetTimer) clearTimeout(resetTimer);
-      resetTimer = setTimeout(() => {
-        accum = 0;
-      }, 250);
-
-      accum += e.deltaY;
-
-      if (Math.abs(accum) < SCROLL_THRESHOLD) return;
-
-      const direction = accum > 0 ? 1 : -1;
-      accum = 0;
-
+    const advance = (dir: number) => {
+      if (transitioning.current) return;
       scrollCooldown.current = true;
       setTimeout(() => {
         scrollCooldown.current = false;
       }, SCROLL_COOLDOWN);
-
-      if (direction > 0) {
+      if (dir > 0) {
         if (activeRef.current >= STATEMENTS.length - 1) {
           onCompleteRef.current?.();
         } else {
@@ -298,9 +279,50 @@ export default function PhilosophySection({
       }
     };
 
+    let accum = 0;
+    let resetTimer: ReturnType<typeof setTimeout> | null = null;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      if (scrollCooldown.current || transitioning.current) return;
+      if (resetTimer) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        accum = 0;
+      }, 250);
+      accum += e.deltaY;
+      if (Math.abs(accum) < SCROLL_THRESHOLD) return;
+      const dir = accum > 0 ? 1 : -1;
+      accum = 0;
+      advance(dir);
+    };
+
+    // Touch: 1 swipe = 1 frase. `fired` trava no gesto, libera no touchend.
+    let touchY = 0;
+    let fired = false;
+    const onTouchStart = (e: TouchEvent) => {
+      touchY = e.touches[0].clientY;
+      fired = false;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      if (fired || scrollCooldown.current || transitioning.current) return;
+      const dy = touchY - e.touches[0].clientY;
+      if (Math.abs(dy) < 45) return;
+      fired = true;
+      advance(dy > 0 ? 1 : -1);
+    };
+    const onTouchEnd = () => {
+      fired = false;
+    };
+
     container.addEventListener("wheel", onWheel, { passive: false });
+    container.addEventListener("touchstart", onTouchStart, { passive: true });
+    container.addEventListener("touchmove", onTouchMove, { passive: false });
+    container.addEventListener("touchend", onTouchEnd, { passive: true });
     return () => {
       container.removeEventListener("wheel", onWheel);
+      container.removeEventListener("touchstart", onTouchStart);
+      container.removeEventListener("touchmove", onTouchMove);
+      container.removeEventListener("touchend", onTouchEnd);
       if (resetTimer) clearTimeout(resetTimer);
     };
   }, [next, prev]);

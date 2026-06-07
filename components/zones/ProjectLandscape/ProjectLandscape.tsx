@@ -412,9 +412,44 @@ export default function ProjectLandscape({
       if (dir > 0) onForwardRef.current?.();
       else onBackRef.current?.();
     };
+
+    // Touch: swipe VERTICAL navega o capítulo (horizontal continua girando a
+    // vitrine via drag). 1 por gesto. Só intercepta quando vertical-dominante.
+    let touchY = 0;
+    let touchX = 0;
+    let fired = false;
+    const onTouchStart = (e: TouchEvent) => {
+      touchY = e.touches[0].clientY;
+      touchX = e.touches[0].clientX;
+      fired = false;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (devCamera || cooldown || fired) return;
+      const dy = touchY - e.touches[0].clientY;
+      const dx = Math.abs(e.touches[0].clientX - touchX);
+      if (Math.abs(dy) > 50 && Math.abs(dy) > dx * 1.3) {
+        e.preventDefault();
+        fired = true;
+        cooldown = true;
+        setTimeout(() => {
+          cooldown = false;
+        }, 1100);
+        if (dy > 0) onForwardRef.current?.();
+        else onBackRef.current?.();
+      }
+    };
+    const onTouchEnd = () => {
+      fired = false;
+    };
     window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
     return () => {
       window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
       if (resetTimer) clearTimeout(resetTimer);
     };
   }, [active, devCamera]);

@@ -175,16 +175,19 @@ export default function ProblemSection({
       else prev();
     };
 
+    // Touch: 1 swipe = 1 beat. `fired` trava no gesto, libera no touchend.
     let touchY = 0;
+    let fired = false;
     const onTouchStart = (e: TouchEvent) => {
       touchY = e.touches[0].clientY;
+      fired = false;
     };
     const onTouchMove = (e: TouchEvent) => {
       e.preventDefault();
-      if (cooldown || transitioning.current) return;
+      if (fired || cooldown || transitioning.current) return;
       const dy = touchY - e.touches[0].clientY;
-      if (Math.abs(dy) < 40) return;
-      touchY = e.touches[0].clientY;
+      if (Math.abs(dy) < 45) return;
+      fired = true;
       cooldown = true;
       setTimeout(() => {
         cooldown = false;
@@ -192,14 +195,19 @@ export default function ProblemSection({
       if (dy > 0) next();
       else prev();
     };
+    const onTouchEnd = () => {
+      fired = false;
+    };
 
     el.addEventListener("wheel", onWheel, { passive: false });
     el.addEventListener("touchstart", onTouchStart, { passive: true });
     el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd, { passive: true });
     return () => {
       el.removeEventListener("wheel", onWheel);
       el.removeEventListener("touchstart", onTouchStart);
       el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
       if (resetTimer) clearTimeout(resetTimer);
     };
   }, [next, prev]);

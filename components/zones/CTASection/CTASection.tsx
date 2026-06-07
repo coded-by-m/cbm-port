@@ -121,9 +121,40 @@ export default function CTASection({
         accum = 0;
       }
     };
+    // Touch: deslizar pra baixo (rolar pra cima) no TOPO → volta (1 por gesto).
+    let touchY = 0;
+    let fired = false;
+    let startTop = false;
+    const onTouchStart = (e: TouchEvent) => {
+      touchY = e.touches[0].clientY;
+      fired = false;
+      startTop = el.getBoundingClientRect().top >= -2;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (cooldown || fired) return;
+      const dy = touchY - e.touches[0].clientY;
+      if (dy < -45 && startTop) {
+        e.preventDefault();
+        fired = true;
+        cooldown = true;
+        setTimeout(() => {
+          cooldown = false;
+        }, 1100);
+        onBackRef.current?.();
+      }
+    };
+    const onTouchEnd = () => {
+      fired = false;
+    };
     window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
     return () => {
       window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
       if (resetTimer) clearTimeout(resetTimer);
     };
   }, [inPage, live]);

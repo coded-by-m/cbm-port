@@ -115,9 +115,44 @@ export default function AboutSection({
         accum = 0;
       }
     };
+    // Touch nas bordas (1 swipe = 1 wipe). Só dispara se o gesto COMEÇOU na
+    // borda — rolar o conteúdo até o fim e depois deslizar avança.
+    let touchY = 0;
+    let fired = false;
+    let startBottom = false;
+    let startTop = false;
+    const onTouchStart = (e: TouchEvent) => {
+      touchY = e.touches[0].clientY;
+      fired = false;
+      const rect = el.getBoundingClientRect();
+      startBottom = rect.bottom <= window.innerHeight + 2;
+      startTop = rect.top >= -2;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (cooldown || fired) return;
+      const dy = touchY - e.touches[0].clientY;
+      if (dy > 45 && startBottom) {
+        e.preventDefault();
+        fired = true;
+        fire(onForwardRef.current);
+      } else if (dy < -45 && startTop) {
+        e.preventDefault();
+        fired = true;
+        fire(onBackRef.current);
+      }
+    };
+    const onTouchEnd = () => {
+      fired = false;
+    };
     window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
     return () => {
       window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
       if (resetTimer) clearTimeout(resetTimer);
     };
   }, [inPage, live]);
