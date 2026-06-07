@@ -196,6 +196,7 @@ export default function ProcessSection({
           <ProcessJourney
             progressRef={progressRef}
             scrollingRef={scrollingRef}
+            active={live}
           />
         </div>
 

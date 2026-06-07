@@ -193,7 +193,7 @@ export default function ServicesSection({
           inPage ? "absolute" : "fixed"
         } inset-0 z-0 opacity-[0.22]`}
       >
-        <TerrainBackground />
+        <TerrainBackground active={live} />
       </div>
 
       {/* Vignette overlay — escurece bordas top e bottom pra dar profundidade */}
@@ -321,6 +321,7 @@ export default function ServicesSection({
                   borderDelay={i * 0.15}
                   enterDelay={400 + i * 150}
                   play={headerEntered}
+                  live={live}
                 />
               </div>
             ))}
@@ -337,6 +338,7 @@ export default function ServicesSection({
                 borderDelay={i * 0.15}
                 enterDelay={400 + i * 150}
                 play={headerEntered}
+                live={live}
               />
             ))}
           </div>

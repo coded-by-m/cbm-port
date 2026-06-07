@@ -154,9 +154,12 @@ function buildStationGeometry(index: number): StationGeometry {
 export default function ProcessJourney({
   progressRef,
   scrollingRef,
+  active = true,
 }: {
   progressRef: MutableRefObject<number>;
   scrollingRef: MutableRefObject<boolean>;
+  /** `false` → congela o render loop fora do capítulo ativo (perf). */
+  active?: boolean;
 }) {
   // Progresso amortecido — todos os consumidores leem este, não o scroll cru.
   // Glide suave mesmo com scroll picado (jerky).
@@ -164,6 +167,7 @@ export default function ProcessJourney({
 
   return (
     <Canvas
+      frameloop={active ? "always" : "never"}
       gl={{ antialias: true, alpha: true }}
       dpr={[1, 1.5]}
       camera={{ position: [STATION_X[0], 2.2, 10.5], fov: 46 }}

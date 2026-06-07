@@ -30,6 +30,7 @@ export default function ServiceCard({
   borderDelay,
   enterDelay = 0,
   play = false,
+  live = true,
 }: {
   service: ServiceConfig;
   expanded: boolean;
@@ -40,6 +41,8 @@ export default function ServiceCard({
   enterDelay?: number;
   /** Disparo de entrada vindo da seção (sincroniza com o wipe de chegada). */
   play?: boolean;
+  /** Capítulo ativo → repassa pro mini-canvas congelar fora dele (perf). */
+  live?: boolean;
 }) {
   const pathRef = useRef<SVGPathElement>(null);
   const [entered, setEntered] = useState(false);
@@ -137,6 +140,7 @@ export default function ServiceCard({
               variant={service.variant}
               active={expanded}
               hovered={hovered}
+              live={live}
             />
           </div>
         </div>

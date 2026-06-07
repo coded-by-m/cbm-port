@@ -58,15 +58,19 @@ export default function ServiceMiniScene({
   variant,
   active,
   hovered = false,
+  live = true,
 }: {
   variant: ServiceVariant;
   active: boolean;
   /** Hover no card (colapsado) → a cena "acorda" (gira mais rápido), sem a
    *  expansão completa que só o `active` (expandido) dispara. */
   hovered?: boolean;
+  /** Capítulo ativo → `false` congela o render loop fora dele (perf). */
+  live?: boolean;
 }) {
   return (
     <Canvas
+      frameloop={live ? "always" : "never"}
       gl={{ antialias: true, alpha: true }}
       dpr={[1, 1.5]}
       camera={{ position: [0, 0, 6], fov: 38 }}

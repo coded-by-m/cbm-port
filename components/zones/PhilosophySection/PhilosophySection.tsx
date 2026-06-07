@@ -336,7 +336,7 @@ export default function PhilosophySection({
     >
       {/* Background: Terrain with camera adjusted to fill the viewport */}
       <div className="absolute inset-0 opacity-[0.75]">
-        <TerrainBackground />
+        <TerrainBackground active={live} />
       </div>
 
       {/* Vignette overlay for depth */}

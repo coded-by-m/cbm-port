@@ -4,11 +4,16 @@ import { Canvas } from "@react-three/fiber";
 import TerrainScene from "@/components/zones/TerrainMesh/TerrainScene";
 import { COLORS, FOG } from "@/components/zones/TerrainMesh/config";
 
-export default function TerrainBackground() {
+export default function TerrainBackground({
+  active = true,
+}: {
+  /** `false` → congela o render loop fora do capítulo ativo (perf). */
+  active?: boolean;
+} = {}) {
   return (
     <div className="absolute inset-0">
       <Canvas
-        frameloop="always"
+        frameloop={active ? "always" : "never"}
         gl={{ antialias: true, alpha: false }}
         dpr={[1, 2]}
         camera={{ position: [0, 1.8, 9.5], fov: 55 }}

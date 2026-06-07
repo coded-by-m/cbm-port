@@ -46,14 +46,18 @@ export default function GenericGrid({
   outroRef,
   hoveredRef,
   isMobile = false,
+  active = true,
 }: {
   progressRef: MutableRefObject<number>;
   outroRef?: MutableRefObject<number>;
   hoveredRef?: MutableRefObject<boolean>;
   isMobile?: boolean;
+  /** `false` → congela o render loop fora do capítulo ativo (perf). */
+  active?: boolean;
 }) {
   return (
     <Canvas
+      frameloop={active ? "always" : "never"}
       gl={{ antialias: true, alpha: true }}
       dpr={[1, 1.5]}
       camera={{ position: [0, 1.1, 9], fov: FOV_DEG }}

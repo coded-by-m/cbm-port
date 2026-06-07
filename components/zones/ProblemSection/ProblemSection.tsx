@@ -210,6 +210,7 @@ export default function ProblemSection({
             outroRef={outroRef}
             hoveredRef={hoveredRef}
             isMobile={isMobile}
+            active={live}
           />
         </div>
 
