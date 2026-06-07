@@ -2,6 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import TerrainLayer from "@/components/zones/TerrainMesh/TerrainLayer";
+import { ReleaseContext } from "@/components/three/ReleaseContext";
 import { LAYERS, FOG } from "@/components/zones/TerrainMesh/config";
 
 /**
@@ -23,6 +24,7 @@ export default function AboutTerrain({
       camera={{ position: [0, 4, 14], fov: 42 }}
       style={{ background: "transparent" }}
     >
+      <ReleaseContext />
       <fog attach="fog" args={[FOG.color, 16, 44]} />
       {LAYERS.map((layer) => (
         <TerrainLayer key={layer.name} layer={layer} />

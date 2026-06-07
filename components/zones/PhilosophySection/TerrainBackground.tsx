@@ -2,6 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import TerrainScene from "@/components/zones/TerrainMesh/TerrainScene";
+import { ReleaseContext } from "@/components/three/ReleaseContext";
 import { COLORS, FOG } from "@/components/zones/TerrainMesh/config";
 
 export default function TerrainBackground({
@@ -19,6 +20,7 @@ export default function TerrainBackground({
         camera={{ position: [0, 1.8, 9.5], fov: 55 }}
         style={{ background: COLORS.background }}
       >
+        <ReleaseContext />
         <fog attach="fog" args={[FOG.color, FOG.near, FOG.far]} />
         <TerrainScene />
       </Canvas>

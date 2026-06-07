@@ -3,6 +3,7 @@
 import { createRef, type MutableRefObject, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
+import { ReleaseContext } from "@/components/three/ReleaseContext";
 import {
   type Group,
   type Mesh,
@@ -71,6 +72,7 @@ export default function CTAFormation({
       camera={{ position: [0, 0, 9.5], fov: 42 }}
       style={{ background: "transparent" }}
     >
+      <ReleaseContext />
       <Formation progressRef={progressRef} />
     </Canvas>
   );

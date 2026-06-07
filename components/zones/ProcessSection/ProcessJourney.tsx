@@ -9,6 +9,7 @@ import {
 } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
+import { ReleaseContext } from "@/components/three/ReleaseContext";
 import {
   AdditiveBlending,
   BufferAttribute,
@@ -173,6 +174,7 @@ export default function ProcessJourney({
       camera={{ position: [STATION_X[0], 2.2, 10.5], fov: 46 }}
       style={{ background: "transparent" }}
     >
+      <ReleaseContext />
       <fog attach="fog" args={[FOG.color, 14, 42]} />
 
       <Terrain />

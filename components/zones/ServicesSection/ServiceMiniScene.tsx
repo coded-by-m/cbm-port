@@ -14,6 +14,7 @@ import {
   type Mesh,
 } from "three";
 import type { ServiceVariant } from "@/data/services";
+import { ReleaseContext } from "@/components/three/ReleaseContext";
 
 const TWO_PI = Math.PI * 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -76,6 +77,7 @@ export default function ServiceMiniScene({
       camera={{ position: [0, 0, 6], fov: 38 }}
       style={{ background: "transparent" }}
     >
+      <ReleaseContext />
       {variant === "landing" && (
         <LandingScene active={active} hovered={hovered} />
       )}

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
+import { ReleaseContext } from "@/components/three/ReleaseContext";
 import type { Group, Mesh, MeshBasicMaterial } from "three";
 import {
   COLORS,
@@ -111,6 +112,7 @@ export default function AboutMark({
       camera={{ position: [0, 0, 4.2], fov: 42 }}
       style={{ background: "transparent" }}
     >
+      <ReleaseContext />
       <Mark />
     </Canvas>
   );

@@ -7,6 +7,7 @@ import { type Group, type Mesh, type MeshBasicMaterial } from "three";
 import type { Line2 } from "three-stdlib";
 import { buildFragment } from "@/components/zones/ProjectFragments/geometry";
 import TerrainLayer from "@/components/zones/TerrainMesh/TerrainLayer";
+import { ReleaseContext } from "@/components/three/ReleaseContext";
 import { LAYERS, FOG } from "@/components/zones/TerrainMesh/config";
 
 const TWO_PI = Math.PI * 2;
@@ -58,6 +59,7 @@ export default function LabResidualField({
       onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
       style={{ background: "transparent" }}
     >
+      <ReleaseContext />
       <fog attach="fog" args={[FOG.color, 16, 44]} />
 
       {LAYERS.map((layer) => (

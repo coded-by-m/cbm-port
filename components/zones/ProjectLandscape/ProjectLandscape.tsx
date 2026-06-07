@@ -6,6 +6,7 @@ import { Canvas } from "@react-three/fiber";
 import gsap from "gsap";
 import { cases } from "@/data/cases";
 import { CAMERA, COLORS, FOG } from "@/components/zones/TerrainMesh/config";
+import { ReleaseContext } from "@/components/three/ReleaseContext";
 import LandscapeScene from "./LandscapeScene";
 import { ProjectCard } from "./ProjectCard";
 import DevCameraControls from "./DevCameraControls";
@@ -485,6 +486,7 @@ export default function ProjectLandscape({
         camera={{ position: [...CAMERA.position], fov: CAMERA.fov }}
         style={{ background: COLORS.background }}
       >
+        <ReleaseContext />
         <fog attach="fog" args={[FOG.color, FOG.near, FOG.far]} />
         <LandscapeScene
           angleRef={angleRef}

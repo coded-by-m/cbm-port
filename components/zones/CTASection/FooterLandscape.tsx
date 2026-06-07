@@ -3,6 +3,7 @@
 import { createRef, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
+import { ReleaseContext } from "@/components/three/ReleaseContext";
 import {
   type Group,
   type MeshBasicMaterial,
@@ -206,6 +207,7 @@ export default function FooterLandscape({
       onCreated={({ camera }) => camera.lookAt(0, 0.4, 0)}
       style={{ background: "transparent" }}
     >
+      <ReleaseContext />
       <fog attach="fog" args={[FOG.color, 12, 40]} />
       <Terrain />
       <Fragments />

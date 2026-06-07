@@ -8,6 +8,7 @@ import {
 } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
+import { ReleaseContext } from "@/components/three/ReleaseContext";
 import {
   BoxGeometry,
   EdgesGeometry,
@@ -63,6 +64,7 @@ export default function GenericGrid({
       camera={{ position: [0, 1.1, 9], fov: FOV_DEG }}
       style={{ background: "transparent" }}
     >
+      <ReleaseContext />
       <GridScene
         progressRef={progressRef}
         outroRef={outroRef}
