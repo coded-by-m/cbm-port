@@ -11,6 +11,7 @@ import {
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { MeshButton } from "@/components/ui/MeshButton";
+import { railSub } from "@/lib/railProgress";
 
 const TerrainBackground = dynamic(
   () => import("./TerrainBackground"),
@@ -73,6 +74,18 @@ export default function PhilosophySection({
   const onBackRef = useRef(onBack);
   onBackRef.current = onBack;
   const [active, setActive] = useState(-1);
+
+  // Reporta o sub-progresso pra ChapterRail (preenche o marcador ativo).
+  useEffect(() => {
+    railSub.active = !!live;
+    if (live) railSub.value = Math.max(0, active) / (STATEMENTS.length - 1);
+  }, [live, active]);
+  useEffect(
+    () => () => {
+      railSub.active = false;
+    },
+    [],
+  );
   const activeRef = useRef(-1);
   const statementsRef = useRef<(HTMLDivElement | null)[]>([]);
   const lineRef = useRef<HTMLDivElement>(null);

@@ -11,6 +11,7 @@ import { ChapterTransition } from "./ChapterTransition";
 import { LogoIntro } from "./LogoIntro";
 import { ManifestoIntro } from "./ManifestoIntro";
 import { useActiveChapter } from "@/hooks/useActiveChapter";
+import { HOME_CHAPTERS } from "@/lib/homeChapters";
 
 /**
  * Zonas usam WebGL → só montam no cliente (`ssr: false`), igual ao /lab.
@@ -238,12 +239,40 @@ export function HomeExperience() {
     }
   }, [activeChapter]);
 
-  // Navega pro capítulo i (clique na trilha).
-  const jumpTo = (i: number) => {
-    document
-      .querySelector(`[data-chapter-index="${i}"]`)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  // Navega pro capítulo i com o WIPE da marca (não scroll seco) — clique na
+  // trilha e teclado usam isto. Direção pela posição relativa.
+  const jumpTo = useCallback(
+    (i: number) => {
+      const target = Math.max(0, Math.min(HOME_CHAPTERS.length - 1, i));
+      if (target === activeChapter) return;
+      guidedScroll(target, target > activeChapter ? "down" : "up");
+    },
+    [activeChapter, guidedScroll],
+  );
+
+  // Teclado: ↑/↓ (ou J/K) anterior/próximo · 1–9 pula direto. Power-user +
+  // acessibilidade. Só depois da intro, ignora inputs de texto.
+  useEffect(() => {
+    if (!introDone) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
+      const k = e.key;
+      if (k === "ArrowDown" || k === "ArrowRight" || k === "j" || k === "J") {
+        e.preventDefault();
+        jumpTo(activeChapter + 1);
+      } else if (k === "ArrowUp" || k === "ArrowLeft" || k === "k" || k === "K") {
+        e.preventDefault();
+        jumpTo(activeChapter - 1);
+      } else if (/^[1-9]$/.test(k)) {
+        e.preventDefault();
+        jumpTo(Number(k) - 1);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [introDone, activeChapter, jumpTo]);
 
   return (
     <main className="bg-[#000F08]">

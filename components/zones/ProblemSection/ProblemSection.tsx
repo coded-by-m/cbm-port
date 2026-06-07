@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
+import { railSub } from "@/lib/railProgress";
 
 const GenericGrid = dynamic(() => import("./GenericGrid"), { ssr: false });
 
@@ -70,6 +71,18 @@ export default function ProblemSection({
   const transitioning = useRef(false);
   const activeRef = useRef(-1);
   const [activeBeat, setActiveBeat] = useState(-1);
+
+  // Reporta o sub-progresso pra ChapterRail (preenche o marcador ativo).
+  useEffect(() => {
+    railSub.active = !!live;
+    if (live) railSub.value = Math.max(0, activeBeat) / (BEATS.length - 1);
+  }, [live, activeBeat]);
+  useEffect(
+    () => () => {
+      railSub.active = false;
+    },
+    [],
+  );
   const [isMobile, setIsMobile] = useState(false);
 
   const onForwardRef = useRef(onForward);

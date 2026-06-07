@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
+import { railSub } from "@/lib/railProgress";
 
 const ProcessJourney = dynamic(() => import("./ProcessJourney"), {
   ssr: false,
@@ -73,6 +74,18 @@ export default function ProcessSection({
   const transitioning = useRef(false);
   const activeRef = useRef(-1);
   const [activeStep, setActiveStep] = useState(-1);
+
+  // Reporta o sub-progresso pra ChapterRail (preenche o marcador ativo).
+  useEffect(() => {
+    railSub.active = !!live;
+    if (live) railSub.value = Math.max(0, activeStep) / (STEPS.length - 1);
+  }, [live, activeStep]);
+  useEffect(
+    () => () => {
+      railSub.active = false;
+    },
+    [],
+  );
   const [headerEntered, setHeaderEntered] = useState(false);
 
   const onForwardRef = useRef(onForward);
