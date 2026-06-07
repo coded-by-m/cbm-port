@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import gsap from "gsap";
 import { LazySection } from "./LazySection";
 import { ChapterRail } from "./ChapterRail";
+import { ChapterDots } from "./ChapterDots";
 import { InteractionCue } from "./InteractionCue";
 import { ChapterTransition } from "./ChapterTransition";
 import { LogoIntro } from "./LogoIntro";
@@ -104,12 +105,17 @@ export function HomeExperience() {
       });
       // Cobre (acelera pra dentro).
       tl.to(panel, { yPercent: 0, duration: 0.42, ease: "power3.in" });
-      // Troca o conteúdo por baixo da cobertura.
-      tl.add(() => {
+      // Troca o conteúdo por baixo da cobertura + RE-CORRIGE a posição
+      // enquanto coberto: as LazySections montam conteúdo (e mudam alturas)
+      // ao chegar perto, então um `scrollIntoView` só erra ±1 em saltos longos.
+      // Re-assertamos por ~160ms (coberto) até a altura assentar.
+      const reassert = () => {
         document
           .querySelector(`[data-chapter-index="${targetChapter}"]`)
           ?.scrollIntoView({ block: "start" });
-      });
+      };
+      tl.add(reassert);
+      tl.to({}, { duration: 0.16, onUpdate: reassert });
       // Revela (desacelera pra fora).
       tl.to(panel, { yPercent: endY, duration: 0.5, ease: "power3.out" });
     },
@@ -291,6 +297,7 @@ export function HomeExperience() {
       {introDone && (
         <>
           <ChapterRail active={activeChapter} onJump={jumpTo} />
+          <ChapterDots active={activeChapter} onJump={jumpTo} />
           <InteractionCue active={activeChapter} />
         </>
       )}
