@@ -9,6 +9,27 @@ body {
   font-family: "Satoshi", system-ui, -apple-system, sans-serif;
 }
 
+/* Scrollbar discreta — combina com o fundo escuro em vez da nativa clara, sem
+   competir com a navegação própria (ChapterRail/Dots). Não esconde o scroll. */
+* {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(245, 242, 237, 0.14) transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 242, 237, 0.14);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 242, 237, 0.26);
+}
+
 /* Stagger de entrada das UIs da Paisagem (progress bar, setas) — entra
    suavemente depois que os fragmentos começam a aparecer, evitando
    quebra de cinematografia. */

@@ -42,7 +42,18 @@ export default function Footer() {
   const [entered, setEntered] = useState(false);
   const [gridOn, setGridOn] = useState(false);
   const [accentIdx, setAccentIdx] = useState(0);
+  // No touch não há teclado — os badges G/C não fazem sentido. Escondemos o
+  // hint (mantendo os botões clicáveis pelo label).
+  const [isTouch, setIsTouch] = useState(false);
   const accent = ACCENTS[accentIdx];
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
+    const apply = () => setIsTouch(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   // À vista → entrada (latch) + paisagem ativa + atalhos armados.
   useEffect(() => {
@@ -250,12 +261,14 @@ export default function Footer() {
                 data-cursor="triangle"
                 className="flex items-center gap-2.5 text-[0.7rem] text-[#F5F2ED]/45 transition-colors hover:text-[#F5F2ED]/80"
               >
-                <kbd
-                  className="grid h-5 w-5 place-items-center border text-[0.65rem]"
-                  style={{ borderColor: `${accent}66`, color: accent }}
-                >
-                  G
-                </kbd>
+                {!isTouch && (
+                  <kbd
+                    className="grid h-5 w-5 place-items-center border text-[0.65rem]"
+                    style={{ borderColor: `${accent}66`, color: accent }}
+                  >
+                    G
+                  </kbd>
+                )}
                 <span
                   className="uppercase tracking-[0.2em]"
                   style={{ fontFamily: SAT }}
@@ -269,12 +282,14 @@ export default function Footer() {
                 data-cursor="triangle"
                 className="flex items-center gap-2.5 text-[0.7rem] text-[#F5F2ED]/45 transition-colors hover:text-[#F5F2ED]/80"
               >
-                <kbd
-                  className="grid h-5 w-5 place-items-center border text-[0.65rem]"
-                  style={{ borderColor: `${accent}66`, color: accent }}
-                >
-                  C
-                </kbd>
+                {!isTouch && (
+                  <kbd
+                    className="grid h-5 w-5 place-items-center border text-[0.65rem]"
+                    style={{ borderColor: `${accent}66`, color: accent }}
+                  >
+                    C
+                  </kbd>
+                )}
                 <span
                   className="uppercase tracking-[0.2em]"
                   style={{ fontFamily: SAT }}

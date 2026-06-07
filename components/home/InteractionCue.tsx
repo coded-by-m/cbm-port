@@ -24,7 +24,28 @@ export function InteractionCue({ active }: { active: number }) {
   // ("Arraste pra explorar") e o card já comunicam o gesto — então a ocultamos
   // pra não colidir.
   const [hideForCard, setHideForCard] = useState(false);
+  // No fim da jornada (footer à vista), a cue "Role — o convite se forma" já
+  // cumpriu o papel — esconde pra não persistir sobre o rodapé.
+  const [footerInView, setFooterInView] = useState(false);
   const idleRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // O <footer> só monta ao entrar no último capítulo; re-tenta observar quando
+  // `active` muda. Esconde a cue enquanto o rodapé estiver visível.
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) {
+      setFooterInView(false);
+      return;
+    }
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) setFooterInView(e.isIntersecting);
+      },
+      { threshold: 0.05 },
+    );
+    obs.observe(footer);
+    return () => obs.disconnect();
+  }, [active]);
 
   useEffect(() => {
     const mql = window.matchMedia("(max-width: 767px)");
@@ -56,7 +77,7 @@ export function InteractionCue({ active }: { active: number }) {
     };
   }, []);
 
-  if (!chapter.cue || hideForCard) return null;
+  if (!chapter.cue || hideForCard || footerInView) return null;
 
   return (
     <div
