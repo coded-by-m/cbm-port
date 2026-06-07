@@ -8,23 +8,25 @@ import { railSub } from "@/lib/railProgress";
 const SIGNAL = "#FB3640";
 const OFF_WHITE = "#F5F2ED";
 const SAT = '"Satoshi", sans-serif';
-const ROW = 32; // altura de cada botão (px) — geometria determinística
+const PAN = '"Panchang", sans-serif';
+const ROW = 38; // altura de cada botão (px)
 const TOTAL = HOME_CHAPTERS.length;
 const TRACK = (TOTAL - 1) * ROW;
-const TOP0 = ROW / 2; // centro do primeiro marcador
-const W_OPEN = 224; // largura do menu aberto
-const W_SHUT = 20; // largura colapsada (só os triângulos)
+const TOP0 = ROW / 2;
+const W_OPEN = 296; // largura do menu aberto
+const W_SHUT = 22; // largura colapsada (só os triângulos)
+const SPRING = "cubic-bezier(0.34, 1.42, 0.5, 1)"; // mola (overshoot)
+const EXPO = "cubic-bezier(0.22, 1, 0.36, 1)"; // saída suave
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
 /**
  * Navbar global da Home — trilha de capítulos na borda direita.
  *
- * Colapsada: só os triângulos (linguagem da marca) + um fio de progresso que
- * preenche conforme rola (a cabeça desliza = indicador ativo; sub-progresso
- * dos steppers via railSub). Hover → vira um MENU de botões clicáveis (nº +
- * nome, com fundo/hover por linha). Clique navega com o wipe da marca; drag
- * varre os capítulos. Âncora de marca no topo volta ao Logo. Teclado tratado
- * no HomeExperience.
+ * Colapsada: só os triângulos + um fio de progresso que preenche conforme rola
+ * (cabeça desliza = indicador ativo; sub-progresso dos steppers via railSub).
+ * Hover → MENU grande de botões clicáveis (nº + nome) com painel glass, número
+ * gigante faint atrás, barra ativa que desliza com mola e entrada em cascata.
+ * Clique navega com o wipe; drag varre. Âncora de marca volta ao Logo.
  */
 export function ChapterRail({
   active,
@@ -46,7 +48,6 @@ export function ChapterRail({
   const draggingRef = useRef(false);
   const movedRef = useRef(false);
 
-  // rAF: progresso contínuo (fill) + sub-progresso do capítulo ativo.
   useEffect(() => {
     let raf = 0;
     const tick = () => {
@@ -77,8 +78,7 @@ export function ChapterRail({
     const r = el.getBoundingClientRect();
     return Math.max(0, Math.min(TOTAL - 1, Math.floor((clientY - r.top) / ROW)));
   };
-  // Drag-to-scrub que NÃO engole o clique: só captura depois de um movimento
-  // real (>6px). Tap → o onClick do botão navega normalmente.
+  // Drag-to-scrub que NÃO engole o clique: só captura após mover >6px.
   const onPointerDown = (e: React.PointerEvent) => {
     startYRef.current = e.clientY;
     draggingRef.current = false;
@@ -106,7 +106,7 @@ export function ChapterRail({
   return (
     <nav
       aria-label="Capítulos da página"
-      className="pointer-events-none fixed right-5 top-1/2 z-[60] hidden -translate-y-1/2 flex-col items-end lg:flex"
+      className="pointer-events-none fixed right-6 top-1/2 z-[60] hidden -translate-y-1/2 flex-col items-end lg:flex"
     >
       {/* Âncora de marca — volta ao topo (Logo). */}
       <button
@@ -114,16 +114,20 @@ export function ChapterRail({
         onClick={() => onJump(0)}
         data-cursor="triangle"
         aria-label="Voltar ao topo"
-        className="pointer-events-auto mb-3.5 mr-1 opacity-45 transition-opacity duration-300 hover:opacity-100"
+        className="pointer-events-auto mb-4 mr-1 opacity-45 transition-opacity duration-300 hover:opacity-100"
       >
-        <LogoMark size={18} />
+        <LogoMark size={22} />
       </button>
 
       {/* Trilha / menu — única zona interativa. */}
       <div
         ref={markersRef}
-        className="pointer-events-auto relative transition-[width] duration-300 ease-out"
-        style={{ width: open ? W_OPEN : W_SHUT, height: TOTAL * ROW }}
+        className="pointer-events-auto relative"
+        style={{
+          width: open ? W_OPEN : W_SHUT,
+          height: TOTAL * ROW,
+          transition: `width 0.44s ${EXPO}`,
+        }}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => {
           setOpen(false);
@@ -134,21 +138,35 @@ export function ChapterRail({
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
       >
-        {/* Painel de fundo (só no hover) — glass + brackets HUD */}
+        {/* Painel glass + brackets HUD (desliza na entrada) */}
         <div
-          className="pointer-events-none absolute -inset-y-2.5 left-[-6px] right-[-8px] rounded-md border transition-opacity duration-300"
+          className="pointer-events-none absolute -inset-y-3 left-[-8px] right-[-10px] overflow-hidden rounded-lg border"
           style={{
             opacity: open ? 1 : 0,
+            transform: open ? "translateX(0)" : "translateX(12px)",
+            transition: `opacity 0.35s ${EXPO}, transform 0.44s ${EXPO}`,
             background:
-              "linear-gradient(270deg, rgba(0,15,8,0.94) 0%, rgba(0,15,8,0.72) 100%)",
+              "linear-gradient(270deg, rgba(0,15,8,0.95) 0%, rgba(0,15,8,0.72) 100%)",
             borderColor: "rgba(245,242,237,0.1)",
-            backdropFilter: "blur(10px)",
-            boxShadow: "0 22px 55px -22px rgba(0,0,0,0.65)",
+            backdropFilter: "blur(12px)",
+            boxShadow: "0 26px 60px -22px rgba(0,0,0,0.7)",
           }}
           aria-hidden
         >
-          <span className="absolute left-1.5 top-1.5 h-2 w-2 border-l border-t border-[#FB3640]/55" />
-          <span className="absolute bottom-1.5 right-1.5 h-2 w-2 border-b border-r border-[#FB3640]/55" />
+          <span className="absolute left-2 top-2 h-2.5 w-2.5 border-l border-t border-[#FB3640]/55" />
+          <span className="absolute bottom-2 right-2 h-2.5 w-2.5 border-b border-r border-[#FB3640]/55" />
+          {/* Número gigante faint do capítulo em foco */}
+          <span
+            className="absolute bottom-1 left-2 select-none leading-none tabular-nums text-[#F5F2ED] transition-opacity duration-200"
+            style={{
+              fontFamily: PAN,
+              fontWeight: 800,
+              fontSize: "5.2rem",
+              opacity: 0.05,
+            }}
+          >
+            {String(shown + 1).padStart(2, "0")}
+          </span>
         </div>
 
         {/* Linha base + fill + cabeça (indicador deslizante) */}
@@ -170,25 +188,26 @@ export function ChapterRail({
         />
         <div
           ref={headRef}
-          className="pointer-events-none absolute h-1.5 w-1.5 -translate-y-1/2 translate-x-1/2 rounded-full"
+          className="pointer-events-none absolute h-2 w-2 -translate-y-1/2 translate-x-1/2 animate-pulse rounded-full"
           style={{
             right: 6,
             top: TOP0,
             background: SIGNAL,
-            boxShadow: `0 0 7px ${SIGNAL}`,
+            boxShadow: `0 0 10px ${SIGNAL}`,
           }}
           aria-hidden
         />
 
-        {/* Barra ativa deslizante (esquerda do menu aberto) */}
+        {/* Barra ativa deslizante (esquerda) — mola */}
         <div
-          className="pointer-events-none absolute left-0 w-[2px] rounded-full transition-[top,opacity] duration-300 ease-out"
+          className="pointer-events-none absolute left-0 w-[3px] rounded-full"
           style={{
-            top: shown * ROW + 8,
-            height: ROW - 16,
+            top: shown * ROW + 9,
+            height: ROW - 18,
             background: SIGNAL,
-            boxShadow: `0 0 9px ${SIGNAL}`,
+            boxShadow: `0 0 11px ${SIGNAL}`,
             opacity: open ? 1 : 0,
+            transition: `top 0.5s ${SPRING}, opacity 0.3s ease-out`,
           }}
           aria-hidden
         />
@@ -208,7 +227,7 @@ export function ChapterRail({
               aria-current={isActive ? "true" : undefined}
               aria-label={`Ir para ${ch.label}`}
               data-cursor="triangle"
-              className="group/row relative z-10 flex w-full items-center justify-end gap-2.5 overflow-hidden rounded pr-1.5 transition-colors duration-200"
+              className="group/row relative z-10 flex w-full items-center justify-end gap-3 overflow-hidden rounded-md pr-1.5 transition-colors duration-200"
               style={{
                 height: ROW,
                 background:
@@ -218,15 +237,18 @@ export function ChapterRail({
               }}
             >
               <div
-                className="flex items-center gap-2.5 transition-[opacity,transform] duration-300 ease-out"
+                className="flex items-center gap-3"
                 style={{
                   opacity: open ? 1 : 0,
-                  transform: open ? "translateX(0)" : "translateX(10px)",
-                  transitionDelay: open ? `${i * 22}ms` : "0ms",
+                  transform: open
+                    ? "translateX(0) scale(1)"
+                    : "translateX(20px) scale(0.95)",
+                  transition: `opacity 0.4s ${EXPO}, transform 0.5s ${SPRING}`,
+                  transitionDelay: open ? `${i * 34}ms` : "0ms",
                 }}
               >
                 <span
-                  className="whitespace-nowrap text-[0.5rem] tabular-nums tracking-[0.15em]"
+                  className="whitespace-nowrap text-[0.58rem] tabular-nums tracking-[0.15em]"
                   style={{
                     fontFamily: SAT,
                     fontWeight: 600,
@@ -236,15 +258,15 @@ export function ChapterRail({
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span
-                  className="whitespace-nowrap text-[0.62rem] uppercase tracking-[0.22em]"
+                  className="whitespace-nowrap text-[0.76rem] uppercase tracking-[0.2em] transition-colors duration-200"
                   style={{
                     fontFamily: SAT,
                     fontWeight: 500,
                     color: isActive
                       ? "rgba(245,242,237,0.98)"
                       : isRowHover
-                        ? "rgba(245,242,237,0.9)"
-                        : "rgba(245,242,237,0.55)",
+                        ? "rgba(245,242,237,0.92)"
+                        : "rgba(245,242,237,0.5)",
                   }}
                 >
                   {ch.label}
@@ -252,15 +274,15 @@ export function ChapterRail({
               </div>
               <svg
                 aria-hidden
-                width="9"
-                height="9"
+                width="10"
+                height="10"
                 viewBox="0 0 10 10"
                 className="shrink-0 transition-transform duration-300"
                 style={{
                   transform: isActive
                     ? "scale(1.5)"
                     : isRowHover
-                      ? "scale(1.25)"
+                      ? "scale(1.28)"
                       : "scale(1)",
                 }}
               >
@@ -278,9 +300,9 @@ export function ChapterRail({
       </div>
 
       {/* Orientação at-a-glance (não bloqueia conteúdo): nome + posição. */}
-      <div className="pointer-events-none mt-2.5 flex flex-col items-end gap-0.5">
+      <div className="pointer-events-none mt-3 flex flex-col items-end gap-0.5">
         <span
-          className="text-[0.55rem] uppercase tracking-[0.25em] text-[#F5F2ED]/80"
+          className="text-[0.6rem] uppercase tracking-[0.25em] text-[#F5F2ED]/80"
           style={{ fontFamily: SAT, fontWeight: 500 }}
         >
           {HOME_CHAPTERS[active]?.label}
