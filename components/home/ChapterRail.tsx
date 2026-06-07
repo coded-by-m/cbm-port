@@ -8,20 +8,23 @@ import { railSub } from "@/lib/railProgress";
 const SIGNAL = "#FB3640";
 const OFF_WHITE = "#F5F2ED";
 const SAT = '"Satoshi", sans-serif';
-const ROW = 30; // altura de cada marcador (px) — geometria determinística
+const ROW = 32; // altura de cada botão (px) — geometria determinística
 const TOTAL = HOME_CHAPTERS.length;
 const TRACK = (TOTAL - 1) * ROW;
 const TOP0 = ROW / 2; // centro do primeiro marcador
+const W_OPEN = 224; // largura do menu aberto
+const W_SHUT = 20; // largura colapsada (só os triângulos)
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
 /**
  * Navbar global da Home — trilha de capítulos na borda direita.
  *
- * Triângulos (linguagem da marca) + menu expansível no hover (nº · nome ·
- * descritor), linha de progresso contínua que preenche conforme rola/avança
- * (cabeça desliza = indicador ativo; sub-progresso dos steppers via railSub),
- * âncora de marca no topo (volta ao Logo) e drag-to-scrub. Clique navega com o
- * wipe da marca (via `onJump`). Teclado (↑/↓ · 1–9) tratado no HomeExperience.
+ * Colapsada: só os triângulos (linguagem da marca) + um fio de progresso que
+ * preenche conforme rola (a cabeça desliza = indicador ativo; sub-progresso
+ * dos steppers via railSub). Hover → vira um MENU de botões clicáveis (nº +
+ * nome, com fundo/hover por linha). Clique navega com o wipe da marca; drag
+ * varre os capítulos. Âncora de marca no topo volta ao Logo. Teclado tratado
+ * no HomeExperience.
  */
 export function ChapterRail({
   active,
@@ -31,6 +34,7 @@ export function ChapterRail({
   onJump: (index: number) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [hoverRow, setHoverRow] = useState<number | null>(null);
   const [preview, setPreview] = useState<number | null>(null);
   const activeRef = useRef(active);
   activeRef.current = active;
@@ -38,6 +42,7 @@ export function ChapterRail({
   const fillRef = useRef<HTMLDivElement>(null);
   const headRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<HTMLDivElement>(null);
+  const startYRef = useRef(0);
   const draggingRef = useRef(false);
   const movedRef = useRef(false);
 
@@ -72,22 +77,26 @@ export function ChapterRail({
     const r = el.getBoundingClientRect();
     return Math.max(0, Math.min(TOTAL - 1, Math.floor((clientY - r.top) / ROW)));
   };
+  // Drag-to-scrub que NÃO engole o clique: só captura depois de um movimento
+  // real (>6px). Tap → o onClick do botão navega normalmente.
   const onPointerDown = (e: React.PointerEvent) => {
-    draggingRef.current = true;
+    startYRef.current = e.clientY;
+    draggingRef.current = false;
     movedRef.current = false;
-    try {
-      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-    } catch {}
   };
   const onPointerMove = (e: React.PointerEvent) => {
-    if (!draggingRef.current) return;
-    movedRef.current = true;
+    if (!draggingRef.current) {
+      if (Math.abs(e.clientY - startYRef.current) < 6) return;
+      draggingRef.current = true;
+      movedRef.current = true;
+      try {
+        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      } catch {}
+    }
     setPreview(indexFromY(e.clientY));
   };
   const endDrag = () => {
-    if (draggingRef.current && movedRef.current && preview !== null) {
-      onJump(preview);
-    }
+    if (draggingRef.current && preview !== null) onJump(preview);
     draggingRef.current = false;
     setPreview(null);
   };
@@ -105,47 +114,60 @@ export function ChapterRail({
         onClick={() => onJump(0)}
         data-cursor="triangle"
         aria-label="Voltar ao topo"
-        className="pointer-events-auto mb-3.5 opacity-45 transition-opacity duration-300 hover:opacity-100"
+        className="pointer-events-auto mb-3.5 mr-1 opacity-45 transition-opacity duration-300 hover:opacity-100"
       >
         <LogoMark size={18} />
       </button>
 
-      {/* Trilha — única zona interativa (hover abre o menu; arrastar = scrub). */}
+      {/* Trilha / menu — única zona interativa. */}
       <div
         ref={markersRef}
-        className="pointer-events-auto relative flex flex-col items-end"
-        style={{ height: TOTAL * ROW }}
+        className="pointer-events-auto relative transition-[width] duration-300 ease-out"
+        style={{ width: open ? W_OPEN : W_SHUT, height: TOTAL * ROW }}
         onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
+        onMouseLeave={() => {
+          setOpen(false);
+          setHoverRow(null);
+        }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
       >
-        {/* Linha base */}
+        {/* Painel de fundo (só no hover) */}
+        <div
+          className="pointer-events-none absolute -inset-y-2 right-[-8px] left-0 rounded-md border transition-opacity duration-300"
+          style={{
+            opacity: open ? 1 : 0,
+            background: "rgba(0,15,8,0.86)",
+            borderColor: "rgba(245,242,237,0.08)",
+            backdropFilter: "blur(8px)",
+          }}
+          aria-hidden
+        />
+
+        {/* Linha base + fill + cabeça (indicador deslizante) */}
         <div
           className="pointer-events-none absolute w-px"
           style={{
-            right: 4,
+            right: 6,
             top: TOP0,
             height: TRACK,
             background: "rgba(245,242,237,0.12)",
           }}
           aria-hidden
         />
-        {/* Fill (progresso) */}
         <div
           ref={fillRef}
           className="pointer-events-none absolute w-px"
-          style={{ right: 4, top: TOP0, height: 0, background: SIGNAL }}
+          style={{ right: 6, top: TOP0, height: 0, background: SIGNAL }}
           aria-hidden
         />
-        {/* Cabeça do progresso = indicador ativo deslizante */}
         <div
           ref={headRef}
           className="pointer-events-none absolute h-1.5 w-1.5 -translate-y-1/2 translate-x-1/2 rounded-full"
           style={{
-            right: 4,
+            right: 6,
             top: TOP0,
             background: SIGNAL,
             boxShadow: `0 0 7px ${SIGNAL}`,
@@ -156,6 +178,7 @@ export function ChapterRail({
         {HOME_CHAPTERS.map((ch, i) => {
           const isActive = i === shown;
           const isPast = i < shown;
+          const isRowHover = hoverRow === i;
           return (
             <button
               key={ch.id}
@@ -163,50 +186,45 @@ export function ChapterRail({
               onClick={() => {
                 if (!movedRef.current) onJump(i);
               }}
+              onMouseEnter={() => setHoverRow(i)}
               aria-current={isActive ? "true" : undefined}
               aria-label={`Ir para ${ch.label}`}
               data-cursor="triangle"
-              className="relative flex items-center justify-end gap-2.5 bg-transparent"
-              style={{ height: ROW }}
+              className="group/row relative z-10 flex w-full items-center justify-end gap-2.5 overflow-hidden rounded pr-1.5 transition-colors duration-200"
+              style={{
+                height: ROW,
+                background:
+                  open && (isActive || isRowHover)
+                    ? "rgba(245,242,237,0.06)"
+                    : "transparent",
+              }}
             >
-              <div
-                className="flex items-center gap-2.5 overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300 ease-out"
+              <span
+                className="whitespace-nowrap text-[0.5rem] tabular-nums tracking-[0.15em] transition-opacity duration-200"
                 style={{
-                  maxWidth: open ? 380 : 0,
+                  fontFamily: SAT,
+                  fontWeight: 600,
                   opacity: open ? 1 : 0,
+                  color: isActive ? SIGNAL : "rgba(251,54,64,0.5)",
                 }}
               >
-                {open && ch.cue && (
-                  <span
-                    className="text-[0.5rem] tracking-[0.12em] text-[#F5F2ED]/35"
-                    style={{ fontFamily: SAT, fontWeight: 400 }}
-                  >
-                    {ch.cue}
-                  </span>
-                )}
-                <span
-                  className="text-[0.5rem] tabular-nums tracking-[0.2em]"
-                  style={{
-                    fontFamily: SAT,
-                    fontWeight: 600,
-                    color: isActive ? SIGNAL : "rgba(251,54,64,0.55)",
-                  }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span
-                  className="text-[0.6rem] uppercase tracking-[0.25em]"
-                  style={{
-                    fontFamily: SAT,
-                    fontWeight: 500,
-                    color: isActive
-                      ? "rgba(245,242,237,0.95)"
-                      : "rgba(245,242,237,0.6)",
-                  }}
-                >
-                  {ch.label}
-                </span>
-              </div>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span
+                className="whitespace-nowrap text-[0.62rem] uppercase tracking-[0.22em] transition-opacity duration-200"
+                style={{
+                  fontFamily: SAT,
+                  fontWeight: 500,
+                  opacity: open ? 1 : 0,
+                  color: isActive
+                    ? "rgba(245,242,237,0.98)"
+                    : isRowHover
+                      ? "rgba(245,242,237,0.9)"
+                      : "rgba(245,242,237,0.55)",
+                }}
+              >
+                {ch.label}
+              </span>
               <svg
                 aria-hidden
                 width="9"
@@ -220,7 +238,7 @@ export function ChapterRail({
                   fill={isActive || isPast ? SIGNAL : "transparent"}
                   stroke={isActive || isPast ? SIGNAL : OFF_WHITE}
                   strokeWidth="1"
-                  opacity={isActive ? 1 : isPast ? 0.55 : open ? 0.9 : 0.4}
+                  opacity={isActive ? 1 : isPast ? 0.55 : isRowHover ? 0.9 : 0.4}
                 />
               </svg>
             </button>
