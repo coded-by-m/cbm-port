@@ -108,7 +108,7 @@ export default function LabPage() {
 
       {/* Camada de conteúdo — HTML overlay */}
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-6 sm:p-10">
-        <header className="flex items-start justify-between gap-6">
+        <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
           <div>
             <Link
               href="/"
@@ -126,7 +126,9 @@ export default function LabPage() {
               Experience Lab
             </h1>
           </div>
-          <p className="max-w-[15rem] text-right text-[0.65rem] leading-relaxed text-neutral-600">
+          {/* No mobile a tagline desce pra baixo do título (alinhada à esquerda)
+              em vez de competir com o "← Início" no topo. */}
+          <p className="max-w-[15rem] text-left text-[0.65rem] leading-relaxed text-neutral-600 sm:text-right">
             Validação de riscos técnicos antes do site principal.
           </p>
         </header>

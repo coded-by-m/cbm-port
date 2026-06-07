@@ -253,7 +253,7 @@ export default function ProcessSection({
 
           <h2
             id="process-headline"
-            className="mx-auto mt-6 max-w-3xl text-[clamp(1.9rem,4vw,3.2rem)] leading-[1.05] text-[#F5F2ED]"
+            className="mx-auto mt-6 max-w-3xl text-[clamp(1.55rem,4vw,3.2rem)] leading-[1.05] text-[#F5F2ED]"
             style={{
               fontFamily: '"Panchang", sans-serif',
               fontWeight: 700,

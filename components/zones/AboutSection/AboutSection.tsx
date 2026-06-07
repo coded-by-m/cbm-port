@@ -236,7 +236,7 @@ export default function AboutSection({
 
             <h2
               id="about-headline"
-              className="mt-6 max-w-xl text-[clamp(1.4rem,2.5vw,2.1rem)] leading-[1.32] text-[#F5F2ED]"
+              className="mt-6 max-w-xl text-[clamp(1.2rem,2.5vw,2.1rem)] leading-[1.32] text-[#F5F2ED]"
               style={{
                 fontFamily: '"Panchang", sans-serif',
                 fontWeight: 600,
