@@ -16,11 +16,11 @@ export interface HomeChapter {
 
 export const HOME_CHAPTERS: HomeChapter[] = [
   { id: "logo", label: "Logo", cue: null }, // intro travada; o LogoIntro mostra o próprio "role para continuar"
-  { id: "manifesto", label: "Manifesto", cue: "Role para avançar o manifesto" },
+  { id: "manifesto", label: "Manifesto", cue: "Role para avançar" },
   { id: "problema", label: "Problema", cue: "Role para revelar" },
-  { id: "servicos", label: "Serviços", cue: "Clique para abrir cada serviço" },
-  { id: "projetos", label: "Projetos", cue: "Arraste para girar · role para seguir" },
-  { id: "processo", label: "Processo", cue: "Role para percorrer o método" },
+  { id: "servicos", label: "Serviços", cue: "Clique para explorar" },
+  { id: "projetos", label: "Projetos", cue: "Arraste para girar" },
+  { id: "processo", label: "Processo", cue: "Role para percorrer" },
   { id: "laboratorio", label: "Laboratório", cue: "Entre no laboratório" },
   { id: "sobre", label: "Sobre", cue: null },
   { id: "convite", label: "Convite", cue: "Role — o convite se forma" },

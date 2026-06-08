@@ -331,7 +331,7 @@ export default function ServicesSection({
             className="text-[0.6rem] uppercase tracking-[0.35em] text-[#F5F2ED]/45"
             style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
           >
-            Clique em um serviço para explorar
+            Clique para explorar
           </p>
           <style>{`@keyframes svc-hint-pulse { 0%,100% { opacity: 0.5; transform: scaleX(1); } 50% { opacity: 1; transform: scaleX(1.6); } }`}</style>
         </div>
