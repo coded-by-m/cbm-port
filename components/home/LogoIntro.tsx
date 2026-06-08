@@ -52,6 +52,14 @@ export function LogoIntro({ onComplete }: { onComplete?: () => void }) {
         <p className="text-[0.65rem] font-light uppercase tracking-[0.5em] text-[#F5F2ED]/70">
           Coded by M
         </p>
+        {/* Descritor — diz ao usuário do que o site se trata. Subordinado ao
+            selo (menor, mais discreto); "&" no vermelho da marca. */}
+        <p
+          className="mt-2.5 text-[0.5rem] uppercase tracking-[0.32em] text-[#F5F2ED]/40"
+          style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+        >
+          Web Design <span style={{ color: "#FB3640" }}>&</span> Desenvolvimento
+        </p>
       </div>
 
       {/* Indicador "role para continuar" — só quando o scroll é liberado
