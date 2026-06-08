@@ -19,10 +19,9 @@ const SIGNAL = "#FB3640";
 export function InteractionCue({ active }: { active: number }) {
   const chapter = HOME_CHAPTERS[active];
   const [visible, setVisible] = useState(true);
-  // No mobile, a seção Projetos tem um bottom-sheet card (rico, altura variável)
-  // que ocupa o mesmo rodapé da cue. Aqui a cue é redundante — o LandscapeHint
-  // ("Arraste pra explorar") e o card já comunicam o gesto — então a ocultamos
-  // pra não colidir.
+  // No mobile, Projetos (bottom-sheet card) e Convite (vira hero auto-formado,
+  // não scroll-driven) tornam a cue redundante/imprecisa — ocultamos nesses
+  // capítulos pra não colidir nem mentir ("o convite se forma" já aconteceu).
   const [hideForCard, setHideForCard] = useState(false);
   // No fim da jornada (footer à vista), a cue "Role — o convite se forma" já
   // cumpriu o papel — esconde pra não persistir sobre o rodapé.
@@ -49,7 +48,11 @@ export function InteractionCue({ active }: { active: number }) {
 
   useEffect(() => {
     const mql = window.matchMedia("(max-width: 767px)");
-    const apply = () => setHideForCard(mql.matches && chapter?.id === "projetos");
+    const apply = () =>
+      setHideForCard(
+        mql.matches &&
+          (chapter?.id === "projetos" || chapter?.id === "convite"),
+      );
     apply();
     mql.addEventListener("change", apply);
     return () => mql.removeEventListener("change", apply);

@@ -234,6 +234,7 @@ function CameraRig({
   progressRef: MutableRefObject<number>;
 }) {
   const camera = useThree((s) => s.camera);
+  const size = useThree((s) => s.size);
   useFrame((_, delta) => {
     const p = clamp01(progressRef.current);
     const sf = p * (N - 1);
@@ -246,7 +247,12 @@ function CameraRig({
     const wantX = lerp(STATION_X[seg], STATION_X[seg + 1], eased);
     const nearest = Math.round(dwellFloat);
     const nearFocus = clamp01(1 - Math.abs(dwellFloat - nearest) / 0.5);
-    const wantZ = lerp(10.5, 9.0, nearFocus);
+    // No retrato estreito a câmera recua — a estação encolhe e fica na faixa
+    // central, sem invadir o header (topo) nem o card da etapa (rodapé).
+    const mobile = size.width <= 767;
+    const zFar = mobile ? 15.5 : 10.5;
+    const zNear = mobile ? 14.0 : 9.0;
+    const wantZ = lerp(zFar, zNear, nearFocus);
 
     const k = Math.min(1, delta * 3.5);
     camera.position.x += (wantX - camera.position.x) * k;

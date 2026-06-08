@@ -102,14 +102,15 @@ export const ORBIT = {
  * acima do bottom-sheet card.
  */
 export const ORBIT_MOBILE = {
-  /** Raio da câmera (mais perto que o desktop → ativo maior). */
-  cameraRadius: 10,
+  /** Raio da câmera — bem mais longe que o desktop: o zoom de perto deixava o
+   *  fragmento gigante; recuado, a constelação respira e lê melhor no retrato. */
+  cameraRadius: 15,
   /** Altura Y da câmera. */
-  cameraY: 4.2,
+  cameraY: 4.6,
   /** Y do target — empurra o ativo pra cima sem cortar o apex no topo. */
   targetY: -0.9,
   /** Multiplicador do raio do anel (aperta a constelação). */
-  ringScale: 0.7,
+  ringScale: 0.8,
 } as const;
 
 /** Largura (px) abaixo da qual usamos o enquadramento mobile. Casa com o card. */

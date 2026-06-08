@@ -80,6 +80,11 @@ export default function ProjectLandscape({
   onForwardRef.current = onForward;
   const onBackRef = useRef(onBack);
   onBackRef.current = onBack;
+  // Mobile: navegação "travada" por fragmento — sem auto-rotate à deriva, e
+  // snap no mais próximo ao soltar o drag. Ref pra ler no rAF/handlers sem
+  // re-subscrever.
+  const isMobileRef = useRef(false);
+  const snapToNearestRef = useRef<(() => void) | null>(null);
 
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -138,7 +143,10 @@ export default function ProjectLandscape({
 
   useEffect(() => {
     const mql = window.matchMedia(MOBILE_BREAKPOINT);
-    const apply = () => setIsMobile(mql.matches);
+    const apply = () => {
+      setIsMobile(mql.matches);
+      isMobileRef.current = mql.matches;
+    };
     apply();
     mql.addEventListener("change", apply);
     return () => mql.removeEventListener("change", apply);
@@ -176,7 +184,8 @@ export default function ProjectLandscape({
         !paused &&
         !draggingRef.current &&
         snapTweenRef.current === null &&
-        !devCamera;
+        !devCamera &&
+        !isMobileRef.current; // mobile não gira sozinho — fica travado no fragmento
 
       if (draggingRef.current) {
         // Velocidade angular instantânea (rad/s) suavizada — base da inércia.
@@ -290,6 +299,11 @@ export default function ProjectLandscape({
       } catch {
         // ignore
       }
+      // Mobile: trava no fragmento mais próximo ao soltar (sem deriva de inércia).
+      if (isMobileRef.current) {
+        velRef.current = 0;
+        snapToNearestRef.current?.();
+      }
     },
     [],
   );
@@ -321,6 +335,25 @@ export default function ProjectLandscape({
     },
     [markInteraction],
   );
+
+  // Snap pro fragmento mais próximo do ângulo atual (usado no soltar do drag
+  // no mobile — "trava" a vitrine em cada fragmento).
+  const snapToNearest = useCallback(() => {
+    const camAngle = normalizeAngle(angleRef.current);
+    let best = slotAngles[0];
+    let minDist = Math.abs(shortAngleDelta(camAngle, best.angle));
+    for (const sa of slotAngles) {
+      const d = Math.abs(shortAngleDelta(camAngle, sa.angle));
+      if (d < minDist) {
+        minDist = d;
+        best = sa;
+      }
+    }
+    snapToSlug(best.slug);
+  }, [slotAngles, snapToSlug]);
+  useEffect(() => {
+    snapToNearestRef.current = snapToNearest;
+  }, [snapToNearest]);
 
   // Hover: SÓ cursor. Não muda activeSlug nem card.
   const handleHover = useCallback((slug: string | null) => {

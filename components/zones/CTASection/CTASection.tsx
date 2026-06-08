@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import gsap from "gsap";
 import { MeshButton } from "@/components/ui/MeshButton";
 import { useSectionScrollProgress } from "@/hooks/useSectionScrollProgress";
 import Footer from "./Footer";
@@ -53,10 +54,54 @@ export default function CTASection({
   const [bodyIn, setBodyIn] = useState(false);
   const [ctaIn, setCtaIn] = useState(false);
   const [cueOut, setCueOut] = useState(false);
+  // No mobile o convite NÃO é scroll-driven: sticky + trilho de 200vh é frágil
+  // no touch (barra de endereço, snap) e fazia o convite "não aparecer / pular
+  // pro footer". Vira um hero que se forma sozinho na entrada.
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const apply = () => setIsMobile(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  // Mobile: auto-forma o símbolo (anima progressRef) + revela a copy em cascata
+  // ao ficar ativo — independe de scroll.
+  useEffect(() => {
+    if (!isMobile) return;
+    const start = inPage ? !!live : true;
+    if (!start) {
+      progressRef.current = 0;
+      setHeadlinesIn(false);
+      setBodyIn(false);
+      setCtaIn(false);
+      return;
+    }
+    const proxy = { p: 0 };
+    const tw = gsap.to(proxy, {
+      p: 1,
+      duration: 2.2,
+      ease: "power2.inOut",
+      onUpdate: () => {
+        progressRef.current = proxy.p;
+      },
+    });
+    const timers = [
+      setTimeout(() => setHeadlinesIn(true), 300),
+      setTimeout(() => setBodyIn(true), 750),
+      setTimeout(() => setCtaIn(true), 1150),
+    ];
+    return () => {
+      tw.kill();
+      timers.forEach(clearTimeout);
+    };
+  }, [isMobile, live, inPage]);
 
   // Conteúdo antecipado (entra mais cedo no scroll) pra encurtar a sensação
   // de transição. O cue "role" some assim que a headline começa a entrar.
   useSectionScrollProgress(trackRef, (p) => {
+    if (isMobile) return; // mobile não é scroll-driven (efeito acima cuida)
     progressRef.current = Math.max(0, Math.min(1, p));
 
     const h = p > 0.42;
@@ -168,7 +213,10 @@ export default function CTASection({
       }`}
       aria-labelledby="cta-headline"
     >
-      <div ref={trackRef} className="relative h-[200vh]">
+      <div
+        ref={trackRef}
+        className={`relative ${isMobile ? "min-h-screen" : "h-[200vh]"}`}
+      >
         <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
           {/* Formação 3D — campo ambiente + energia convergindo pro CTA. */}
           <div className="pointer-events-none absolute inset-0 z-0">
@@ -251,11 +299,11 @@ export default function CTASection({
           </div>
 
           {/* Cue de scroll — guia o usuário no trecho inicial; some quando o
-              conteúdo entra. */}
+              conteúdo entra. No mobile não há scroll-driven → não mostra. */}
           <div
             className="pointer-events-none absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5"
             style={{
-              opacity: cueOut ? 0 : 1,
+              opacity: isMobile ? 0 : cueOut ? 0 : 1,
               transform: cueOut ? "translateY(8px)" : "translateY(0)",
               transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
             }}

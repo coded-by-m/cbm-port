@@ -224,8 +224,10 @@ export default function ProblemSection({
         ref={containerRef}
         className="relative h-screen w-full overflow-hidden"
       >
-        {/* Canvas no fundo — torre triangulada construída por beat */}
-        <div className="pointer-events-none absolute inset-0 z-0">
+        {/* Canvas no fundo — torre triangulada construída por beat. No mobile
+            ocupa só a METADE INFERIOR (texto fica no topo, sem sobreposição);
+            md+ volta a ser full-screen. */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[46%] z-0 md:top-0">
           <GenericGrid
             progressRef={progressRef}
             outroRef={outroRef}
@@ -263,7 +265,7 @@ export default function ProblemSection({
 
         {/* Copy coluna esquerda — 4 beats com crossfade */}
         <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 sm:px-10">
-          <div className="relative flex h-screen max-w-xl flex-col justify-center">
+          <div className="relative flex h-screen max-w-xl flex-col justify-start pt-[12vh] md:justify-center md:pt-0">
             {/* Eyebrow */}
             <div className="flex items-center gap-4">
               <span
@@ -282,7 +284,7 @@ export default function ProblemSection({
             </div>
 
             {/* Beat container — altura mínima evita pulo de layout */}
-            <div className="relative mt-7 min-h-[280px] sm:min-h-[240px]">
+            <div className="relative mt-7 min-h-[200px] sm:min-h-[240px]">
               {BEATS.map((beat, i) => {
                 const isActive = i === activeBeat;
                 return (
