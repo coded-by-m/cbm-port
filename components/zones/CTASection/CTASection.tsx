@@ -2,9 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import gsap from "gsap";
 import { MeshButton } from "@/components/ui/MeshButton";
-import { useSectionScrollProgress } from "@/hooks/useSectionScrollProgress";
 import Footer from "./Footer";
 
 const CTAFormation = dynamic(() => import("./CTAFormation"), { ssr: false });
@@ -43,34 +41,21 @@ export default function CTASection({
   const scrollerRef = useRef<HTMLDivElement>(null);
   const onBackRef = useRef(onBack);
   onBackRef.current = onBack;
-  // Trilho alto (h-[240vh]) — fonte do progress nos dois modos.
-  const trackRef = useRef<HTMLDivElement>(null);
-  const progressRef = useRef(0);
-  const lastHRef = useRef(false);
-  const lastBRef = useRef(false);
-  const lastCRef = useRef(false);
-  const lastCueRef = useRef(false);
+  const progressRef = useRef(0); // 0..1 da formação do símbolo
+  const formedRef = useRef(false); // formação concluída → libera o gesto pro footer
+
   const [headlinesIn, setHeadlinesIn] = useState(false);
   const [bodyIn, setBodyIn] = useState(false);
   const [ctaIn, setCtaIn] = useState(false);
-  const [cueOut, setCueOut] = useState(false);
-  // No mobile o convite NÃO é scroll-driven: sticky + trilho de 200vh é frágil
-  // no touch (barra de endereço, snap) e fazia o convite "não aparecer / pular
-  // pro footer". Vira um hero que se forma sozinho na entrada.
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
-    const apply = () => setIsMobile(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
 
-  // Mobile: auto-forma o símbolo (anima progressRef) + revela a copy em cascata
-  // ao ficar ativo — independe de scroll.
+  // O Convite é uma seção TRAVADA (como as outras): ao ficar ativo, a formação
+  // 3D roda sozinha (~2s, "o convite se forma") e a copy entra em cascata —
+  // independe de scroll (200vh sticky era frágil no touch e fazia o convite
+  // "não aparecer / pular pro footer"). Depois de formado, um gesto pra baixo
+  // leva ao footer (tratado no handler abaixo). Dirigido por rAF (auto-contido).
   useEffect(() => {
-    if (!isMobile) return;
     const start = inPage ? !!live : true;
+    formedRef.current = false;
     if (!start) {
       progressRef.current = 0;
       setHeadlinesIn(false);
@@ -78,53 +63,33 @@ export default function CTASection({
       setCtaIn(false);
       return;
     }
-    const proxy = { p: 0 };
-    const tw = gsap.to(proxy, {
-      p: 1,
-      duration: 2.2,
-      ease: "power2.inOut",
-      onUpdate: () => {
-        progressRef.current = proxy.p;
-      },
-    });
+    const DURATION = 2000;
+    // power2.inOut
+    const ease = (x: number) =>
+      x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+    let raf = 0;
+    let t0 = 0;
+    const tick = (now: number) => {
+      if (!t0) t0 = now;
+      const k = Math.min(1, (now - t0) / DURATION);
+      progressRef.current = ease(k);
+      if (k < 1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        formedRef.current = true;
+      }
+    };
+    raf = requestAnimationFrame(tick);
     const timers = [
       setTimeout(() => setHeadlinesIn(true), 300),
       setTimeout(() => setBodyIn(true), 750),
       setTimeout(() => setCtaIn(true), 1150),
     ];
     return () => {
-      tw.kill();
+      cancelAnimationFrame(raf);
       timers.forEach(clearTimeout);
     };
-  }, [isMobile, live, inPage]);
-
-  // Conteúdo antecipado (entra mais cedo no scroll) pra encurtar a sensação
-  // de transição. O cue "role" some assim que a headline começa a entrar.
-  useSectionScrollProgress(trackRef, (p) => {
-    if (isMobile) return; // mobile não é scroll-driven (efeito acima cuida)
-    progressRef.current = Math.max(0, Math.min(1, p));
-
-    const h = p > 0.42;
-    const b = p > 0.55;
-    const c = p > 0.75;
-    const cue = p > 0.38;
-    if (h !== lastHRef.current) {
-      lastHRef.current = h;
-      setHeadlinesIn(h);
-    }
-    if (b !== lastBRef.current) {
-      lastBRef.current = b;
-      setBodyIn(b);
-    }
-    if (c !== lastCRef.current) {
-      lastCRef.current = c;
-      setCtaIn(c);
-    }
-    if (cue !== lastCueRef.current) {
-      lastCueRef.current = cue;
-      setCueOut(cue);
-    }
-  });
+  }, [live, inPage]);
 
   const wordStyle = (i: number, shown: boolean) => ({
     display: "inline-block",
@@ -134,8 +99,10 @@ export default function CTASection({
     transitionDelay: `${i * 70}ms`,
   });
 
-  // Wipe ao subir do TOPO → capítulo anterior (Sobre). É a finale (com footer),
-  // então só trata o topo↑; descer rola livre até o footer.
+  // Seção TRAVADA (como as outras), anti-skip + cooldown: enquanto o convite
+  // preenche a tela (topo), o gesto pra BAIXO — depois de formado — leva ao
+  // footer (scroll controlado); pra CIMA volta pro Sobre (wipe). No footer
+  // libera o scroll normal.
   useEffect(() => {
     if (!inPage || !live) return;
     const el = scrollerRef.current;
@@ -143,49 +110,63 @@ export default function CTASection({
     let cooldown = false;
     let accum = 0;
     let resetTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const atTop = () => el.getBoundingClientRect().top >= -2;
+    const footerShown = () => {
+      const f = el.querySelector("footer");
+      return f ? f.getBoundingClientRect().top < window.innerHeight * 0.5 : false;
+    };
+    const goFooter = () =>
+      el
+        .querySelector("footer")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const fire = (fn: () => void) => {
+      cooldown = true;
+      setTimeout(() => {
+        cooldown = false;
+      }, 1100);
+      accum = 0;
+      fn();
+    };
+
     const onWheel = (e: WheelEvent) => {
-      if (cooldown) return;
-      const rect = el.getBoundingClientRect();
-      const atTop = rect.top >= -2;
-      if (e.deltaY < 0 && atTop) {
-        e.preventDefault();
-        if (resetTimer) clearTimeout(resetTimer);
-        resetTimer = setTimeout(() => {
-          accum = 0;
-        }, 200);
-        accum += e.deltaY;
-        if (accum < -90) {
-          cooldown = true;
-          setTimeout(() => {
-            cooldown = false;
-          }, 1100);
-          accum = 0;
-          onBackRef.current?.();
-        }
-      } else {
+      if (cooldown || !atTop()) return;
+      if (resetTimer) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
         accum = 0;
+      }, 200);
+      if (e.deltaY < 0) {
+        e.preventDefault();
+        accum += e.deltaY;
+        if (accum < -90) fire(() => onBackRef.current?.());
+      } else if (e.deltaY > 0 && formedRef.current && !footerShown()) {
+        e.preventDefault();
+        accum += e.deltaY;
+        if (accum > 90) fire(goFooter);
       }
     };
-    // Touch: deslizar pra baixo (rolar pra cima) no TOPO → volta (1 por gesto).
+
+    // Touch: 1 gesto = 1 ação. Swipe ↑ (rolar p/ baixo) formado → footer;
+    // swipe ↓ (rolar p/ cima) no topo → Sobre.
     let touchY = 0;
     let fired = false;
     let startTop = false;
     const onTouchStart = (e: TouchEvent) => {
       touchY = e.touches[0].clientY;
       fired = false;
-      startTop = el.getBoundingClientRect().top >= -2;
+      startTop = atTop();
     };
     const onTouchMove = (e: TouchEvent) => {
-      if (cooldown || fired) return;
-      const dy = touchY - e.touches[0].clientY;
-      if (dy < -45 && startTop) {
+      if (cooldown || fired || !startTop) return;
+      const dy = touchY - e.touches[0].clientY; // >0 = swipe up = scroll down
+      if (dy > 45 && formedRef.current && !footerShown()) {
         e.preventDefault();
         fired = true;
-        cooldown = true;
-        setTimeout(() => {
-          cooldown = false;
-        }, 1100);
-        onBackRef.current?.();
+        fire(goFooter);
+      } else if (dy < -45) {
+        e.preventDefault();
+        fired = true;
+        fire(() => onBackRef.current?.());
       }
     };
     const onTouchEnd = () => {
@@ -213,10 +194,7 @@ export default function CTASection({
       }`}
       aria-labelledby="cta-headline"
     >
-      <div
-        ref={trackRef}
-        className={`relative ${isMobile ? "min-h-screen" : "h-[200vh]"}`}
-      >
+      <div className="relative min-h-screen">
         <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
           {/* Formação 3D — campo ambiente + energia convergindo pro CTA. */}
           <div className="pointer-events-none absolute inset-0 z-0">
@@ -298,14 +276,15 @@ export default function CTASection({
             </div>
           </div>
 
-          {/* Cue de scroll — guia o usuário no trecho inicial; some quando o
-              conteúdo entra. No mobile não há scroll-driven → não mostra. */}
+          {/* Cue — aparece DEPOIS de formado, convidando o gesto pra baixo que
+              leva ao footer (a seção é travada, não rola livre). */}
           <div
             className="pointer-events-none absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5"
             style={{
-              opacity: isMobile ? 0 : cueOut ? 0 : 1,
-              transform: cueOut ? "translateY(8px)" : "translateY(0)",
-              transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+              opacity: ctaIn ? 1 : 0,
+              transform: ctaIn ? "translateY(0)" : "translateY(8px)",
+              transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+              transitionDelay: ctaIn ? "500ms" : "0ms",
             }}
             aria-hidden
           >

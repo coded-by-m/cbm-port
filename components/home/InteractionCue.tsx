@@ -50,8 +50,10 @@ export function InteractionCue({ active }: { active: number }) {
     const mql = window.matchMedia("(max-width: 767px)");
     const apply = () =>
       setHideForCard(
-        mql.matches &&
-          (chapter?.id === "projetos" || chapter?.id === "convite"),
+        // Convite agora é hero auto-formado (tem cue própria) → esconde sempre.
+        // Projetos: só no mobile (lá o bottom-sheet card ocupa o rodapé).
+        chapter?.id === "convite" ||
+          (mql.matches && chapter?.id === "projetos"),
       );
     apply();
     mql.addEventListener("change", apply);
