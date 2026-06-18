@@ -11,6 +11,9 @@ export interface CaseOverviewData {
   challenge: string;
 }
 
+/** Tipo de entrega do projeto — dirige a cor sutil do fragmento na vitrine. */
+export type ProjectType = "institucional" | "landing" | "webapp" | "ecommerce";
+
 export interface CaseProject {
   slug: string;
   eyebrow: string;
@@ -39,4 +42,11 @@ export interface CaseProject {
     desktop: string;
     mobile: string;
   };
+  /**
+   * Tipo de entrega — dirige a cor do apex do fragmento na Paisagem.
+   * Omitido → tratado como "institucional" (cor vermelha da marca).
+   */
+  type?: ProjectType;
+  /** Stack técnica exibida na página de case (ex.: ["Next.js", "React"]). */
+  stack?: string[];
 }

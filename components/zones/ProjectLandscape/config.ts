@@ -1,4 +1,5 @@
 import { LAYERS } from "@/components/zones/TerrainMesh/config";
+import type { ProjectType } from "@/types/case";
 
 /**
  * Posição e escala dos 3 fragmentos sobre o terreno.
@@ -235,6 +236,18 @@ export const FLOOR = {
   lerpSpeed: 4,
   /** Y local (acima do terreno por uma fração pra evitar z-fighting). */
   yOffset: 0.005,
+} as const;
+
+/**
+ * Cor do apex do fragmento por tipo de projeto. Dessaturada pra coesão com a
+ * marca — só o apex carrega a cor; arestas/nós continuam off-white.
+ * Coming-soon ignora isto (apex vira off-white via STATUS_VISUAL).
+ */
+export const PROJECT_TYPE_COLOR: Record<ProjectType, string> = {
+  institucional: "#FB3640",
+  landing: "#D9A15B",
+  webapp: "#5FB0A3",
+  ecommerce: "#A98BC9",
 } as const;
 
 /** Modificadores visuais por status (publicado vs em breve). */
