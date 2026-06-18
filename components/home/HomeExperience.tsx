@@ -9,6 +9,7 @@ import { ChapterRail } from "./ChapterRail";
 import { ChapterDots } from "./ChapterDots";
 import { InteractionCue } from "./InteractionCue";
 import { ChapterTransition } from "./ChapterTransition";
+import { ProjectsShortcut } from "./ProjectsShortcut";
 import { LogoIntro } from "./LogoIntro";
 import { ManifestoIntro } from "./ManifestoIntro";
 import { useActiveChapter } from "@/hooks/useActiveChapter";
@@ -256,6 +257,18 @@ export function HomeExperience() {
     [activeChapter, guidedScroll],
   );
 
+  // Atalho do impaciente: destrava a intro (se ativa) e posiciona na vitrine.
+  const skipToProjects = useCallback(() => {
+    setIntroDone(true);
+    const place = () => {
+      document
+        .querySelector('[data-chapter-index="4"]')
+        ?.scrollIntoView({ block: "start" });
+    };
+    // Dá um tick pro lock soltar / LazySection montar antes de posicionar.
+    requestAnimationFrame(() => setTimeout(place, 80));
+  }, []);
+
   // Teclado: ↑/↓ (ou J/K) anterior/próximo · 1–9 pula direto. Power-user +
   // acessibilidade. Só depois da intro, ignora inputs de texto.
   useEffect(() => {
@@ -299,13 +312,20 @@ export function HomeExperience() {
           <ChapterRail active={activeChapter} onJump={jumpTo} />
           <ChapterDots active={activeChapter} onJump={jumpTo} />
           <InteractionCue active={activeChapter} />
+          <ProjectsShortcut
+            visible={activeChapter !== 4}
+            onClick={() => jumpTo(4)}
+          />
         </>
       )}
 
       {/* 0 — Logo. A marca se constrói (intro travada). Ao terminar, destrava
           o scroll e revela o indicador "role para continuar". */}
       <LazySection minHeight="100vh" eager chapterIndex={0}>
-        <LogoIntro onComplete={() => setIntroDone(true)} />
+        <LogoIntro
+          onComplete={() => setIntroDone(true)}
+          onSkipToProjects={skipToProjects}
+        />
       </LazySection>
 
       {/* 1 — Manifesto. As 3 frases-manifesto, capítulo próprio. `onBack`:

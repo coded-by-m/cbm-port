@@ -20,7 +20,13 @@ const SETTLE_MS = 1100;
  *
  * @param onComplete chamado quando a intro conclui (libera o scroll na Home).
  */
-export function LogoIntro({ onComplete }: { onComplete?: () => void }) {
+export function LogoIntro({
+  onComplete,
+  onSkipToProjects,
+}: {
+  onComplete?: () => void;
+  onSkipToProjects?: () => void;
+}) {
   const [built, setBuilt] = useState(false); // marca construída → selo aparece
   const [ready, setReady] = useState(false); // intro concluída → scroll liberado
   const doneRef = useRef(false);
@@ -43,6 +49,27 @@ export function LogoIntro({ onComplete }: { onComplete?: () => void }) {
       className="relative h-screen w-full overflow-hidden bg-[#000F08]"
     >
       <TriangleLoader onComplete={handleBuilt} />
+
+      {/* Atalho pro impaciente — aparece quando a marca terminou de construir. */}
+      {onSkipToProjects && (
+        <button
+          type="button"
+          onClick={onSkipToProjects}
+          data-cursor="triangle"
+          className="absolute right-6 top-6 z-10 inline-flex items-center gap-2 text-[0.55rem] uppercase tracking-[0.3em] text-[#F5F2ED]/45 transition-all duration-500 hover:text-[#F5F2ED]"
+          style={{
+            fontFamily: '"Satoshi", sans-serif',
+            fontWeight: 500,
+            opacity: built ? 1 : 0,
+            pointerEvents: built ? "auto" : "none",
+          }}
+        >
+          Ver projetos
+          <svg aria-hidden width="9" height="9" viewBox="0 0 10 10">
+            <polygon points="2,1 9,5 2,9" fill="#FB3640" />
+          </svg>
+        </button>
+      )}
 
       {/* Selo da marca */}
       <div
