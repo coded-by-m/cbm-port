@@ -90,19 +90,29 @@ export function InteractionCue({ active }: { active: number }) {
       aria-hidden={!visible}
     >
       <div
-        className="flex items-center gap-3 transition-opacity duration-500 ease-out"
+        className="flex flex-col items-center gap-1 transition-opacity duration-500 ease-out"
         style={{ opacity: visible ? 1 : 0 }}
       >
-        <svg aria-hidden width="7" height="7" viewBox="0 0 10 10">
-          {/* Triângulo apontando pra baixo — convida o gesto. */}
-          <polygon points="1,2 9,2 5,9" fill={SIGNAL} />
-        </svg>
-        <span
-          className="text-[0.6rem] uppercase tracking-[0.32em] text-[#F5F2ED]/70"
-          style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
-        >
-          {chapter.cue}
-        </span>
+        <div className="flex items-center gap-3">
+          <svg aria-hidden width="7" height="7" viewBox="0 0 10 10">
+            {/* Triângulo apontando pra baixo — convida o gesto. */}
+            <polygon points="1,2 9,2 5,9" fill={SIGNAL} />
+          </svg>
+          <span
+            className="text-[0.6rem] uppercase tracking-[0.32em] text-[#F5F2ED]/70"
+            style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+          >
+            {chapter.cue}
+          </span>
+        </div>
+        {chapter.gestures && chapter.gestures.length > 0 && (
+          <span
+            className="text-[0.5rem] uppercase tracking-[0.28em] text-[#F5F2ED]/40"
+            style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+          >
+            {chapter.gestures.join("  ·  ")}
+          </span>
+        )}
       </div>
     </div>
   );
