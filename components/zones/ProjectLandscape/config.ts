@@ -29,32 +29,44 @@ export interface FragmentSlot {
  * do centro à distância `ORBIT.cameraRadius`, sempre olhando para o centro.
  * Drag horizontal rotaciona a câmera; auto-rotate lento quando ocioso.
  */
+const FRAGMENT_SCALE = 1.8;
+
 function ringSlot(
   index: number,
-  scaleSlug: { scale: number; seed: number; slug: string },
+  count: number,
+  def: { seed: number; slug: string },
 ): FragmentSlot {
-  const angle = index * ((Math.PI * 2) / 6);
+  const angle = index * ((Math.PI * 2) / count);
   const r = 5.5;
   return {
     index,
     x: Math.sin(angle) * r,
     z: Math.cos(angle) * r,
-    scale: scaleSlug.scale,
-    seed: scaleSlug.seed,
-    slug: scaleSlug.slug,
+    scale: FRAGMENT_SCALE,
+    seed: def.seed,
+    slug: def.slug,
   };
 }
 
-const FRAGMENT_SCALE = 1.8;
-
-export const FRAGMENT_SLOTS: FragmentSlot[] = [
-  ringSlot(0, { scale: FRAGMENT_SCALE, seed: 17, slug: "machado-plataformas" }),
-  ringSlot(1, { scale: FRAGMENT_SCALE, seed: 137, slug: "estudio-mendes" }),
-  ringSlot(2, { scale: FRAGMENT_SCALE, seed: 211, slug: "rota-clinica" }),
-  ringSlot(3, { scale: FRAGMENT_SCALE, seed: 73, slug: "industrial-tba" }),
-  ringSlot(4, { scale: FRAGMENT_SCALE, seed: 191, slug: "ecommerce-tba" }),
-  ringSlot(5, { scale: FRAGMENT_SCALE, seed: 257, slug: "education-tba" }),
+/**
+ * Definições dos fragmentos na ordem de colocação no anel. Publicados e
+ * "em breve" intercalados pra a cor por tipo se espalhar pela órbita.
+ * Slugs casam com `data/cases.ts`.
+ */
+const FRAGMENT_DEFS: { seed: number; slug: string }[] = [
+  { seed: 17, slug: "machado-plataformas" },
+  { seed: 73, slug: "maison-etoile" },
+  { seed: 137, slug: "forma-viva" },
+  { seed: 211, slug: "estudio-monteiro" },
+  { seed: 191, slug: "rota-clinica" },
+  { seed: 257, slug: "industrial-tba" },
+  { seed: 53, slug: "ecommerce-tba" },
+  { seed: 113, slug: "education-tba" },
 ];
+
+export const FRAGMENT_SLOTS: FragmentSlot[] = FRAGMENT_DEFS.map((def, i) =>
+  ringSlot(i, FRAGMENT_DEFS.length, def),
+);
 
 /** Slug do fragmento que abre automaticamente quando a Paisagem entra. */
 export const INITIAL_ACTIVE_SLUG = "machado-plataformas";
