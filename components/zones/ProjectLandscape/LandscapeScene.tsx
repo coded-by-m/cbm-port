@@ -6,7 +6,13 @@ import TerrainScene from "@/components/zones/TerrainMesh/TerrainScene";
 import ProjectFragment from "./ProjectFragment";
 import { useOrbitCameraConditional } from "./useOrbitCamera";
 import { cases } from "@/data/cases";
-import { FRAGMENT_SLOTS, MOBILE_MAX_WIDTH, ORBIT_MOBILE } from "./config";
+import {
+  FRAGMENT_SLOTS,
+  FRAGMENT_VISUAL,
+  MOBILE_MAX_WIDTH,
+  ORBIT_MOBILE,
+  PROJECT_TYPE_COLOR,
+} from "./config";
 
 /**
  * Cena 3D da Paisagem Digital — modo orbital.
@@ -50,6 +56,10 @@ export default function LandscapeScene({
       {FRAGMENT_SLOTS.map((slot, i) => {
         const caseProject = cases.find((c) => c.slug === slot.slug);
         const isComingSoon = caseProject?.status === "coming-soon";
+        const apexColor =
+          caseProject?.type != null
+            ? PROJECT_TYPE_COLOR[caseProject.type]
+            : FRAGMENT_VISUAL.apexColor;
         const placedSlot =
           ringScale === 1
             ? slot
@@ -62,6 +72,7 @@ export default function LandscapeScene({
             isActive={activeSlug === slot.slug}
             anyActive={anyActive}
             isComingSoon={isComingSoon}
+            apexColor={apexColor}
             revealPlay={revealPlay}
             onHover={onHover}
             onClick={onClick}

@@ -35,7 +35,6 @@ import {
 const TWO_PI = Math.PI * 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-const apexColorBase = new Color(FRAGMENT_VISUAL.apexColor);
 const offWhite = new Color(FRAGMENT_VISUAL.nodeColor);
 const dimColor = new Color(FRAGMENT_VISUAL.dimColor);
 const colorScratch = new Color();
@@ -46,6 +45,7 @@ export default function ProjectFragment({
   isActive,
   anyActive,
   isComingSoon,
+  apexColor = FRAGMENT_VISUAL.apexColor,
   revealPlay = true,
   onHover,
   onClick,
@@ -56,12 +56,15 @@ export default function ProjectFragment({
   isActive: boolean;
   anyActive: boolean;
   isComingSoon: boolean;
+  /** Cor do apex por tipo de projeto (default = vermelho da marca). */
+  apexColor?: string;
   /** Capítulo ativo → dispara a montagem sincronizada com o wipe de chegada. */
   revealPlay?: boolean;
   onHover: (id: string | null) => void;
   onClick: (id: string) => void;
 }) {
   const geom = useMemo(() => buildTower(slot.seed), [slot.seed]);
+  const apexColorObj = useMemo(() => new Color(apexColor), [apexColor]);
   // Montagem escalonada disparada na chegada do capítulo (não no mount), com
   // atraso curto pra montar conforme o wipe revela a vitrine.
   const reveal = useFragmentBuild(index, { play: revealPlay, startDelay: 0.3 });
@@ -203,7 +206,7 @@ export default function ProjectFragment({
         ) {
           ref.current.color.copy(offWhite);
         } else {
-          ref.current.color.copy(apexColorBase).lerp(offWhite, d);
+          ref.current.color.copy(apexColorObj).lerp(offWhite, d);
         }
       } else {
         ref.current.color.copy(colorScratch);
