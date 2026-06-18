@@ -16,11 +16,14 @@ export default function LandscapeProgressBar({
   activeSlug,
   visitedSlugs,
   onSelect,
+  activeColor = "#F5F2ED",
 }: {
   slots: FragmentSlot[];
   activeSlug: string | null;
   visitedSlugs: Set<string>;
   onSelect: (slug: string) => void;
+  /** Cor do segmento ativo (cor do tipo do projeto ativo). */
+  activeColor?: string;
 }) {
   const TWO_PI = Math.PI * 2;
   const angleOf = (s: FragmentSlot) =>
@@ -47,11 +50,12 @@ export default function LandscapeProgressBar({
                 <span
                   className={`block h-[2px] transition-all duration-300 ${
                     isActive
-                      ? "w-14 bg-[#F5F2ED]"
+                      ? "w-14"
                       : isVisited
                         ? "w-10 bg-[#F5F2ED]/45 hover:bg-[#F5F2ED]/85"
                         : "w-10 bg-[#F5F2ED]/15 hover:bg-[#F5F2ED]/55"
                   }`}
+                  style={isActive ? { backgroundColor: activeColor } : undefined}
                 />
                 <span className="absolute left-1/2 top-7 -translate-x-1/2 text-[0.5rem] uppercase tracking-[0.3em] text-[#F5F2ED]/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                   {`0${idx}`}

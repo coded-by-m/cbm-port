@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import type { CaseProject } from "@/types/case";
-import { CARD, FRAGMENT_SLOTS, SLIDESHOW } from "./config";
+import { CARD, FRAGMENT_SLOTS, PROJECT_TYPE_COLOR, SLIDESHOW } from "./config";
 import { CardMeshPlaceholder } from "./CardMeshPlaceholder";
 import SlideshowDots from "./SlideshowDots";
 
@@ -180,6 +180,10 @@ export function ProjectCard({
 
   const renderContent = (project: CaseProject) => {
     const isComingSoon = project.status === "coming-soon";
+    const typeColor =
+      !isComingSoon && project.type != null
+        ? PROJECT_TYPE_COLOR[project.type]
+        : null;
     const slot = FRAGMENT_SLOTS.find((s) => s.slug === project.slug);
     const seed = slot?.seed ?? 0;
     const positionIdx = orderedIdx(project.slug);
@@ -265,7 +269,14 @@ export function ProjectCard({
 
         {/* Texto */}
         <div className="card-stagger flex min-w-0 flex-col gap-1.5">
-          <p className="text-[0.55rem] uppercase tracking-[0.4em] text-[#97938b]">
+          <p className="flex items-center gap-2 text-[0.55rem] uppercase tracking-[0.4em] text-[#97938b]">
+            {typeColor && (
+              <span
+                aria-hidden
+                className="inline-block h-[2px] w-3.5 flex-shrink-0"
+                style={{ backgroundColor: typeColor }}
+              />
+            )}
             {isComingSoon
               ? `Em breve · ${project.meta.setor}`
               : `${project.meta.setor} · ${project.meta.ano}`}

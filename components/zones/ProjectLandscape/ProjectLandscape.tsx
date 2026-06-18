@@ -19,6 +19,7 @@ import {
   FRAGMENT_SLOTS,
   HINT,
   ORBIT,
+  PROJECT_TYPE_COLOR,
 } from "./config";
 
 type Direction = "left" | "right" | null;
@@ -493,6 +494,11 @@ export default function ProjectLandscape({
       ? cases.find((c) => c.slug === activeSlug) ?? null
       : null;
 
+  const activeColor =
+    activeCase?.type != null
+      ? PROJECT_TYPE_COLOR[activeCase.type]
+      : "#F5F2ED";
+
   const allVisited = visitedSlugs.size >= FRAGMENT_SLOTS.length;
 
   const wrapperHandlers = devCamera
@@ -543,6 +549,7 @@ export default function ProjectLandscape({
               activeSlug={activeSlug}
               visitedSlugs={visitedSlugs}
               onSelect={snapToSlug}
+              activeColor={activeColor}
             />
           </div>
           <div
