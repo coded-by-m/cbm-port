@@ -1,6 +1,12 @@
 import type { CaseMeta } from "@/types/case";
 
-export function ProjectFacts({ meta }: { meta: CaseMeta }) {
+export function ProjectFacts({
+  meta,
+  stack,
+}: {
+  meta: CaseMeta;
+  stack?: string[];
+}) {
   const fields: { label: string; value: string }[] = [
     { label: "Cliente", value: meta.cliente },
     { label: "Setor",   value: meta.setor   },
@@ -28,6 +34,24 @@ export function ProjectFacts({ meta }: { meta: CaseMeta }) {
           </div>
         ))}
       </div>
+
+      {stack && stack.length > 0 && (
+        <div className="mt-7">
+          <p className="mb-3 font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-600">
+            Stack
+          </p>
+          <div className="flex flex-wrap gap-2 max-w-[440px]">
+            {stack.map((tech) => (
+              <span
+                key={tech}
+                className="border border-[#F5F2ED]/15 px-2.5 py-1 font-body text-[11px] tracking-wide text-cbm-gray-200"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
