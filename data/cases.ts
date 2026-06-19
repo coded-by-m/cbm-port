@@ -80,7 +80,7 @@ export const cases: CaseProject[] = [
       challenge:
         "Transformar um estúdio boutique de interiores em uma presença digital de página única que comunica exclusividade e conduz à solicitação de proposta sem dispersar o visitante.",
     },
-    gallery: [],
+    gallery: ["/cases/maison-etoile/gallery-1.jpeg", "/cases/maison-etoile/gallery-2.jpeg"],
     status: "published",
     siteUrl: "lp-interiores.vercel.app",
     preview: {
