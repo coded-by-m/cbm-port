@@ -73,7 +73,7 @@ export function LogoIntro({
           construir (built). Container não captura clique; só o botão. */}
       {onSkipToProjects && (
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-[12vh] z-10 flex flex-col items-center gap-3 px-6"
+          className="pointer-events-none absolute inset-x-0 bottom-[12vh] z-10 flex flex-col items-center gap-6 px-6"
           style={{ opacity: built ? 1 : 0, transition: "opacity 0.8s ease" }}
         >
           <p
@@ -86,7 +86,7 @@ export function LogoIntro({
             type="button"
             onClick={onSkipToProjects}
             data-cursor="triangle"
-            className="pointer-events-auto inline-flex items-center gap-2.5 rounded-full border border-[#F5F2ED]/20 px-5 py-2.5 text-[0.6rem] uppercase tracking-[0.28em] text-[#F5F2ED]/70 transition-all duration-500 hover:border-[#F5F2ED]/45 hover:text-[#F5F2ED]"
+            className="pointer-events-auto inline-flex items-center gap-3 rounded-full border border-[#F5F2ED]/20 px-7 py-3.5 text-[0.7rem] uppercase tracking-[0.3em] text-[#F5F2ED]/70 transition-all duration-500 hover:border-[#F5F2ED]/45 hover:text-[#F5F2ED]"
             style={{
               fontFamily: '"Satoshi", sans-serif',
               fontWeight: 500,
@@ -94,7 +94,7 @@ export function LogoIntro({
             }}
           >
             Ir direto aos projetos
-            <svg aria-hidden width="9" height="9" viewBox="0 0 10 10">
+            <svg aria-hidden width="11" height="11" viewBox="0 0 10 10">
               <polygon points="2,1 9,5 2,9" fill="#FB3640" />
             </svg>
           </button>

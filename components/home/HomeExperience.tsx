@@ -9,7 +9,6 @@ import { ChapterRail } from "./ChapterRail";
 import { ChapterDots } from "./ChapterDots";
 import { InteractionCue } from "./InteractionCue";
 import { ChapterTransition } from "./ChapterTransition";
-import { ProjectsShortcut } from "./ProjectsShortcut";
 import { LogoIntro } from "./LogoIntro";
 import { ManifestoIntro } from "./ManifestoIntro";
 import { useActiveChapter } from "@/hooks/useActiveChapter";
@@ -312,10 +311,6 @@ export function HomeExperience() {
           <ChapterRail active={activeChapter} onJump={jumpTo} />
           <ChapterDots active={activeChapter} onJump={jumpTo} />
           <InteractionCue active={activeChapter} />
-          <ProjectsShortcut
-            visible={activeChapter !== 4}
-            onClick={() => jumpTo(4)}
-          />
         </>
       )}
 
