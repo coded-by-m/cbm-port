@@ -26,14 +26,6 @@ export interface CaseMockups {
   phone?: string;
 }
 
-/** Vídeos de scroll do site (.webm) — tocam dentro dos frames de hero/responsivo. */
-export interface CaseVideo {
-  /** Scroll desktop — toca no BrowserFrame do hero. */
-  desktop?: string;
-  /** Scroll mobile — toca no PhoneFrame do Responsivo. */
-  mobile?: string;
-}
-
 export interface CaseProject {
   slug: string;
   eyebrow: string;
@@ -79,12 +71,6 @@ export interface CaseProject {
    * seção CaseShowcase entre a Visão Geral e As Telas.
    */
   mockups?: CaseMockups;
-  /**
-   * Vídeos de scroll (.webm). Quando presente, o frame correspondente
-   * (hero desktop / responsivo mobile) toca o vídeo no lugar do screenshot
-   * animado — com fallback estático em prefers-reduced-motion.
-   */
-  video?: CaseVideo;
   /** Cores da marca do site capturado — tingem o gradiente do CaseShowcase. */
   palette?: string[];
 }

@@ -1,13 +1,13 @@
 import type { CaseProject } from "@/types/case";
 import { Reveal } from "@/components/case/Reveal";
 import { PhoneFrame } from "@/components/case/PhoneFrame";
-import { CaseFrameMedia } from "@/components/case/CaseFrameMedia";
+import { CaseFrameScroll } from "@/components/case/CaseFrameScroll";
 import { LogoMark } from "@/components/ui/LogoMark";
 
-/** Seção que mostra a versão mobile no PhoneFrame (vídeo de scroll ou mobile-tall rolando). */
+/** Seção que mostra a versão mobile no PhoneFrame (scroll interativo do mobile-tall). */
 export function CaseResponsive({ project }: { project: CaseProject }) {
   const mobile = project.preview?.mobile;
-  if (!mobile && !project.video?.mobile) return null;
+  if (!mobile) return null;
 
   return (
     <section
@@ -41,12 +41,10 @@ export function CaseResponsive({ project }: { project: CaseProject }) {
           <div className="w-[230px] sm:w-[260px]">
             <PhoneFrame>
               <div className="aspect-[9/16] w-full">
-                <CaseFrameMedia
-                  videoSrc={project.video?.mobile}
-                  poster={mobile}
-                  screenshotSrc={mobile}
+                <CaseFrameScroll
+                  src={mobile}
                   alt={`${project.title} — site mobile`}
-                  durationSec={28}
+                  autoDurationSec={28}
                   lazy
                   fallback={
                     <div className="flex h-full w-full items-center justify-center bg-[#070B08] opacity-20">

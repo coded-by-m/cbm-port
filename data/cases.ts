@@ -49,10 +49,6 @@ export const cases: CaseProject[] = [
       browser: "/cases/mj-engenharia/mockup-browser.webp",
       phone: "/cases/mj-engenharia/mockup-phone.webp",
     },
-    video: {
-      desktop: "/cases/mj-engenharia/scroll-desktop.webm",
-      mobile: "/cases/mj-engenharia/scroll-mobile.webm",
-    },
     palette: ["#fbfcfd", "#2b3a40", "#0b2a36", "#073b4c"],
     status: "published",
     siteUrl: "mj-engenharia-flame.vercel.app",

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import type { CaseProject } from "@/types/case";
 import { ProjectFacts } from "@/components/case/ProjectFacts";
 import { BrowserFrame } from "@/components/case/BrowserFrame";
-import { CaseFrameMedia } from "@/components/case/CaseFrameMedia";
+import { CaseFrameScroll } from "@/components/case/CaseFrameScroll";
 import { LogoMark } from "@/components/ui/LogoMark";
 import { CaseLiveButton } from "@/components/case/CaseLiveButton";
 
@@ -119,10 +119,8 @@ export function CaseHero({ project }: { project: CaseProject }) {
         >
           <BrowserFrame url={project.siteUrl}>
             <div className="aspect-[16/10] w-full">
-              <CaseFrameMedia
-                videoSrc={project.video?.desktop}
-                poster={project.preview?.desktop}
-                screenshotSrc={project.preview?.desktop}
+              <CaseFrameScroll
+                src={project.preview?.desktop}
                 alt={`${project.title} — site desktop`}
                 fallback={
                   <div className="flex h-full w-full items-center justify-center bg-[#070B08] opacity-20">
