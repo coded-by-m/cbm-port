@@ -32,3 +32,6 @@ yarn-error.log*
 # Playwright MCP artifacts
 .playwright-mcp/
 /test-*.png
+
+# Coded Atlas — capturas cruas (input de build; assets convertidos vivem em public/cases/)
+coded-atlas/

@@ -7,7 +7,11 @@ import { Reveal } from "@/components/case/Reveal";
  * Some se não houver imagens.
  */
 export function CaseScreens({ project }: { project: CaseProject }) {
-  const shots = [...project.heroImages, ...project.gallery].filter(Boolean);
+  const shots = [
+    ...project.heroImages,
+    ...(project.sections ?? []),
+    ...project.gallery,
+  ].filter(Boolean);
   if (shots.length === 0) return null;
 
   return (

@@ -2,6 +2,66 @@ import type { CaseProject } from "@/types/case";
 
 export const cases: CaseProject[] = [
   {
+    slug: "mj-engenharia",
+    eyebrow: "Landing Page Premium / Case Study",
+    title: "MJ Engenharia",
+    description:
+      "Landing page de alta conversão para uma engenharia de prevenção contra incêndio em Santa Catarina — do dimensionamento ao carimbo de aprovação do CBMSC, numa narrativa técnica que gera contato qualificado.",
+    meta: {
+      cliente: "MJ Engenharia",
+      setor: "Engenharia / Prevenção contra Incêndio",
+      tipo: "Landing Page",
+      ano: "2026",
+    },
+    type: "landing",
+    stack: [
+      "Next.js (App Router)",
+      "React",
+      "Tailwind CSS",
+      "Montserrat + Barlow Condensed + Inter",
+      "Vercel",
+    ],
+    heroImages: [
+      "/cases/mj-engenharia/hero-1.webp",
+      "/cases/mj-engenharia/hero-2.webp",
+      "/cases/mj-engenharia/hero-3.webp",
+    ],
+    sections: [
+      "/cases/mj-engenharia/section-01.webp",
+      "/cases/mj-engenharia/section-02.webp",
+      "/cases/mj-engenharia/section-03.webp",
+      "/cases/mj-engenharia/section-04.webp",
+    ],
+    overview: {
+      heading: "Do dimensionamento ao carimbo de aprovação",
+      body: [
+        "A MJ Engenharia projeta sistemas preventivos contra incêndio (PPCI) para empreendimentos que precisam aprovar de verdade — não no papel. O desafio era transformar um serviço técnico e regulatório denso numa página que comunica autoridade e conduz o cliente certo até o contato.",
+        "A landing foi construída como uma narrativa de confiança: um hero com a promessa direta de projetos que passam na primeira análise, o escopo técnico por inteiro, o método ponta a ponta — do diagnóstico ao carimbo do CBMSC — e os segmentos atendidos (edifício comercial, galpão industrial, condomínio residencial, centro logístico), fechando na prova de especialização e num convite para falar com um engenheiro.",
+        "A paleta petróleo sobre off-white transmite a seriedade de quem responde por aprovação; Montserrat e Barlow Condensed dão o tom técnico de engenharia, e o ritmo conduz do problema regulatório à solução sem que o jargão afaste quem decide.",
+      ],
+      challenge:
+        "Transformar um serviço de engenharia técnico e regulatório — projeto preventivo e aprovação no CBMSC — numa landing que comunica autoridade e conduz o cliente certo ao contato, sem que o jargão afaste quem decide.",
+    },
+    gallery: [],
+    mockups: {
+      desktop3d: "/cases/mj-engenharia/mockup-desktop-3d.webp",
+      mobile3d: "/cases/mj-engenharia/mockup-mobile-3d.webp",
+      browser: "/cases/mj-engenharia/mockup-browser.webp",
+      phone: "/cases/mj-engenharia/mockup-phone.webp",
+    },
+    video: {
+      desktop: "/cases/mj-engenharia/scroll-desktop.webm",
+      mobile: "/cases/mj-engenharia/scroll-mobile.webm",
+    },
+    palette: ["#fbfcfd", "#2b3a40", "#0b2a36", "#073b4c"],
+    status: "published",
+    siteUrl: "mj-engenharia-flame.vercel.app",
+    preview: {
+      desktop: "/cases/mj-engenharia/desktop-tall.webp",
+      mobile: "/cases/mj-engenharia/mobile-tall.webp",
+    },
+  },
+  {
     slug: "machado-plataformas",
     eyebrow: "Web Design Premium / Case Study",
     title: "Machado Plataformas",

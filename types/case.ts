@@ -14,6 +14,26 @@ export interface CaseOverviewData {
 /** Tipo de entrega do projeto — dirige a cor sutil do fragmento na vitrine. */
 export type ProjectType = "institucional" | "landing" | "webapp" | "ecommerce";
 
+/** Mockups 3D/renderizados do projeto (gerados pelo Coded Atlas). */
+export interface CaseMockups {
+  /** Render 3D do desktop — peça central do showcase. */
+  desktop3d?: string;
+  /** Render 3D do mobile — sobreposto ao desktop no showcase. */
+  mobile3d?: string;
+  /** Mockup em moldura de navegador (flat). */
+  browser?: string;
+  /** Mockup em moldura de celular (flat). */
+  phone?: string;
+}
+
+/** Vídeos de scroll do site (.webm) — tocam dentro dos frames de hero/responsivo. */
+export interface CaseVideo {
+  /** Scroll desktop — toca no BrowserFrame do hero. */
+  desktop?: string;
+  /** Scroll mobile — toca no PhoneFrame do Responsivo. */
+  mobile?: string;
+}
+
 export interface CaseProject {
   slug: string;
   eyebrow: string;
@@ -49,4 +69,22 @@ export interface CaseProject {
   type?: ProjectType;
   /** Stack técnica exibida na página de case (ex.: ["Next.js", "React"]). */
   stack?: string[];
+  /**
+   * Recortes de seção do site, exibidos na grade "As Telas" junto de
+   * heroImages e gallery. Omitido → grade usa só hero/gallery.
+   */
+  sections?: string[];
+  /**
+   * Mockups 3D/renderizados. Quando presente, a página de case renderiza a
+   * seção CaseShowcase entre a Visão Geral e As Telas.
+   */
+  mockups?: CaseMockups;
+  /**
+   * Vídeos de scroll (.webm). Quando presente, o frame correspondente
+   * (hero desktop / responsivo mobile) toca o vídeo no lugar do screenshot
+   * animado — com fallback estático em prefers-reduced-motion.
+   */
+  video?: CaseVideo;
+  /** Cores da marca do site capturado — tingem o gradiente do CaseShowcase. */
+  palette?: string[];
 }

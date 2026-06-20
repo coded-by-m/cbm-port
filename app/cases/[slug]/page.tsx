@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { cases, getCaseBySlug } from "@/data/cases";
 import { CaseHero } from "@/components/case/CaseHero";
 import { CaseOverview } from "@/components/case/CaseOverview";
+import { CaseShowcase } from "@/components/case/CaseShowcase";
 import { CaseScreens } from "@/components/case/CaseScreens";
 import { CaseResponsive } from "@/components/case/CaseResponsive";
 import { CaseReturnCTA } from "@/components/case/CaseReturnCTA";
@@ -38,6 +39,7 @@ export default function CasePage({
       <CaseBackButton />
       <CaseHero project={project} />
       <CaseOverview project={project} />
+      <CaseShowcase project={project} />
       <CaseScreens project={project} />
       <CaseResponsive project={project} />
       <CaseReturnCTA siteUrl={project.siteUrl} />
