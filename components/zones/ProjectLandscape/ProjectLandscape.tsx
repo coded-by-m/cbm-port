@@ -74,6 +74,10 @@ export default function ProjectLandscape({
   const lastPointerXRef = useRef(0);
   const lastInteractionRef = useRef<number>(Date.now() + HINT.showDelay);
   const snapTweenRef = useRef<gsap.core.Tween | null>(null);
+  // Slug alvo de uma seleção EXPLÍCITA (clique/seta/dot). Enquanto o snap roda,
+  // o card já reflete o alvo — sem esperar a câmera cruzar o meio do caminho
+  // (era a "demora" pra trocar). `null` = card segue o fragmento mais próximo.
+  const snapTargetSlugRef = useRef<string | null>(null);
   const lastTickRef = useRef<number | null>(null);
   const velRef = useRef(0); // velocidade angular (rad/s) p/ inércia
   const lastAngleRef = useRef<number>(ORBIT.initialAngle);
@@ -216,7 +220,7 @@ export default function ProjectLandscape({
         setPaused(false);
       }
 
-      // Active = slot mais próximo do ângulo da câmera.
+      // Active = slot mais próximo do ângulo da câmera...
       const camAngle = normalizeAngle(angleRef.current);
       let best = slotAngles[0];
       let minDist = Math.abs(shortAngleDelta(camAngle, best.angle));
@@ -226,6 +230,13 @@ export default function ProjectLandscape({
           minDist = d;
           best = sa;
         }
+      }
+      // ...exceto durante uma seleção explícita: o card pula direto pro alvo
+      // (a câmera ainda está a caminho), confirmando a escolha na hora.
+      const forced = snapTargetSlugRef.current;
+      if (forced) {
+        const f = slotAngles.find((sa) => sa.slug === forced);
+        if (f) best = f;
       }
 
       setActiveSlug((prev) => {
@@ -272,6 +283,7 @@ export default function ProjectLandscape({
         snapTweenRef.current.kill();
         snapTweenRef.current = null;
       }
+      snapTargetSlugRef.current = null; // drag livre → card volta a seguir a câmera
       draggingRef.current = true;
       velRef.current = 0; // pega no grab → mata a inércia anterior
       lastAngleRef.current = angleRef.current;
@@ -316,6 +328,9 @@ export default function ProjectLandscape({
       markInteraction();
       if (snapTweenRef.current) snapTweenRef.current.kill();
 
+      // Card reflete a escolha imediatamente (o rAF respeita esse alvo).
+      snapTargetSlugRef.current = slug;
+
       const target = angleOfSlot(slot);
       const current = angleRef.current;
       const delta = shortAngleDelta(normalizeAngle(current), target);
@@ -331,6 +346,7 @@ export default function ProjectLandscape({
         },
         onComplete: () => {
           snapTweenRef.current = null;
+          snapTargetSlugRef.current = null;
         },
       });
     },

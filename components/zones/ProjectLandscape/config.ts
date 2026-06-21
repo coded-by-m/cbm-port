@@ -95,8 +95,9 @@ export const ORBIT = {
   inertiaFriction: 0.93,
   /** Abaixo desta velocidade (rad/s) a inércia para e cede pro auto-rotate. */
   inertiaCutoff: 0.06,
-  /** Duração do snap pra um fragmento (s) — equilíbrio entre rápido e suave. */
-  snapDuration: 2,
+  /** Duração do snap pra um fragmento (s) — curto pra o card responder logo à
+      seleção (clique/seta/dot); antes 2s deixava a troca arrastada. */
+  snapDuration: 0.9,
   /** Ângulo inicial da câmera (rad). Aponta pro primeiro fragmento. */
   initialAngle: 0,
   /** Amplitude da respiração ambiente (oscila Y). */

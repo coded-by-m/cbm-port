@@ -332,23 +332,29 @@ export function ProjectCard({
     );
   };
 
-  // Estilo único para a animação CSS do scroll vertical (sempre presente).
+  // Estilo do card. O preview fica ESTÁTICO no topo por padrão (mostra o
+  // herói da página); o scroll vertical contínuo distraía e, em alguns
+  // assets, expunha área em branco no fim do loop. Só rola no hover do card
+  // (desktop), como reforço opcional — nunca à toa.
   const scrollStyle = (
     <style>{`
       @keyframes card-preview-img-scroll {
         0%   { transform: translateY(0%); }
-        50%  { transform: translateY(-65%); }
+        50%  { transform: translateY(-55%); }
         100% { transform: translateY(0%); }
       }
       .card-preview-img {
-        animation: card-preview-img-scroll 30s ease-in-out infinite;
+        transform: translateY(0%);
+      }
+      .group\\/card:hover .card-preview-img {
+        animation: card-preview-img-scroll 22s ease-in-out infinite;
       }
       @keyframes card-status-pulse {
         0%, 100% { opacity: 1; transform: scale(1); }
         50% { opacity: 0.35; transform: scale(0.7); }
       }
       @media (prefers-reduced-motion: reduce) {
-        .card-preview-img { animation: none !important; }
+        .group\\/card:hover .card-preview-img { animation: none !important; }
       }
     `}</style>
   );
