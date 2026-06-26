@@ -29,22 +29,30 @@ export function ProjetosGallery({ bands }: { bands: ProjectBand[] }) {
         </p>
       </div>
 
-      {/* Filtro. */}
-      <div className="mb-12">
-        <FilterChips types={types} active={active} onSelect={setActive} />
-      </div>
+      {bands.length === 0 ? (
+        <p className="mt-10 border border-[#F5F2ED]/12 px-5 py-10 text-center text-sm uppercase tracking-[0.3em] text-[#F5F2ED]/50">
+          Projetos em breve
+        </p>
+      ) : (
+        <>
+          {/* Filtro. */}
+          <div className="mb-12">
+            <FilterChips types={types} active={active} onSelect={setActive} />
+          </div>
 
-      {/* Faixas. */}
-      <div className="flex flex-col gap-16">
-        {bands.map((band, i) => (
-          <TypeBand
-            key={band.type}
-            band={band}
-            index={i}
-            hidden={active !== "all" && active !== band.type}
-          />
-        ))}
-      </div>
+          {/* Faixas. */}
+          <div className="flex flex-col gap-16">
+            {bands.map((band, i) => (
+              <TypeBand
+                key={band.type}
+                band={band}
+                index={i}
+                hidden={active !== "all" && active !== band.type}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </main>
   );
 }

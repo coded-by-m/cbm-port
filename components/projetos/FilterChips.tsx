@@ -29,7 +29,7 @@ export function FilterChips({
 
   return (
     <div
-      role="tablist"
+      role="group"
       aria-label="Filtrar projetos por tipo"
       className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x"
     >
@@ -39,8 +39,7 @@ export function FilterChips({
           <button
             key={chip.value}
             type="button"
-            role="tab"
-            aria-selected={isActive}
+            aria-pressed={isActive}
             onClick={() => onSelect(chip.value)}
             className={`flex min-h-[44px] flex-shrink-0 snap-start items-center gap-2 whitespace-nowrap border px-4 text-[0.7rem] uppercase tracking-[0.22em] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5F2ED]/60 ${
               isActive
