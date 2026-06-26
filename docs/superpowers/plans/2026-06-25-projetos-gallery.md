@@ -21,7 +21,7 @@
 - **Animação:** só `transform`/`opacity`; durações 150–300ms; ease-out.
 - **Sem suíte de testes no projeto.** Verificação por tarefa = `npm run typecheck` && `npm run lint` && `npm run build`, mais checagem visual em `npm run dev`.
 - **Voz da casa preservada** (tom editorial atual, incluindo travessões).
-- **WhatsApp:** placeholder `WHATSAPP_NUMBER` até o usuário fornecer o número real. E-mail de fallback: `matheusmendes077@gmail.com`.
+- **WhatsApp:** `WHATSAPP_NUMBER = "5548999916638"` (+55 48 99991-6638). E-mail de fallback: `matheusmendes077@gmail.com`.
 
 ---
 
@@ -581,13 +581,8 @@ export function GalleryHeader() {
 - [ ] **Step 2: Criar `components/projetos/GalleryFooter.tsx`**
 
 ```tsx
-/**
- * Rodapé CTA da vitrine. WhatsApp primário + e-mail secundário.
- *
- * TODO(usuario): substituir WHATSAPP_NUMBER pelo número real (formato
- * internacional só dígitos, ex.: "5547999998888").
- */
-const WHATSAPP_NUMBER = "5547000000000"; // PLACEHOLDER — trocar antes do deploy
+/** Rodapé CTA da vitrine. WhatsApp primário + e-mail secundário. */
+const WHATSAPP_NUMBER = "5548999916638"; // +55 48 99991-6638
 const EMAIL = "matheusmendes077@gmail.com";
 
 export function GalleryFooter() {
@@ -894,6 +889,8 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 ## Pendência de input do usuário
 
-- **Número do WhatsApp** real para `WHATSAPP_NUMBER` em `GalleryFooter.tsx` (Task 6).
-- (Opcional) Imagem OG dedicada (1200×630); por ora reusa um preview existente.
+- ~~Número do WhatsApp~~ — fornecido: `5548999916638`.
+- (Opcional, futuro) Imagem OG dedicada (1200×630); por ora reusa um preview
+  existente. O usuário vai adicionar 5/6 projetos depois — a vitrine os mostra
+  automaticamente assim que entrarem em `data/cases.ts` como `published`.
 ```
