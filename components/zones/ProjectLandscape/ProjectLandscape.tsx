@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Canvas } from "@react-three/fiber";
 import gsap from "gsap";
 import { cases } from "@/data/cases";
@@ -580,6 +581,41 @@ export default function ProjectLandscape({
             />
           </div>
           <LandscapeHint show={showHint} />
+          {/* Porta de saída pra vitrine simples (lista). Canto sup-esquerdo,
+              escopo desta seção (mesmo ciclo da progress bar). stopPropagation
+              evita que o drag da vitrine engula o clique. */}
+          <div
+            className="landscape-ui-stagger pointer-events-none fixed left-6 top-7 z-30"
+            style={{ animationDelay: "0.8s" }}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            <Link
+              href="/projetos"
+              data-cursor="triangle"
+              aria-label="Ver todos os projetos em galeria"
+              className="pointer-events-auto group/gal inline-flex items-center gap-2.5 border border-[#F5F2ED]/15 bg-[#000F08]/55 px-3 py-2 backdrop-blur-sm transition-colors duration-300 hover:border-[#F5F2ED]/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5F2ED]/60"
+            >
+              <svg
+                aria-hidden
+                width="11"
+                height="11"
+                viewBox="0 0 11 11"
+                fill="currentColor"
+                className="text-[#F5F2ED]/70 transition-colors duration-300 group-hover/gal:text-[#FB3640]"
+              >
+                <rect x="0" y="0" width="4.5" height="4.5" />
+                <rect x="6.5" y="0" width="4.5" height="4.5" />
+                <rect x="0" y="6.5" width="4.5" height="4.5" />
+                <rect x="6.5" y="6.5" width="4.5" height="4.5" />
+              </svg>
+              <span
+                className="text-[0.6rem] uppercase tracking-[0.28em] text-[#F5F2ED]/65 transition-colors duration-300 group-hover/gal:text-[#F5F2ED]"
+                style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
+              >
+                Ver todos
+              </span>
+            </Link>
+          </div>
           <div
             onPointerEnter={handleCardEnter}
             onPointerMove={handleCardMove}
