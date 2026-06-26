@@ -50,11 +50,13 @@ export function TypeBand({
       {/* Grade: 1º card destaque (2 col no desktop), demais 1 col. */}
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         {band.projects.map((project, i) => (
-          <ProjetoCard
+          <div
             key={project.slug}
-            project={project}
-            featured={i === 0}
-          />
+            className={`landscape-ui-stagger ${i === 0 ? "md:col-span-2" : ""}`}
+            style={{ animationDelay: `${i * 0.04}s` }}
+          >
+            <ProjetoCard project={project} featured={i === 0} />
+          </div>
         ))}
       </div>
     </section>

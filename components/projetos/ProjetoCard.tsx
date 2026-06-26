@@ -24,11 +24,7 @@ export function ProjetoCard({
   const typeColor = project.type ? PROJECT_TYPE_COLOR[project.type] : "#FB3640";
 
   return (
-    <article
-      className={`group relative flex flex-col overflow-hidden border border-[#F5F2ED]/15 bg-[#070B08] transition-colors duration-300 hover:border-[#F5F2ED]/40 focus-within:border-[#F5F2ED]/50 ${
-        featured ? "md:col-span-2" : ""
-      }`}
-    >
+    <article className="group relative flex h-full flex-col overflow-hidden border border-[#F5F2ED]/15 bg-[#070B08] transition-colors duration-300 hover:border-[#F5F2ED]/40 focus-within:border-[#F5F2ED]/50">
       {/* Stretched link: clique do card → case. */}
       <Link
         href={`/cases/${project.slug}`}
@@ -83,7 +79,7 @@ export function ProjetoCard({
               height="11"
               viewBox="0 0 16 16"
               fill="currentColor"
-              className="transition-transform duration-300 group-hover:translate-x-1"
+              className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:translate-x-0"
             >
               <polygon points="3,2 14,8 3,14" />
             </svg>
