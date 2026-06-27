@@ -55,6 +55,7 @@ function ringSlot(
 const FRAGMENT_DEFS: { seed: number; slug: string }[] = [
   { seed: 17, slug: "machado-plataformas" },
   { seed: 89, slug: "mj-engenharia" },
+  { seed: 43, slug: "estudio-lentz" },
   { seed: 73, slug: "maison-etoile" },
   { seed: 137, slug: "forma-viva" },
   { seed: 211, slug: "estudio-monteiro" },

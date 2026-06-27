@@ -58,6 +58,66 @@ export const cases: CaseProject[] = [
     },
   },
   {
+    slug: "estudio-lentz",
+    eyebrow: "Site Institucional Imersivo / Case Study",
+    title: "Estúdio Lentz",
+    description:
+      "Site institucional imersivo para um escritório de arquitetura em Florianópolis — um canvas 3D fixo onde o scroll ergue a obra camada a camada, da planta ao espaço habitado.",
+    meta: {
+      cliente: "Estúdio Lentz",
+      setor: "Arquitetura",
+      tipo: "Site Institucional Imersivo",
+      ano: "2026",
+    },
+    type: "institucional",
+    stack: [
+      "Vite",
+      "React + TypeScript",
+      "React Three Fiber + drei",
+      "GSAP / ScrollTrigger",
+      "Framer Motion",
+      "Zustand",
+      "Tailwind CSS",
+      "Archivo + Schibsted Grotesk + Spline Sans Mono",
+      "Vercel",
+    ],
+    heroImages: [
+      "/cases/estudio-lentz/hero-1.webp",
+      "/cases/estudio-lentz/hero-2.webp",
+      "/cases/estudio-lentz/hero-3.webp",
+    ],
+    sections: [
+      "/cases/estudio-lentz/section-01.webp",
+      "/cases/estudio-lentz/section-02.webp",
+      "/cases/estudio-lentz/section-03.webp",
+      "/cases/estudio-lentz/section-04.webp",
+    ],
+    overview: {
+      heading: "Construir é pensar — o scroll vira obra",
+      body: [
+        "O Estúdio Lentz projeta arquitetura em Florianópolis de dentro para fora: estrutura, luz e material em linguagem direta. O desafio era traduzir esse método numa presença digital que não apenas mostrasse projetos, mas fizesse o visitante sentir como uma obra ganha forma.",
+        "A resposta foi uma camada de conteúdo HTML rolável sobre um canvas 3D fixo: um único valor de progresso (0→1), alimentado pelo scroll, dirige a construção da cena — da planta baixa à estrutura, das paredes ao material, da luz ao espaço habitado. Rolar a página é, literalmente, erguer o edifício.",
+        "O sistema é escuro e técnico — off-white sobre verde-petróleo com um acento vermelho que marca o ritmo. Archivo dá o peso de manchete às headlines, Schibsted Grotesk sustenta a leitura e Spline Sans Mono assina os rótulos com precisão de planta. O resultado é um institucional que se comporta como uma maquete viva, sem perder a sobriedade de um escritório de arquitetura.",
+      ],
+      challenge:
+        "Traduzir o método de um escritório de arquitetura — projetar de dentro para fora — numa experiência web onde o scroll constrói a obra em 3D, mantendo performance e a sobriedade do institucional.",
+    },
+    gallery: [],
+    mockups: {
+      desktop3d: "/cases/estudio-lentz/mockup-desktop-3d.webp",
+      mobile3d: "/cases/estudio-lentz/mockup-mobile-3d.webp",
+      browser: "/cases/estudio-lentz/mockup-browser.webp",
+      phone: "/cases/estudio-lentz/mockup-phone.webp",
+    },
+    palette: ["#e5e7eb", "#14160f", "#FB3640", "#3a3d34"],
+    status: "published",
+    siteUrl: "estudiolentz.com.br",
+    preview: {
+      desktop: "/cases/estudio-lentz/desktop-tall.webp",
+      mobile: "/cases/estudio-lentz/mobile-tall.webp",
+    },
+  },
+  {
     slug: "machado-plataformas",
     eyebrow: "Web Design Premium / Case Study",
     title: "Machado Plataformas",
