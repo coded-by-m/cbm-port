@@ -53,3 +53,26 @@ body {
     opacity: 1;
   }
 }
+
+/* Botão "Ver todos os projetos" da Paisagem — respiro de destaque sutil
+   (glow vermelho da marca) pra puxar o olho sem competir com a cena 3D. */
+@keyframes gallery-cta-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px rgba(245, 242, 237, 0.1),
+      0 0 18px -6px rgba(251, 54, 64, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(245, 242, 237, 0.18),
+      0 0 26px -4px rgba(251, 54, 64, 0.7);
+  }
+}
+.gallery-cta {
+  animation: gallery-cta-glow 3.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gallery-cta {
+    animation: none;
+    box-shadow: 0 0 0 1px rgba(245, 242, 237, 0.14);
+  }
+}

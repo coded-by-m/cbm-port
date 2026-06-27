@@ -593,7 +593,7 @@ export default function ProjectLandscape({
               href="/projetos"
               data-cursor="triangle"
               aria-label="Ver todos os projetos em galeria"
-              className="pointer-events-auto group/gal inline-flex items-center gap-2.5 border border-[#F5F2ED]/15 bg-[#000F08]/55 px-3 py-2 backdrop-blur-sm transition-colors duration-300 hover:border-[#F5F2ED]/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5F2ED]/60"
+              className="gallery-cta pointer-events-auto group/gal inline-flex items-center gap-2.5 border border-[#F5F2ED]/25 bg-[#000F08]/85 px-3.5 py-2.5 backdrop-blur-sm transition-colors duration-300 hover:border-[#FB3640]/60 hover:bg-[#000F08]/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FB3640]/70"
             >
               <svg
                 aria-hidden
@@ -601,7 +601,7 @@ export default function ProjectLandscape({
                 height="11"
                 viewBox="0 0 11 11"
                 fill="currentColor"
-                className="text-[#F5F2ED]/70 transition-colors duration-300 group-hover/gal:text-[#FB3640]"
+                className="text-[#FB3640] transition-transform duration-300 group-hover/gal:scale-110"
               >
                 <rect x="0" y="0" width="4.5" height="4.5" />
                 <rect x="6.5" y="0" width="4.5" height="4.5" />
@@ -609,11 +609,21 @@ export default function ProjectLandscape({
                 <rect x="6.5" y="6.5" width="4.5" height="4.5" />
               </svg>
               <span
-                className="text-[0.6rem] uppercase tracking-[0.28em] text-[#F5F2ED]/65 transition-colors duration-300 group-hover/gal:text-[#F5F2ED]"
+                className="text-[0.62rem] uppercase tracking-[0.26em] text-[#F5F2ED]/95 transition-colors duration-300 group-hover/gal:text-[#F5F2ED]"
                 style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
               >
-                Ver todos
+                Ver todos os projetos
               </span>
+              <svg
+                aria-hidden
+                width="11"
+                height="11"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                className="text-[#F5F2ED]/55 transition-all duration-300 group-hover/gal:translate-x-1 group-hover/gal:text-[#FB3640] motion-reduce:transition-none motion-reduce:group-hover/gal:translate-x-0"
+              >
+                <polygon points="3,2 14,8 3,14" />
+              </svg>
             </Link>
           </div>
           <div
