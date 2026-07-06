@@ -1,0 +1,63 @@
+MODELO DE POST — SHOWCASE DE PROJETO (VISUAL)
+Formato: 1080×1350 (4:5) · 6 slides · ordem slide-1 → slide-6
+
+Este é um TEMPLATE reutilizável e visual. Os PNGs desta pasta são o exemplo
+montado com o case MJ Engenharia. Para criar o post de um novo projeto:
+
+─────────────────────────────────────────────
+COMO GERAR UM NOVO POST DE PROJETO
+─────────────────────────────────────────────
+
+1) Garanta que o case tem os assets em public/cases/<slug>/:
+     - mockup-desktop-3d.webp   (laptop/navegador 3D, PNG transparente) → capa
+     - mockup-phone.webp        (celular 3D, PNG transparente)          → responsivo
+     - 2 prints de seção 16:10 (ex.: hero-2.webp, section-01.webp)      → vitrine
+   (Todos os cases novos já são gerados com esse kit.)
+
+2) Abra: app/posts/projeto/slides.tsx
+   No topo, edite SÓ o objeto PROJECT:
+     - title            → nome do projeto
+     - category         → "Tipo · Segmento" (ex.: "Landing Page · Engenharia")
+     - url              → domínio que aparece na barra do navegador
+     - caseUrl          → link do case (ex.: codedbym.com/cases/<slug>)
+     - challenge        → o desafio, 1 frase
+     - solutionHeadline → a solução em 2–4 palavras
+     - highlights       → 3 destaques curtos (benefícios, não stack técnica)
+     - laptopMockup     → "/cases/<slug>/mockup-desktop-3d.webp"
+     - phoneMockup      → "/cases/<slug>/mockup-phone.webp"
+     - showcase         → ["/cases/<slug>/hero-2.webp", "/cases/<slug>/section-01.webp"]
+
+3) Rode o site (npm run dev) e abra /posts/projeto para revisar os 6 slides.
+
+4) Exporte cada slide como PNG 1080×1350 (viewport 1080×1350, screenshot 1:1)
+   a partir de /posts/projeto/1 … /6.
+
+Os mockups 3D têm fundo transparente e compõem direto no fundo escuro da marca.
+Os prints de seção entram em frames de navegador angulares.
+
+─────────────────────────────────────────────
+ESTRUTURA DOS SLIDES
+─────────────────────────────────────────────
+
+1 · CAPA         nome + categoria + laptop 3D com o site
+2 · O DESAFIO    o problema do cliente, 1 frase
+3 · POR DENTRO   vitrine: 2 seções emolduradas em cascata
+4 · A SOLUÇÃO    headline curto + 3 destaques (▲)
+5 · NA PRÁTICA   celular 3D ("Rápido e responsivo")
+6 · CTA          "Quer um site assim?" + WhatsApp + link do case
+
+─────────────────────────────────────────────
+LEGENDA (modelo — adapte por projeto)
+─────────────────────────────────────────────
+
+[NOME DO PROJETO] no ar. 🚀
+
+[Uma frase sobre o desafio do cliente e o que o site resolve.]
+
+Cada projeto da Coded by M nasce do zero: design e código do mesmo autor,
+pensados pra converter, não só pra existir.
+
+👉 Case completo no link da bio.
+Quer um site assim pro seu negócio? Me chama no direct ou no WhatsApp.
+
+#WebDesign #CriaçãoDeSites #SiteProfissional #Portfolio #CodedByM #[SEGMENTO]
