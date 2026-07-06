@@ -605,15 +605,15 @@ function Slide5() {
           style={{
             fontFamily: "Panchang, sans-serif",
             fontWeight: 700,
-            fontSize: 108,
+            fontSize: 100,
             lineHeight: 0.96,
             letterSpacing: "-0.03em",
             margin: 0,
           }}
         >
-          Vamos
+          Vamos fazer
           <br />
-          conversar?
+          ele valer.
         </h2>
         <p
           style={{
@@ -626,7 +626,7 @@ function Slide5() {
             maxWidth: 640,
           }}
         >
-          Seu site é a sua primeira impressão. Vamos fazer ela valer.
+          Seu site é a sua primeira impressão.
         </p>
 
         <div style={{ marginTop: 60, display: "flex", alignItems: "center", gap: 30 }}>
