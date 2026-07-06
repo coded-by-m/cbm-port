@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import type { CaseProject } from "@/types/case";
+import { waLink } from "@/lib/contact";
 import { CARD, FRAGMENT_SLOTS, PROJECT_TYPE_COLOR, SLIDESHOW } from "./config";
 import { CardMeshPlaceholder } from "./CardMeshPlaceholder";
 import SlideshowDots from "./SlideshowDots";
@@ -311,7 +312,9 @@ export function ProjectCard({
           )}
           {isComingSoon && !isMobile && (
             <a
-              href="mailto:matheusmendes077@gmail.com?subject=Interesse no projeto"
+              href={waLink("Olá! Tenho interesse em um projeto com a Coded by M.")}
+              target="_blank"
+              rel="noopener noreferrer"
               className="mt-3 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/25 px-4 py-2 text-[0.6rem] uppercase tracking-[0.3em] text-[#F5F2ED]/70 transition-colors hover:border-[#F5F2ED]/70 hover:text-[#F5F2ED]"
             >
               Conversar sobre primeiros projetos

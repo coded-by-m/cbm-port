@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { LogoMark } from "@/components/ui/LogoMark";
+import { waLink, INSTAGRAM_URL, INSTAGRAM_HANDLE, WHATSAPP_DISPLAY } from "@/lib/contact";
 
 const FooterLandscape = dynamic(() => import("./FooterLandscape"), {
   ssr: false,
@@ -18,10 +19,10 @@ const ACCENTS = ["#FB3640", "#F5F2ED", "#C8C4BE"];
 const NAV = [
   { label: "Início", href: "/", external: false },
   { label: "Laboratório", href: "/lab", external: false },
-  { label: "Contato", href: "https://wa.me/5548988354350", external: true },
+  { label: "Contato", href: waLink(), external: true },
   {
     label: "Instagram",
-    href: "https://instagram.com/codedbymstudio",
+    href: INSTAGRAM_URL,
     external: true,
   },
 ];
@@ -231,22 +232,22 @@ export default function Footer() {
               style={{ fontFamily: SAT, fontWeight: 400 }}
             >
               <a
-                href="https://wa.me/5548988354350"
+                href={waLink()}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cursor="triangle"
                 className="transition-colors hover:text-[#F5F2ED]"
               >
-                WhatsApp · +55 48 98835-4350
+                WhatsApp · {WHATSAPP_DISPLAY}
               </a>
               <a
-                href="https://instagram.com/codedbymstudio"
+                href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cursor="triangle"
                 className="transition-colors hover:text-[#F5F2ED]"
               >
-                @codedbymstudio
+                {INSTAGRAM_HANDLE}
               </a>
               <span className="uppercase tracking-[0.2em] text-[#F5F2ED]/40">
                 Florianópolis · BR

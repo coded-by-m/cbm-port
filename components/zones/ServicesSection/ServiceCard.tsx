@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ServiceConfig } from "@/data/services";
+import { waLink } from "@/lib/contact";
 import ServiceMiniScene from "./ServiceMiniScene";
 import { useBorderDraw } from "./useBorderDraw";
 
@@ -56,9 +57,7 @@ export default function ServiceCard({
   }, [play]);
 
   const isDimmed = someExpanded && !expanded;
-  const mailHref = `mailto:contato.codedbym@gmail.com?subject=${encodeURIComponent(
-    service.mailSubject,
-  )}`;
+  const contactHref = waLink(`Olá! Tenho interesse no serviço: ${service.title}.`);
 
   // Stagger interno: delays em ms quando expanded vira true.
   const detailStagger = (i: number) => (expanded ? 280 + i * 70 : 0);
@@ -287,9 +286,11 @@ export default function ServiceCard({
               {service.indicatedFor}
             </p>
 
-            {/* CTA mailto — peso visual maior */}
+            {/* CTA WhatsApp — peso visual maior */}
             <a
-              href={mailHref}
+              href={contactHref}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group/cta mt-7 inline-flex w-fit items-center gap-3 border border-[#F5F2ED]/50 bg-[#F5F2ED]/[0.02] px-6 py-3.5 text-[0.6rem] uppercase tracking-[0.35em] text-[#F5F2ED] transition-colors hover:border-[#FB3640] hover:bg-[#FB3640]/[0.06] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[#F5F2ED]"
               style={{
                 fontFamily: '"Satoshi", sans-serif',
