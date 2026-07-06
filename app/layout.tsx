@@ -3,6 +3,7 @@ import "./globals.css";
 import { CursorTriangle } from "@/components/cursor/CursorTriangle";
 import { Analytics } from "@/components/analytics/Analytics";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
+import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
 
 export const metadata: Metadata = {
   title: "Coded by M — Experience Lab",
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-[#000F08] text-[#e0e0e0]">
         {children}
         <CursorTriangle />
+        <WhatsAppFab />
         <CookieConsent />
         <Analytics />
       </body>

@@ -31,11 +31,9 @@ export function CookieConsent() {
       style={{
         position: "fixed",
         left: 16,
-        right: 16,
         bottom: 16,
         zIndex: 200,
-        maxWidth: 560,
-        marginLeft: "auto",
+        maxWidth: 460,
         background: "#0E1810",
         border: "1px solid #1a2a1e",
         borderLeft: "2px solid #FB3640",
