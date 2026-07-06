@@ -1,268 +1,31 @@
 /**
- * Carrossel de apresentação — Coded by M.
+ * Carrossel 1 — Apresentação Coded by M.
  *
- * Formato feed do Instagram (1080×1350, 4:5). Construído com o design system
- * real do site — fundo #000F08, Panchang/Satoshi, sinal vermelho raro (#FB3640),
- * linguagem angular (border-radius 0), símbolo triangular da marca.
- *
- * Arte-direção "blueprint estrutural": chrome técnico comum (marcas de registro,
- * barra de progresso segmentada, número de seção em outline) unifica os 5 slides,
- * enquanto cada slide tem composição própria e ritmo distinto (capa assimétrica →
- * denso → lista → arejado → ação). Exportado como PNG via a rota [[...slug]].
+ * Formato feed do Instagram (1080×1350, 4:5). Usa o chrome compartilhado
+ * (_shared/chrome) e monta composições próprias com ritmo variado por slide:
+ * capa assimétrica → denso → lista estruturada → arejado → ação.
  */
 
-const BLACK = "#000F08";
-const WHITE = "#F5F2ED";
-const RED = "#FB3640";
-const GRAY_200 = "#C8C4BE";
-const GRAY_400 = "#8A8780";
-const GRAY_600 = "#4A4844";
-const BORDER = "#1a2a1e";
-const OUTLINE = "#16271b"; // stroke do número de seção — verde-escuro técnico
+import {
+  BLACK,
+  WHITE,
+  RED,
+  GRAY_200,
+  GRAY_400,
+  GRAY_600,
+  BORDER,
+  PAD,
+  SLIDE_W,
+  SLIDE_H,
+  Symbol,
+  OutlineNumber,
+  Kicker,
+  Chrome,
+  frame,
+} from "@/app/posts/_shared/chrome";
 
-export const SLIDE_W = 1080;
-export const SLIDE_H = 1350;
+export { SLIDE_W, SLIDE_H };
 export const SLIDE_COUNT = 5;
-
-const PAD = 88; // margem lateral base
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Chrome compartilhado
-// ─────────────────────────────────────────────────────────────────────────────
-
-/** Símbolo triangular da marca (mesmo path do LogoMark). */
-function Symbol({ size = 96 }: { size?: number }) {
-  const h = Math.round((size * 161) / 142);
-  return (
-    <svg width={size} height={h} viewBox="0 0 142 161" fill="none" aria-hidden>
-      <path
-        d="M11.5 148.039V59.0391L53.5 104.438"
-        stroke={WHITE}
-        strokeWidth="9"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M130.5 103.039V19.0391L85.5 67.2944"
-        stroke={WHITE}
-        strokeWidth="9"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M9.5 18.0391L130.5 147.039"
-        stroke={RED}
-        strokeWidth="9"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-/** Marcas de registro nos 4 cantos — enquadramento técnico discreto. */
-function CropMarks() {
-  const L = 24;
-  const inset = 44;
-  const mark = (x: "left" | "right", y: "top" | "bottom") => (
-    <>
-      <span
-        style={{
-          position: "absolute",
-          [x]: inset,
-          [y]: inset,
-          width: L,
-          height: 1,
-          background: BORDER,
-        }}
-      />
-      <span
-        style={{
-          position: "absolute",
-          [x]: inset,
-          [y]: inset,
-          width: 1,
-          height: L,
-          background: BORDER,
-        }}
-      />
-    </>
-  );
-  return (
-    <>
-      {mark("left", "top")}
-      {mark("right", "top")}
-      {mark("left", "bottom")}
-      {mark("right", "bottom")}
-    </>
-  );
-}
-
-/** Número de seção em outline gigante — elemento estrutural, pode cropar na borda. */
-function OutlineNumber({
-  n,
-  style,
-}: {
-  n: string;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <span
-      style={{
-        position: "absolute",
-        fontFamily: "Panchang, sans-serif",
-        fontWeight: 800,
-        fontSize: 400,
-        lineHeight: 0.78,
-        letterSpacing: "-0.05em",
-        color: "transparent",
-        WebkitTextStroke: `2px ${OUTLINE}`,
-        userSelect: "none",
-        ...style,
-      }}
-    >
-      {n}
-    </span>
-  );
-}
-
-/** Kicker — traço vermelho + label Satoshi tracked. Posicionável. */
-function Kicker({
-  children,
-  style,
-}: {
-  children: React.ReactNode;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 16, ...style }}>
-      <span style={{ width: 40, height: 1, background: RED, opacity: 0.75 }} />
-      <span
-        style={{
-          fontFamily: "Satoshi, sans-serif",
-          fontWeight: 500,
-          fontSize: 17,
-          letterSpacing: "0.34em",
-          textTransform: "uppercase",
-          color: RED,
-          opacity: 0.74,
-        }}
-      >
-        {children}
-      </span>
-    </div>
-  );
-}
-
-/** Rodapé técnico: índice + wordmark + barra de progresso segmentada. */
-function Chrome({ index, swipe }: { index: number; swipe?: boolean }) {
-  return (
-    <>
-      <CropMarks />
-
-      {/* linha índice + wordmark */}
-      <div
-        style={{
-          position: "absolute",
-          left: PAD,
-          right: PAD,
-          bottom: 86,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "Satoshi, sans-serif",
-            fontWeight: 400,
-            fontSize: 15,
-            letterSpacing: "0.3em",
-            color: GRAY_600,
-          }}
-        >
-          {String(index).padStart(2, "0")}
-          <span style={{ color: BORDER }}> / </span>
-          {String(SLIDE_COUNT).padStart(2, "0")}
-        </span>
-        <span
-          style={{
-            fontFamily: "Panchang, sans-serif",
-            fontWeight: 600,
-            fontSize: 15,
-            letterSpacing: "0.03em",
-            color: GRAY_400,
-          }}
-        >
-          CODED <span style={{ color: RED }}>BY</span> M
-        </span>
-      </div>
-
-      {/* barra de progresso — 5 segmentos */}
-      <div
-        style={{
-          position: "absolute",
-          left: PAD,
-          right: PAD,
-          bottom: 62,
-          display: "flex",
-          gap: 8,
-        }}
-      >
-        {Array.from({ length: SLIDE_COUNT }).map((_, i) => (
-          <span
-            key={i}
-            style={{
-              flex: 1,
-              height: 3,
-              background:
-                i + 1 === index ? RED : i + 1 < index ? GRAY_600 : BORDER,
-            }}
-          />
-        ))}
-      </div>
-
-      {swipe && (
-        <div
-          style={{
-            position: "absolute",
-            right: PAD,
-            bottom: 140,
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            fontFamily: "Satoshi, sans-serif",
-            fontWeight: 400,
-            fontSize: 13,
-            letterSpacing: "0.32em",
-            textTransform: "uppercase",
-            color: GRAY_600,
-          }}
-        >
-          Arraste
-          <svg width="32" height="9" viewBox="0 0 32 9" fill="none" aria-hidden>
-            <path d="M0 4.5 H28" stroke={RED} strokeWidth="1.4" />
-            <path
-              d="M23 1 L29 4.5 L23 8"
-              stroke={RED}
-              strokeWidth="1.4"
-              fill="none"
-            />
-          </svg>
-        </div>
-      )}
-    </>
-  );
-}
-
-const frame: React.CSSProperties = {
-  position: "relative",
-  width: SLIDE_W,
-  height: SLIDE_H,
-  background: BLACK,
-  overflow: "hidden",
-  color: WHITE,
-  fontFamily: "Satoshi, sans-serif",
-};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SLIDE 1 — CAPA (hero assimétrico)
@@ -270,7 +33,6 @@ const frame: React.CSSProperties = {
 function Slide1() {
   return (
     <div style={frame}>
-      {/* geometria de fundo própria da capa */}
       <svg
         width={SLIDE_W}
         height={SLIDE_H}
@@ -279,13 +41,11 @@ function Slide1() {
         aria-hidden
         style={{ position: "absolute", inset: 0 }}
       >
-        {/* diagonal-assinatura longa, ecoa o corte vermelho do símbolo */}
         <path d="M-40 980 L1180 180" stroke={RED} strokeOpacity="0.16" strokeWidth="1" />
         <path d="M120 1250 L980 60" stroke={WHITE} strokeOpacity="0.05" strokeWidth="1" />
         <circle cx="1180" cy="180" r="3" fill={RED} fillOpacity="0.5" />
       </svg>
 
-      {/* símbolo grande, ancorado ao topo-direito */}
       <div style={{ position: "absolute", top: 150, right: 110 }}>
         <Symbol size={168} />
       </div>
@@ -294,7 +54,6 @@ function Slide1() {
         Web Design Premium
       </Kicker>
 
-      {/* wordmark ancorado embaixo à esquerda */}
       <div style={{ position: "absolute", left: PAD, bottom: 250 }}>
         <h1
           style={{
@@ -326,13 +85,13 @@ function Slide1() {
         </p>
       </div>
 
-      <Chrome index={1} swipe />
+      <Chrome index={1} total={SLIDE_COUNT} swipe />
     </div>
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SLIDE 2 — O QUE FAZEMOS (número denso topo, texto ancorado embaixo)
+// SLIDE 2 — O QUE FAZEMOS
 // ─────────────────────────────────────────────────────────────────────────────
 function Slide2() {
   return (
@@ -386,13 +145,13 @@ function Slide2() {
         </p>
       </div>
 
-      <Chrome index={2} swipe />
+      <Chrome index={2} total={SLIDE_COUNT} swipe />
     </div>
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SLIDE 3 — A DIFERENÇA (lista estruturada ✕ / ▲ — quebra o parágrafo)
+// SLIDE 3 — A DIFERENÇA (lista estruturada ✕ / ▲)
 // ─────────────────────────────────────────────────────────────────────────────
 function DiffRow({
   mark,
@@ -508,7 +267,7 @@ function Slide3() {
         </p>
       </div>
 
-      <Chrome index={3} swipe />
+      <Chrome index={3} total={SLIDE_COUNT} swipe />
     </div>
   );
 }
@@ -532,7 +291,6 @@ function Slide4() {
         <circle cx="360" cy="1180" r="2.4" fill={RED} fillOpacity="0.45" />
       </svg>
 
-      {/* número cropado no rodapé-direito */}
       <OutlineNumber n="03" style={{ bottom: 130, right: 40 }} />
 
       <Kicker style={{ position: "absolute", top: 130, left: PAD }}>
@@ -569,7 +327,7 @@ function Slide4() {
         </p>
       </div>
 
-      <Chrome index={4} swipe />
+      <Chrome index={4} total={SLIDE_COUNT} swipe />
     </div>
   );
 }
@@ -659,7 +417,6 @@ function Slide5() {
         </div>
       </div>
 
-      {/* contatos — bloco estruturado acima do chrome */}
       <div
         style={{
           position: "absolute",
@@ -683,7 +440,7 @@ function Slide5() {
         <span>@codedbym.co</span>
       </div>
 
-      <Chrome index={5} />
+      <Chrome index={5} total={SLIDE_COUNT} />
     </div>
   );
 }
