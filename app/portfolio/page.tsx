@@ -3,6 +3,8 @@ import { getFeaturedCase } from "@/lib/portfolio";
 import { PortfolioHeader } from "@/components/portfolio/PortfolioHeader";
 import { PortfolioHero } from "@/components/portfolio/PortfolioHero";
 import { ProjectGrid } from "@/components/portfolio/ProjectGrid";
+import { ServicesList } from "@/components/portfolio/ServicesList";
+import { ProcessSteps } from "@/components/portfolio/ProcessSteps";
 
 const TITLE = "Portfólio · Coded by M";
 const DESCRIPTION =
@@ -33,6 +35,8 @@ export default function PortfolioPage() {
       <main className="pt-16">
         <PortfolioHero project={getFeaturedCase()} />
         <ProjectGrid />
+        <ServicesList />
+        <ProcessSteps />
       </main>
     </div>
   );
