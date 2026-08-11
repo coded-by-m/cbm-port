@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { waLink } from "@/lib/contact";
 
 /**
@@ -18,6 +19,11 @@ export function WhatsAppFab() {
     const t = setTimeout(() => setShown(true), 900);
     return () => clearTimeout(t);
   }, []);
+
+  const pathname = usePathname();
+
+  // /portfolio já tem o botão de WhatsApp no header — dois seria ruído.
+  if (pathname === "/portfolio") return null;
 
   return (
     <a
