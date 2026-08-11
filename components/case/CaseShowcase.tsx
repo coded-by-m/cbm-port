@@ -1,5 +1,5 @@
 import type { CaseProject } from "@/types/case";
-import { Reveal } from "@/components/case/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Showcase dos mockups 3D — o "momento herói" da página de case.

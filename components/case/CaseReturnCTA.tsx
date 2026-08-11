@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Reveal } from "@/components/case/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 import { CaseLiveButton } from "@/components/case/CaseLiveButton";
 
 export function CaseReturnCTA({ siteUrl }: { siteUrl?: string }) {

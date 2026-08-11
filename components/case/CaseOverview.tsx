@@ -1,5 +1,5 @@
 import type { CaseProject } from "@/types/case";
-import { Reveal } from "@/components/case/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 
 export function CaseOverview({ project }: { project: CaseProject }) {
   const { heading, body, challenge } = project.overview;

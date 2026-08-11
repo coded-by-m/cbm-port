@@ -1,5 +1,5 @@
 import type { CaseProject } from "@/types/case";
-import { Reveal } from "@/components/case/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Grade de recortes do site (hero-* + gallery-*) em painéis emoldurados com
