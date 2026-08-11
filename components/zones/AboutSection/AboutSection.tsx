@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import {
+  ABOUT_STATEMENT,
+  ABOUT_VALUES as VALUES,
+  FOUNDER,
+  LOCATION,
+} from "@/data/about";
 
 const AboutTerrain = dynamic(() => import("./AboutTerrain"), { ssr: false });
 const AboutMark = dynamic(() => import("./AboutMark"), { ssr: false });
@@ -13,12 +19,6 @@ const AboutMark = dynamic(() => import("./AboutMark"), { ssr: false });
  * localização. Abaixo: 3 valores. 3D off (apenas terrain residual estático).
  * Entry-animated (IntersectionObserver) — zona leve, sem scroll-driven.
  */
-
-const VALUES = [
-  { title: "Precisão", desc: "Cada pixel tem razão de existir." },
-  { title: "Elegância", desc: "Sofisticação que não precisa gritar." },
-  { title: "Detalhismo", desc: "O acabamento é o produto." },
-];
 
 /**
  * @param inPage `false` (default) → scroller interno (uso isolado no /lab).
@@ -244,8 +244,7 @@ export default function AboutSection({
                 ...reveal(220),
               }}
             >
-              A Coded by M une design, tecnologia e pensamento estrutural pra
-              construir uma presença digital à altura da empresa por trás dela.
+              {ABOUT_STATEMENT}
             </h2>
 
             {/* Fundador — bloco-assinatura com accent vermelho à esquerda. */}
@@ -257,22 +256,19 @@ export default function AboutSection({
                 className="text-[1.05rem] text-[#F5F2ED]"
                 style={{ fontFamily: '"Panchang", sans-serif', fontWeight: 600 }}
               >
-                Matheus Mendes
+                {FOUNDER.name}
               </p>
               <p
                 className="mt-1 text-[0.65rem] uppercase tracking-[0.3em] text-[#F5F2ED]/45"
                 style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 500 }}
               >
-                Fundador · Coded by M
+                {FOUNDER.role}
               </p>
               <p
                 className="mt-4 text-[0.95rem] leading-relaxed text-[#F5F2ED]/65"
                 style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 300 }}
               >
-                Formado em Análise e Desenvolvimento de Sistemas, encontrei no
-                web design o ponto onde técnica e estética se encontram. A Coded
-                by M é onde levo isso a sério — cada projeto, uma busca por uma
-                presença digital tão boa quanto a empresa por trás dela.
+                {FOUNDER.bio}
               </p>
 
               {/* Localização */}
@@ -288,7 +284,7 @@ export default function AboutSection({
                     fontWeight: 500,
                   }}
                 >
-                  Florianópolis, Brasil
+                  {LOCATION}
                 </p>
               </div>
             </div>

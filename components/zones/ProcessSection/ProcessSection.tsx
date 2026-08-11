@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
+import { PROCESS_STEPS as STEPS } from "@/data/process";
 import { railSub } from "@/lib/railProgress";
 
 const ProcessJourney = dynamic(() => import("./ProcessJourney"), {
@@ -15,35 +16,6 @@ const ProcessJourney = dynamic(() => import("./ProcessJourney"), {
  * cooldown); a câmera 3D pana suave até a estação (via `progressRef` tweenado),
  * a torre ativa acende e o card troca. Entra/sai pelo wipe da Home.
  */
-
-interface Step {
-  num: string;
-  title: string;
-  desc: string;
-}
-
-const STEPS: Step[] = [
-  {
-    num: "01",
-    title: "Estratégia",
-    desc: "Antes de desenhar, entender. Diagnóstico, escopo e posicionamento.",
-  },
-  {
-    num: "02",
-    title: "Design",
-    desc: "Forma com intenção. Arquitetura, identidade e protótipo.",
-  },
-  {
-    num: "03",
-    title: "Código",
-    desc: "Construído pra durar. Implementação, performance e qualidade.",
-  },
-  {
-    num: "04",
-    title: "Resultado",
-    desc: "Não acaba no deploy. Mensuração, ajustes e evolução.",
-  },
-];
 
 const OFF_WHITE = "#F5F2ED";
 const SIGNAL = "#FB3640";
