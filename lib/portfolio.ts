@@ -9,6 +9,20 @@ import type { CaseProject } from "@/types/case";
  */
 
 /**
+ * Projeto em destaque na primeira dobra. Trocar aqui troca o hero.
+ *
+ * Vive aqui, e não no `PortfolioHero`, porque quem resolve o slug é a
+ * página (Server Component): constantes exportadas de um módulo
+ * `"use client"` chegam ao servidor como referência client, não como valor.
+ */
+export const FEATURED_SLUG = "mj-engenharia";
+
+/** O `CaseProject` em destaque, ou `undefined` se o slug não existir mais. */
+export function getFeaturedCase(): CaseProject | undefined {
+  return cases.find((c) => c.slug === FEATURED_SLUG);
+}
+
+/**
  * Os projetos que aparecem na grade: só `status: "published"`, na ordem em
  * que estão em `data/cases.ts`. Os `coming-soon` ficam de fora.
  */

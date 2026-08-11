@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { getFeaturedCase } from "@/lib/portfolio";
 import { PortfolioHeader } from "@/components/portfolio/PortfolioHeader";
+import { PortfolioHero } from "@/components/portfolio/PortfolioHero";
 
 const TITLE = "Portfólio · Coded by M";
 const DESCRIPTION =
@@ -27,7 +29,9 @@ export default function PortfolioPage() {
   return (
     <div className="min-h-dvh bg-cbm-black text-cbm-white">
       <PortfolioHeader />
-      <main className="pt-16" />
+      <main className="pt-16">
+        <PortfolioHero project={getFeaturedCase()} />
+      </main>
     </div>
   );
 }

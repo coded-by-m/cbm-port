@@ -29,7 +29,7 @@
 
 Dois, ambos pequenos, para não introduzir dependências ou complexidade que o spec proíbe:
 
-1. **`FEATURED_SLUG` fica exportado de `PortfolioHero.tsx`, mas quem resolve o projeto é a página (server).** O spec diz "constante no topo do componente, trocável em uma linha" — isso continua verdade. A diferença é que o `CaseProject` chega por prop, evitando que `data/cases.ts` inteiro (todo o copy dos 10 projetos) vá parar no bundle client só por causa de um projeto em destaque.
+1. **`FEATURED_SLUG` vive em `lib/portfolio.ts`, não em `PortfolioHero.tsx`.** O spec diz "constante no topo do componente, trocável em uma linha" — continua trocável em uma linha, só que num módulo server-safe. Duas razões: (a) o `CaseProject` chega por prop, evitando que `data/cases.ts` inteiro vá pro bundle client por causa de um projeto; (b) **constantes exportadas de um módulo `"use client"` não são legíveis pelo servidor** — o Next as substitui por referências client, e `getCaseBySlug(FEATURED_SLUG)` devolvia `undefined`. Descoberto durante a Task 5.
 
 2. **A linha que conecta as etapas do Processo não se desenha com `scaleX`.** O spec pede "CSS puro dentro do `Reveal`", mas CSS sozinho não sabe quando o elemento entrou no viewport (`animation-timeline: view()` ainda não é suporte confiável), e o spec proíbe GSAP/ScrollTrigger fora do hero. A linha é estática e as 4 etapas entram em sequência com `Reveal` escalonado (`delay` de 0/80/160/240ms) — a leitura de progressão fica preservada.
 
