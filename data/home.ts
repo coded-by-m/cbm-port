@@ -10,7 +10,7 @@ export const FEATURED_SLUG = "estudio-lentz";
 
 export const HERO = {
   eyebrow: "Webdesign e websoftware · Florianópolis",
-  headline: "Presença digital à altura da empresa por trás dela",
+  headline: "Projetamos a forma como sua empresa é percebida digitalmente.",
   sub: "A Coded by M une design, tecnologia e pensamento estrutural. Landing pages, sites institucionais e aplicações web — da estratégia ao deploy, no mesmo lugar.",
   ctaPrimary: "Começar meu projeto",
   ctaSecondary: "Ver o case",
