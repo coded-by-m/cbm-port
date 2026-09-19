@@ -78,10 +78,15 @@ export function HeroLandscape() {
         zIndex: 0,
         pointerEvents: "none",
         opacity: 0.6,
+        /* Duas máscaras compostas: a radial concentra a geometria do lado
+           livre, e a linear apaga a base — sem ela a paisagem era CORTADA na
+           borda do hero, e o corte é o que se lia como quebra brusca. */
         maskImage:
-          "radial-gradient(85% 75% at 38% 52%, #000 55%, transparent 92%)",
+          "radial-gradient(85% 75% at 38% 52%, #000 55%, transparent 92%), linear-gradient(to bottom, #000 55%, transparent 96%)",
+        maskComposite: "intersect",
         WebkitMaskImage:
-          "radial-gradient(85% 75% at 38% 52%, #000 55%, transparent 92%)",
+          "radial-gradient(85% 75% at 38% 52%, #000 55%, transparent 92%), linear-gradient(to bottom, #000 55%, transparent 96%)",
+        WebkitMaskComposite: "source-in",
       }}
     >
       {mounted && <Landscape active={active} eventSource={source} />}

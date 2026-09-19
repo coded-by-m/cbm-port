@@ -13,7 +13,17 @@ export function ProjectsSection() {
   const published = cases.filter((c) => c.status === "published");
 
   return (
-    <section id="projetos" style={SECTION}>
+    <section
+      id="projetos"
+      style={{
+        ...SECTION,
+        // Sem régua nesta: ela cai bem na emenda com o hero, e uma linha
+        // nítida no meio do degradê anula a dissolução. As outras seções
+        // mantêm a borda, que ali separa blocos de verdade.
+        borderTop: "none",
+        paddingTop: "clamp(40px,7vh,84px)",
+      }}
+    >
       <SectionHead
         label={SECTIONS.projetos.label}
         heading={SECTIONS.projetos.heading}

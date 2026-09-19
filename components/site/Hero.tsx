@@ -1,6 +1,6 @@
 import { AVAILABILITY, HERO } from "@/data/home";
 import { waLink } from "@/lib/contact";
-import { Diamond, PANCHANG, SATOSHI, SURFACE } from "./shared";
+import { BASE_RGB, Diamond, PANCHANG, SATOSHI, SURFACE } from "./shared";
 import { HeroLandscape } from "./HeroLandscape";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
@@ -52,6 +52,23 @@ export function Hero() {
       }}
     >
       <HeroLandscape />
+
+      {/* Véu que leva o pé do hero de volta ao fundo da página. Sangra a
+          viewport, como a paisagem, senão a dissolução pararia na margem. */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          left: "50%",
+          width: "100vw",
+          transform: "translateX(-50%)",
+          bottom: 0,
+          height: "38%",
+          zIndex: 0,
+          pointerEvents: "none",
+          background: `linear-gradient(to bottom, rgba(${BASE_RGB},0) 0%, rgba(${BASE_RGB},0.75) 62%, ${SURFACE.base} 100%)`,
+        }}
+      />
 
       <div
         style={{
