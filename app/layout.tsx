@@ -4,11 +4,33 @@ import { CursorTriangle } from "@/components/cursor/CursorTriangle";
 import { Analytics } from "@/components/analytics/Analytics";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
 import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
+
+const TITLE = "Coded by M — Webdesign e websoftware sob medida";
+const DESCRIPTION =
+  "Estúdio de webdesign e websoftware em Florianópolis. Landing pages, sites institucionais e aplicações web construídos sob medida — do conceito ao site no ar.";
 
 export const metadata: Metadata = {
-  title: "Coded by M — Experience Lab",
-  description:
-    "Laboratório técnico da Coded by M. Experimentos visuais e estruturais antes da Home final.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: TITLE,
+    template: "%s · Coded by M",
+  },
+  description: DESCRIPTION,
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    siteName: SITE_NAME,
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/cases/machado/desktop-tall.webp"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/cases/machado/desktop-tall.webp"],
+  },
 };
 
 export default function RootLayout({
