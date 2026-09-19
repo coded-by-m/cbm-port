@@ -71,11 +71,11 @@ export function HeroLandscape() {
         inset: 0,
         zIndex: 0,
         pointerEvents: "none",
-        opacity: 0.55,
+        opacity: 0.5,
         maskImage:
-          "radial-gradient(120% 90% at 60% 45%, #000 35%, transparent 78%)",
+          "radial-gradient(110% 85% at 50% 48%, #000 45%, transparent 88%)",
         WebkitMaskImage:
-          "radial-gradient(120% 90% at 60% 45%, #000 35%, transparent 78%)",
+          "radial-gradient(110% 85% at 50% 48%, #000 45%, transparent 88%)",
       }}
     >
       {mounted && <Landscape active={active} eventSource={source} />}

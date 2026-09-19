@@ -1,23 +1,26 @@
-import { cases } from "@/data/cases";
-import { AVAILABILITY, FEATURED_SLUG, HERO } from "@/data/home";
+import { AVAILABILITY, HERO } from "@/data/home";
+import { SERVICES } from "@/data/services";
 import { waLink } from "@/lib/contact";
 import { Diamond, PANCHANG, SATOSHI, SURFACE } from "./shared";
-import { HeroShowcase } from "./HeroShowcase";
 import { HeroLandscape } from "./HeroLandscape";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
 /** Entrada em stagger, rodando uma vez. Não é scroll-driven. */
-const enter = (delay: number, frame = false): React.CSSProperties => ({
+const enter = (delay: number): React.CSSProperties => ({
   opacity: 0,
-  animation: frame
-    ? `cbmFrameIn 1s cubic-bezier(0.22,1,0.36,1) ${delay}s both`
-    : `cbmIn 0.8s cubic-bezier(0.33,1,0.68,1) ${delay}s both`,
+  animation: `cbmIn 0.8s cubic-bezier(0.33,1,0.68,1) ${delay}s both`,
 });
 
+/**
+ * Hero — tipo em escala grande sobre os fragmentos triangulados da marca.
+ *
+ * Sem mockup e sem foto: a imagem de fundo é a própria geometria da CbM, o
+ * único ativo visual autoral que o estúdio tem. As duas palavras do `lead`
+ * são a CATEGORIA, não a frase — é isso que permite a escala, porque duas
+ * palavras aguentam 168px e uma sentença não.
+ */
 export function Hero() {
-  const featured = cases.find((c) => c.slug === FEATURED_SLUG) ?? cases[0];
-
   return (
     <section
       id="top"
@@ -26,170 +29,270 @@ export function Hero() {
         maxWidth: 1440,
         margin: "0 auto",
         padding:
-          "clamp(116px,14vh,164px) clamp(24px,5vw,80px) clamp(72px,10vh,120px)",
+          "clamp(104px,13vh,150px) clamp(24px,5vw,80px) clamp(64px,9vh,104px)",
       }}
     >
       <HeroLandscape />
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,360px),1fr))",
-          gap: "clamp(40px,5vw,72px)",
-          alignItems: "center",
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        <div style={{ minWidth: 0 }}>
-          <div
+
+      <div style={{ position: "relative", zIndex: 1 }}>
+        {/* Linha de topo: categoria à esquerda, praça à direita */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 16,
+            paddingBottom: 26,
+            borderBottom: "1px solid rgba(245,242,237,0.1)",
+            ...enter(0.05),
+          }}
+        >
+          <span
             style={{
-              display: "flex",
+              display: "inline-flex",
               alignItems: "center",
               gap: 12,
-              marginBottom: 28,
-              ...enter(0.05),
+              fontFamily: SATOSHI,
+              fontWeight: 500,
+              fontSize: 10,
+              letterSpacing: "0.32em",
+              textTransform: "uppercase",
+              color: "#FB3640",
             }}
           >
-            <span aria-hidden style={{ display: "block", width: 24, height: 1, background: "rgba(251,54,64,0.5)" }} />
             <span
-              style={{
-                fontFamily: SATOSHI,
-                fontWeight: 500,
-                fontSize: 10,
-                letterSpacing: "0.32em",
-                textTransform: "uppercase",
-                color: "#FB3640",
-              }}
-            >
-              {HERO.eyebrow}
-            </span>
-          </div>
-
-          <h1
+              aria-hidden
+              style={{ display: "block", width: 24, height: 1, background: "rgba(251,54,64,0.5)" }}
+            />
+            {HERO.eyebrow}
+          </span>
+          <span
             style={{
-              margin: 0,
-              fontFamily: PANCHANG,
-              fontWeight: 700,
-              fontSize: "clamp(44px,6.4vw,80px)",
-              letterSpacing: "-0.012em",
-              lineHeight: 0.96,
-              color: "#F5F2ED",
-              textWrap: "balance",
-              ...enter(0.18),
-            }}
-          >
-            {HERO.headline}
-          </h1>
-
-          <p
-            style={{
-              margin: "28px 0 0",
-              maxWidth: 680,
               fontFamily: SATOSHI,
               fontWeight: 400,
-              fontSize: "clamp(15px,1.5vw,17px)",
-              lineHeight: 1.75,
-              color: "#D2CFC9",
-              textWrap: "pretty",
-              ...enter(0.32),
+              fontSize: 10,
+              letterSpacing: "0.28em",
+              textTransform: "uppercase",
+              color: "#9B9791",
             }}
           >
-            {HERO.sub}
-          </p>
+            {HERO.meta}
+          </span>
+        </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              gap: 20,
-              marginTop: 40,
-              ...enter(0.46),
-            }}
-          >
-            <a
-              href={WA}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="site-cta"
+        {/* O bloco gigante */}
+        <h1
+          style={{
+            margin: "clamp(28px,4vh,44px) 0 0",
+            fontFamily: PANCHANG,
+            fontWeight: 800,
+            fontSize: "clamp(52px,11.5vw,168px)",
+            letterSpacing: "-0.035em",
+            lineHeight: 0.84,
+            color: "#F5F2ED",
+            ...enter(0.16),
+          }}
+        >
+          {HERO.lead.map((word, i) => (
+            <span key={word} style={{ display: "block", whiteSpace: "nowrap" }}>
+              {word}
+              {i === 0 && (
+                <span
+                  aria-hidden
+                  style={{
+                    color: "#FB3640",
+                    fontSize: "0.34em",
+                    verticalAlign: "super",
+                    marginLeft: "0.08em",
+                    letterSpacing: 0,
+                  }}
+                >
+                  ✳
+                </span>
+              )}
+            </span>
+          ))}
+        </h1>
+
+        {/* Frase + apoio + ações, e o bloco de informação à direita */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))",
+            gap: "clamp(32px,5vw,72px)",
+            alignItems: "end",
+            marginTop: "clamp(36px,5vh,56px)",
+          }}
+        >
+          <div style={{ minWidth: 0, ...enter(0.3) }}>
+            <p
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                background: "#FB3640",
-                color: SURFACE.base,
-                padding: "16px 30px",
-                fontFamily: PANCHANG,
-                fontWeight: 700,
-                fontSize: 13,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                textDecoration: "none",
-                transition: "background 150ms ease",
-              }}
-            >
-              {HERO.ctaPrimary}
-            </a>
-            <a
-              href={`/cases/${featured.slug}`}
-              className="site-link-underline"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
+                margin: 0,
+                maxWidth: "24ch",
                 fontFamily: PANCHANG,
                 fontWeight: 600,
-                fontSize: 11,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
+                fontSize: "clamp(21px,2.5vw,34px)",
+                letterSpacing: "-0.012em",
+                lineHeight: 1.18,
                 color: "#F5F2ED",
-                borderBottom: "1px solid #FB3640",
-                paddingBottom: 4,
-                textDecoration: "none",
-                transition: "color 150ms ease",
+                textWrap: "balance",
               }}
             >
-              {HERO.ctaSecondary} <span style={{ color: "#FB3640" }}>↗</span>
-            </a>
-          </div>
+              {HERO.headline}
+            </p>
+            <p
+              style={{
+                margin: "20px 0 0",
+                maxWidth: "46ch",
+                fontFamily: SATOSHI,
+                fontWeight: 400,
+                fontSize: "clamp(14px,1.4vw,16px)",
+                lineHeight: 1.75,
+                color: "#C8C4BE",
+                textWrap: "pretty",
+              }}
+            >
+              {HERO.sub}
+            </p>
 
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              gap: 24,
-              marginTop: 48,
-              ...enter(0.6),
-            }}
-          >
-            {AVAILABILITY.map((a) => (
-              <span
-                key={a.label}
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                gap: 20,
+                marginTop: 34,
+              }}
+            >
+              <a
+                href={WA}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="site-cta"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  background: "#FB3640",
+                  color: SURFACE.base,
+                  padding: "16px 30px",
+                  fontFamily: PANCHANG,
+                  fontWeight: 700,
+                  fontSize: 13,
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  textDecoration: "none",
+                  transition: "background 150ms ease",
+                }}
+              >
+                {HERO.ctaPrimary}
+              </a>
+              <a
+                href="#projetos"
+                className="site-link-underline"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 10,
-                  fontFamily: SATOSHI,
-                  fontWeight: 400,
-                  fontSize: 10,
-                  letterSpacing: "0.3em",
+                  fontFamily: PANCHANG,
+                  fontWeight: 600,
+                  fontSize: 11,
+                  letterSpacing: "0.15em",
                   textTransform: "uppercase",
-                  color: a.filled ? "#B4B0AA" : "#9B9791",
+                  color: "#F5F2ED",
+                  borderBottom: "1px solid #FB3640",
+                  paddingBottom: 4,
+                  textDecoration: "none",
+                  transition: "color 150ms ease",
                 }}
               >
-                <span className={a.filled ? "site-pulse" : undefined} style={{ display: "flex" }}>
-                  <Diamond filled={a.filled} color={a.filled ? "#FB3640" : "#9B9791"} />
+                {HERO.ctaSecondary}
+              </a>
+            </div>
+          </div>
+
+          {/* Informação: o que se faz, e o estado da agenda */}
+          <div
+            style={{
+              minWidth: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: 22,
+              ...enter(0.44),
+            }}
+          >
+            <ul
+              style={{
+                margin: 0,
+                padding: 0,
+                listStyle: "none",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {SERVICES.map((s) => (
+                <li
+                  key={s.slug}
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    justifyContent: "space-between",
+                    gap: 16,
+                    padding: "11px 0",
+                    borderTop: "1px solid rgba(245,242,237,0.1)",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: PANCHANG,
+                      fontWeight: 600,
+                      fontSize: "clamp(14px,1.4vw,17px)",
+                      color: "#F5F2ED",
+                    }}
+                  >
+                    {s.title}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: SATOSHI,
+                      fontWeight: 400,
+                      fontSize: 10,
+                      letterSpacing: "0.22em",
+                      color: "#9B9791",
+                      flex: "none",
+                    }}
+                  >
+                    {s.index}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 20 }}>
+              {AVAILABILITY.map((a) => (
+                <span
+                  key={a.label}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 10,
+                    fontFamily: SATOSHI,
+                    fontWeight: 400,
+                    fontSize: 9,
+                    letterSpacing: "0.28em",
+                    textTransform: "uppercase",
+                    color: a.filled ? "#B4B0AA" : "#9B9791",
+                  }}
+                >
+                  <span className={a.filled ? "site-pulse" : undefined} style={{ display: "flex" }}>
+                    <Diamond filled={a.filled} color={a.filled ? "#FB3640" : "#9B9791"} />
+                  </span>
+                  {a.label}
                 </span>
-                {a.label}
-              </span>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-
-        <div style={{ ...enter(0.55, true) }}>
-          <HeroShowcase project={featured} />
-        </div>
-
       </div>
     </section>
   );

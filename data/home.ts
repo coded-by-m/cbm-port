@@ -16,9 +16,11 @@ export const HERO = {
    */
   lead: ["Webdesign", "Websoftware"],
   headline: "Projetamos a forma como sua empresa é percebida digitalmente.",
-  sub: "A Coded by M une design, tecnologia e pensamento estrutural. Landing pages, sites institucionais e aplicações web — da estratégia ao deploy, no mesmo lugar.",
+  sub: "Landing pages, sites institucionais e aplicações web — da estratégia ao deploy, no mesmo lugar.",
   ctaPrimary: "Começar meu projeto",
-  ctaSecondary: "Ver o case",
+  /** Linha de apoio do canto superior direito, como o "BASED IN" da referência. */
+  meta: "Florianópolis · Brasil",
+  ctaSecondary: "Ver projetos",
 } as const;
 
 /** Selos de disponibilidade. `filled` = losango sólido; senão, contorno. */
