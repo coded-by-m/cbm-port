@@ -25,7 +25,14 @@ export function WhatsAppFab() {
   // Fora da home e da experiencia. Na experiencia o botao flutuante estragaria
   // justamente a peca que deveria impressionar; na home ele disputava o rodape
   // com o banner de consentimento e o CTA — e o header ja tem contato fixo.
-  if (pathname === "/" || pathname?.startsWith("/experiencia")) return null;
+  if (
+    pathname === "/" ||
+    pathname?.startsWith("/experiencia") ||
+    // Landing de campanha tem CTA proprio, repetido: um botao flutuante de
+    // contato ao lado dele disputa a mesma acao e dilui as duas.
+    pathname?.startsWith("/lp")
+  )
+    return null;
 
   const isHome = false;
 

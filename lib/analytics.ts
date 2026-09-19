@@ -31,3 +31,23 @@ export function setConsent(value: ConsentValue) {
   window.localStorage.setItem(CONSENT_KEY, value);
   window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: value }));
 }
+
+/**
+ * Dispara o evento de conversão antes de abrir o WhatsApp.
+ *
+ * Não prova que a pessoa mandou a mensagem — prova que ela pediu o contato.
+ * Ainda assim é muito melhor que deixar o Meta otimizar por "clique em link
+ * de saída", que é o sinal que ele usaria sem isto.
+ *
+ * Silencioso sem consentimento: os scripts nem existem, então `gtag` e `fbq`
+ * são `undefined` e a chamada apenas não acontece.
+ */
+export function trackLead(source: string) {
+  if (typeof window === "undefined") return;
+  if (getConsent() !== "granted") return;
+  window.gtag?.("event", "generate_lead", {
+    event_category: "contato",
+    event_label: source,
+  });
+  window.fbq?.("track", "Lead", { content_name: source });
+}

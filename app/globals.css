@@ -295,3 +295,56 @@ body:has(.site-home) {
 @media (prefers-reduced-motion: reduce) {
   .site-letter { animation: none; opacity: 1; transform: none; }
 }
+
+/* Objeções da landing. `<details>` nativo: teclado e leitor de tela vêm de
+   graça, zero JavaScript. O marcador padrão sai e entra o nosso, angular. */
+.lp-faq {
+  border-bottom: 1px solid rgba(245, 242, 237, 0.12);
+}
+.lp-faq > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 0;
+  font-family: "Panchang", sans-serif;
+  font-weight: 600;
+  font-size: clamp(16px, 1.8vw, 21px);
+  color: #f5f2ed;
+  transition: color 180ms ease;
+}
+.lp-faq > summary::-webkit-details-marker { display: none; }
+.lp-faq > summary:hover { color: #fb3640; }
+.lp-faq > summary:focus-visible { outline: 2px solid #fb3640; outline-offset: 4px; }
+
+/* Cruz que vira traço ao abrir — dois retângulos, um deles some. */
+.lp-faq-mark {
+  position: relative;
+  flex: none;
+  width: 13px;
+  height: 13px;
+}
+.lp-faq-mark::before,
+.lp-faq-mark::after {
+  content: "";
+  position: absolute;
+  background: #fb3640;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-faq-mark::before { inset: 6px 0 6px 0; height: 1px; }
+.lp-faq-mark::after { inset: 0 6px 0 6px; width: 1px; }
+.lp-faq[open] .lp-faq-mark::after { transform: scaleY(0); }
+
+.lp-faq > p {
+  margin: 0;
+  padding: 0 0 24px;
+  max-width: 62ch;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.72;
+  color: #b4b0aa;
+  text-wrap: pretty;
+}
