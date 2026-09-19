@@ -180,10 +180,18 @@ TLS, baixa o CSS e só então descobre quais arquivos buscar.
 Na experiência WebGL isso se perde no meio do carregamento do 3D. Numa landing de anúncio, **é o
 carregamento inteiro**.
 
-Correção: `next/font/local` com os `.woff2` auto-hospedados no repo — CSS inline, preload gerado,
-`font-display: swap`, zero origem de terceiro. O leque também encolhe: o código usa de 300 a 800,
-e `font-black` (900) aparece duas vezes sem existir em nenhuma das duas famílias (está sendo
-sintetizado pelo navegador). Três pesos de cada família cobrem o site inteiro.
+Correção: `.woff2` auto-hospedados em `public/fonts/`, declarados por `@font-face` manual em
+`globals.css`, com `<link rel="preload">` explícito nos pesos da primeira dobra e `font-display: swap`.
+Zero origem de terceiro.
+
+**Não `next/font/local`**, apesar de ser o caminho idiomático: existem **123 usos de
+`fontFamily: "Panchang"` / `"Satoshi"` inline, em 28 arquivos**, e o `next/font` gera um nome de
+família com hash — quebraria os 123 de uma vez. O `@font-face` manual preserva os nomes literais e
+mantém a mudança visual-neutra.
+
+O leque encolhe de 11 pesos para 8: **Panchang 500/600/700/800** e **Satoshi 300/400/500/700**,
+que é o que o código usa de fato. `font-black` (900) aparece duas vezes sem existir em nenhuma das
+duas famílias — está sendo sintetizado pelo navegador, e vira `font-extrabold`.
 
 ### Imagens
 
