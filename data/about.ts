@@ -16,6 +16,12 @@ export const ABOUT = {
   founder: {
     name: "Matheus Mendes",
     role: "Fundador · Coded by M",
+    /**
+     * Retrato do fundador. Solte o arquivo em `public/marca/` e aponte aqui
+     * — enquanto for `undefined`, o bloco Sobre mostra o símbolo CbM em
+     * wireframe, que é o estado atual.
+     */
+    photo: undefined as string | undefined,
     bio: "Formado em Análise e Desenvolvimento de Sistemas, encontrei no web design o ponto onde técnica e estética se encontram. A Coded by M é onde levo isso a sério — cada projeto, uma busca por uma presença digital tão boa quanto a empresa por trás dela.",
   },
   location: "Florianópolis, Brasil",

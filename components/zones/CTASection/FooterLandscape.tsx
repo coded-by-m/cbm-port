@@ -194,13 +194,23 @@ function FooterFragment({ spec }: { spec: FragSpec }) {
 
 export default function FooterLandscape({
   active = true,
+  eventSource,
 }: {
   /** `false` → congela o render loop (não gasta GPU fora de vista). */
   active?: boolean;
+  /**
+   * Elemento de onde ouvir o ponteiro. Sem isto o R3F só escuta o proprio
+   * canvas — e como o canvas vive num wrapper `pointer-events: none`, os
+   * eventos nunca chegam e a repulsão do cursor fica dormente. Passar um
+   * elemento externo (tipicamente `document.body`) acorda a repulsão sem
+   * roubar o clique de nada que esteja por cima.
+   */
+  eventSource?: HTMLElement;
 } = {}) {
   return (
     <Canvas
       frameloop={active ? "always" : "never"}
+      {...(eventSource ? { eventSource, eventPrefix: "client" as const } : {})}
       gl={{ antialias: true, alpha: true }}
       dpr={[1, 1.5]}
       camera={{ position: [0, 1.4, 10.5], fov: 40 }}

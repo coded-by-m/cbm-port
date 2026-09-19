@@ -3,6 +3,7 @@ import { AVAILABILITY, FEATURED_SLUG, HERO } from "@/data/home";
 import { waLink } from "@/lib/contact";
 import { Diamond, PANCHANG, SATOSHI, SURFACE } from "./shared";
 import { HeroShowcase } from "./HeroShowcase";
+import { HeroLandscape } from "./HeroLandscape";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -21,18 +22,22 @@ export function Hero() {
     <section
       id="top"
       style={{
+        position: "relative",
         maxWidth: 1440,
         margin: "0 auto",
         padding:
           "clamp(116px,14vh,164px) clamp(24px,5vw,80px) clamp(72px,10vh,120px)",
       }}
     >
+      <HeroLandscape />
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,360px),1fr))",
           gap: "clamp(40px,5vw,72px)",
           alignItems: "center",
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <div style={{ minWidth: 0 }}>
