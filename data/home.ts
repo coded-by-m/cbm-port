@@ -14,7 +14,7 @@ export const HERO = {
    * O bloco gigante do hero. São a CATEGORIA, não a frase — é isso que
    * permite a escala: duas palavras aguentam 130px, uma sentença não.
    */
-  lead: ["Webdesign", "Websoftware"],
+  lead: ["WEB", "Design"],
   headline: "Projetamos a forma como sua empresa é percebida digitalmente.",
   sub: "Landing pages, sites institucionais e aplicações web — da estratégia ao deploy, no mesmo lugar.",
   ctaPrimary: "Começar meu projeto",

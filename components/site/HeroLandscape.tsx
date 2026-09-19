@@ -67,15 +67,21 @@ export function HeroLandscape() {
       ref={ref}
       aria-hidden
       style={{
+        // Sangra a viewport inteira: o hero tem max-width 1440 e padding, mas
+        // a paisagem não deve conhecer essas bordas.
         position: "absolute",
-        inset: 0,
+        top: 0,
+        bottom: 0,
+        left: "50%",
+        width: "100vw",
+        transform: "translateX(-50%)",
         zIndex: 0,
         pointerEvents: "none",
-        opacity: 0.5,
+        opacity: 0.6,
         maskImage:
-          "radial-gradient(110% 85% at 50% 48%, #000 45%, transparent 88%)",
+          "radial-gradient(85% 75% at 38% 52%, #000 55%, transparent 92%)",
         WebkitMaskImage:
-          "radial-gradient(110% 85% at 50% 48%, #000 45%, transparent 88%)",
+          "radial-gradient(85% 75% at 38% 52%, #000 55%, transparent 92%)",
       }}
     >
       {mounted && <Landscape active={active} eventSource={source} />}

@@ -1,5 +1,4 @@
 import { AVAILABILITY, HERO } from "@/data/home";
-import { SERVICES } from "@/data/services";
 import { waLink } from "@/lib/contact";
 import { Diamond, PANCHANG, SATOSHI, SURFACE } from "./shared";
 import { HeroLandscape } from "./HeroLandscape";
@@ -26,15 +25,19 @@ export function Hero() {
       id="top"
       style={{
         position: "relative",
+        minHeight: "100dvh",
         maxWidth: 1440,
         margin: "0 auto",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         padding:
-          "clamp(104px,13vh,150px) clamp(24px,5vw,80px) clamp(64px,9vh,104px)",
+          "clamp(92px,12vh,132px) clamp(24px,5vw,80px) clamp(48px,7vh,80px)",
       }}
     >
       <HeroLandscape />
 
-      <div style={{ position: "relative", zIndex: 1, containerType: "inline-size" }}>
+      <div style={{ position: "relative", zIndex: 1, width: "100%" }}>
         {/* Linha de topo: categoria à esquerda, praça à direita */}
         <div
           style={{
@@ -81,96 +84,108 @@ export function Hero() {
           </span>
         </div>
 
-        {/* O bloco gigante */}
-        <h1
-          style={{
-            margin: "clamp(28px,4vh,44px) 0 0",
-            fontFamily: PANCHANG,
-            fontWeight: 800,
-            /**
-             * Medido: "Websoftware" ocupa ~10em. Com `vw` não havia relação
-             * com o container (que trava em 1440), e a palavra era cortada em
-             * toda largura. `cqw` amarra o corpo à largura real disponível —
-             * o tipo encosta nas duas margens sem transbordar.
-             */
-            fontSize: "clamp(30px,9.6cqw,150px)",
-            letterSpacing: "-0.035em",
-            lineHeight: 0.84,
-            color: "#F5F2ED",
-            ...enter(0.16),
-          }}
-        >
-          {HERO.lead.map((word, i) => (
-            <span key={word} style={{ display: "block", whiteSpace: "nowrap" }}>
-              {word}
-              {i === 0 && (
-                <span
-                  aria-hidden
-                  style={{
-                    color: "#FB3640",
-                    fontSize: "0.34em",
-                    verticalAlign: "super",
-                    marginLeft: "0.08em",
-                    letterSpacing: 0,
-                  }}
-                >
-                  ✳
-                </span>
-              )}
-            </span>
-          ))}
-        </h1>
-
-        {/* Frase + apoio + ações, e o bloco de informação à direita */}
+        {/* Tudo alinhado à direita: a metade esquerda fica pra paisagem */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))",
-            gap: "clamp(32px,5vw,72px)",
-            alignItems: "end",
-            marginTop: "clamp(36px,5vh,56px)",
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "clamp(32px,6vh,64px)",
           }}
         >
-          <div style={{ minWidth: 0, ...enter(0.3) }}>
-            <p
+          <div
+            style={{
+              width: "min(100%, 820px)",
+              containerType: "inline-size",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-end",
+              textAlign: "right",
+            }}
+          >
+            <h1
               style={{
                 margin: 0,
-                maxWidth: "24ch",
+                fontFamily: PANCHANG,
+                fontWeight: 800,
+                /** Amarrado ao container, não à viewport: a palavra mais
+                 *  larga encosta nas margens sem nunca ser cortada. */
+                fontSize: "clamp(58px,20.4cqw,230px)",
+                letterSpacing: "-0.04em",
+                lineHeight: 0.82,
+                color: "#F5F2ED",
+                ...enter(0.16),
+              }}
+            >
+              {HERO.lead.map((word, i) => (
+                <span key={word} style={{ display: "block", whiteSpace: "nowrap" }}>
+                  {word}
+                  {i === 0 && (
+                    <span
+                      aria-hidden
+                      style={{
+                        color: "#FB3640",
+                        fontSize: "0.3em",
+                        verticalAlign: "super",
+                        marginLeft: "0.06em",
+                        letterSpacing: 0,
+                      }}
+                    >
+                      ✳
+                    </span>
+                  )}
+                </span>
+              ))}
+            </h1>
+
+            <p
+              style={{
+                margin: "clamp(26px,4vh,40px) 0 0",
+                maxWidth: "26ch",
                 fontFamily: PANCHANG,
                 fontWeight: 600,
-                fontSize: "clamp(21px,2.5vw,34px)",
+                fontSize: "clamp(18px,2.1vw,27px)",
                 letterSpacing: "-0.012em",
-                lineHeight: 1.18,
+                lineHeight: 1.22,
                 color: "#F5F2ED",
                 textWrap: "balance",
+                ...enter(0.3),
               }}
             >
               {HERO.headline}
-            </p>
-            <p
-              style={{
-                margin: "20px 0 0",
-                maxWidth: "46ch",
-                fontFamily: SATOSHI,
-                fontWeight: 400,
-                fontSize: "clamp(14px,1.4vw,16px)",
-                lineHeight: 1.75,
-                color: "#C8C4BE",
-                textWrap: "pretty",
-              }}
-            >
-              {HERO.sub}
             </p>
 
             <div
               style={{
                 display: "flex",
                 flexWrap: "wrap",
+                justifyContent: "flex-end",
                 alignItems: "center",
                 gap: 20,
-                marginTop: 34,
+                marginTop: 30,
+                ...enter(0.42),
               }}
             >
+              <a
+                href="#projetos"
+                className="site-link-underline"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                  fontFamily: PANCHANG,
+                  fontWeight: 600,
+                  fontSize: 11,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  color: "#F5F2ED",
+                  borderBottom: "1px solid #FB3640",
+                  paddingBottom: 4,
+                  textDecoration: "none",
+                  transition: "color 150ms ease",
+                }}
+              >
+                {HERO.ctaSecondary}
+              </a>
               <a
                 href={WA}
                 target="_blank"
@@ -193,88 +208,18 @@ export function Hero() {
               >
                 {HERO.ctaPrimary}
               </a>
-              <a
-                href="#projetos"
-                className="site-link-underline"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 10,
-                  fontFamily: PANCHANG,
-                  fontWeight: 600,
-                  fontSize: 11,
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  color: "#F5F2ED",
-                  borderBottom: "1px solid #FB3640",
-                  paddingBottom: 4,
-                  textDecoration: "none",
-                  transition: "color 150ms ease",
-                }}
-              >
-                {HERO.ctaSecondary}
-              </a>
             </div>
-          </div>
 
-          {/* Informação: o que se faz, e o estado da agenda */}
-          <div
-            style={{
-              minWidth: 0,
-              display: "flex",
-              flexDirection: "column",
-              gap: 22,
-              ...enter(0.44),
-            }}
-          >
-            <ul
+            <div
               style={{
-                margin: 0,
-                padding: 0,
-                listStyle: "none",
                 display: "flex",
-                flexDirection: "column",
+                flexWrap: "wrap",
+                justifyContent: "flex-end",
+                gap: 20,
+                marginTop: "clamp(28px,4vh,44px)",
+                ...enter(0.54),
               }}
             >
-              {SERVICES.map((s) => (
-                <li
-                  key={s.slug}
-                  style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    justifyContent: "space-between",
-                    gap: 16,
-                    padding: "11px 0",
-                    borderTop: "1px solid rgba(245,242,237,0.1)",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: PANCHANG,
-                      fontWeight: 600,
-                      fontSize: "clamp(14px,1.4vw,17px)",
-                      color: "#F5F2ED",
-                    }}
-                  >
-                    {s.title}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: SATOSHI,
-                      fontWeight: 400,
-                      fontSize: 10,
-                      letterSpacing: "0.22em",
-                      color: "#9B9791",
-                      flex: "none",
-                    }}
-                  >
-                    {s.index}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 20 }}>
               {AVAILABILITY.map((a) => (
                 <span
                   key={a.label}
