@@ -84,24 +84,16 @@ export function Hero() {
           </span>
         </div>
 
-        {/* Tudo alinhado à direita: a metade esquerda fica pra paisagem */}
+        {/* O tipo ocupa a largura toda, encostado à esquerda. O texto de apoio
+            desce ancorado à direita — a tensão entre os dois é a composição. */}
         <div
           style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginTop: "clamp(32px,6vh,64px)",
+            width: "100%",
+            containerType: "inline-size",
+            marginTop: "clamp(28px,5vh,56px)",
           }}
         >
-          <div
-            style={{
-              width: "min(100%, 820px)",
-              containerType: "inline-size",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              textAlign: "left",
-            }}
-          >
+          <div>
             <h1
               style={{
                 margin: 0,
@@ -109,7 +101,7 @@ export function Hero() {
                 fontWeight: 800,
                 /** Amarrado ao container, não à viewport: a palavra mais
                  *  larga encosta nas margens sem nunca ser cortada. */
-                fontSize: "clamp(58px,20.4cqw,230px)",
+                fontSize: "clamp(58px, min(20.4cqw, 21vh), 300px)",
                 letterSpacing: "-0.04em",
                 lineHeight: 0.82,
                 color: "#F5F2ED",
@@ -136,10 +128,29 @@ export function Hero() {
                 </span>
               ))}
             </h1>
+          </div>
 
+          {/* Apoio ancorado à direita. O texto dentro segue alinhado à
+              esquerda: corpo com borda direita irregular lê melhor que o
+              contrário, e o "ancorado à direita" é a posição do bloco. */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginTop: "clamp(28px,5vh,52px)",
+            }}
+          >
+            <div
+              style={{
+                width: "min(100%, 480px)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
+            >
             <p
               style={{
-                margin: "clamp(26px,4vh,40px) 0 0",
+                margin: 0,
                 maxWidth: "26ch",
                 fontFamily: PANCHANG,
                 fontWeight: 600,
@@ -239,6 +250,7 @@ export function Hero() {
                   {a.label}
                 </span>
               ))}
+            </div>
             </div>
           </div>
         </div>
