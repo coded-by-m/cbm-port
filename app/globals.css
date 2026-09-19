@@ -61,7 +61,39 @@ body:has(.site-home) {
 .site-drawer-phone:hover { color: #f5f2ed; }
 .site-social:hover { color: #fb3640; }
 .site-link-underline:hover { color: #fb3640; }
-.site-card:hover { border-color: rgba(245, 242, 237, 0.32); }
+/* "Hover revela, nao so destaca": o card levanta, a borda vai pro sinal e o
+   screenshot desliza pra cima mostrando o resto da pagina do cliente. */
+.site-card {
+  transition: border-color 300ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.site-card:hover {
+  border-color: #fb3640;
+  transform: translateY(-4px);
+}
+.site-card .site-shot {
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.site-card:hover .site-shot {
+  transform: translateY(calc(-100% + clamp(200px, 24vh, 260px)));
+}
+
+/* O Reveal envolve cada card num div; sem isso o card perde o stretch do grid
+   e o "indicado para" ancorado no rodape do card sobe. */
+.site-cell { display: flex; min-width: 0; }
+.site-cell > * { flex: 1; min-width: 0; }
+
+/* Vida em repouso — o mesmo pulso dos selos do rodape. */
+@keyframes cbmPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.site-pulse { animation: cbmPulse 2.4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-card:hover { transform: none; }
+  .site-card:hover .site-shot { transform: none; }
+  .site-pulse { animation: none; }
+}
 .site-service-card:hover { border-color: rgba(245, 242, 237, 0.3); background: #070d09; }
 .site-footer-link:hover { color: #f5f2ed; }
 .site-ghost:hover { border-color: rgba(245, 242, 237, 1); background: rgba(245, 242, 237, 0.04); }

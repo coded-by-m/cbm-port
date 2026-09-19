@@ -1,7 +1,8 @@
 import { cases } from "@/data/cases";
 import { SECTIONS } from "@/data/home";
 import { PROJECT_TYPE_COLOR } from "@/lib/projectTypes";
-import { BASE_RGB, PANCHANG, SATOSHI, SECTION, SUNKEN_RGB, SURFACE, SectionHead } from "./shared";
+import { BASE_RGB, PANCHANG, SATOSHI, SECTION, SUNKEN_RGB, SURFACE, ScaleMark, SectionHead } from "./shared";
+import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Grade dos 6 projetos publicados. Cada card mostra a fatia de topo do
@@ -11,7 +12,9 @@ export function ProjectsSection() {
   const published = cases.filter((c) => c.status === "published");
 
   return (
-    <section id="projetos" style={SECTION}>
+    <section id="projetos" style={{ ...SECTION, position: "relative", overflow: "hidden" }}>
+      <ScaleMark>06</ScaleMark>
+      <div style={{ position: "relative", zIndex: 1 }}>
       <SectionHead
         label={SECTIONS.projetos.label}
         heading={SECTIONS.projetos.heading}
@@ -24,9 +27,9 @@ export function ProjectsSection() {
           gap: "clamp(20px,2.4vw,32px)",
         }}
       >
-        {published.map((c) => (
+        {published.map((c, i) => (
+          <Reveal key={c.slug} delay={i * 110} className="site-cell">
           <article
-            key={c.slug}
             className="site-card"
             style={{
               display: "flex",
@@ -49,6 +52,7 @@ export function ProjectsSection() {
               <img
                 src={c.preview?.desktop ?? ""}
                 alt={`${c.title} — ${c.meta.tipo}`}
+                className="site-shot"
                 style={{ display: "block", width: "100%", height: "auto" }}
               />
               <div
@@ -198,7 +202,9 @@ export function ProjectsSection() {
               </div>
             </div>
           </article>
+          </Reveal>
         ))}
+      </div>
       </div>
     </section>
   );

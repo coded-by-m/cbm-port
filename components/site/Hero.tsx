@@ -171,7 +171,9 @@ export function Hero() {
                   color: a.filled ? "#B4B0AA" : "#9B9791",
                 }}
               >
-                <Diamond filled={a.filled} color={a.filled ? "#FB3640" : "#9B9791"} />
+                <span className={a.filled ? "site-pulse" : undefined} style={{ display: "flex" }}>
+                  <Diamond filled={a.filled} color={a.filled ? "#FB3640" : "#9B9791"} />
+                </span>
                 {a.label}
               </span>
             ))}
