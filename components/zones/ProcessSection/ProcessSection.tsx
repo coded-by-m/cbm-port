@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { railSub } from "@/lib/railProgress";
+import { PROCESS_STEPS } from "@/data/process";
 
 const ProcessJourney = dynamic(() => import("./ProcessJourney"), {
   ssr: false,
@@ -16,40 +17,12 @@ const ProcessJourney = dynamic(() => import("./ProcessJourney"), {
  * a torre ativa acende e o card troca. Entra/sai pelo wipe da Home.
  */
 
-interface Step {
-  num: string;
-  title: string;
-  desc: string;
-}
-
-const STEPS: Step[] = [
-  {
-    num: "01",
-    title: "Estratégia",
-    desc: "Antes de desenhar, entender. Diagnóstico, escopo e posicionamento.",
-  },
-  {
-    num: "02",
-    title: "Design",
-    desc: "Forma com intenção. Arquitetura, identidade e protótipo.",
-  },
-  {
-    num: "03",
-    title: "Código",
-    desc: "Construído pra durar. Implementação, performance e qualidade.",
-  },
-  {
-    num: "04",
-    title: "Resultado",
-    desc: "Não acaba no deploy. Mensuração, ajustes e evolução.",
-  },
-];
 
 const OFF_WHITE = "#F5F2ED";
 const SIGNAL = "#FB3640";
 
 /** Valor de `progressRef` (0..1) que centraliza a câmera em cada estação. */
-const STATION_PROGRESS = STEPS.map((_, i) => i / (STEPS.length - 1));
+const STATION_PROGRESS = PROCESS_STEPS.map((_, i) => i / (PROCESS_STEPS.length - 1));
 const SCROLL_THRESHOLD = 150;
 const SCROLL_COOLDOWN = 1300;
 
@@ -78,7 +51,7 @@ export default function ProcessSection({
   // Reporta o sub-progresso pra ChapterRail (preenche o marcador ativo).
   useEffect(() => {
     railSub.active = !!live;
-    if (live) railSub.value = Math.max(0, activeStep) / (STEPS.length - 1);
+    if (live) railSub.value = Math.max(0, activeStep) / (PROCESS_STEPS.length - 1);
   }, [live, activeStep]);
   useEffect(
     () => () => {
@@ -96,7 +69,7 @@ export default function ProcessSection({
   // Vai pra etapa: pana a câmera (tween do progressRef) e mostra a linha de
   // energia durante o movimento. `transitioning` segura o anti-skip.
   const goToStep = useCallback((index: number) => {
-    const clamped = Math.max(0, Math.min(index, STEPS.length - 1));
+    const clamped = Math.max(0, Math.min(index, PROCESS_STEPS.length - 1));
     if (clamped === activeRef.current) return;
     activeRef.current = clamped;
     setActiveStep(clamped);
@@ -120,7 +93,7 @@ export default function ProcessSection({
   }, []);
 
   const next = useCallback(() => {
-    if (activeRef.current >= STEPS.length - 1) onForwardRef.current?.();
+    if (activeRef.current >= PROCESS_STEPS.length - 1) onForwardRef.current?.();
     else goToStep(activeRef.current + 1);
   }, [goToStep]);
 
@@ -285,7 +258,7 @@ export default function ProcessSection({
         {/* Card da etapa ativa — inferior centralizado, crossfade */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-6 pb-[16vh] text-center">
           <div className="relative mx-auto h-[140px] max-w-xl sm:h-[120px]">
-            {STEPS.map((step, i) => {
+            {PROCESS_STEPS.map((step, i) => {
               const isActive = i === activeStep;
               return (
                 <div
@@ -346,7 +319,7 @@ export default function ProcessSection({
             aria-label="Etapas do processo"
             className="pointer-events-auto mt-8 flex items-center justify-center gap-3"
           >
-            {STEPS.map((step, i) => {
+            {PROCESS_STEPS.map((step, i) => {
               const isActive = i === activeStep;
               const isPast = i < activeStep;
               return (
@@ -373,7 +346,7 @@ export default function ProcessSection({
                       transition: "all 0.35s ease-out",
                     }}
                   />
-                  {i < STEPS.length - 1 && (
+                  {i < PROCESS_STEPS.length - 1 && (
                     <span
                       className="block h-[1px] w-8"
                       style={{
