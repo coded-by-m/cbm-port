@@ -1,7 +1,7 @@
 import { cases } from "@/data/cases";
 import { SECTIONS } from "@/data/home";
 import { PROJECT_TYPE_COLOR } from "@/lib/projectTypes";
-import { BASE_RGB, PANCHANG, SATOSHI, SECTION, SUNKEN_RGB, SURFACE, ScaleMark, SectionHead } from "./shared";
+import { BASE_RGB, PANCHANG, SATOSHI, SECTION, SUNKEN_RGB, SURFACE, SectionHead } from "./shared";
 import { Reveal } from "@/components/ui/Reveal";
 
 /**
@@ -12,9 +12,7 @@ export function ProjectsSection() {
   const published = cases.filter((c) => c.status === "published");
 
   return (
-    <section id="projetos" style={{ ...SECTION, position: "relative", overflow: "hidden" }}>
-      <ScaleMark>06</ScaleMark>
-      <div style={{ position: "relative", zIndex: 1 }}>
+    <section id="projetos" style={SECTION}>
       <SectionHead
         label={SECTIONS.projetos.label}
         heading={SECTIONS.projetos.heading}
@@ -204,7 +202,6 @@ export function ProjectsSection() {
           </article>
           </Reveal>
         ))}
-      </div>
       </div>
     </section>
   );

@@ -1,14 +1,12 @@
 import { PROCESS_STEPS } from "@/data/process";
 import { SECTIONS } from "@/data/home";
-import { Diamond, PANCHANG, SATOSHI, SECTION, ScaleMark, SectionHead } from "./shared";
+import { Diamond, PANCHANG, SATOSHI, SECTION, SectionHead } from "./shared";
 import { Reveal } from "@/components/ui/Reveal";
 
 /** As 4 etapas do método — horizontal no desktop, empilhado no mobile. */
 export function ProcessSection() {
   return (
-    <section id="processo" style={{ ...SECTION, position: "relative", overflow: "hidden" }}>
-      <ScaleMark>04</ScaleMark>
-      <div style={{ position: "relative", zIndex: 1 }}>
+    <section id="processo" style={SECTION}>
       <SectionHead
         label={SECTIONS.processo.label}
         heading={SECTIONS.processo.heading}
@@ -75,7 +73,6 @@ export function ProcessSection() {
           </div>
           </Reveal>
         ))}
-      </div>
       </div>
     </section>
   );

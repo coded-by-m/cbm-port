@@ -71,10 +71,13 @@ body:has(.site-home) {
   transform: translateY(-4px);
 }
 .site-card .site-shot {
-  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+/* Percurso curto de proposito. Deslizar a imagem inteira (800px+ num
+   desktop-tall) vira rolo de caca-niquel: o gesto passa a ser o movimento, e
+   nao o que ele revela. 128px mostram que ha mais pagina e param. */
 .site-card:hover .site-shot {
-  transform: translateY(calc(-100% + clamp(200px, 24vh, 260px)));
+  transform: translateY(-128px);
 }
 
 /* O Reveal envolve cada card num div; sem isso o card perde o stretch do grid

@@ -89,37 +89,6 @@ export function SectionLabel({ children }: { children: ReactNode }) {
   );
 }
 
-/**
- * Numeral ou palavra gigante atrás do conteúdo — o truque de escala que o
- * rodapé usa com o monograma. Quebra o ritmo uniforme das seções sem
- * acrescentar elemento nenhum na tela: é tipografia, custo zero.
- */
-export function ScaleMark({ children }: { children: ReactNode }) {
-  return (
-    <span
-      aria-hidden
-      style={{
-        position: "absolute",
-        top: "-0.18em",
-        right: "-0.02em",
-        zIndex: 0,
-        pointerEvents: "none",
-        userSelect: "none",
-        fontFamily: PANCHANG,
-        fontWeight: 800,
-        fontSize: "clamp(120px,19vw,300px)",
-        lineHeight: 0.72,
-        letterSpacing: "-0.04em",
-        color: "#F5F2ED",
-        opacity: 0.045,
-        whiteSpace: "nowrap",
-      }}
-    >
-      {children}
-    </span>
-  );
-}
-
 /** Cabeçalho padrão de seção: label + h2 + linha de apoio. */
 export function SectionHead({
   label,

@@ -1,14 +1,12 @@
 import { SERVICES } from "@/data/services";
 import { SECTIONS } from "@/data/home";
-import { Diamond, PANCHANG, SATOSHI, SECTION, SURFACE, ScaleMark, SectionHead } from "./shared";
+import { Diamond, PANCHANG, SATOSHI, SECTION, SURFACE, SectionHead } from "./shared";
 import { Reveal } from "@/components/ui/Reveal";
 
 /** Os 3 serviços como cards de texto. Sem as mini-cenas 3D da experiência. */
 export function ServicesSection() {
   return (
-    <section id="servicos" style={{ ...SECTION, position: "relative", overflow: "hidden" }}>
-      <ScaleMark>03</ScaleMark>
-      <div style={{ position: "relative", zIndex: 1 }}>
+    <section id="servicos" style={SECTION}>
       <SectionHead
         label={SECTIONS.servicos.label}
         heading={SECTIONS.servicos.heading}
@@ -145,7 +143,6 @@ export function ServicesSection() {
           </article>
           </Reveal>
         ))}
-      </div>
       </div>
     </section>
   );
