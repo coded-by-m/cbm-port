@@ -43,6 +43,14 @@ body {
   background: rgba(245, 242, 237, 0.26);
 }
 
+/* O <body> e o Fab sao globais, mas a home tem base propria (#040806). Em vez
+   de mudar a cor global — que serve /projetos, os cases e a experiencia — a
+   regra e escopada pelo marcador .site-home que so a home renderiza. Resolve o
+   lampejo verde claro no overscroll sem afetar nenhuma outra rota. */
+body:has(.site-home) {
+  background: #040806;
+}
+
 /* Hovers da home estática — o design entrega estados de hover, que estilo
    inline não expressa. Uma classe por estado, valores idênticos ao aprovado. */
 .site-burger:hover { border-color: rgba(245, 242, 237, 0.75); background: rgba(245, 242, 237, 0.05); }

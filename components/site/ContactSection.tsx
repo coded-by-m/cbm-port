@@ -5,7 +5,7 @@ import {
   WHATSAPP_DISPLAY,
   waLink,
 } from "@/lib/contact";
-import { PANCHANG, SATOSHI, SECTION, SectionLabel } from "./shared";
+import { PANCHANG, SATOSHI, SECTION, SURFACE, SectionLabel } from "./shared";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -54,7 +54,7 @@ export function ContactSection() {
               display: "inline-flex",
               alignItems: "center",
               background: "#FB3640",
-              color: "#000F08",
+              color: SURFACE.base,
               padding: "16px 30px",
               fontFamily: PANCHANG,
               fontWeight: 600,

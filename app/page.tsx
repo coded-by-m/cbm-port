@@ -1,3 +1,4 @@
+import { SURFACE } from "@/components/site/shared";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { Hero } from "@/components/site/Hero";
 import { ProjectsSection } from "@/components/site/ProjectsSection";
@@ -17,7 +18,7 @@ import { SiteFooter } from "@/components/site/SiteFooter";
  */
 export default function HomePage() {
   return (
-    <div style={{ background: "#000F08", color: "#F5F2ED", overflowX: "hidden" }}>
+    <div className="site-home" style={{ background: SURFACE.base, color: "#F5F2ED", overflowX: "hidden" }}>
       <SiteHeader />
       <main>
         <Hero />

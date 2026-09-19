@@ -1,7 +1,7 @@
 import { cases } from "@/data/cases";
 import { AVAILABILITY, FEATURED_SLUG, HERO } from "@/data/home";
 import { waLink } from "@/lib/contact";
-import { Diamond, PANCHANG, SATOSHI } from "./shared";
+import { BASE_RGB, Diamond, PANCHANG, SATOSHI, SURFACE } from "./shared";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -110,7 +110,7 @@ export function Hero() {
                 display: "inline-flex",
                 alignItems: "center",
                 background: "#FB3640",
-                color: "#000F08",
+                color: SURFACE.base,
                 padding: "15px 28px",
                 fontFamily: PANCHANG,
                 fontWeight: 600,
@@ -183,7 +183,7 @@ export function Hero() {
             style={{
               position: "relative",
               border: "1px solid rgba(245,242,237,0.15)",
-              background: "#0E1810",
+              background: SURFACE.frame,
               boxShadow: "0 24px 60px -12px rgba(0,0,0,0.85)",
               overflow: "hidden",
               transform:
@@ -196,7 +196,7 @@ export function Hero() {
                 alignItems: "center",
                 gap: 12,
                 borderBottom: "1px solid rgba(245,242,237,0.1)",
-                background: "#0b130d",
+                background: SURFACE.frameBar,
                 padding: "10px 16px",
               }}
             >
@@ -241,7 +241,7 @@ export function Hero() {
                   inset: "auto 0 0 0",
                   height: 120,
                   background:
-                    "linear-gradient(to bottom,rgba(0,15,8,0),rgba(0,15,8,0.92))",
+                    `linear-gradient(to bottom,rgba(${BASE_RGB},0),rgba(${BASE_RGB},0.92))`,
                 }}
               />
             </div>

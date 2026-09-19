@@ -1,7 +1,7 @@
 import { cases } from "@/data/cases";
 import { SECTIONS } from "@/data/home";
 import { PROJECT_TYPE_COLOR } from "@/lib/projectTypes";
-import { PANCHANG, SATOSHI, SECTION, SectionHead } from "./shared";
+import { BASE_RGB, PANCHANG, SATOSHI, SECTION, SUNKEN_RGB, SURFACE, SectionHead } from "./shared";
 
 /**
  * Grade dos 6 projetos publicados. Cada card mostra a fatia de topo do
@@ -33,7 +33,7 @@ export function ProjectsSection() {
               flexDirection: "column",
               minWidth: 0,
               border: "1px solid rgba(245,242,237,0.12)",
-              background: "#040A06",
+              background: SURFACE.sunken,
               transition: "border-color 300ms ease",
             }}
           >
@@ -58,7 +58,7 @@ export function ProjectsSection() {
                   inset: "auto 0 0 0",
                   height: 90,
                   background:
-                    "linear-gradient(to bottom,rgba(4,10,6,0),rgba(4,10,6,0.95))",
+                    `linear-gradient(to bottom,rgba(${SUNKEN_RGB},0),rgba(${SUNKEN_RGB},0.95))`,
                 }}
               />
               <span
@@ -69,7 +69,7 @@ export function ProjectsSection() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 8,
-                  background: "rgba(0,15,8,0.82)",
+                  background: `rgba(${BASE_RGB},0.82)`,
                   padding: "5px 10px",
                   fontFamily: SATOSHI,
                   fontWeight: 500,

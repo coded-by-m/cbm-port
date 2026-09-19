@@ -1,6 +1,6 @@
 import { SECTIONS } from "@/data/home";
 import { HOME_CHAPTERS } from "@/lib/homeChapters";
-import { PANCHANG, SATOSHI, SectionLabel } from "./shared";
+import { PANCHANG, SATOSHI, SURFACE, SectionLabel } from "./shared";
 
 const COPY = SECTIONS.experiencia;
 
@@ -48,7 +48,7 @@ export function ExperienceBridge() {
     <section
       id="experiencia"
       style={{
-        background: "#070B08",
+        background: SURFACE.raised,
         borderTop: "1px solid #111511",
         borderBottom: "1px solid #111511",
       }}

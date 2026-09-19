@@ -3,6 +3,36 @@ import type { CSSProperties, ReactNode } from "react";
 export const SATOSHI = '"Satoshi", sans-serif';
 export const PANCHANG = '"Panchang", sans-serif';
 
+/**
+ * Escala de superfícies da home — verde quase preto.
+ *
+ * Fonte única: mexa aqui e a página inteira acompanha. A hierarquia importa
+ * mais que os valores absolutos — `sunken` recua, `raised` destaca. Achatar
+ * tudo em um só tom faz a página perder a camada.
+ *
+ * Nenhum é `#000` puro de propósito: o DESIGN-LANGUAGE trata a temperatura
+ * como o que separa "premium" de "dark theme genérico".
+ */
+export const SURFACE = {
+  /** Fundo da página. */
+  base: "#040806",
+  /** Cards de projeto e serviço — recuam em relação à página. */
+  sunken: "#020504",
+  /** Faixa da Experiência — destaca como objeto separado. */
+  raised: "#070C09",
+  /** Painel do menu drawer. */
+  drawer: "#080D0A",
+  /** Barra da moldura de browser no hero. */
+  frameBar: "#070D09",
+  /** Corpo da moldura de browser no hero. */
+  frame: "#0A120C",
+} as const;
+
+/** `base` em rgb, para gradientes e overlays com alpha. */
+export const BASE_RGB = "4,8,6";
+/** `sunken` em rgb, para o fade no rodapé dos cards. */
+export const SUNKEN_RGB = "2,5,4";
+
 /** Padding e largura de todas as seções da home. */
 export const SECTION: CSSProperties = {
   maxWidth: 1440,

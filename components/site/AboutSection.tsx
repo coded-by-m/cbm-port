@@ -7,6 +7,7 @@ import {
   SATOSHI,
   SECTION,
   SectionLabel,
+  SURFACE,
 } from "./shared";
 
 /** Símbolo à esquerda, manifesto e assinatura à direita, valores embaixo. */
@@ -153,7 +154,7 @@ export function AboutSection() {
               flexDirection: "column",
               gap: 8,
               minWidth: 0,
-              background: "#000F08",
+              background: SURFACE.base,
               padding: 26,
             }}
           >

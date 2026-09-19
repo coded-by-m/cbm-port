@@ -1,6 +1,6 @@
 import { SERVICES } from "@/data/services";
 import { SECTIONS } from "@/data/home";
-import { Diamond, PANCHANG, SATOSHI, SECTION, SectionHead } from "./shared";
+import { Diamond, PANCHANG, SATOSHI, SECTION, SURFACE, SectionHead } from "./shared";
 
 /** Os 3 serviços como cards de texto. Sem as mini-cenas 3D da experiência. */
 export function ServicesSection() {
@@ -28,7 +28,7 @@ export function ServicesSection() {
               gap: 18,
               minWidth: 0,
               border: "1px solid rgba(245,242,237,0.12)",
-              background: "#040A06",
+              background: SURFACE.sunken,
               padding: "clamp(22px,2.4vw,30px)",
               transition: "border-color 300ms ease, background 300ms ease",
             }}

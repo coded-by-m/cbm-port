@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { waLink } from "@/lib/contact";
+import { SURFACE } from "@/components/site/shared";
 
 /**
  * Botão flutuante de WhatsApp — contato sempre a um toque, em todas as páginas.
@@ -25,6 +26,10 @@ export function WhatsAppFab() {
   // justamente a peca que deveria impressionar. A home tem CTA proprio.
   if (pathname?.startsWith("/experiencia")) return null;
 
+  // A home tem base mais escura que o resto do site; o Fab acompanha ela pra
+  // nao ficar uma pilula clara boiando. Nas outras rotas segue o tom antigo.
+  const isHome = pathname === "/";
+
   return (
     <a
       href={waLink()}
@@ -32,8 +37,10 @@ export function WhatsAppFab() {
       rel="noopener noreferrer"
       data-cursor="triangle"
       aria-label="Falar no WhatsApp"
-      className="group fixed bottom-6 right-6 z-40 flex items-center gap-2.5 border border-[#1a2a1e] bg-[#0E1810]/95 px-5 py-3.5 text-[#F5F2ED] shadow-[0_10px_30px_rgba(0,0,0,0.45)] backdrop-blur-sm transition-[transform,opacity,border-color] duration-300 hover:border-[#FB3640] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FB3640]"
+      className="group fixed bottom-6 right-6 z-40 flex items-center gap-2.5 border px-5 py-3.5 text-[#F5F2ED] shadow-[0_10px_30px_rgba(0,0,0,0.45)] backdrop-blur-sm transition-[transform,opacity,border-color] duration-300 hover:border-[#FB3640] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FB3640]"
       style={{
+        background: isHome ? "rgba(7,12,9,0.95)" : "rgba(14,24,16,0.95)",
+        borderColor: isHome ? "#111511" : "#1a2a1e",
         opacity: shown ? 1 : 0,
         transform: shown ? "translateY(0)" : "translateY(12px)",
         pointerEvents: shown ? "auto" : "none",
