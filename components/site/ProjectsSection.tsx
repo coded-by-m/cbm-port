@@ -37,7 +37,7 @@ export function ProjectsSection() {
         }}
       >
         {published.map((c, i) => (
-          <Reveal key={c.slug} delay={i * 110} className="site-cell">
+          <Reveal key={c.slug} delay={i * 110} variant="scale" className="site-cell">
           <article
             className="site-card"
             style={{

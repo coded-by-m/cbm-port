@@ -32,7 +32,7 @@ export function ServicesSection() {
             marginBottom: "clamp(44px,6vh,68px)",
           }}
         >
-          <Reveal>
+          <Reveal variant="side">
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <span aria-hidden style={{ display: "block", width: 24, height: 1, background: "#FB3640" }} />
               <span
@@ -50,7 +50,7 @@ export function ServicesSection() {
             </div>
           </Reveal>
 
-          <Reveal delay={120}>
+          <Reveal delay={120} variant="wipe">
             <h2
               style={{
                 margin: 0,
@@ -94,7 +94,7 @@ export function ServicesSection() {
           }}
         >
           {SERVICES.map((s, i) => (
-            <Reveal key={s.slug} delay={i * 110} className="site-cell">
+            <Reveal key={s.slug} delay={i * 110} variant="scale" className="site-cell">
               <article
                 className="site-service-card-light"
                 style={{

@@ -20,17 +20,28 @@ export function ProcessSection() {
         }}
       >
         {PROCESS_STEPS.map((step, i) => (
-          <Reveal key={step.num} delay={i * 110} className="site-cell">
+          <Reveal key={step.num} delay={i * 110} variant="side" className="site-cell">
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               gap: 14,
               minWidth: 0,
-              borderTop: "1px solid rgba(245,242,237,0.16)",
               paddingTop: 20,
+              position: "relative",
             }}
           >
+            {/* A régua da etapa se desenha da esquerda, em vez de já estar lá */}
+            <Reveal
+              variant="draw"
+              delay={i * 110 + 120}
+              className="site-step-rule"
+            >
+              <span
+                aria-hidden
+                style={{ display: "block", height: 1, background: "rgba(245,242,237,0.16)" }}
+              />
+            </Reveal>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <Diamond />
               <span

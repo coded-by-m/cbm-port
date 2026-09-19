@@ -139,8 +139,8 @@ export function SectionHead({
         marginBottom: "clamp(40px,5vh,60px)",
       }}
     >
-      <Reveal><SectionLabel>{label}</SectionLabel></Reveal>
-      <Reveal delay={120}><h2
+      <Reveal variant="side"><SectionLabel>{label}</SectionLabel></Reveal>
+      <Reveal delay={120} variant="wipe"><h2
         style={{
           margin: 0,
           maxWidth: "20ch",

@@ -60,7 +60,71 @@ body:has(.site-home) {
 .site-drawer-link:hover { color: #fb3640; padding-left: 10px; }
 .site-drawer-phone:hover { color: #f5f2ed; }
 .site-social:hover { color: #fb3640; }
+/* "Hover revela, nao so destaca": o sublinhado se DESENHA da esquerda em vez
+   de so trocar de cor. Escala em X, que roda no compositor. */
+.site-link-underline {
+  position: relative;
+}
+.site-link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: #fb3640;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.site-link-underline:hover::after { transform: scaleX(1); }
 .site-link-underline:hover { color: #fb3640; }
+
+/* Rodape e redes: mesmo gesto, sem o vermelho. */
+.site-footer-link,
+.site-social { position: relative; }
+.site-footer-link::after,
+.site-social::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.site-footer-link:hover::after,
+.site-social:hover::after { transform: scaleX(1); }
+
+/* Menu: o losango entra deslizando junto com o deslocamento do rotulo. */
+.site-drawer-link::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 9px;
+  flex: none;
+  background: #fb3640;
+  transform: rotate(45deg) scale(0);
+  transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 340ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin-right 340ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.site-drawer-link:hover::before {
+  width: 9px;
+  margin-right: 14px;
+  transform: rotate(45deg) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-link-underline::after,
+  .site-footer-link::after,
+  .site-social::after,
+  .site-drawer-link::before { transition: none; }
+}
 /* "Hover revela, nao so destaca": o card levanta, a borda vai pro sinal e o
    screenshot desliza pra cima mostrando o resto da pagina do cliente. */
 .site-card {
@@ -205,4 +269,29 @@ body:has(.site-home) {
     animation: none;
     box-shadow: 0 0 0 1px rgba(245, 242, 237, 0.14);
   }
+}
+
+/* A régua da etapa do Processo fica presa no topo do card, fora do fluxo,
+   pra o desenho dela não empurrar o conteúdo. */
+.site-step-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* A palavra do hero se monta letra a letra. Só transform e opacity, e o
+   texto já está no DOM desde o servidor — a animação atrasa a APARIÇÃO,
+   nunca o conteúdo, pra não mexer no LCP. */
+@keyframes cbmLetter {
+  from { opacity: 0; transform: translateY(0.42em) rotate(2deg); }
+  to { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+.site-letter {
+  display: inline-block;
+  opacity: 0;
+  animation: cbmLetter 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-letter { animation: none; opacity: 1; transform: none; }
 }

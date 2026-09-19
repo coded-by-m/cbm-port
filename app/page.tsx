@@ -1,5 +1,6 @@
 import { SURFACE } from "@/components/site/shared";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { Hero } from "@/components/site/Hero";
 import { ProjectsSection } from "@/components/site/ProjectsSection";
 import { ServicesSection } from "@/components/site/ServicesSection";
@@ -18,6 +19,7 @@ import Footer from "@/components/zones/CTASection/Footer";
 export default function HomePage() {
   return (
     <div className="site-home" style={{ background: SURFACE.base, color: "#F5F2ED", overflowX: "hidden" }}>
+      <SmoothScroll />
       <SiteHeader />
       <main>
         <Hero />

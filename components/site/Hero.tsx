@@ -152,12 +152,21 @@ export function Hero() {
                   letterSpacing: "-0.04em",
                   lineHeight: 0.82,
                   color: "#F5F2ED",
-                  ...enter(0.16),
                 }}
               >
                 {HERO.lead.map((word, i) => (
                   <span key={word} style={{ display: "block", whiteSpace: "nowrap" }}>
-                    {word}
+                    {word.split("").map((ch, j) => (
+                      <span
+                        key={`${word}-${j}`}
+                        className="site-letter"
+                        /* Cascata: cada letra entra 38ms depois da anterior,
+                           e a segunda palavra começa onde a primeira terminou. */
+                        style={{ animationDelay: `${0.18 + i * 0.24 + j * 0.038}s` }}
+                      >
+                        {ch}
+                      </span>
+                    ))}
                     {i === 0 && (
                       <span
                         aria-hidden
