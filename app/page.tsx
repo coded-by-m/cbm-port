@@ -7,7 +7,7 @@ import { ServicesSection } from "@/components/site/ServicesSection";
 import { ProcessSection } from "@/components/site/ProcessSection";
 import { AboutSection } from "@/components/site/AboutSection";
 import { ContactSection } from "@/components/site/ContactSection";
-import { SiteFooter } from "@/components/site/SiteFooter";
+import Footer from "@/components/zones/CTASection/Footer";
 
 /**
  * Home estática — a porta de entrada do site.
@@ -29,7 +29,7 @@ export default function HomePage() {
         <AboutSection />
         <ContactSection />
       </main>
-      <SiteFooter />
+      <Footer />
     </div>
   );
 }

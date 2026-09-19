@@ -55,6 +55,7 @@ body:has(.site-home) {
    inline não expressa. Uma classe por estado, valores idênticos ao aprovado. */
 .site-burger:hover { border-color: rgba(245, 242, 237, 0.75); background: rgba(245, 242, 237, 0.05); }
 .site-cta:hover { background: #c42030; color: #000f08; }
+.site-header-cta:hover { border-color: rgba(245, 242, 237, 0.75); background: rgba(245, 242, 237, 0.05); }
 .site-drawer-close:hover { border-color: #fb3640; background: rgba(251, 54, 64, 0.1); transform: rotate(90deg); }
 .site-drawer-link:hover { color: #fb3640; padding-left: 10px; }
 .site-drawer-phone:hover { color: #f5f2ed; }

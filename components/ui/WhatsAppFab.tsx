@@ -22,13 +22,12 @@ export function WhatsAppFab() {
     return () => clearTimeout(t);
   }, []);
 
-  // A experiencia imersiva nao leva botao flutuante por cima: ele estragaria
-  // justamente a peca que deveria impressionar. A home tem CTA proprio.
-  if (pathname?.startsWith("/experiencia")) return null;
+  // Fora da home e da experiencia. Na experiencia o botao flutuante estragaria
+  // justamente a peca que deveria impressionar; na home ele disputava o rodape
+  // com o banner de consentimento e o CTA — e o header ja tem contato fixo.
+  if (pathname === "/" || pathname?.startsWith("/experiencia")) return null;
 
-  // A home tem base mais escura que o resto do site; o Fab acompanha ela pra
-  // nao ficar uma pilula clara boiando. Nas outras rotas segue o tom antigo.
-  const isHome = pathname === "/";
+  const isHome = false;
 
   return (
     <a
