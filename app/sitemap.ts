@@ -2,10 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { cases } from "@/data/cases";
 
-/**
- * Só as rotas públicas de hoje. `/experiencia` entra quando a fase 2 mover a
- * experiência WebGL para lá; `/lp/*` nasce noindex e nunca entra aqui.
- */
+/** Rotas públicas. `/lp/*` nasce noindex e nunca entra aqui. */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
@@ -24,6 +21,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 1,
+    },
+    {
+      url: `${SITE_URL}/experiencia`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.9,
     },
     {
       url: `${SITE_URL}/projetos`,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { waLink } from "@/lib/contact";
 
 /**
@@ -12,12 +13,17 @@ import { waLink } from "@/lib/contact";
  * z-40 → fica sob o painel de wipe (z-50) das transições da Home.
  */
 export function WhatsAppFab() {
+  const pathname = usePathname();
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setShown(true), 900);
     return () => clearTimeout(t);
   }, []);
+
+  // A experiencia imersiva nao leva botao flutuante por cima: ele estragaria
+  // justamente a peca que deveria impressionar. A home tem CTA proprio.
+  if (pathname?.startsWith("/experiencia")) return null;
 
   return (
     <a

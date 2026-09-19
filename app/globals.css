@@ -43,6 +43,54 @@ body {
   background: rgba(245, 242, 237, 0.26);
 }
 
+/* Hovers da home estática — o design entrega estados de hover, que estilo
+   inline não expressa. Uma classe por estado, valores idênticos ao aprovado. */
+.site-burger:hover { border-color: rgba(245, 242, 237, 0.75); background: rgba(245, 242, 237, 0.05); }
+.site-cta:hover { background: #c42030; color: #000f08; }
+.site-drawer-close:hover { border-color: #fb3640; background: rgba(251, 54, 64, 0.1); transform: rotate(90deg); }
+.site-drawer-link:hover { color: #fb3640; padding-left: 10px; }
+.site-drawer-phone:hover { color: #f5f2ed; }
+.site-social:hover { color: #fb3640; }
+.site-link-underline:hover { color: #fb3640; }
+.site-card:hover { border-color: rgba(245, 242, 237, 0.32); }
+.site-service-card:hover { border-color: rgba(245, 242, 237, 0.3); background: #070d09; }
+.site-footer-link:hover { color: #f5f2ed; }
+
+/* Entrada do hero da home estática — roda uma vez, em stagger por delay.
+   Não é scroll-driven: a página precisa abrir pronta. */
+@keyframes cbmIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+@keyframes cbmFrameIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [class*="cbm-in"],
+  [style*="cbmIn"],
+  [style*="cbmFrameIn"] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
 /* Stagger de entrada das UIs da Paisagem (progress bar, setas) — entra
    suavemente depois que os fragmentos começam a aparecer, evitando
    quebra de cinematografia. */
