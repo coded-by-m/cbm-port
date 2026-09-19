@@ -13,7 +13,7 @@ export const HERO = {
   headline: "Presença digital à altura da empresa por trás dela",
   sub: "A Coded by M une design, tecnologia e pensamento estrutural. Landing pages, sites institucionais e aplicações web — da estratégia ao deploy, no mesmo lugar.",
   ctaPrimary: "Começar meu projeto",
-  ctaSecondary: "Ver projetos",
+  ctaSecondary: "Ver o case",
 } as const;
 
 /** Selos de disponibilidade. `filled` = losango sólido; senão, contorno. */

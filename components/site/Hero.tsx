@@ -1,7 +1,8 @@
 import { cases } from "@/data/cases";
 import { AVAILABILITY, FEATURED_SLUG, HERO } from "@/data/home";
 import { waLink } from "@/lib/contact";
-import { BASE_RGB, Diamond, PANCHANG, SATOSHI, SURFACE } from "./shared";
+import { Diamond, PANCHANG, SATOSHI, SURFACE } from "./shared";
+import { HeroShowcase } from "./HeroShowcase";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -124,7 +125,7 @@ export function Hero() {
               {HERO.ctaPrimary}
             </a>
             <a
-              href="#projetos"
+              href={`/cases/${featured.slug}`}
               className="site-link-underline"
               style={{
                 display: "inline-flex",
@@ -142,7 +143,7 @@ export function Hero() {
                 transition: "color 150ms ease",
               }}
             >
-              {HERO.ctaSecondary}
+              {HERO.ctaSecondary} <span style={{ color: "#FB3640" }}>↗</span>
             </a>
           </div>
 
@@ -180,123 +181,10 @@ export function Hero() {
           </div>
         </div>
 
-        <div style={{ minWidth: 0, position: "relative", ...enter(0.55, true) }}>
-          <div
-            style={{
-              position: "relative",
-              border: "1px solid rgba(245,242,237,0.15)",
-              background: SURFACE.frame,
-              boxShadow: "0 24px 60px -12px rgba(0,0,0,0.85)",
-              overflow: "hidden",
-              transform:
-                "perspective(1600px) rotateY(-3deg) translateX(clamp(0px,1.4vw,22px))",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                borderBottom: "1px solid rgba(245,242,237,0.1)",
-                background: SURFACE.frameBar,
-                padding: "10px 16px",
-              }}
-            >
-              <span style={{ display: "flex", gap: 6 }} aria-hidden>
-                <span style={{ width: 10, height: 10, borderRadius: 9999, background: "#FB3640" }} />
-                <span style={{ width: 10, height: 10, borderRadius: 9999, background: "rgba(245,242,237,0.25)" }} />
-                <span style={{ width: 10, height: 10, borderRadius: 9999, background: "rgba(245,242,237,0.25)" }} />
-              </span>
-              <span
-                style={{
-                  marginLeft: 4,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 6,
-                  background: "rgba(245,242,237,0.08)",
-                  padding: "4px 12px",
-                  fontFamily: SATOSHI,
-                  fontWeight: 400,
-                  fontSize: 10,
-                  letterSpacing: "0.05em",
-                  color: "#C8C4BE",
-                }}
-              >
-                <svg width="8" height="8" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <rect x="3" y="7" width="10" height="7" rx="1" stroke="currentColor" strokeWidth="1.4" />
-                  <path d="M5 7V5a3 3 0 0 1 6 0v2" stroke="currentColor" strokeWidth="1.4" />
-                </svg>
-                {featured.siteUrl}
-              </span>
-            </div>
-            <div style={{ position: "relative", height: "clamp(320px,52vh,520px)", overflow: "hidden" }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={featured.preview?.desktop ?? ""}
-                alt={`${featured.title} — ${featured.eyebrow}`}
-                style={{ display: "block", width: "100%", height: "auto" }}
-              />
-              <div
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  inset: "auto 0 0 0",
-                  height: 120,
-                  background:
-                    `linear-gradient(to bottom,rgba(${BASE_RGB},0),rgba(${BASE_RGB},0.92))`,
-                }}
-              />
-            </div>
-            <span
-              aria-hidden
-              style={{
-                pointerEvents: "none",
-                position: "absolute",
-                bottom: 6,
-                right: 6,
-                width: 12,
-                height: 12,
-                borderBottom: "1px solid #FB3640",
-                borderRight: "1px solid #FB3640",
-              }}
-            />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 16,
-              marginTop: 16,
-              paddingRight: "clamp(0px,1.4vw,22px)",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: SATOSHI,
-                fontWeight: 500,
-                fontSize: 10,
-                letterSpacing: "0.3em",
-                textTransform: "uppercase",
-                color: "#FB3640",
-              }}
-            >
-              {featured.eyebrow.replace(" / Case Study", "")}
-            </span>
-            <span
-              style={{
-                fontFamily: SATOSHI,
-                fontWeight: 400,
-                fontSize: 10,
-                letterSpacing: "0.3em",
-                textTransform: "uppercase",
-                color: "#9B9791",
-              }}
-            >
-              {featured.title} · {featured.meta.setor}
-            </span>
-          </div>
+        <div style={{ ...enter(0.55, true) }}>
+          <HeroShowcase project={featured} />
         </div>
+
       </div>
     </section>
   );

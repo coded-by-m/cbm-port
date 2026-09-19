@@ -85,6 +85,26 @@ body:has(.site-home) {
 .site-cell { display: flex; min-width: 0; }
 .site-cell > * { flex: 1; min-width: 0; }
 
+/* Vitrine do hero — a pagina do cliente rolando por inteiro na vertical.
+   `alternate` em vez de loop duro: desce ate o rodape e volta, sem o corte
+   seco que um reset de keyframe daria. A altura vem de --shot-h pra que o
+   calc saiba onde parar. */
+@keyframes cbmShotScroll {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(-100% + var(--shot-h))); }
+}
+@keyframes cbmShotProgress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.site-shot-scroll {
+  animation: cbmShotScroll var(--shot-dur) linear infinite alternate;
+}
+.site-shot-progress {
+  transform-origin: left center;
+  animation: cbmShotProgress var(--shot-dur) linear infinite alternate;
+}
+
 /* Vida em repouso — o mesmo pulso dos selos do rodape. */
 @keyframes cbmPulse {
   0%, 100% { opacity: 1; }
@@ -96,6 +116,8 @@ body:has(.site-home) {
   .site-card:hover { transform: none; }
   .site-card:hover .site-shot { transform: none; }
   .site-pulse { animation: none; }
+  .site-shot-scroll,
+  .site-shot-progress { animation: none; }
 }
 .site-service-card:hover { border-color: rgba(245, 242, 237, 0.3); background: #070d09; }
 .site-footer-link:hover { color: #f5f2ed; }
