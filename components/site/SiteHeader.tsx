@@ -67,7 +67,38 @@ export function SiteHeader() {
   const burgerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
+  const [activeId, setActiveId] = useState<string>("top");
+
   const close = useCallback(() => setOpen(false), []);
+
+  /**
+   * Marcador de seção ativa — o losango vermelho acompanha o que está à
+   * vista, mesmo vocabulário do ChapterRail da experiência.
+   *
+   * `rootMargin` puxa a linha de corte pro terço superior: sem isso a seção
+   * só "ativa" quando o topo dela sai da tela, e o marcador fica sempre um
+   * passo atrás de onde a pessoa está lendo.
+   */
+  useEffect(() => {
+    const secs = NAV_LINKS.map((l) => document.getElementById(l.id)).filter(
+      (el): el is HTMLElement => el !== null,
+    );
+    if (!secs.length) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const vis = entries.filter((e) => e.isIntersecting);
+        if (!vis.length) return;
+        // A que ocupa mais da faixa observada vence.
+        const top = vis.reduce((a, b) =>
+          b.intersectionRatio > a.intersectionRatio ? b : a,
+        );
+        setActiveId(top.target.id);
+      },
+      { rootMargin: "-20% 0px -55% 0px", threshold: [0, 0.25, 0.5, 1] },
+    );
+    secs.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 100);
@@ -350,11 +381,12 @@ export function SiteHeader() {
             padding: "clamp(28px,6vh,72px) clamp(20px,2.6vw,32px)",
           }}
         >
-          {NAV_LINKS.map((l, i) => (
+          {NAV_LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={close}
+              aria-current={activeId === l.id ? "true" : undefined}
               className="site-drawer-link"
               style={{
                 display: "flex",
@@ -369,7 +401,6 @@ export function SiteHeader() {
                 lineHeight: 1.05,
                 textTransform: "uppercase",
                 minWidth: 0,
-                overflowWrap: "anywhere",
                 color: "#F5F2ED",
                 textDecoration: "none",
                 transition:
@@ -377,13 +408,18 @@ export function SiteHeader() {
               }}
             >
               {l.label}
-              {i === 0 && (
-                <span style={{ display: "block", width: 8, height: 8, flex: "none", background: "#FB3640" }} />
-              )}
-              {l.route && (
-                <span style={{ fontSize: "0.5em", color: "#FB3640" }} aria-hidden>
-                  ↗
-                </span>
+              {activeId === l.id && (
+                <span
+                  aria-hidden
+                  style={{
+                    display: "block",
+                    width: 9,
+                    height: 9,
+                    flex: "none",
+                    background: "#FB3640",
+                    transform: "rotate(45deg)",
+                  }}
+                />
               )}
             </a>
           ))}

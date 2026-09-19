@@ -63,17 +63,17 @@ export const SECTIONS = {
 } as const;
 
 /**
- * Links do menu drawer.
+ * Links do menu drawer — só âncoras desta página.
  *
- * `route: true` sai da página (a experiência é outra rota, não uma âncora) e
- * ganha a seta vermelha. Sem esse item o único caminho até /experiencia seria
- * o botão no meio do scroll, e menu é onde a pessoa procura pra onde ir.
+ * A Experiência saiu daqui: o rótulo era longo demais pro corpo dos itens e
+ * quebrava no meio da sílaba. O caminho pra ela é o rodapé.
+ *
+ * `id` casa com o `id` da seção, para o marcador de seção ativa.
  */
 export const NAV_LINKS = [
-  { href: "#top", label: "Home", route: false },
-  { href: "#projetos", label: "Projetos", route: false },
-  { href: "#servicos", label: "Serviços", route: false },
-  { href: "#processo", label: "Processo", route: false },
-  { href: "#sobre", label: "Sobre", route: false },
-  { href: "/experiencia", label: "A Experiência", route: true },
+  { href: "#top", id: "top", label: "Home" },
+  { href: "#projetos", id: "projetos", label: "Projetos" },
+  { href: "#servicos", id: "servicos", label: "Serviços" },
+  { href: "#processo", id: "processo", label: "Processo" },
+  { href: "#sobre", id: "sobre", label: "Sobre" },
 ] as const;
