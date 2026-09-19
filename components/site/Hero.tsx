@@ -137,8 +137,13 @@ export function Hero() {
               style={{ flex: "1 1 320px", minWidth: 0, containerType: "inline-size" }}
             >
               <h1
+                /* Liga o cursor-triângulo da marca sobre a palavra: o
+                   CursorTriangle já procura por este atributo nos ancestrais
+                   do elemento sob o ponteiro. */
+                data-cursor="triangle"
                 style={{
                   margin: 0,
+                  cursor: "none",
                   fontFamily: PANCHANG,
                   fontWeight: 800,
                   /* Amarrado à largura do container E à altura da tela, pra
