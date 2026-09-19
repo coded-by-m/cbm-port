@@ -73,7 +73,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
           </div>
 
           <h1
-            className="font-display font-black uppercase text-cbm-white"
+            className="font-display font-extrabold uppercase text-cbm-white"
             style={{
               // vw maior → encolhe no mobile (cabe "PLATAFORMAS" em 1 linha)
               // sem mexer no teto desktop (continua clampando em 60px).

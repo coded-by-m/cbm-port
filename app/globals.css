@@ -1,3 +1,16 @@
+/* Fontes auto-hospedadas — substituem o stylesheet bloqueante do Fontshare.
+   Os nomes de família são os literais "Panchang" e "Satoshi" de propósito:
+   existem 123 usos de fontFamily inline no código que dependem deles, e o
+   next/font geraria um nome com hash, quebrando todos de uma vez. */
+@font-face { font-family: "Panchang"; src: url("/fonts/Panchang-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Panchang"; src: url("/fonts/Panchang-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Panchang"; src: url("/fonts/Panchang-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Panchang"; src: url("/fonts/Panchang-800.woff2") format("woff2"); font-weight: 800; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/Satoshi-300.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/Satoshi-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/Satoshi-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/Satoshi-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

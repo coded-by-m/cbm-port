@@ -17,7 +17,7 @@ export function CaseReturnCTA({ siteUrl }: { siteUrl?: string }) {
         </p>
 
         <h2
-          className="font-display font-black text-cbm-white"
+          className="font-display font-extrabold text-cbm-white"
           style={{
             fontSize: "clamp(28px,3.5vw,44px)",
             letterSpacing: "-0.025em",
