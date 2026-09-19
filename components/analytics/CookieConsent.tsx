@@ -30,18 +30,22 @@ export function CookieConsent() {
       aria-label="Consentimento de cookies"
       style={{
         position: "fixed",
-        left: 16,
-        bottom: 16,
+        left: "clamp(12px,3vw,20px)",
+        right: "auto",
+        bottom: "clamp(12px,3vw,20px)",
         zIndex: 200,
-        maxWidth: 460,
-        background: "#0E1810",
-        border: "1px solid #1a2a1e",
-        borderLeft: "2px solid #FB3640",
-        padding: "20px 22px",
+        width: "min(calc(100vw - 24px), 380px)",
+        boxSizing: "border-box",
+        background: "rgba(4,8,6,0.94)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        border: "1px solid rgba(245,242,237,0.14)",
+        borderLeft: "2px solid rgba(251,54,64,0.55)",
+        padding: "16px 18px",
         display: "flex",
         flexDirection: "column",
-        gap: 16,
-        boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+        gap: 14,
+        boxShadow: "0 18px 44px -12px rgba(0,0,0,0.8)",
       }}
     >
       <p
@@ -49,29 +53,31 @@ export function CookieConsent() {
           margin: 0,
           fontFamily: "Satoshi, sans-serif",
           fontWeight: 300,
-          fontSize: 14,
+          fontSize: 13,
           lineHeight: 1.6,
-          color: "#C8C4BE",
+          color: "#B4B0AA",
         }}
       >
         Usamos cookies para medir o desempenho do site e entender como ele é
         usado. Você decide.
       </p>
 
-      <div style={{ display: "flex", gap: 12 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
         <button
           type="button"
           onClick={() => decide("granted")}
           style={{
-            background: "#FB3640",
-            color: "#000F08",
-            border: "none",
+            flex: 1,
+            minHeight: 44,
+            background: "rgba(245,242,237,0.94)",
+            color: "#040806",
+            border: "1px solid rgba(245,242,237,0.94)",
             borderRadius: 0,
-            padding: "11px 22px",
+            padding: "0 18px",
             fontFamily: "Panchang, sans-serif",
-            fontWeight: 600,
+            fontWeight: 700,
             fontSize: 11,
-            letterSpacing: "0.15em",
+            letterSpacing: "0.12em",
             textTransform: "uppercase",
             cursor: "pointer",
           }}
@@ -82,15 +88,17 @@ export function CookieConsent() {
           type="button"
           onClick={() => decide("denied")}
           style={{
+            flex: 1,
+            minHeight: 44,
             background: "transparent",
             color: "#F5F2ED",
-            border: "1px solid #2a4a32",
+            border: "1px solid rgba(245,242,237,0.38)",
             borderRadius: 0,
-            padding: "11px 22px",
+            padding: "0 18px",
             fontFamily: "Panchang, sans-serif",
-            fontWeight: 600,
+            fontWeight: 700,
             fontSize: 11,
-            letterSpacing: "0.15em",
+            letterSpacing: "0.12em",
             textTransform: "uppercase",
             cursor: "pointer",
           }}

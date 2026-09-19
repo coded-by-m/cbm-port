@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { cases } from "@/data/cases";
 import { SECTIONS } from "@/data/home";
 import { PROJECT_TYPE_COLOR } from "@/lib/projectTypes";
@@ -46,10 +47,12 @@ export function ProjectsSection() {
                 borderBottom: "1px solid rgba(245,242,237,0.1)",
               }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={c.preview?.desktop ?? ""}
+              <Image
+                src={c.preview?.card ?? c.preview?.desktop ?? ""}
                 alt={`${c.title} — ${c.meta.tipo}`}
+                width={760}
+                height={874}
+                sizes="(max-width: 640px) 92vw, (max-width: 1100px) 46vw, 31vw"
                 className="site-shot"
                 style={{ display: "block", width: "100%", height: "auto" }}
               />
@@ -174,6 +177,19 @@ export function ProjectsSection() {
                   }}
                 >
                   {c.meta.setor}
+                </span>
+                <span
+                  style={{
+                    flexBasis: "100%",
+                    fontFamily: SATOSHI,
+                    fontWeight: 400,
+                    fontSize: 10,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: "#6E6B66",
+                  }}
+                >
+                  Design e desenvolvimento · {c.stack?.slice(0, 2).join(" · ")}
                 </span>
                 {c.siteUrl && (
                   <a

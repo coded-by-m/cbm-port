@@ -46,7 +46,21 @@ export function CursorTriangle() {
 
     document.documentElement.classList.add("cursor-triangle-active");
 
+    // O loop só roda quando há o que animar: invisível, aba oculta ou
+    // posição já alcançada param o rAF. Antes ele girava a 60fps o tempo
+    // todo, mesmo com o triângulo escondido sobre HTML comum.
     let rafId = 0;
+    let running = false;
+
+    const start = () => {
+      if (running || document.hidden) return;
+      running = true;
+      rafId = requestAnimationFrame(tick);
+    };
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(rafId);
+    };
 
     const onMove = (e: PointerEvent) => {
       target.current.x = e.clientX;
@@ -63,6 +77,7 @@ export function CursorTriangle() {
         visible.current = overZone;
         container.style.opacity = overZone ? "1" : "0";
       }
+      if (visible.current) start();
     };
 
     const onLeave = () => {
@@ -70,25 +85,36 @@ export function CursorTriangle() {
         visible.current = false;
         container.style.opacity = "0";
       }
+      stop();
     };
 
     const tick = () => {
-      current.current.x += (target.current.x - current.current.x) * LERP;
-      current.current.y += (target.current.y - current.current.y) * LERP;
+      const dx = target.current.x - current.current.x;
+      const dy = target.current.y - current.current.y;
+      current.current.x += dx * LERP;
+      current.current.y += dy * LERP;
       container.style.transform = `translate3d(${current.current.x}px, ${current.current.y}px, 0)`;
+      // Parado e invisível → nada a desenhar até o próximo movimento.
+      if (!visible.current && Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        running = false;
+        return;
+      }
       rafId = requestAnimationFrame(tick);
     };
+
+    const onVisibility = () => (document.hidden ? stop() : start());
 
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerleave", onLeave);
     document.addEventListener("mouseleave", onLeave);
-    rafId = requestAnimationFrame(tick);
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerleave", onLeave);
       document.removeEventListener("mouseleave", onLeave);
-      cancelAnimationFrame(rafId);
+      document.removeEventListener("visibilitychange", onVisibility);
+      stop();
       document.documentElement.classList.remove("cursor-triangle-active");
     };
   }, [enabled]);

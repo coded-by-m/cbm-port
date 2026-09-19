@@ -53,6 +53,14 @@ export interface CaseProject {
   preview?: {
     desktop: string;
     mobile: string;
+    /**
+     * Recorte do topo, 760x874, para o card da grade.
+     *
+     * Os `desktop`/`mobile` são páginas inteiras — o maison-etoile tem
+     * 2880x24972 (71,9 MP, ~288 MB decodificados). Carregar isso pra mostrar
+     * 260px de altura trava celular. Gerado com ffmpeg a partir do desktop.
+     */
+    card?: string;
   };
   /**
    * Tipo de entrega — dirige a cor do apex do fragmento na Paisagem.

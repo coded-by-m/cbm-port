@@ -34,7 +34,7 @@ export function Hero() {
     >
       <HeroLandscape />
 
-      <div style={{ position: "relative", zIndex: 1 }}>
+      <div style={{ position: "relative", zIndex: 1, containerType: "inline-size" }}>
         {/* Linha de topo: categoria à esquerda, praça à direita */}
         <div
           style={{
@@ -87,7 +87,13 @@ export function Hero() {
             margin: "clamp(28px,4vh,44px) 0 0",
             fontFamily: PANCHANG,
             fontWeight: 800,
-            fontSize: "clamp(52px,11.5vw,168px)",
+            /**
+             * Medido: "Websoftware" ocupa ~10em. Com `vw` não havia relação
+             * com o container (que trava em 1440), e a palavra era cortada em
+             * toda largura. `cqw` amarra o corpo à largura real disponível —
+             * o tipo encosta nas duas margens sem transbordar.
+             */
+            fontSize: "clamp(30px,9.6cqw,150px)",
             letterSpacing: "-0.035em",
             lineHeight: 0.84,
             color: "#F5F2ED",

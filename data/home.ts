@@ -32,8 +32,8 @@ export const AVAILABILITY = [
 export const SECTIONS = {
   projetos: {
     label: "Projetos",
-    heading: "Projetos entregues, no ar e medidos.",
-    sub: "Seis projetos publicados entre 2025 e 2026 — landing pages de conversão e sites institucionais para arquitetura, engenharia e indústria.",
+    heading: "Projetos entregues, no ar e acessíveis.",
+    sub: "Seis projetos publicados entre 2025 e 2026 — landing pages de conversão e sites institucionais para arquitetura, engenharia e indústria. Cada um com o endereço no ar, aberto pra conferir.",
   },
   servicos: {
     label: "Serviços",

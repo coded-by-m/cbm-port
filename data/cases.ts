@@ -55,6 +55,7 @@ export const cases: CaseProject[] = [
     preview: {
       desktop: "/cases/mj-engenharia/desktop-tall.webp",
       mobile: "/cases/mj-engenharia/mobile-tall.webp",
+      card: "/cases/mj-engenharia/card.webp",
     },
   },
   {
@@ -115,6 +116,7 @@ export const cases: CaseProject[] = [
     preview: {
       desktop: "/cases/estudio-lentz/desktop-tall.webp",
       mobile: "/cases/estudio-lentz/mobile-tall.webp",
+      card: "/cases/estudio-lentz/card.webp",
     },
   },
   {
@@ -159,6 +161,7 @@ export const cases: CaseProject[] = [
     preview: {
       desktop: "/cases/machado/desktop-tall.webp",
       mobile: "/cases/machado/mobile-tall.webp",
+      card: "/cases/machado/card.webp",
     },
   },
   {
@@ -202,6 +205,7 @@ export const cases: CaseProject[] = [
     preview: {
       desktop: "/cases/maison-etoile/desktop-tall.jpeg",
       mobile: "/cases/maison-etoile/mobile-tall.jpeg",
+      card: "/cases/maison-etoile/card.webp",
     },
   },
   {
@@ -244,6 +248,7 @@ export const cases: CaseProject[] = [
     preview: {
       desktop: "/cases/forma-viva/desktop-tall.jpeg",
       mobile: "/cases/forma-viva/mobile-tall.jpeg",
+      card: "/cases/forma-viva/card.webp",
     },
   },
   {
@@ -286,6 +291,7 @@ export const cases: CaseProject[] = [
     preview: {
       desktop: "/cases/estudio-monteiro/desktop-tall.jpeg",
       mobile: "/cases/estudio-monteiro/mobile-tall.jpeg",
+      card: "/cases/estudio-monteiro/card.webp",
     },
   },
   {

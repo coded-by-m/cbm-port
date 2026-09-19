@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   GITHUB_URL,
   INSTAGRAM_URL,
@@ -63,6 +63,11 @@ const SOCIALS = [
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const drawerRef = useRef<HTMLElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  const close = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 100);
@@ -71,13 +76,59 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /**
+   * Foco preso no drawer enquanto ele está aberto.
+   *
+   * Ao abrir, o foco vai pro botão de fechar; Tab e Shift+Tab circulam só
+   * dentro do painel; Escape fecha; ao fechar, o foco volta pro hambúrguer —
+   * quem navega por teclado não é jogado pro topo do documento.
+   */
   useEffect(() => {
+    const el = drawerRef.current;
+    // `inert` sai ANTES do focus(): focar um elemento inerte é ignorado pelo
+    // navegador, e era isso que fazia o foco nunca entrar no painel — e, por
+    // consequência, escapar no Tab.
+    if (open) el?.removeAttribute("inert");
+    else el?.setAttribute("inert", "");
+
+    if (!open) return;
+    // Copiado pra variável: na limpeza, `burgerRef.current` pode já ter
+    // mudado (react-hooks/exhaustive-deps).
+    const burger = burgerRef.current;
+    closeRef.current?.focus();
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        e.preventDefault();
+        close();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const root = drawerRef.current;
+      if (!root) return;
+      const items = root.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled])',
+      );
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      burger?.focus();
+    };
+  }, [open, close]);
+
 
   return (
     <>
@@ -113,9 +164,11 @@ export function SiteHeader() {
           <div style={{ display: "flex", alignItems: "center", gap: 16, minWidth: 0 }}>
             <button
               type="button"
+              ref={burgerRef}
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
-              aria-label="Abrir menu"
+              aria-controls="site-drawer"
+              aria-label={open ? "Fechar menu" : "Abrir menu"}
               className="site-burger"
               style={{
                 display: "flex",
@@ -123,8 +176,8 @@ export function SiteHeader() {
                 justifyContent: "center",
                 gap: 4,
                 flex: "none",
-                width: 42,
-                height: 42,
+                width: 44,
+                height: 44,
                 padding: "0 12px",
                 background: "transparent",
                 border: "1px solid rgba(245,242,237,0.28)",
@@ -188,7 +241,7 @@ export function SiteHeader() {
       </header>
 
       <div
-        onClick={() => setOpen(false)}
+        onClick={close}
         aria-hidden="true"
         style={{
           position: "fixed",
@@ -203,6 +256,11 @@ export function SiteHeader() {
       />
 
       <aside
+        id="site-drawer"
+        ref={drawerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu"
         aria-hidden={!open}
         style={{
           position: "fixed",
@@ -218,11 +276,14 @@ export function SiteHeader() {
           borderRight: "1px solid rgba(245,242,237,0.1)",
           boxShadow: "0 0 90px rgba(0,0,0,0.9)",
           overflowY: "auto",
+          // Sem `visibility` na transição: ela é discreta e só vira `visible`
+          // no FIM dos 520ms — o focus() rodava antes, num elemento ainda
+          // invisível, e o navegador o ignorava. Quem esconde do teclado e do
+          // leitor de tela agora é o `inert`.
           transition:
-            "transform 520ms cubic-bezier(0.22,1,0.36,1), opacity 300ms ease, visibility 520ms",
+            "transform 520ms cubic-bezier(0.22,1,0.36,1), opacity 300ms ease",
           transform: open ? "translateX(0)" : "translateX(calc(-100% - 16px))",
           opacity: open ? 1 : 0,
-          visibility: open ? "visible" : "hidden",
         }}
       >
         <div
@@ -253,7 +314,8 @@ export function SiteHeader() {
           </span>
           <button
             type="button"
-            onClick={() => setOpen(false)}
+            ref={closeRef}
+            onClick={close}
             aria-label="Fechar menu"
             className="site-drawer-close"
             style={{
@@ -292,7 +354,7 @@ export function SiteHeader() {
             <a
               key={l.href}
               href={l.href}
-              onClick={() => setOpen(false)}
+              onClick={close}
               className="site-drawer-link"
               style={{
                 display: "flex",
