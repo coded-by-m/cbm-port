@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LogoMark } from "@/components/ui/LogoMark";
 import { waLink, INSTAGRAM_URL, INSTAGRAM_HANDLE, WHATSAPP_DISPLAY } from "@/lib/contact";
 
@@ -13,11 +14,10 @@ const FooterLandscape = dynamic(() => import("./FooterLandscape"), {
 const SAT = '"Satoshi", sans-serif';
 const PAN = '"Panchang", sans-serif';
 
-/** Acentos cicláveis pela tecla C. */
-const ACCENTS = ["#FB3640", "#F5F2ED", "#C8C4BE"];
+/** Acento do rodapé — o sinal da marca. */
+const ACCENT = "#FB3640";
 
-const NAV = [
-  { label: "Início", href: "/", external: false },
+const NAV_BASE = [
   { label: "Laboratório", href: "/lab", external: false },
   { label: "Contato", href: waLink(), external: true },
   {
@@ -27,34 +27,33 @@ const NAV = [
   },
 ];
 
-/** Posições (%) das linhas do grid técnico (toggle G) + crosshairs. */
-const COLS = [22, 50, 78];
-const ROWS = [42, 74];
-
 /**
  * Footer-showpiece (zona 11) — paisagem triangulada da marca subindo da base +
- * wordmark gigante "Coded by M" + grid técnico com crosshairs (tecla G) +
- * acento ciclável (tecla C). Status/waitlist, nav, contato. Tudo entra ao
- * ficar à vista; a paisagem congela fora dela.
+ * wordmark gigante "Coded by M", status/waitlist, nav e contato. Tudo entra
+ * ao ficar à vista; a paisagem congela fora dela.
+ *
+ * O grid técnico e o acento ciclável (teclas G e C) foram removidos: viraram
+ * afordância sem botão quando os atalhos saíram do rodapé.
  */
-export default function Footer() {
+export default function Footer({
+  /** Fundo do rodapé. Default = o da experiência; a home passa o seu. */
+  background = "#000F08",
+}: {
+  background?: string;
+} = {}) {
   const rootRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
   const [entered, setEntered] = useState(false);
-  const [gridOn, setGridOn] = useState(false);
-  const [accentIdx, setAccentIdx] = useState(0);
-  // No touch não há teclado — os badges G/C não fazem sentido. Escondemos o
-  // hint (mantendo os botões clicáveis pelo label).
-  const [isTouch, setIsTouch] = useState(false);
-  const accent = ACCENTS[accentIdx];
-
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
-    const apply = () => setIsTouch(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
+  const pathname = usePathname();
+  // Na experiência o rodapé oferece a volta pra home; fora dela, a ida pra
+  // experiência — o link nunca aponta pra página em que já se está.
+  const isExperience = pathname?.startsWith("/experiencia") ?? false;
+  const NAV = [
+    isExperience
+      ? { label: "Início", href: "/", external: false }
+      : { label: "A Experiência", href: "/experiencia", external: false },
+    ...NAV_BASE,
+  ];
 
   // À vista → entrada (latch) + paisagem ativa + atalhos armados.
   useEffect(() => {
@@ -73,26 +72,6 @@ export default function Footer() {
     return () => obs.disconnect();
   }, []);
 
-  // Atalhos: G (grid) / C (cor) — só com o footer à vista, sem combos/inputs.
-  useEffect(() => {
-    if (!inView) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      const t = e.target as HTMLElement | null;
-      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
-      const k = e.key.toLowerCase();
-      if (k === "g") {
-        e.preventDefault();
-        setGridOn((v) => !v);
-      } else if (k === "c") {
-        e.preventDefault();
-        setAccentIdx((i) => (i + 1) % ACCENTS.length);
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [inView]);
-
   const rise = (delay: number) => ({
     opacity: entered ? 1 : 0,
     transform: entered ? "translateY(0)" : "translateY(16px)",
@@ -103,8 +82,8 @@ export default function Footer() {
   return (
     <footer
       ref={rootRef}
-      className="relative w-full overflow-hidden bg-[#000F08]"
-      style={{ minHeight: "86vh" }}
+      className="relative w-full overflow-hidden"
+      style={{ background, minHeight: "86vh" }}
     >
       {/* Paisagem triangulada subindo da base */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[72%]">
@@ -130,44 +109,6 @@ export default function Footer() {
         </span>
       </div>
 
-      {/* Grid técnico + crosshairs (toggle G) */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[5]"
-        style={{ opacity: gridOn ? 1 : 0, transition: "opacity 0.4s ease-out" }}
-        aria-hidden
-      >
-        {COLS.map((x) => (
-          <div
-            key={`v${x}`}
-            className="absolute bottom-0 top-0 w-px"
-            style={{ left: `${x}%`, background: accent, opacity: 0.14 }}
-          />
-        ))}
-        {ROWS.map((y) => (
-          <div
-            key={`h${y}`}
-            className="absolute left-0 right-0 h-px"
-            style={{ top: `${y}%`, background: accent, opacity: 0.14 }}
-          />
-        ))}
-        {COLS.map((x) =>
-          ROWS.map((y) => (
-            <span
-              key={`c${x}-${y}`}
-              className="absolute -translate-x-1/2 -translate-y-1/2 text-[13px] leading-none"
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                color: accent,
-                opacity: 0.55,
-              }}
-            >
-              +
-            </span>
-          )),
-        )}
-      </div>
-
       {/* Conteúdo (topo) */}
       <div className="relative z-10 mx-auto max-w-[1280px] px-6 pb-10 pt-16 sm:px-10">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
@@ -187,7 +128,7 @@ export default function Footer() {
                 <div key={s} className="flex items-center gap-3">
                   <span
                     className="block h-2 w-2 animate-pulse"
-                    style={{ background: accent }}
+                    style={{ background: ACCENT }}
                     aria-hidden
                   />
                   <span
@@ -216,7 +157,7 @@ export default function Footer() {
                 <span>{item.label}</span>
                 <span
                   className="-translate-x-1.5 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
-                  style={{ color: accent }}
+                  style={{ color: ACCENT }}
                   aria-hidden
                 >
                   →
@@ -254,51 +195,6 @@ export default function Footer() {
               </span>
             </div>
 
-            {/* Atalhos funcionais */}
-            <div className="flex flex-col gap-2">
-              <button
-                type="button"
-                onClick={() => setGridOn((v) => !v)}
-                data-cursor="triangle"
-                className="flex items-center gap-2.5 text-[0.7rem] text-[#F5F2ED]/45 transition-colors hover:text-[#F5F2ED]/80"
-              >
-                {!isTouch && (
-                  <kbd
-                    className="grid h-5 w-5 place-items-center border text-[0.65rem]"
-                    style={{ borderColor: `${accent}66`, color: accent }}
-                  >
-                    G
-                  </kbd>
-                )}
-                <span
-                  className="uppercase tracking-[0.2em]"
-                  style={{ fontFamily: SAT }}
-                >
-                  {gridOn ? "ocultar grid" : "mostrar grid"}
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setAccentIdx((i) => (i + 1) % ACCENTS.length)}
-                data-cursor="triangle"
-                className="flex items-center gap-2.5 text-[0.7rem] text-[#F5F2ED]/45 transition-colors hover:text-[#F5F2ED]/80"
-              >
-                {!isTouch && (
-                  <kbd
-                    className="grid h-5 w-5 place-items-center border text-[0.65rem]"
-                    style={{ borderColor: `${accent}66`, color: accent }}
-                  >
-                    C
-                  </kbd>
-                )}
-                <span
-                  className="uppercase tracking-[0.2em]"
-                  style={{ fontFamily: SAT }}
-                >
-                  trocar cor
-                </span>
-              </button>
-            </div>
           </div>
         </div>
 
@@ -309,7 +205,7 @@ export default function Footer() {
         >
           <span
             className="uppercase tracking-[0.25em]"
-            style={{ color: accent }}
+            style={{ color: ACCENT }}
           >
             Construído, não montado.
           </span>

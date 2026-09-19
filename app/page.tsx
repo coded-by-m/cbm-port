@@ -2,7 +2,6 @@ import { SURFACE } from "@/components/site/shared";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { Hero } from "@/components/site/Hero";
 import { ProjectsSection } from "@/components/site/ProjectsSection";
-import { ExperienceBridge } from "@/components/site/ExperienceBridge";
 import { ServicesSection } from "@/components/site/ServicesSection";
 import { ProcessSection } from "@/components/site/ProcessSection";
 import { AboutSection } from "@/components/site/AboutSection";
@@ -23,13 +22,12 @@ export default function HomePage() {
       <main>
         <Hero />
         <ProjectsSection />
-        <ExperienceBridge />
         <ServicesSection />
         <ProcessSection />
         <AboutSection />
         <ContactSection />
       </main>
-      <Footer />
+      <Footer background={SURFACE.base} />
     </div>
   );
 }
