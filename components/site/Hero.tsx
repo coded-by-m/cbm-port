@@ -98,8 +98,8 @@ export function Hero() {
               containerType: "inline-size",
               display: "flex",
               flexDirection: "column",
-              alignItems: "flex-end",
-              textAlign: "right",
+              alignItems: "flex-start",
+              textAlign: "left",
             }}
           >
             <h1
@@ -158,7 +158,6 @@ export function Hero() {
               style={{
                 display: "flex",
                 flexWrap: "wrap",
-                justifyContent: "flex-end",
                 alignItems: "center",
                 gap: 20,
                 marginTop: 30,
@@ -214,7 +213,6 @@ export function Hero() {
               style={{
                 display: "flex",
                 flexWrap: "wrap",
-                justifyContent: "flex-end",
                 gap: 20,
                 marginTop: "clamp(28px,4vh,44px)",
                 ...enter(0.54),
