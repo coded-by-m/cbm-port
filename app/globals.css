@@ -55,6 +55,7 @@ body {
 .site-card:hover { border-color: rgba(245, 242, 237, 0.32); }
 .site-service-card:hover { border-color: rgba(245, 242, 237, 0.3); background: #070d09; }
 .site-footer-link:hover { color: #f5f2ed; }
+.site-ghost:hover { border-color: rgba(245, 242, 237, 1); background: rgba(245, 242, 237, 0.04); }
 
 /* Entrada do hero da home estática — roda uma vez, em stagger por delay.
    Não é scroll-driven: a página precisa abrir pronta. */

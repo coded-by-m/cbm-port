@@ -38,6 +38,13 @@ export const SECTIONS = {
     heading: "Todo projeto percorre o mesmo caminho.",
     sub: "Estrutura clara. Sem improvisos.",
   },
+  experiencia: {
+    label: "Laboratório",
+    heading: "Tem uma versão desta página que se constrói na sua frente.",
+    sub: "Nove capítulos em WebGL, navegáveis um a um — o mesmo conteúdo deste site, montado camada por camada em vez de exibido. É o que a gente faz quando não tem cliente pra agradar.",
+    cta: "Entrar na experiência",
+    note: "WebGL · melhor no desktop",
+  },
   sobre: {
     label: "Sobre",
   },
