@@ -5,6 +5,7 @@ import { Analytics } from "@/components/analytics/Analytics";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
 import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { AgentationDev } from "@/components/dev/AgentationDev";
 
 const TITLE = "Coded by M — Webdesign e websoftware sob medida";
 const DESCRIPTION =
@@ -73,6 +74,7 @@ export default function RootLayout({
         <WhatsAppFab />
         <CookieConsent />
         <Analytics />
+        <AgentationDev />
       </body>
     </html>
   );
