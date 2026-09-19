@@ -84,16 +84,19 @@ export function Hero() {
           </span>
         </div>
 
-        {/* O tipo ocupa a largura toda, encostado à esquerda. O texto de apoio
-            desce ancorado à direita — a tensão entre os dois é a composição. */}
+        {/* Duas colunas com as BASES alinhadas: o tipo à esquerda, o texto de
+            apoio à direita, os dois assentando na mesma linha inferior.
+            `flex-end` no eixo cruzado é o que faz isso. */}
         <div
           style={{
-            width: "100%",
-            containerType: "inline-size",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "flex-end",
+            gap: "clamp(28px,4vw,64px)",
             marginTop: "clamp(28px,5vh,56px)",
           }}
         >
-          <div>
+          <div style={{ flex: "1 1 300px", minWidth: 0, containerType: "inline-size" }}>
             <h1
               style={{
                 margin: 0,
@@ -130,24 +133,17 @@ export function Hero() {
             </h1>
           </div>
 
-          {/* Apoio ancorado à direita. O texto dentro segue alinhado à
-              esquerda: corpo com borda direita irregular lê melhor que o
-              contrário, e o "ancorado à direita" é a posição do bloco. */}
+          {/* Coluna da direita. O texto dentro segue alinhado à esquerda:
+              corpo com borda direita irregular lê melhor que o contrário. */}
           <div
             style={{
+              flex: "0 1 440px",
+              minWidth: 0,
               display: "flex",
-              justifyContent: "flex-end",
-              marginTop: "clamp(28px,5vh,52px)",
+              flexDirection: "column",
+              alignItems: "flex-start",
             }}
           >
-            <div
-              style={{
-                width: "min(100%, 480px)",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-              }}
-            >
             <p
               style={{
                 margin: 0,
@@ -250,7 +246,6 @@ export function Hero() {
                   {a.label}
                 </span>
               ))}
-            </div>
             </div>
           </div>
         </div>
