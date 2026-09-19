@@ -29,6 +29,37 @@ export const SURFACE = {
   frame: "#0A120C",
 } as const;
 
+/**
+ * Superfície invertida — a lasca de luz que corta o escuro.
+ *
+ * Off-white quente da marca, nunca `#fff`: a temperatura é o que separa
+ * "premium" de "bootstrap". Cantos retos de propósito — a referência que
+ * originou isto usa raio grande, mas `border-radius: 0` é regra dura aqui.
+ */
+export const INK = {
+  /** Fundo do bloco claro. */
+  base: "#F5F2ED",
+  /** Títulos sobre o claro. */
+  ink: "#040806",
+  /** Corpo. */
+  body: "#4A4844",
+  /** Secundário e legendas. */
+  muted: "#6E6B66",
+  /** Bordas sobre o claro. */
+  border: "rgba(4,8,6,0.14)",
+  /** Fundo de card sobre o claro. */
+  card: "rgba(4,8,6,0.025)",
+  /**
+   * Vermelho para TEXTO sobre o claro.
+   *
+   * O #FB3640 da marca só dá 3.15:1 sobre #F5F2ED e reprova AA — sobre o
+   * escuro ele dava 5.5:1. O red-dark da paleta resolve com 4.96:1.
+   * Elementos decorativos (losangos, filetes) seguem no #FB3640: não são
+   * texto e não respondem à regra.
+   */
+  signal: "#C42030",
+} as const;
+
 /** `base` em rgb, para gradientes e overlays com alpha. */
 export const BASE_RGB = "4,8,6";
 /** `sunken` em rgb, para o fade no rodapé dos cards. */

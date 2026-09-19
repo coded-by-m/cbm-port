@@ -120,6 +120,8 @@ body:has(.site-home) {
   .site-shot-progress { animation: none; }
 }
 .site-service-card:hover { border-color: rgba(245, 242, 237, 0.3); background: #070d09; }
+/* Mesmo gesto do card escuro, invertido: a borda fecha e o fundo aprofunda. */
+.site-service-card-light:hover { border-color: rgba(4, 8, 6, 0.42); background: rgba(4, 8, 6, 0.05); }
 .site-footer-link:hover { color: #f5f2ed; }
 .site-ghost:hover { border-color: rgba(245, 242, 237, 1); background: rgba(245, 242, 237, 0.04); }
 
