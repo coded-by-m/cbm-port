@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+/** Renderizador de carrossel — ferramenta de producao, nao conteudo. */
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
+
 import { SLIDES, SLIDE_W, SLIDE_H } from "../slides";
 
 /**

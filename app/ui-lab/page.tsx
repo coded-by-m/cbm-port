@@ -8,8 +8,9 @@ import { CaseReturnCTA } from "@/components/case/CaseReturnCTA";
 import { getCaseBySlug } from "@/data/cases";
 
 export const metadata: Metadata = {
-  title: "UI Lab — Coded by M",
+  title: "UI Lab",
   description: "Vitrine de componentes visuais da Coded by M.",
+  robots: { index: false, follow: false },
 };
 
 // ---------------------------------------------------------------------------
