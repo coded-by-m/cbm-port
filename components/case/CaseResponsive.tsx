@@ -1,5 +1,5 @@
 import type { CaseProject } from "@/types/case";
-import { Reveal } from "@/components/case/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 import { PhoneFrame } from "@/components/case/PhoneFrame";
 import { CaseFrameScroll } from "@/components/case/CaseFrameScroll";
 import { LogoMark } from "@/components/ui/LogoMark";
