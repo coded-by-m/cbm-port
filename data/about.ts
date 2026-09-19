@@ -27,6 +27,27 @@ export const ABOUT = {
   location: "Florianópolis, Brasil",
 } as const;
 
+export interface Skill {
+  label: string;
+  /** 0–100. Convenção de leitura para "isto é meu forte", não medição. */
+  level: number;
+}
+
+/**
+ * Capacidades do estúdio, na seção Sobre.
+ *
+ * Os rótulos são específicos de propósito: "Web Design, Branding,
+ * Development" poderia ser de qualquer um. Os números são afirmação do
+ * fundador — ajuste aqui.
+ */
+export const SKILLS: Skill[] = [
+  { label: "Web Design & Interface", level: 95 },
+  { label: "Front-end · React, Next.js, TypeScript", level: 90 },
+  { label: "Motion & WebGL", level: 85 },
+  { label: "Design System", level: 88 },
+  { label: "Performance & SEO", level: 82 },
+];
+
 export const VALUES: Value[] = [
   { title: "Precisão", desc: "Cada pixel tem razão de existir." },
   { title: "Elegância", desc: "Sofisticação que não precisa gritar." },

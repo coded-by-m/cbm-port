@@ -9,6 +9,7 @@ import {
   SectionLabel,
   SURFACE,
 } from "./shared";
+import { SkillBars } from "./SkillBars";
 
 /** Símbolo à esquerda, manifesto e assinatura à direita, valores embaixo. */
 export function AboutSection() {
@@ -132,6 +133,30 @@ export function AboutSection() {
                 {ABOUT.location}
               </span>
             </div>
+          </div>
+
+          <div
+            style={{
+              marginTop: 8,
+              paddingTop: 26,
+              borderTop: "1px solid rgba(245,242,237,0.1)",
+            }}
+          >
+            <span
+              style={{
+                display: "block",
+                marginBottom: 20,
+                fontFamily: SATOSHI,
+                fontWeight: 500,
+                fontSize: 9,
+                letterSpacing: "0.32em",
+                textTransform: "uppercase",
+                color: "#9B9791",
+              }}
+            >
+              Capacidades
+            </span>
+            <SkillBars />
           </div>
         </div>
       </div>
