@@ -55,11 +55,18 @@ export const SECTIONS = {
   },
 } as const;
 
-/** Links do menu drawer e das âncoras. */
+/**
+ * Links do menu drawer.
+ *
+ * `route: true` sai da página (a experiência é outra rota, não uma âncora) e
+ * ganha a seta vermelha. Sem esse item o único caminho até /experiencia seria
+ * o botão no meio do scroll, e menu é onde a pessoa procura pra onde ir.
+ */
 export const NAV_LINKS = [
-  { href: "#top", label: "Home" },
-  { href: "#projetos", label: "Projetos" },
-  { href: "#servicos", label: "Serviços" },
-  { href: "#processo", label: "Processo" },
-  { href: "#sobre", label: "Sobre" },
+  { href: "#top", label: "Home", route: false },
+  { href: "#projetos", label: "Projetos", route: false },
+  { href: "#servicos", label: "Serviços", route: false },
+  { href: "#processo", label: "Processo", route: false },
+  { href: "#sobre", label: "Sobre", route: false },
+  { href: "/experiencia", label: "A Experiência", route: true },
 ] as const;

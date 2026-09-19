@@ -311,6 +311,11 @@ export function SiteHeader() {
               {i === 0 && (
                 <span style={{ display: "block", width: 8, height: 8, flex: "none", background: "#FB3640" }} />
               )}
+              {l.route && (
+                <span style={{ fontSize: "0.5em", color: "#FB3640" }} aria-hidden>
+                  ↗
+                </span>
+              )}
             </a>
           ))}
         </nav>
