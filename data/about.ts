@@ -27,25 +27,31 @@ export const ABOUT = {
   location: "Florianópolis, Brasil",
 } as const;
 
+/** Degraus da escala de capacidades. Define quantos losangos cada linha tem. */
+export const SKILL_SCALE = 10;
+
 export interface Skill {
   label: string;
-  /** 0–100. Convenção de leitura para "isto é meu forte", não medição. */
+  /** 1–`SKILL_SCALE`. Convenção de leitura para "isto é meu forte", não medição. */
   level: number;
 }
 
 /**
- * Capacidades do estúdio, na seção Sobre.
+ * Capacidades do estúdio.
  *
  * Os rótulos são específicos de propósito: "Web Design, Branding,
  * Development" poderia ser de qualquer um. Os números são afirmação do
  * fundador — ajuste aqui.
+ *
+ * A escala é de 1 a 10, não porcentagem: 87% sugere medição de algo, e não há
+ * o que medir. Dez degraus são uma opinião assumida.
  */
 export const SKILLS: Skill[] = [
-  { label: "Web Design & Interface", level: 95 },
-  { label: "Front-end · React, Next.js, TypeScript", level: 90 },
-  { label: "Motion & WebGL", level: 85 },
-  { label: "Design System", level: 88 },
-  { label: "Performance & SEO", level: 82 },
+  { label: "Web design & interface", level: 10 },
+  { label: "Front-end · React, Next.js, TypeScript", level: 9 },
+  { label: "Design system", level: 9 },
+  { label: "Motion & WebGL", level: 8 },
+  { label: "Performance & SEO", level: 8 },
 ];
 
 export const VALUES: Value[] = [

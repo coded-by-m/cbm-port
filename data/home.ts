@@ -54,6 +54,12 @@ export const SECTIONS = {
   sobre: {
     label: "Sobre",
   },
+  capacidades: {
+    label: "Capacidades",
+    heading: "O que entra em cada projeto.",
+    /** Marcador da escala, alinhado à direita do cabeçalho. */
+    aside: "Escala 1 — 10",
+  },
   contato: {
     label: "Convite",
     heading: "Vamos construir a sua.",

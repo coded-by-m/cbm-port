@@ -6,6 +6,7 @@ import { ProjectsSection } from "@/components/site/ProjectsSection";
 import { ServicesSection } from "@/components/site/ServicesSection";
 import { ProcessSection } from "@/components/site/ProcessSection";
 import { AboutSection } from "@/components/site/AboutSection";
+import { CapabilitiesSection } from "@/components/site/CapabilitiesSection";
 import { ContactSection } from "@/components/site/ContactSection";
 import Footer from "@/components/zones/CTASection/Footer";
 
@@ -27,6 +28,7 @@ export default function HomePage() {
         <ServicesSection />
         <ProcessSection />
         <AboutSection />
+        <CapabilitiesSection />
         <ContactSection />
       </main>
       <Footer background={SURFACE.base} />

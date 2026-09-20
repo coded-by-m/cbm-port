@@ -298,11 +298,29 @@ body:has(.site-home) {
 
 /* A régua da etapa do Processo fica presa no topo do card, fora do fluxo,
    pra o desenho dela não empurrar o conteúdo. */
-.site-step-rule {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+/* Linha da escala de capacidades: rotulo | losangos | numero.
+   A coluna do rotulo tem teto (420px) pra os losangos de todas as linhas
+   comecarem no mesmo x — e e esse alinhamento que faz a escala ser
+   comparavel de uma linha pra outra. */
+.site-scale-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 420px) 1fr 64px;
+  align-items: center;
+  gap: clamp(20px, 3vw, 48px);
+}
+/* Estreito demais pras tres colunas: os losangos descem pra propria fileira e
+   ocupam a largura toda, com o rotulo e o numero dividindo a de cima. */
+@media (max-width: 760px) {
+  .site-scale-row {
+    grid-template-columns: 1fr auto;
+    gap: 12px 16px;
+  }
+  /* Posicao explicita, senao os losangos (que ocupam as duas colunas) empurram
+     o numero pra uma terceira fileira em vez de dividir a primeira com o
+     rotulo. */
+  .site-scale-row > :first-child { grid-area: 1 / 1; }
+  .site-scale-row > :last-child { grid-area: 1 / 2; }
+  .site-scale-row > .site-scale-marks { grid-area: 2 / 1 / 3 / -1; }
 }
 
 /* A palavra do hero se monta letra a letra. Só transform e opacity, e o

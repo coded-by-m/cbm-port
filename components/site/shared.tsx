@@ -195,11 +195,25 @@ export function SectionHead({
 }
 
 /** Símbolo CbM em wireframe. */
-export function LogoMarkSvg({ size = 16, stroke = 12 }: { size?: number; stroke?: number }) {
+/**
+ * O símbolo da marca. `size` em número fixa a largura em px; em string
+ * (`"52%"`) a medida passa a ser relativa ao pai e a altura vem da razão do
+ * viewBox, não de uma conta — é o que deixa o símbolo acompanhar um quadro
+ * que encolhe.
+ */
+export function LogoMarkSvg({
+  size = 16,
+  stroke = 12,
+}: {
+  size?: number | string;
+  stroke?: number;
+}) {
+  const fixo = typeof size === "number";
   return (
     <svg
       width={size}
-      height={(size * 161) / 142}
+      height={fixo ? (size * 161) / 142 : undefined}
+      style={fixo ? undefined : { width: size, height: "auto" }}
       viewBox="0 0 142 161"
       fill="none"
       aria-hidden="true"
