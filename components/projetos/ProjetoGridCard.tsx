@@ -64,7 +64,13 @@ export function ProjetoGridCard({
         {num}
       </span>
 
-      {/* Thumbnail — largura fixa, pra as células ficarem alinhadas entre si */}
+      {/* Thumbnail — largura fixa, pra as células ficarem alinhadas entre si.
+          É uma JANELA sobre um recorte mais alto que ela: em repouso mostra o
+          topo do site, no hover desliza e revela a continuação da página.
+
+          Por isso a imagem não usa `fill`: com ela o elemento teria a altura
+          exata da janela, sem sobra nenhuma pra revelar — e o deslize levava a
+          miniatura inteira pra fora, deixando o card preto. */}
       <div
         style={{
           position: "relative",
@@ -79,10 +85,11 @@ export function ProjetoGridCard({
           <Image
             src={thumb}
             alt={`${project.title} — preview`}
-            fill
+            width={760}
+            height={874}
             sizes="(max-width: 700px) 30vw, 178px"
-            className="site-shot"
-            style={{ objectFit: "cover", objectPosition: "top" }}
+            className="site-shot-window"
+            style={{ display: "block", width: "100%", height: "auto" }}
           />
         )}
         <span

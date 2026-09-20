@@ -134,7 +134,8 @@ body:has(.site-home) {
   border-color: #fb3640;
   transform: translateY(-4px);
 }
-.site-card .site-shot {
+.site-card .site-shot,
+.site-card .site-shot-window {
   transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 /* Percurso curto de proposito. Deslizar a imagem inteira (800px+ num
@@ -142,6 +143,26 @@ body:has(.site-home) {
    nao o que ele revela. 128px mostram que ha mais pagina e param. */
 .site-card:hover .site-shot {
   transform: translateY(-128px);
+}
+
+/* A miniatura da celula de projeto. O percurso vai em % da IMAGEM porque a
+   janela nao tem altura fixa — as duas dependem da mesma largura W:
+
+     janela  = W * 11/16   = 0.6875W   (aspect-ratio da caixa)
+     imagem  = W * 874/760 = 1.15W     (recorte do card)
+     sobra   = 0.4625W               = 40,2% da altura da imagem
+
+   Entao -38% desliza quase tudo e para pouco antes da borda de baixo, que e
+   o que faz a miniatura continuar dizendo "tem mais pagina". Mexeu no
+   aspect-ratio da janela ou no formato do recorte, refaz a conta.
+
+   Mais lento que o resto dos hovers: aqui o gesto imita rolagem, e rolagem
+   rapida em 122px de altura vira tremor. */
+.site-card .site-shot-window {
+  transition-duration: 900ms;
+}
+.site-card:hover .site-shot-window {
+  transform: translateY(-38%);
 }
 
 /* O Reveal envolve cada card num div; sem isso o card perde o stretch do grid
@@ -182,6 +203,7 @@ body:has(.site-home) {
 @media (prefers-reduced-motion: reduce) {
   .site-card:hover { transform: none; }
   .site-card:hover .site-shot { transform: none; }
+  .site-card:hover .site-shot-window { transform: none; }
   .site-pulse { animation: none; }
   .site-shot-scroll,
   .site-shot-progress { animation: none; }
