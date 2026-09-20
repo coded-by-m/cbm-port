@@ -299,6 +299,36 @@ body:has(.site-home) {
   .site-letter { animation: none; opacity: 1; transform: none; }
 }
 
+/* A marca reage ao cursor: a palavra inteira recua e só a letra sob o
+   ponteiro volta ao cheio e levanta. O gesto vive na camada de DENTRO porque
+   a de fora ainda carrega `cbmLetter` com `fill: both` — depois de terminar
+   a animação continua fixando opacity e transform, e engoliria o :hover. */
+.site-letter-in {
+  display: inline-block;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease;
+}
+.site-word:hover .site-letter-in { opacity: 0.38; }
+.site-word .site-letter:hover > .site-letter-in {
+  opacity: 1;
+  transform: translateY(-0.08em);
+}
+
+/* O asterisco gira devagar o tempo todo: é o que tira a marca do estado
+   parado sem animar a tipografia, que precisa ficar quieta pra ser lida. */
+@keyframes cbmStar {
+  to { transform: rotate(360deg); }
+}
+.site-star {
+  display: inline-block;
+  animation: cbmStar 26s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-letter-in { transition: none; }
+  .site-word .site-letter:hover > .site-letter-in { transform: none; }
+  .site-star { animation: none; }
+}
+
 /* Objeções da landing. `<details>` nativo: teclado e leitor de tela vêm de
    graça, zero JavaScript. O marcador padrão sai e entra o nosso, angular. */
 .lp-faq {

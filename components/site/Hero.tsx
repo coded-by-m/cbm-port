@@ -132,6 +132,18 @@ export function Hero() {
                   ...enter(0.16),
                 }}
               >
+                {/* Cada letra é uma camada dupla: a de fora carrega a cascata
+                    de entrada, a de dentro reage ao cursor. A de fora não faz
+                    as duas — a animação tem `fill: both`, segura o transform
+                    depois de terminar e engoliria qualquer :hover.
+
+                    `fit-content` prende o hover ao desenho da palavra; num
+                    bloco de largura total o vazio à direita também dispararia
+                    o gesto. */}
+                <span
+                  className="site-word"
+                  style={{ display: "block", width: "fit-content" }}
+                >
                 {HERO.brand.map((word, i) => (
                   <span key={word} style={{ display: "block", whiteSpace: "nowrap" }}>
                     {word.split("").map((ch, j) => (
@@ -141,7 +153,7 @@ export function Hero() {
                         /* Cascata: cada letra entra 38ms depois da anterior. */
                         style={{ animationDelay: `${0.18 + i * 0.24 + j * 0.038}s` }}
                       >
-                        {ch === " " ? " " : ch}
+                        <span className="site-letter-in">{ch === " " ? " " : ch}</span>
                       </span>
                     ))}
                     {i === 0 && (
@@ -149,29 +161,38 @@ export function Hero() {
                         aria-hidden
                         className="site-letter"
                         style={{
+                          /* `top` e não `translateY`: a animação de entrada
+                             já ocupa o transform desta camada. */
+                          position: "relative",
+                          top: "-0.02em",
                           display: "inline-block",
                           color: "#FB3640",
                           fontSize: "0.46em",
                           lineHeight: 1,
                           verticalAlign: "top",
-                          transform: "translateY(-0.06em)",
                           marginLeft: "0.04em",
                           letterSpacing: 0,
                           animationDelay: `${0.18 + word.length * 0.038}s`,
                         }}
                       >
-                        ✳
+                        {/* Gira devagar: é o que mantém o lockup vivo em
+                            repouso, sem mexer no desenho da palavra. */}
+                        <span className="site-star">✳</span>
                       </span>
                     )}
                   </span>
                 ))}
+                </span>
 
                 {/* A categoria, abaixo da marca e em corpo bem menor */}
                 <span
                   className="site-letter"
                   style={{
                     display: "block",
-                    marginTop: "0.14em",
+                    /* Em do PRÓPRIO corpo (0.3em do h1), então o número é
+                       grande de propósito: 0.9em aqui dá ~35px no desktop e
+                       encolhe junto com a marca. */
+                    marginTop: "0.9em",
                     fontSize: "0.3em",
                     fontWeight: 700,
                     letterSpacing: "0.02em",
