@@ -32,25 +32,7 @@ export function ServicesSection() {
             marginBottom: "clamp(44px,6vh,68px)",
           }}
         >
-          <Reveal variant="side">
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <span aria-hidden style={{ display: "block", width: 24, height: 1, background: "#FB3640" }} />
-              <span
-                style={{
-                  fontFamily: SATOSHI,
-                  fontWeight: 500,
-                  fontSize: 10,
-                  letterSpacing: "0.32em",
-                  textTransform: "uppercase",
-                  color: INK.signal,
-                }}
-              >
-                {SECTIONS.servicos.label}
-              </span>
-            </div>
-          </Reveal>
-
-          <Reveal delay={120} variant="wipe">
+          <Reveal variant="wipe">
             <h2
               style={{
                 margin: 0,
@@ -68,7 +50,7 @@ export function ServicesSection() {
             </h2>
           </Reveal>
 
-          <Reveal delay={240}>
+          <Reveal delay={140}>
             <p
               style={{
                 margin: 0,

@@ -6,7 +6,6 @@ import {
   PANCHANG,
   SATOSHI,
   SECTION,
-  SectionLabel,
   SURFACE,
 } from "./shared";
 import { SkillBars } from "./SkillBars";
@@ -63,7 +62,6 @@ export function AboutSection() {
         </div>
 
         <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 26 }}>
-          <SectionLabel>{SECTIONS.sobre.label}</SectionLabel>
           <h2
             style={{
               margin: 0,

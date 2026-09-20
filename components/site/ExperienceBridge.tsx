@@ -1,6 +1,6 @@
 import { SECTIONS } from "@/data/home";
 import { HOME_CHAPTERS } from "@/lib/homeChapters";
-import { PANCHANG, SATOSHI, SURFACE, SectionLabel } from "./shared";
+import { PANCHANG, SATOSHI, SURFACE } from "./shared";
 
 const COPY = SECTIONS.experiencia;
 
@@ -65,7 +65,6 @@ export function ExperienceBridge() {
         }}
       >
         <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 24 }}>
-          <SectionLabel>{COPY.label}</SectionLabel>
 
           <h2
             style={{

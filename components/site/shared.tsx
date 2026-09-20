@@ -99,34 +99,11 @@ export function Diamond({
   );
 }
 
-/** Pré-título: traço curto vermelho + label em Satoshi espaçado. */
-export function SectionLabel({ children }: { children: ReactNode }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-      <span aria-hidden style={{ display: "block", width: 24, height: 1, background: "#FB3640" }} />
-      <span
-        style={{
-          fontFamily: SATOSHI,
-          fontWeight: 500,
-          fontSize: 10,
-          letterSpacing: "0.32em",
-          textTransform: "uppercase",
-          color: "#FB3640",
-        }}
-      >
-        {children}
-      </span>
-    </div>
-  );
-}
-
 /** Cabeçalho padrão de seção: label + h2 + linha de apoio. */
 export function SectionHead({
-  label,
   heading,
   sub,
 }: {
-  label: string;
   heading: string;
   sub?: string;
 }) {
@@ -139,8 +116,7 @@ export function SectionHead({
         marginBottom: "clamp(40px,5vh,60px)",
       }}
     >
-      <Reveal variant="side"><SectionLabel>{label}</SectionLabel></Reveal>
-      <Reveal delay={120} variant="wipe"><h2
+      <Reveal variant="wipe"><h2
         style={{
           margin: 0,
           maxWidth: "20ch",
@@ -156,7 +132,7 @@ export function SectionHead({
         {heading}
       </h2></Reveal>
       {sub && (
-        <Reveal delay={240}><p
+        <Reveal delay={140}><p
           style={{
             margin: 0,
             maxWidth: "60ch",

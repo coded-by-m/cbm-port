@@ -8,7 +8,6 @@ export function ProcessSection() {
   return (
     <section id="processo" style={SECTION}>
       <SectionHead
-        label={SECTIONS.processo.label}
         heading={SECTIONS.processo.heading}
         sub={SECTIONS.processo.sub}
       />

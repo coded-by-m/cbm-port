@@ -1,6 +1,6 @@
 import { AVAILABILITY, HERO } from "@/data/home";
 import { waLink } from "@/lib/contact";
-import { BASE_RGB, Diamond, PANCHANG, SATOSHI, SURFACE } from "./shared";
+import { Diamond, LogoMarkSvg, PANCHANG, SATOSHI, SURFACE } from "./shared";
 import { HeroLandscape } from "./HeroLandscape";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
@@ -18,21 +18,20 @@ const META: React.CSSProperties = {
   fontFamily: SATOSHI,
   fontWeight: 400,
   fontSize: 10,
-  letterSpacing: "0.28em",
+  letterSpacing: "0.26em",
   textTransform: "uppercase",
   color: "#9B9791",
   whiteSpace: "nowrap",
 };
 
 /**
- * Hero "split alinhado" — wordmark e texto na mesma base.
+ * Hero — a marca ancorada à esquerda, a categoria abaixo dela.
  *
- * Três faixas empilhadas em 100dvh: régua de topo com a praça, o miolo com
- * o par tipo/texto, e régua de rodapé com o estado da agenda. O miolo cresce
- * pra ocupar a sobra, então as duas réguas ficam presas nos extremos.
+ * Três faixas em 100dvh: régua de topo com a marca, o miolo com o par
+ * tipo/texto, e régua de rodapé com o estado da agenda. O miolo cresce pra
+ * ocupar a sobra, então as réguas ficam presas nos extremos.
  *
- * No miolo, as duas colunas assentam na MESMA linha inferior
- * (`align-items: flex-end`) — é o que o mockup chama de "mesma base".
+ * As duas colunas do miolo assentam na MESMA linha inferior.
  *
  * O fundo é a geometria da marca, sangrando a viewport inteira.
  */
@@ -53,8 +52,7 @@ export function Hero() {
     >
       <HeroLandscape />
 
-      {/* Véu que leva o pé do hero de volta ao fundo da página. Sangra a
-          viewport, como a paisagem, senão a dissolução pararia na margem. */}
+      {/* Véu que leva o pé do hero de volta ao fundo da página. */}
       <div
         aria-hidden
         style={{
@@ -66,7 +64,7 @@ export function Hero() {
           height: "38%",
           zIndex: 0,
           pointerEvents: "none",
-          background: `linear-gradient(to bottom, rgba(${BASE_RGB},0) 0%, rgba(${BASE_RGB},0.75) 62%, ${SURFACE.base} 100%)`,
+          background: `linear-gradient(to bottom, rgba(4,8,6,0) 0%, rgba(4,8,6,0.75) 62%, ${SURFACE.base} 100%)`,
         }}
       />
 
@@ -79,7 +77,7 @@ export function Hero() {
           flexDirection: "column",
         }}
       >
-        {/* Régua de topo */}
+        {/* Régua de topo: a marca à esquerda, a disciplina à direita */}
         <div
           style={{
             display: "flex",
@@ -97,24 +95,21 @@ export function Hero() {
               display: "inline-flex",
               alignItems: "center",
               gap: 12,
-              fontFamily: SATOSHI,
-              fontWeight: 500,
-              fontSize: 10,
-              letterSpacing: "0.3em",
-              textTransform: "uppercase",
-              color: "#FB3640",
+              fontFamily: PANCHANG,
+              fontWeight: 700,
+              fontSize: "clamp(19px,2.2vw,30px)",
+              letterSpacing: "-0.01em",
+              color: "#F5F2ED",
+              whiteSpace: "nowrap",
             }}
           >
-            <span
-              aria-hidden
-              style={{ display: "block", width: 26, height: 1, background: "#FB3640" }}
-            />
-            {HERO.eyebrow}
+            <LogoMarkSvg size={20} stroke={11} />
+            Coded <span style={{ color: "#FB3640" }}>by</span> M
           </span>
           <span style={META}>{HERO.meta}</span>
         </div>
 
-        {/* Miolo: tipo e texto na mesma base */}
+        {/* Miolo: categoria à esquerda, texto à direita, mesma base */}
         <div
           style={{
             flex: 1,
@@ -132,14 +127,11 @@ export function Hero() {
               gap: "clamp(28px,4vw,72px)",
             }}
           >
-            {/* Wordmark */}
             <div
-              style={{ flex: "1 1 320px", minWidth: 0, containerType: "inline-size" }}
+              style={{ flex: "1 1 300px", minWidth: 0, containerType: "inline-size" }}
             >
               <h1
-                /* Liga o cursor-triângulo da marca sobre a palavra: o
-                   CursorTriangle já procura por este atributo nos ancestrais
-                   do elemento sob o ponteiro. */
+                /* Liga o cursor-triângulo da marca sobre a palavra. */
                 data-cursor="triangle"
                 style={{
                   margin: 0,
@@ -148,10 +140,11 @@ export function Hero() {
                   fontWeight: 800,
                   /* Amarrado à largura do container E à altura da tela, pra
                      nunca cortar a palavra nem estourar a dobra. */
-                  fontSize: "clamp(52px, min(20.4cqw, 23vh), 300px)",
+                  fontSize: "clamp(42px, min(14.5cqw, 16vh), 190px)",
                   letterSpacing: "-0.04em",
-                  lineHeight: 0.82,
+                  lineHeight: 0.84,
                   color: "#F5F2ED",
+                  ...enter(0.16),
                 }}
               >
                 {HERO.lead.map((word, i) => (
@@ -170,6 +163,7 @@ export function Hero() {
                     {i === 0 && (
                       <span
                         aria-hidden
+                        className="site-letter"
                         style={{
                           display: "inline-block",
                           color: "#FB3640",
@@ -179,6 +173,7 @@ export function Hero() {
                           transform: "translateY(-0.06em)",
                           marginLeft: "0.02em",
                           letterSpacing: 0,
+                          animationDelay: `${0.18 + word.length * 0.038}s`,
                         }}
                       >
                         ✳
@@ -192,7 +187,7 @@ export function Hero() {
             {/* Texto, link e CTA em bloco */}
             <div
               style={{
-                flex: "0 1 430px",
+                flex: "0 1 400px",
                 minWidth: 0,
                 display: "flex",
                 flexDirection: "column",
@@ -205,9 +200,9 @@ export function Hero() {
                   margin: 0,
                   fontFamily: PANCHANG,
                   fontWeight: 600,
-                  fontSize: "clamp(18px,1.85vw,26px)",
+                  fontSize: "clamp(17px,1.7vw,24px)",
                   letterSpacing: "-0.014em",
-                  lineHeight: 1.22,
+                  lineHeight: 1.24,
                   color: "#F5F2ED",
                   textWrap: "balance",
                 }}
@@ -222,14 +217,13 @@ export function Hero() {
                   alignSelf: "flex-start",
                   display: "inline-flex",
                   alignItems: "center",
-                  marginTop: "clamp(22px,3vh,32px)",
+                  marginTop: "clamp(20px,2.6vh,28px)",
                   fontFamily: PANCHANG,
                   fontWeight: 600,
-                  fontSize: 11,
+                  fontSize: 10.5,
                   letterSpacing: "0.18em",
                   textTransform: "uppercase",
                   color: "#F5F2ED",
-                  borderBottom: "1px solid #FB3640",
                   paddingBottom: 5,
                   textDecoration: "none",
                   transition: "color 150ms ease",
@@ -247,13 +241,13 @@ export function Hero() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginTop: "clamp(16px,2.4vh,24px)",
+                  marginTop: "clamp(14px,2vh,20px)",
                   background: "#FB3640",
                   color: SURFACE.base,
-                  padding: "19px 28px",
+                  padding: "16px 26px",
                   fontFamily: PANCHANG,
                   fontWeight: 700,
-                  fontSize: 13,
+                  fontSize: 12,
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
                   textAlign: "center",

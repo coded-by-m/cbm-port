@@ -27,7 +27,6 @@ export function ProjectsSection() {
       }}
     >
       <SectionHead
-        label={SECTIONS.projetos.label}
         heading={SECTIONS.projetos.heading}
         sub={SECTIONS.projetos.sub}
       />

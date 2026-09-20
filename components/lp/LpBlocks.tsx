@@ -19,27 +19,6 @@ const WRAP: React.CSSProperties = {
   padding: "clamp(64px,9vh,104px) clamp(20px,4vw,48px)",
 };
 
-function Label({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 12,
-        fontFamily: SATOSHI,
-        fontWeight: 500,
-        fontSize: 10,
-        letterSpacing: "0.3em",
-        textTransform: "uppercase",
-        color: "#FB3640",
-      }}
-    >
-      <span aria-hidden style={{ display: "block", width: 24, height: 1, background: "#FB3640" }} />
-      {children}
-    </span>
-  );
-}
-
 const H2: React.CSSProperties = {
   margin: 0,
   fontFamily: PANCHANG,
@@ -55,10 +34,7 @@ const H2: React.CSSProperties = {
 export function LpHero({ lp }: { lp: LandingConfig }) {
   return (
     <section style={{ ...WRAP, paddingTop: "clamp(48px,7vh,84px)" }}>
-      <Reveal variant="side">
-        <Label>{lp.eyebrow}</Label>
-      </Reveal>
-      <Reveal delay={110} variant="wipe">
+      <Reveal variant="wipe">
         <h1
           style={{
             ...H2,
@@ -71,7 +47,7 @@ export function LpHero({ lp }: { lp: LandingConfig }) {
           {lp.headline}
         </h1>
       </Reveal>
-      <Reveal delay={220}>
+      <Reveal delay={120}>
         <p
           style={{
             margin: "26px 0 0",
@@ -87,7 +63,7 @@ export function LpHero({ lp }: { lp: LandingConfig }) {
           {lp.sub}
         </p>
       </Reveal>
-      <Reveal delay={330}>
+      <Reveal delay={240}>
         <div style={{ marginTop: 38 }}>
           <LpCta label={lp.ctaLabel} message={lp.waMessage} size="lg" source="lp-hero" />
         </div>
@@ -106,9 +82,6 @@ export function LpPains({ lp }: { lp: LandingConfig }) {
   return (
     <section style={{ background: SURFACE.raised, borderTop: "1px solid #111511" }}>
       <div style={WRAP}>
-        <Reveal variant="side">
-          <Label>Soa familiar?</Label>
-        </Reveal>
         <ul
           style={{
             margin: "34px 0 0",
@@ -180,10 +153,7 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
   return (
     <section style={{ borderTop: "1px solid #111511" }}>
       <div style={WRAP}>
-        <Reveal variant="side">
-          <Label>Trabalho no ar</Label>
-        </Reveal>
-        <Reveal delay={110} variant="wipe">
+        <Reveal variant="wipe">
           <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>
             Escritórios que já estão apresentados assim.
           </h2>
@@ -275,10 +245,7 @@ export function LpProcess() {
   return (
     <section style={{ background: SURFACE.raised, borderTop: "1px solid #111511" }}>
       <div style={WRAP}>
-        <Reveal variant="side">
-          <Label>Como funciona</Label>
-        </Reveal>
-        <Reveal delay={110} variant="wipe">
+        <Reveal variant="wipe">
           <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>
             Quatro etapas, e você sabe onde está em cada uma.
           </h2>
@@ -338,9 +305,6 @@ export function LpFaq({ lp }: { lp: LandingConfig }) {
   return (
     <section style={{ borderTop: "1px solid #111511" }}>
       <div style={{ ...WRAP, maxWidth: 860 }}>
-        <Reveal variant="side">
-          <Label>Antes de você perguntar</Label>
-        </Reveal>
         <div style={{ marginTop: 32 }}>
           {lp.faq.map((f, i) => (
             <Reveal key={f.q} delay={i * 70}>

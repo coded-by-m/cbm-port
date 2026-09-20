@@ -5,7 +5,7 @@ import {
   WHATSAPP_DISPLAY,
   waLink,
 } from "@/lib/contact";
-import { PANCHANG, SATOSHI, SECTION, SURFACE, SectionLabel } from "./shared";
+import { PANCHANG, SATOSHI, SECTION, SURFACE } from "./shared";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -14,7 +14,6 @@ export function ContactSection() {
   return (
     <section id="contato" style={SECTION}>
       <div style={{ display: "flex", flexDirection: "column", gap: 32, alignItems: "flex-start" }}>
-        <SectionLabel>{SECTIONS.contato.label}</SectionLabel>
         <h2
           style={{
             margin: 0,
