@@ -298,16 +298,124 @@ body:has(.site-home) {
 
 /* A régua da etapa do Processo fica presa no topo do card, fora do fluxo,
    pra o desenho dela não empurrar o conteúdo. */
-/* Linha da escala de capacidades: rotulo | losangos | numero.
-   A coluna do rotulo tem teto (420px) pra os losangos de todas as linhas
-   comecarem no mesmo x — e e esse alinhamento que faz a escala ser
-   comparavel de uma linha pra outra. */
+/* ===== Escala de capacidades =====
+   Linha: rotulo | losangos | numero. A coluna do rotulo tem teto (420px) pra
+   os losangos de todas as linhas comecarem no mesmo x — e e esse alinhamento
+   que faz a escala ser comparavel de uma linha pra outra.
+
+   Aqui as classes carregam SO transform/opacity/transicao; tipografia e cor de
+   texto continuam inline no componente, como no resto do site. A divisao nao e
+   estetica: transform inline e regra de :hover brigariam pelo mesmo valor, e o
+   inline sempre ganharia. */
+.site-scale { margin: 0; padding: 0; list-style: none; }
+
 .site-scale-row {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(180px, 420px) 1fr 64px;
   align-items: center;
   gap: clamp(20px, 3vw, 48px);
+  padding: clamp(18px, 2.4vh, 26px) 0;
 }
+
+/* A regua se desenha da esquerda, o mesmo gesto das outras reguas do site.
+   Absoluta pra nao entrar no fluxo da grade. */
+.site-scale-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(245, 242, 237, 0.16);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 820ms cubic-bezier(0.22, 1, 0.36, 1) var(--row-d, 0ms),
+    background 260ms ease;
+}
+.site-scale-rule-end {
+  top: auto;
+  bottom: 0;
+  transition-delay: calc(var(--row-d, 0ms) + 110ms);
+}
+.is-shown .site-scale-rule { transform: scaleX(1); }
+
+/* O rotulo entra atras da propria regua. */
+.site-scale-label {
+  display: block;
+  opacity: 0;
+  transform: translateX(-16px);
+  transition: opacity 600ms ease-out var(--row-d, 0ms),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--row-d, 0ms);
+}
+.is-shown .site-scale-label { opacity: 1; transform: translateX(0); }
+
+.site-scale-marks {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.2vw, 14px);
+}
+
+/* Camada de fora: giro e escala da entrada, escalonados por --d. */
+.site-scale-mark {
+  display: block;
+  width: 9px;
+  height: 9px;
+  flex: none;
+  transform: rotate(45deg) scale(0.3);
+  opacity: 0;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms),
+    opacity 280ms ease-out var(--d, 0ms);
+}
+.site-scale-mark[data-on="false"] { transform: rotate(45deg) scale(1); opacity: 1; }
+.is-shown .site-scale-mark { transform: rotate(45deg) scale(1); opacity: 1; }
+
+/* Camada de dentro: o desenho e a reacao ao cursor. */
+.site-scale-mark-in {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms ease;
+}
+.site-scale-mark[data-on="true"] > .site-scale-mark-in { background: #fb3640; }
+.site-scale-mark[data-on="false"] > .site-scale-mark-in {
+  border: 1px solid rgba(245, 242, 237, 0.3);
+}
+
+/* A cor mora aqui, nao inline: o :hover precisa troca-la, e estilo inline
+   ganha de regra de folha sempre. */
+.site-scale-value {
+  display: block;
+  text-align: right;
+  color: #f5f2ed;
+  opacity: 0;
+  transition: opacity 500ms ease-out
+    calc(var(--row-d, 0ms) + 120ms), color 260ms ease;
+}
+.is-shown .site-scale-value { opacity: 1; }
+
+/* Assentado: os atrasos da entrada zeram. Sem isso o hover herdaria ate meio
+   segundo de espera e a linha responderia ao cursor depois do fato. */
+.is-settled .site-scale-rule,
+.is-settled .site-scale-label,
+.is-settled .site-scale-mark,
+.is-settled .site-scale-value { transition-delay: 0ms; }
+
+/* Hover da linha: a regua acende, o rotulo avanca e os losangos cheios incham
+   em onda, da esquerda pra direita. A onda so existe na ida — na volta todos
+   assentam juntos, que e o que faz o gesto ler como resposta e nao como loop. */
+.site-scale-row:hover .site-scale-rule { background: rgba(245, 242, 237, 0.34); }
+.site-scale-row:hover .site-scale-label { transform: translateX(5px); }
+.site-scale-row:hover .site-scale-value { color: #fb3640; }
+.site-scale-row:hover .site-scale-mark[data-on="true"] > .site-scale-mark-in {
+  transform: scale(1.28);
+  transition-delay: calc(var(--i, 0) * 26ms);
+}
+.site-scale-row:hover .site-scale-mark[data-on="false"] > .site-scale-mark-in {
+  border-color: rgba(245, 242, 237, 0.5);
+}
+
 /* Estreito demais pras tres colunas: os losangos descem pra propria fileira e
    ocupam a largura toda, com o rotulo e o numero dividindo a de cima. */
 @media (max-width: 760px) {
@@ -318,9 +426,21 @@ body:has(.site-home) {
   /* Posicao explicita, senao os losangos (que ocupam as duas colunas) empurram
      o numero pra uma terceira fileira em vez de dividir a primeira com o
      rotulo. */
-  .site-scale-row > :first-child { grid-area: 1 / 1; }
-  .site-scale-row > :last-child { grid-area: 1 / 2; }
-  .site-scale-row > .site-scale-marks { grid-area: 2 / 1 / 3 / -1; }
+  .site-scale-label { grid-area: 1 / 1; }
+  .site-scale-value { grid-area: 1 / 2; }
+  .site-scale-marks { grid-area: 2 / 1 / 3 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-scale-rule,
+  .site-scale-label,
+  .site-scale-mark,
+  .site-scale-mark-in,
+  .site-scale-value { transition: none; }
+  .site-scale-row:hover .site-scale-label { transform: none; }
+  .site-scale-row:hover .site-scale-mark[data-on="true"] > .site-scale-mark-in {
+    transform: none;
+  }
 }
 
 /* A palavra do hero se monta letra a letra. Só transform e opacity, e o

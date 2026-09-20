@@ -1,10 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { SKILLS, SKILL_SCALE } from "@/data/about";
 import { SECTIONS } from "@/data/home";
 import { PANCHANG, SATOSHI, SECTION } from "./shared";
 import { Reveal } from "@/components/ui/Reveal";
+
+/** Intervalo entre uma linha e a seguinte. */
+const ATRASO_LINHA = 110;
+/** Intervalo entre um losango e o seguinte, dentro da linha. */
+const ATRASO_LOSANGO = 38;
+/** Sobra pro último losango terminar de crescer antes de assentar. */
+const REPOUSO = 460;
+
+const FIM =
+  (SKILLS.length - 1) * ATRASO_LINHA + SKILL_SCALE * ATRASO_LOSANGO + REPOUSO;
+
+type Fase = "parado" | "tocando" | "assentado";
 
 /**
  * As capacidades do estúdio numa escala de losangos.
@@ -12,29 +24,41 @@ import { Reveal } from "@/components/ui/Reveal";
  * Dez degraus em vez de uma barra de porcentagem: 87% sugere medição de algo,
  * e não há o que medir — são dez passos contáveis e uma opinião assumida.
  *
- * Os losangos cheios acendem em cascata quando a lista entra na tela, linha
- * por linha e da esquerda pra direita. Os vazios já estão lá: são o trilho,
- * e é o contraste com eles que diz onde a linha parou.
+ * A entrada é uma sequência, não um efeito:
  *
- * Só `transform` e `opacity` — as duas propriedades que o compositor resolve
- * sozinho, sem passar por layout.
+ * 1. a régua de cada linha se desenha da esquerda, como as outras réguas do
+ *    site;
+ * 2. o rótulo entra atrás dela, no mesmo gesto lateral;
+ * 3. os losangos cheios acendem um a um — os vazios já estão lá, porque é o
+ *    contraste com eles que diz onde a linha parou;
+ * 4. o número CONTA junto, subindo a cada losango que acende. Ele não é um
+ *    rótulo do valor, é a contagem do que está aceso — por isso os dois
+ *    andam no mesmo relógio em vez de aparecerem separados.
+ *
+ * Depois que tudo assenta, a fase vira `assentado` e os atrasos zeram: sem
+ * isso o hover herdaria o atraso da entrada e a linha só responderia ao
+ * cursor meio segundo depois.
+ *
+ * Só `transform` e `opacity` — as duas que o compositor resolve sozinho.
  */
 export function CapabilitiesSection() {
   const ref = useRef<HTMLUListElement>(null);
-  const [shown, setShown] = useState(false);
+  const [fase, setFase] = useState<Fase>("parado");
+  const [contagem, setContagem] = useState<number[]>(() => SKILLS.map(() => 0));
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(true);
+      setContagem(SKILLS.map((s) => s.level));
+      setFase("assentado");
       return;
     }
     const obs = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (e.isIntersecting) {
-            setShown(true);
+            setFase("tocando");
             obs.disconnect();
           }
         }
@@ -45,9 +69,48 @@ export function CapabilitiesSection() {
     return () => obs.disconnect();
   }, []);
 
+  /**
+   * O contador do número, no mesmo relógio da cascata dos losangos.
+   *
+   * Deriva a contagem do tempo em vez de guardar um timer por linha: um
+   * relógio só, e qualquer quadro perdido se corrige no seguinte. Só escreve
+   * no estado quando algum número muda de verdade — senão seriam ~150
+   * renders pra 50 mudanças.
+   */
+  useEffect(() => {
+    if (fase !== "tocando") return;
+    const t0 = performance.now();
+    let raf = 0;
+    let anterior = SKILLS.map(() => 0);
+
+    const passo = () => {
+      const t = performance.now() - t0;
+      const agora = SKILLS.map((s, linha) =>
+        Math.max(
+          0,
+          Math.min(
+            s.level,
+            Math.floor((t - linha * ATRASO_LINHA) / ATRASO_LOSANGO) + 1,
+          ),
+        ),
+      );
+      if (agora.some((n, i) => n !== anterior[i])) {
+        anterior = agora;
+        setContagem(agora);
+      }
+      if (t < FIM) raf = requestAnimationFrame(passo);
+      else setFase("assentado");
+    };
+
+    raf = requestAnimationFrame(passo);
+    return () => cancelAnimationFrame(raf);
+  }, [fase]);
+
+  const ultima = SKILLS.length - 1;
+
   return (
     <section id="capacidades" style={SECTION}>
-      {/* Cabeçalho com o marcador da escala ancorado na mesma base do título */}
+      {/* Cabeçalho com o marcador da escala na mesma base do título */}
       <div
         style={{
           display: "flex",
@@ -93,21 +156,29 @@ export function CapabilitiesSection() {
         </Reveal>
       </div>
 
-      <ul ref={ref} style={{ margin: 0, padding: 0, listStyle: "none" }}>
-        {SKILLS.map((s, row) => (
+      <ul
+        ref={ref}
+        className={[
+          "site-scale",
+          fase !== "parado" && "is-shown",
+          fase === "assentado" && "is-settled",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        {SKILLS.map((s, linha) => (
           <li
             key={s.label}
             className="site-scale-row"
-            style={{
-              borderTop: "1px solid rgba(245,242,237,0.16)",
-              borderBottom:
-                row === SKILLS.length - 1
-                  ? "1px solid rgba(245,242,237,0.16)"
-                  : undefined,
-              padding: "clamp(18px,2.4vh,26px) 0",
-            }}
+            style={{ "--row-d": `${linha * ATRASO_LINHA}ms` } as CSSProperties}
           >
+            <span aria-hidden className="site-scale-rule" />
+            {linha === ultima && (
+              <span aria-hidden className="site-scale-rule site-scale-rule-end" />
+            )}
+
             <span
+              className="site-scale-label"
               style={{
                 fontFamily: PANCHANG,
                 fontWeight: 600,
@@ -119,49 +190,40 @@ export function CapabilitiesSection() {
               {s.label}
             </span>
 
-            <div
-              className="site-scale-marks"
-              aria-hidden
-              style={{ display: "flex", alignItems: "center", gap: "clamp(8px,1.2vw,14px)" }}
-            >
-              {Array.from({ length: SKILL_SCALE }, (_, i) => {
-                const cheio = i < s.level;
-                return (
-                  <span
-                    key={i}
-                    style={{
-                      display: "block",
-                      boxSizing: "border-box",
-                      width: 9,
-                      height: 9,
-                      flex: "none",
-                      background: cheio ? "#FB3640" : "transparent",
-                      border: cheio ? undefined : "1px solid rgba(245,242,237,0.3)",
-                      transform: `rotate(45deg) scale(${!cheio || shown ? 1 : 0.35})`,
-                      opacity: !cheio || shown ? 1 : 0,
-                      transition: cheio
-                        ? `transform 420ms cubic-bezier(0.22,1,0.36,1) ${row * 110 + i * 38}ms, opacity 300ms ease-out ${row * 110 + i * 38}ms`
-                        : undefined,
-                    }}
-                  />
-                );
-              })}
+            <div className="site-scale-marks" aria-hidden>
+              {Array.from({ length: SKILL_SCALE }, (_, i) => (
+                <span
+                  key={i}
+                  className="site-scale-mark"
+                  data-on={i < s.level}
+                  style={
+                    {
+                      "--d": `${linha * ATRASO_LINHA + i * ATRASO_LOSANGO}ms`,
+                      "--i": i,
+                    } as CSSProperties
+                  }
+                >
+                  {/* Camada de dentro só pro hover: a de fora já carrega o
+                      giro e a escala da entrada, e as duas brigariam pelo
+                      mesmo transform. */}
+                  <span className="site-scale-mark-in" />
+                </span>
+              ))}
             </div>
 
-            {/* O número repete a escala em algarismo: quem não conta losango, lê. */}
+            {/* O número repete a escala em algarismo: quem não conta losango,
+                lê. Tabular pra ele não dançar enquanto sobe. */}
             <span
+              className="site-scale-value"
               style={{
-                textAlign: "right",
                 fontFamily: PANCHANG,
                 fontWeight: 700,
                 fontSize: 13,
                 letterSpacing: "0.14em",
-                color: "#F5F2ED",
-                opacity: shown ? 1 : 0,
-                transition: `opacity 500ms ease-out ${row * 110 + SKILL_SCALE * 38}ms`,
+                fontVariantNumeric: "tabular-nums",
               }}
             >
-              {String(s.level).padStart(2, "0")}
+              {String(contagem[linha] ?? 0).padStart(2, "0")}
             </span>
           </li>
         ))}
