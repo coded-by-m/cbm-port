@@ -2,6 +2,11 @@ import { cases } from "@/data/cases";
 import { PROJECT_TYPE_ORDER } from "@/lib/projectTypes";
 import type { CaseProject, ProjectType } from "@/types/case";
 
+/** Todos os projetos publicados, na ordem do arquivo. */
+export function getPublishedProjects(): CaseProject[] {
+  return cases.filter((c) => c.status === "published");
+}
+
 /** Uma faixa da vitrine: um tipo + seus projetos publicados. */
 export interface ProjectBand {
   type: ProjectType;

@@ -348,3 +348,7 @@ body:has(.site-home) {
   color: #b4b0aa;
   text-wrap: pretty;
 }
+
+/* Célula filtrada fora da vista. Esconder em vez de desmontar mantém o
+   catálogo inteiro no HTML inicial. */
+.is-hidden { display: none; }
