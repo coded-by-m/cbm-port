@@ -1,6 +1,6 @@
 import { AVAILABILITY, HERO } from "@/data/home";
 import { waLink } from "@/lib/contact";
-import { Diamond, LogoMarkSvg, PANCHANG, SATOSHI, SURFACE } from "./shared";
+import { Diamond, PANCHANG, SATOSHI, SURFACE } from "./shared";
 import { HeroLandscape } from "./HeroLandscape";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
@@ -90,22 +90,7 @@ export function Hero() {
             ...enter(0.05),
           }}
         >
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 12,
-              fontFamily: PANCHANG,
-              fontWeight: 700,
-              fontSize: "clamp(19px,2.2vw,30px)",
-              letterSpacing: "-0.01em",
-              color: "#F5F2ED",
-              whiteSpace: "nowrap",
-            }}
-          >
-            <LogoMarkSvg size={20} stroke={11} />
-            Coded <span style={{ color: "#FB3640" }}>by</span> M
-          </span>
+          <span style={META}>{HERO.eyebrow}</span>
           <span style={META}>{HERO.meta}</span>
         </div>
 
@@ -140,24 +125,23 @@ export function Hero() {
                   fontWeight: 800,
                   /* Amarrado à largura do container E à altura da tela, pra
                      nunca cortar a palavra nem estourar a dobra. */
-                  fontSize: "clamp(42px, min(14.5cqw, 16vh), 190px)",
+                  fontSize: "clamp(38px, min(15.5cqw, 15vh), 190px)",
                   letterSpacing: "-0.04em",
                   lineHeight: 0.84,
                   color: "#F5F2ED",
                   ...enter(0.16),
                 }}
               >
-                {HERO.lead.map((word, i) => (
+                {HERO.brand.map((word, i) => (
                   <span key={word} style={{ display: "block", whiteSpace: "nowrap" }}>
                     {word.split("").map((ch, j) => (
                       <span
                         key={`${word}-${j}`}
                         className="site-letter"
-                        /* Cascata: cada letra entra 38ms depois da anterior,
-                           e a segunda palavra começa onde a primeira terminou. */
+                        /* Cascata: cada letra entra 38ms depois da anterior. */
                         style={{ animationDelay: `${0.18 + i * 0.24 + j * 0.038}s` }}
                       >
-                        {ch}
+                        {ch === " " ? " " : ch}
                       </span>
                     ))}
                     {i === 0 && (
@@ -171,7 +155,7 @@ export function Hero() {
                           lineHeight: 1,
                           verticalAlign: "top",
                           transform: "translateY(-0.06em)",
-                          marginLeft: "0.02em",
+                          marginLeft: "0.04em",
                           letterSpacing: 0,
                           animationDelay: `${0.18 + word.length * 0.038}s`,
                         }}
@@ -181,6 +165,23 @@ export function Hero() {
                     )}
                   </span>
                 ))}
+
+                {/* A categoria, abaixo da marca e em corpo bem menor */}
+                <span
+                  className="site-letter"
+                  style={{
+                    display: "block",
+                    marginTop: "0.14em",
+                    fontSize: "0.3em",
+                    fontWeight: 700,
+                    letterSpacing: "0.02em",
+                    lineHeight: 1,
+                    color: "#B4B0AA",
+                    animationDelay: "0.72s",
+                  }}
+                >
+                  {HERO.lead}
+                </span>
               </h1>
             </div>
 

@@ -10,11 +10,10 @@ export const FEATURED_SLUG = "estudio-lentz";
 
 export const HERO = {
   eyebrow: "Estúdio independente · Florianópolis",
-  /**
-   * O bloco gigante do hero. São a CATEGORIA, não a frase — é isso que
-   * permite a escala: duas palavras aguentam 130px, uma sentença não.
-   */
-  lead: ["Web", "Design"],
+  /** A marca é o enunciado principal do hero. */
+  brand: ["Coded", "by M"],
+  /** A categoria, logo abaixo da marca e em corpo menor. */
+  lead: "Web Design",
   headline: "Projetamos a forma como sua empresa é percebida digitalmente.",
   sub: "Landing pages, sites institucionais e aplicações web — da estratégia ao deploy, no mesmo lugar.",
   ctaPrimary: "Começar meu projeto",
