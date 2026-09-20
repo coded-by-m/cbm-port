@@ -166,9 +166,9 @@ export function Hero() {
                       stagger={0.06}
                       fillDelay={0.1}
                       delay={0.2 + i * 0.34}
-                      /* O cursor redesenha a palavra: é o gesto de hover da
-                         marca, no lugar do realce letra a letra. */
-                      replayOnHover
+                      /* O contorno some quando a cor fecha a palavra: o
+                         vermelho aqui e passagem, nao moldura. */
+                      fadeStrokeOut
                     />
 
                     {i === 0 && (

@@ -38,8 +38,13 @@ import { ASCENT, STROKE_LINE_HEIGHT } from "./strokeMetrics";
  *    entrou na tela.
  * 5. `delay` e `replayOnHover`, que o original não tem: o primeiro encadeia as
  *    linhas, o segundo devolve o gesto quando o cursor passa.
- * 6. Fica invisível até medir. A medida depende da Panchang ter carregado; sem
- *    isso o primeiro quadro sairia na métrica da fonte de sistema e pularia.
+ * 6. Fica invisível até medir, e só mede quando a fonte pedida responde. Medir
+ *    antes daria a métrica da fonte de sistema; a correção depois mudaria a
+ *    caixa, reconstruiria a linha do tempo e o desenho rodaria DUAS vezes.
+ *    Com a mesma intenção, `playedRef` garante um gesto por montagem: uma
+ *    remedida tardia leva ao estado final, não a uma repetição.
+ * 7. `fadeStrokeOut`, pra o contorno sumir quando a cor fecha a palavra — o
+ *    vermelho é a passagem, não uma moldura permanente.
  */
 
 export type StrokeTextTrigger = "mount" | "hover" | "scroll" | "loop";
@@ -66,6 +71,10 @@ export type StrokeTextProps = {
   /** Redesenha quando o cursor entra. Ignorado em `trigger="hover"`, que já
    *  nasce assim. */
   replayOnHover?: boolean;
+  /** Apaga o contorno depois que a cor termina de entrar, deixando a letra
+   *  limpa. Só vale com preenchimento: sem ele, apagar o traço apagaria a
+   *  palavra inteira. */
+  fadeStrokeOut?: boolean;
   fontFamily?: string;
   /** Corpo em unidades do SVG. Não é o tamanho na tela: quem manda nisso é o
    *  `font-size` herdado, porque a caixa é medida em `em`. */
@@ -90,6 +99,7 @@ export function StrokeText({
   trigger = "mount",
   fillMode = "wipe",
   replayOnHover = false,
+  fadeStrokeOut = false,
   fontFamily,
   fontSize = 128,
   fontWeight = 800,
@@ -102,6 +112,10 @@ export function StrokeText({
   const textRef = useRef<SVGTextElement>(null);
   /** As duas paradas do gradiente: juntas, formam a borda da varredura. */
   const stopsRef = useRef<[SVGStopElement | null, SVGStopElement | null]>([null, null]);
+  /** O desenho é de uma vez só. Se a caixa for remedida depois (fonte que
+   *  chega tarde, reflow), o elemento vai pro estado final em vez de repetir
+   *  o gesto. */
+  const playedRef = useRef(false);
 
   /** Só a horizontal é medida; a vertical é a métrica fixa do módulo. */
   const [box, setBox] = useState<{ x: number; width: number } | null>(null);
@@ -154,8 +168,26 @@ export function StrokeText({
       );
     };
 
-    measure();
-    document.fonts?.ready.then(measure).catch(() => {});
+    /* Medir antes da fonte chegar dá a métrica da fonte de sistema, e a
+       correção depois mudaria a caixa — o que reconstrói a linha do tempo e
+       roda o desenho uma segunda vez. Então só mede quando a fonte pedida já
+       responde; `check` cobre o caso do cache, em que medir na hora é certo. */
+    const family = (fontFamily ?? "sans-serif")
+      .split(",")[0]
+      .trim()
+      .replace(/^["']|["']$/g, "");
+    const spec = `${fontWeight} ${fontSize}px "${family}"`;
+
+    if (!document.fonts || document.fonts.check(spec)) {
+      measure();
+    } else {
+      document.fonts
+        .load(spec)
+        .then(measure)
+        .catch(() => {
+          document.fonts.ready.then(measure).catch(() => {});
+        });
+    }
 
     return () => {
       cancelled = true;
@@ -187,9 +219,16 @@ export function StrokeText({
 
     const targets: object[] = [...chars, sweep];
 
+    /* O traço só some quando há cor pra ficar no lugar dele. */
+    const fadesStroke = fadeStrokeOut && fillEnabled;
+
     const setStart = () => {
       gsap.killTweensOf(targets);
-      gsap.set(chars, { strokeDasharray: dash, strokeDashoffset: dash });
+      gsap.set(chars, {
+        strokeDasharray: dash,
+        strokeDashoffset: dash,
+        strokeOpacity: 1,
+      });
       if (useWipe) {
         sweep.p = 0;
         applySweep();
@@ -200,7 +239,11 @@ export function StrokeText({
 
     const setEnd = () => {
       gsap.killTweensOf(targets);
-      gsap.set(chars, { strokeDasharray: dash, strokeDashoffset: 0 });
+      gsap.set(chars, {
+        strokeDasharray: dash,
+        strokeDashoffset: 0,
+        strokeOpacity: fadesStroke ? 0 : 1,
+      });
       if (useWipe) {
         sweep.p = fillEnabled ? 1 : 0;
         applySweep();
@@ -254,6 +297,16 @@ export function StrokeText({
         );
       }
 
+      if (fadesStroke) {
+        /* Só depois que a cor fechou a última letra: apagar o contorno antes
+           disso deixaria o pedaço ainda não preenchido invisível. */
+        tl.to(
+          chars,
+          { strokeOpacity: 0, duration: 0.45, ease: "power1.out" },
+          drawDuration + fillDelay + fillDuration,
+        );
+      }
+
       return tl;
     };
 
@@ -271,8 +324,13 @@ export function StrokeText({
       setEnd();
       root.addEventListener("pointerenter", replay);
       removeHover = () => root.removeEventListener("pointerenter", replay);
+    } else if (playedRef.current && trigger !== "loop") {
+      /* Já desenhou nesta montagem: o que trouxe o efeito de volta foi uma
+         remedida, não um pedido de repetir. */
+      setEnd();
     } else {
       timeline = build();
+      playedRef.current = true;
 
       if (trigger === "scroll") {
         observer = new IntersectionObserver(
@@ -309,6 +367,7 @@ export function StrokeText({
     delay,
     drawDuration,
     ease,
+    fadeStrokeOut,
     fillDelay,
     fillMode,
     replayOnHover,
