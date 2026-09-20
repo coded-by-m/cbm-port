@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getPublishedBands } from "@/lib/galleryData";
+import { SURFACE } from "@/components/site/shared";
 import { GalleryHeader } from "@/components/projetos/GalleryHeader";
 import { GalleryFooter } from "@/components/projetos/GalleryFooter";
 import { ProjetosGallery } from "@/components/projetos/ProjetosGallery";
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
 export default function ProjetosPage() {
   const bands = getPublishedBands();
   return (
-    <div className="min-h-dvh bg-[#000F08] text-[#F5F2ED]">
+    <div className="site-home min-h-dvh text-[#F5F2ED]" style={{ background: SURFACE.base }}>
       <GalleryHeader />
       <ProjetosGallery bands={bands} />
       <GalleryFooter />

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { CaseProject } from "@/types/case";
@@ -47,7 +48,7 @@ export function ProjetoCard({
       {/* Thumbnail (reserva espaço via aspect-ratio → sem CLS). */}
       <div className="pointer-events-none relative aspect-[16/10] w-24 flex-shrink-0 overflow-hidden border border-[#F5F2ED]/12 sm:w-36 md:w-44">
         <CardImage
-          src={project.preview?.desktop}
+          src={project.preview?.card ?? project.preview?.desktop}
           alt={`${project.title} — preview`}
         />
         {/* Tick da cor do tipo — assinatura discreta no canto. */}
@@ -128,13 +129,16 @@ function CardImage({ src, alt }: { src?: string; alt: string }) {
     );
   }
   return (
-    // biome-ignore lint/a11y/useAltText: alt prop is forwarded
-    <img
+    /* `card` (760x874) e nao `desktop` (ate 2880x24972 = 71,9 MP): esta
+       thumbnail tem 96px de largura, e decodificar a pagina inteira do
+       cliente pra mostrar isso e o que travava celular. */
+    <Image
       src={src}
       alt={alt}
-      loading="lazy"
+      fill
+      sizes="(max-width: 640px) 96px, (max-width: 768px) 144px, 176px"
       onError={() => setErrored(true)}
-      className="h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+      className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
     />
   );
 }

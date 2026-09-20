@@ -1,5 +1,6 @@
 import type { ProjectBand } from "@/lib/galleryData";
 import { PROJECT_TYPE_LABEL } from "@/lib/projectTypes";
+import { Reveal } from "@/components/ui/Reveal";
 import { ProjetoCard } from "./ProjetoCard";
 
 /**
@@ -49,14 +50,13 @@ export function TypeBand({
 
       {/* Lista índice: uma linha por projeto, todas uniformes. */}
       <div className="flex flex-col">
+        {/* Reveal e nao `landscape-ui-stagger`: aquele anima na MONTAGEM, entao
+            a lista inteira entrava de uma vez, inclusive o que estava fora da
+            tela. Numa vitrine longa isso desperdica o gesto. */}
         {band.projects.map((project, i) => (
-          <div
-            key={project.slug}
-            className="landscape-ui-stagger"
-            style={{ animationDelay: `${i * 0.04}s` }}
-          >
+          <Reveal key={project.slug} delay={i * 70} variant="side">
             <ProjetoCard project={project} index={i} />
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

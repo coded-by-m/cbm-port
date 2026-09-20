@@ -3,7 +3,7 @@ import Link from "next/link";
 /** Topo fino e sticky da vitrine. Link de volta pra Paisagem imersiva. */
 export function GalleryHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-[#F5F2ED]/10 bg-[#000F08]/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-[#F5F2ED]/10 bg-[#040806]/90 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5">
         <Link
           href="/"
