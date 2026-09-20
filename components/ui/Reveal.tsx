@@ -81,22 +81,32 @@ export function Reveal({
 
   const d = DURATION[variant];
 
+  /**
+   * Duas camadas: a de fora é observada, a de dentro é animada.
+   *
+   * Observar o elemento animado trava a variante `wipe`:
+   * `clip-path: inset(0 0 100% 0)` zera a área pintada, o
+   * IntersectionObserver leva clipping em conta, a razão fica em 0 e o
+   * elemento nunca descobre que está visível — ele se esconde bem demais pra
+   * conseguir aparecer. Medido: uma camada dá 8/9 reveals na seção Projetos
+   * (só o título, que usa `wipe`, fica pra trás); duas camadas dão 9/9.
+   */
   return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        ...(shown ? TO[variant] : FROM[variant]),
-        transformOrigin: variant === "draw" ? "left center" : undefined,
-        transition: [
-          `opacity ${d}ms ease-out ${delay}ms`,
-          `transform ${d}ms ${EASE} ${delay}ms`,
-          `filter ${d}ms ease-out ${delay}ms`,
-          `clip-path ${d}ms ${EASE} ${delay}ms`,
-        ].join(", "),
-      }}
-    >
-      {children}
+    <div ref={ref} className={className}>
+      <div
+        style={{
+          ...(shown ? TO[variant] : FROM[variant]),
+          transformOrigin: variant === "draw" ? "left center" : undefined,
+          transition: [
+            `opacity ${d}ms ease-out ${delay}ms`,
+            `transform ${d}ms ${EASE} ${delay}ms`,
+            `filter ${d}ms ease-out ${delay}ms`,
+            `clip-path ${d}ms ${EASE} ${delay}ms`,
+          ].join(", "),
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

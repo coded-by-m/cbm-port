@@ -147,7 +147,10 @@ body:has(.site-home) {
 /* O Reveal envolve cada card num div; sem isso o card perde o stretch do grid
    e o "indicado para" ancorado no rodape do card sobe. */
 .site-cell { display: flex; min-width: 0; }
-.site-cell > * { flex: 1; min-width: 0; }
+/* Dois niveis, porque o Reveal envolve o conteudo numa camada observada e
+   numa animada. Sem o segundo seletor o card perde o stretch do grid. */
+.site-cell > * { flex: 1; min-width: 0; display: flex; }
+.site-cell > * > * { flex: 1; min-width: 0; }
 
 /* Vitrine do hero — a pagina do cliente rolando por inteiro na vertical.
    `alternate` em vez de loop duro: desce ate o rodape e volta, sem o corte
