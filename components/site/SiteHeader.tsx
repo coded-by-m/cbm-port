@@ -236,7 +236,7 @@ export function SiteHeader() {
               }}
             >
               <LogoMarkSvg />
-              <span style={{ whiteSpace: "nowrap" }}>
+              <span className="site-header-word" style={{ whiteSpace: "nowrap" }}>
                 Coded <span style={{ color: "#FB3640" }}>by</span> M
               </span>
             </a>

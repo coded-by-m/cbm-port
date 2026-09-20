@@ -298,6 +298,18 @@ body:has(.site-home) {
 
 /* A régua da etapa do Processo fica presa no topo do card, fora do fluxo,
    pra o desenho dela não empurrar o conteúdo. */
+/* A barra do cabecalho precisa de 444px pra caber inteira: 44 do burger + 16
+   de vao + 161 do nome + 20 + 171 do botao + 32 de padding. Abaixo disso o
+   nome transbordava do proprio grupo e passava POR BAIXO do botao — os dois
+   tem `flex: none`/`nowrap`, entao nada cedia.
+
+   Quem sai e o nome, nao o botao: o nome esta em corpo gigante no hero logo
+   abaixo, e o botao e o caminho de conversao. Fica o simbolo, que sozinho
+   ainda leva pro topo. O corte e em 479px pra sobrar folga antes do aperto. */
+@media (max-width: 479px) {
+  .site-header-word { display: none; }
+}
+
 /* ===== Escala de capacidades =====
    Linha: rotulo | losangos | numero. A coluna do rotulo tem teto (420px) pra
    os losangos de todas as linhas comecarem no mesmo x — e e esse alinhamento
