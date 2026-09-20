@@ -1,6 +1,8 @@
 import { AVAILABILITY, HERO } from "@/data/home";
 import { waLink } from "@/lib/contact";
-import { Diamond, PANCHANG, SATOSHI, SURFACE } from "./shared";
+import { Diamond, PANCHANG, SATOSHI, SURFACE, TriangleMark } from "./shared";
+import { StrokeText } from "@/components/ui/StrokeText";
+import { STROKE_LINE_HEIGHT } from "@/components/ui/strokeMetrics";
 import { HeroLandscape } from "./HeroLandscape";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
@@ -132,57 +134,53 @@ export function Hero() {
                   ...enter(0.16),
                 }}
               >
-                {/* Cada letra é uma camada dupla: a de fora carrega a cascata
-                    de entrada, a de dentro reage ao cursor. A de fora não faz
-                    as duas — a animação tem `fill: both`, segura o transform
-                    depois de terminar e engoliria qualquer :hover.
+                {/* A marca se desenha. Uma instância por linha, encadeadas
+                    pelo `delay`, com a caixa vertical fixa do StrokeText pra
+                    as duas saírem no mesmo corpo.
 
-                    `fit-content` prende o hover ao desenho da palavra; num
-                    bloco de largura total o vazio à direita também dispararia
-                    o gesto. */}
-                <span
-                  className="site-word"
-                  style={{ display: "block", width: "fit-content" }}
-                >
+                    O contorno entra no vermelho do sinal e o osso inunda
+                    depois — o vermelho aqui é gesto, não elemento fixo, então
+                    não gasta a cota de raridade da dobra. */}
                 {HERO.brand.map((word, i) => (
-                  <span key={word} style={{ display: "block", whiteSpace: "nowrap" }}>
-                    {word.split("").map((ch, j) => (
-                      <span
-                        key={`${word}-${j}`}
-                        className="site-letter"
-                        /* Cascata: cada letra entra 38ms depois da anterior. */
-                        style={{ animationDelay: `${0.18 + i * 0.24 + j * 0.038}s` }}
-                      >
-                        <span className="site-letter-in">{ch === " " ? " " : ch}</span>
-                      </span>
-                    ))}
+                  <span
+                    key={word}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "0.06em",
+                      /* Reencosta as linhas: a caixa do StrokeText tem a
+                         altura da métrica, o desenho pede o entrelinha
+                         apertado que a marca sempre teve. */
+                      marginTop: i === 0 ? 0 : `${0.84 - STROKE_LINE_HEIGHT}em`,
+                    }}
+                  >
+                    <StrokeText
+                      text={word}
+                      fontFamily={PANCHANG}
+                      fontWeight={800}
+                      letterSpacing={-0.04 * 128}
+                      strokeColor="#FB3640"
+                      fillColor="#F5F2ED"
+                      strokeWidth={1.8}
+                      drawDuration={1.05}
+                      stagger={0.06}
+                      fillDelay={0.1}
+                      delay={0.2 + i * 0.34}
+                      /* O cursor redesenha a palavra: é o gesto de hover da
+                         marca, no lugar do realce letra a letra. */
+                      replayOnHover
+                    />
+
                     {i === 0 && (
-                      <span
-                        aria-hidden
-                        className="site-letter"
-                        style={{
-                          /* `top` e não `translateY`: a animação de entrada
-                             já ocupa o transform desta camada. */
-                          position: "relative",
-                          top: "-0.02em",
-                          display: "inline-block",
-                          color: "#FB3640",
-                          fontSize: "0.46em",
-                          lineHeight: 1,
-                          verticalAlign: "top",
-                          marginLeft: "0.04em",
-                          letterSpacing: 0,
-                          animationDelay: `${0.18 + word.length * 0.038}s`,
-                        }}
-                      >
-                        {/* Gira devagar: é o que mantém o lockup vivo em
-                            repouso, sem mexer no desenho da palavra. */}
-                        <span className="site-star">✳</span>
-                      </span>
+                      <TriangleMark
+                        strokeWidth={6}
+                        /* Entra junto com a última letra de "Coded". */
+                        drawDelay={0.2 + 5 * 0.06}
+                        style={{ width: "0.3em", marginTop: "0.06em" }}
+                      />
                     )}
                   </span>
                 ))}
-                </span>
 
                 {/* A categoria, abaixo da marca e em corpo bem menor */}
                 <span

@@ -99,6 +99,49 @@ export function Diamond({
   );
 }
 
+/**
+ * Triângulo de contorno — o sinal da marca ao lado do nome.
+ *
+ * É a mesma figura que a paisagem do fundo repete milhares de vezes: um
+ * triângulo em fio, não preenchido. Ele se desenha junto com a palavra e
+ * depois gira devagar, o que mantém o lockup vivo em repouso.
+ *
+ * `pathLength={100}` normaliza o perímetro, então o tracejado do desenho é o
+ * mesmo em qualquer tamanho.
+ */
+export function TriangleMark({
+  color = "#FB3640",
+  strokeWidth = 5,
+  drawDelay = 0,
+  className = "",
+  style,
+}: {
+  color?: string;
+  strokeWidth?: number;
+  drawDelay?: number;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <span
+      aria-hidden
+      className={`site-tri ${className}`.trim()}
+      style={{ display: "block", flex: "none", ...style }}
+    >
+      <svg viewBox="0 0 100 88" fill="none" style={{ display: "block", width: "100%", height: "auto" }}>
+        <polygon
+          points="50,6 94,82 6,82"
+          pathLength={100}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          strokeLinejoin="round"
+          style={{ animationDelay: `${drawDelay}s` }}
+        />
+      </svg>
+    </span>
+  );
+}
+
 /** Cabeçalho padrão de seção: label + h2 + linha de apoio. */
 export function SectionHead({
   heading,
