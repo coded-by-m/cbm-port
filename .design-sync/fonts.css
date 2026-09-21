@@ -1,0 +1,14 @@
+/* As duas familias da marca, auto-hospedadas.
+   Copia das regras de app/globals.css com caminhos relativos ao repo — e assim
+   que cfg.extraFonts encontra os .woff2 e os copia para fonts/ no bundle.
+   Os nomes "Panchang" e "Satoshi" sao literais de proposito: o codigo tem
+   dezenas de fontFamily inline que dependem deles. */
+
+@font-face { font-family: "Panchang"; src: url("../public/fonts/Panchang-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Panchang"; src: url("../public/fonts/Panchang-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Panchang"; src: url("../public/fonts/Panchang-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Panchang"; src: url("../public/fonts/Panchang-800.woff2") format("woff2"); font-weight: 800; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("../public/fonts/Satoshi-300.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("../public/fonts/Satoshi-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("../public/fonts/Satoshi-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("../public/fonts/Satoshi-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }

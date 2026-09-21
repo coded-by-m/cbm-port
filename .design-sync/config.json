@@ -1,0 +1,185 @@
+{
+  "projectId": "f6fe752d-59a7-4b4e-97b4-42c22fb8e7cb",
+  "shape": "package",
+  "pkg": "cbm-port",
+  "globalName": "CodedByM",
+  "srcDir": "../../components",
+  "tsconfig": "../tsconfig.sync.json",
+  "buildCmd": "node .design-sync/build-types.mjs && node .design-sync/build-css.mjs",
+  "cssEntry": "styles.css",
+  "extraFonts": [
+    "../fonts.css"
+  ],
+  "componentSrcMap": {
+    "LogoMark": "../../components/ui/LogoMark.tsx",
+    "MeshButton": "../../components/ui/MeshButton.tsx",
+    "Reveal": "../../components/ui/Reveal.tsx",
+    "StrokeText": "../../components/ui/StrokeText.tsx",
+    "WhatsAppFab": "../../components/ui/WhatsAppFab.tsx",
+    "Diamond": "../../components/site/shared.tsx",
+    "TriangleMark": "../../components/site/shared.tsx",
+    "SectionHead": "../../components/site/shared.tsx",
+    "LogoMarkSvg": "../../components/site/shared.tsx",
+    "SiteHeader": "../../components/site/SiteHeader.tsx",
+    "SiteFooter": "../../components/site/SiteFooter.tsx",
+    "Hero": "../../components/site/Hero.tsx",
+    "AboutSection": "../../components/site/AboutSection.tsx",
+    "CapabilitiesSection": "../../components/site/CapabilitiesSection.tsx",
+    "ContactSection": "../../components/site/ContactSection.tsx",
+    "ExperienceBridge": "../../components/site/ExperienceBridge.tsx",
+    "ProcessSection": "../../components/site/ProcessSection.tsx",
+    "ProjectsSection": "../../components/site/ProjectsSection.tsx",
+    "ServicesSection": "../../components/site/ServicesSection.tsx",
+    "LpHeader": "../../components/lp/LpHeader.tsx",
+    "LpCta": "../../components/lp/LpCta.tsx",
+    "LpHero": "../../components/lp/LpBlocks.tsx",
+    "LpPains": "../../components/lp/LpBlocks.tsx",
+    "LpPromise": "../../components/lp/LpBlocks.tsx",
+    "LpProof": "../../components/lp/LpBlocks.tsx",
+    "LpProcess": "../../components/lp/LpBlocks.tsx",
+    "LpFaq": "../../components/lp/LpBlocks.tsx",
+    "LpFinal": "../../components/lp/LpBlocks.tsx",
+    "FilterChips": "../../components/projetos/FilterChips.tsx",
+    "GalleryHeader": "../../components/projetos/GalleryHeader.tsx",
+    "GalleryFooter": "../../components/projetos/GalleryFooter.tsx",
+    "ProjetoGridCard": "../../components/projetos/ProjetoGridCard.tsx",
+    "ProjetosGallery": "../../components/projetos/ProjetosGallery.tsx",
+    "CaseHero": "../../components/case/CaseHero.tsx",
+    "CaseOverview": "../../components/case/CaseOverview.tsx",
+    "CaseShowcase": "../../components/case/CaseShowcase.tsx",
+    "CaseScreens": "../../components/case/CaseScreens.tsx",
+    "CaseResponsive": "../../components/case/CaseResponsive.tsx",
+    "CaseReturnCTA": "../../components/case/CaseReturnCTA.tsx",
+    "CaseBackButton": "../../components/case/CaseBackButton.tsx",
+    "CaseLiveButton": "../../components/case/CaseLiveButton.tsx",
+    "CaseFrameScroll": "../../components/case/CaseFrameScroll.tsx",
+    "BrowserFrame": "../../components/case/BrowserFrame.tsx",
+    "PhoneFrame": "../../components/case/PhoneFrame.tsx",
+    "LiveScreenshot": "../../components/case/LiveScreenshot.tsx",
+    "ProjectFacts": "../../components/case/ProjectFacts.tsx"
+  },
+  "guidelinesGlob": [
+    "../../docs/*.md",
+    "../../DESIGN-LANGUAGE.md"
+  ],
+  "dtsPropsFor": {
+    "CaseHero": "  project: {\n    slug: string;\n    eyebrow: string;\n    title: string;\n    /** Resumo curto (1-2 frases), usado no card de hover da Paisagem. */\n    description: string;\n    meta: { cliente: string; setor: string; tipo: string; ano: string };\n    heroImages: string[];\n    overview: { heading: string; body: string[]; challenge: string };\n    gallery: string[];\n    /** \"published\" (default) e clicavel; \"coming-soon\" mostra \"Em breve\". */\n    status?: \"published\" | \"coming-soon\";\n    /** Dominio exibido na barra do BrowserFrame. */\n    siteUrl?: string;\n    /** Screenshots do card de hover. `card` e o recorte 760x874 da grade. */\n    preview?: { desktop: string; mobile: string; card?: string };\n    /** Dirige a cor do apex do fragmento. Omitido = \"institucional\". */\n    type?: \"institucional\" | \"landing\" | \"webapp\" | \"ecommerce\";\n    stack?: string[];\n    /** Recortes de secao para a grade \"As Telas\". */\n    sections?: string[];\n    /** Presente = a pagina de case renderiza CaseShowcase. */\n    mockups?: { desktop3d?: string; mobile3d?: string; browser?: string; phone?: string };\n    /** Cores da marca do site capturado; tingem o gradiente do CaseShowcase. */\n    palette?: string[];\n  };",
+    "CaseOverview": "  project: {\n    slug: string;\n    eyebrow: string;\n    title: string;\n    /** Resumo curto (1-2 frases), usado no card de hover da Paisagem. */\n    description: string;\n    meta: { cliente: string; setor: string; tipo: string; ano: string };\n    heroImages: string[];\n    overview: { heading: string; body: string[]; challenge: string };\n    gallery: string[];\n    /** \"published\" (default) e clicavel; \"coming-soon\" mostra \"Em breve\". */\n    status?: \"published\" | \"coming-soon\";\n    /** Dominio exibido na barra do BrowserFrame. */\n    siteUrl?: string;\n    /** Screenshots do card de hover. `card` e o recorte 760x874 da grade. */\n    preview?: { desktop: string; mobile: string; card?: string };\n    /** Dirige a cor do apex do fragmento. Omitido = \"institucional\". */\n    type?: \"institucional\" | \"landing\" | \"webapp\" | \"ecommerce\";\n    stack?: string[];\n    /** Recortes de secao para a grade \"As Telas\". */\n    sections?: string[];\n    /** Presente = a pagina de case renderiza CaseShowcase. */\n    mockups?: { desktop3d?: string; mobile3d?: string; browser?: string; phone?: string };\n    /** Cores da marca do site capturado; tingem o gradiente do CaseShowcase. */\n    palette?: string[];\n  };",
+    "CaseResponsive": "  project: {\n    slug: string;\n    eyebrow: string;\n    title: string;\n    /** Resumo curto (1-2 frases), usado no card de hover da Paisagem. */\n    description: string;\n    meta: { cliente: string; setor: string; tipo: string; ano: string };\n    heroImages: string[];\n    overview: { heading: string; body: string[]; challenge: string };\n    gallery: string[];\n    /** \"published\" (default) e clicavel; \"coming-soon\" mostra \"Em breve\". */\n    status?: \"published\" | \"coming-soon\";\n    /** Dominio exibido na barra do BrowserFrame. */\n    siteUrl?: string;\n    /** Screenshots do card de hover. `card` e o recorte 760x874 da grade. */\n    preview?: { desktop: string; mobile: string; card?: string };\n    /** Dirige a cor do apex do fragmento. Omitido = \"institucional\". */\n    type?: \"institucional\" | \"landing\" | \"webapp\" | \"ecommerce\";\n    stack?: string[];\n    /** Recortes de secao para a grade \"As Telas\". */\n    sections?: string[];\n    /** Presente = a pagina de case renderiza CaseShowcase. */\n    mockups?: { desktop3d?: string; mobile3d?: string; browser?: string; phone?: string };\n    /** Cores da marca do site capturado; tingem o gradiente do CaseShowcase. */\n    palette?: string[];\n  };",
+    "CaseScreens": "  project: {\n    slug: string;\n    eyebrow: string;\n    title: string;\n    /** Resumo curto (1-2 frases), usado no card de hover da Paisagem. */\n    description: string;\n    meta: { cliente: string; setor: string; tipo: string; ano: string };\n    heroImages: string[];\n    overview: { heading: string; body: string[]; challenge: string };\n    gallery: string[];\n    /** \"published\" (default) e clicavel; \"coming-soon\" mostra \"Em breve\". */\n    status?: \"published\" | \"coming-soon\";\n    /** Dominio exibido na barra do BrowserFrame. */\n    siteUrl?: string;\n    /** Screenshots do card de hover. `card` e o recorte 760x874 da grade. */\n    preview?: { desktop: string; mobile: string; card?: string };\n    /** Dirige a cor do apex do fragmento. Omitido = \"institucional\". */\n    type?: \"institucional\" | \"landing\" | \"webapp\" | \"ecommerce\";\n    stack?: string[];\n    /** Recortes de secao para a grade \"As Telas\". */\n    sections?: string[];\n    /** Presente = a pagina de case renderiza CaseShowcase. */\n    mockups?: { desktop3d?: string; mobile3d?: string; browser?: string; phone?: string };\n    /** Cores da marca do site capturado; tingem o gradiente do CaseShowcase. */\n    palette?: string[];\n  };",
+    "CaseShowcase": "  project: {\n    slug: string;\n    eyebrow: string;\n    title: string;\n    /** Resumo curto (1-2 frases), usado no card de hover da Paisagem. */\n    description: string;\n    meta: { cliente: string; setor: string; tipo: string; ano: string };\n    heroImages: string[];\n    overview: { heading: string; body: string[]; challenge: string };\n    gallery: string[];\n    /** \"published\" (default) e clicavel; \"coming-soon\" mostra \"Em breve\". */\n    status?: \"published\" | \"coming-soon\";\n    /** Dominio exibido na barra do BrowserFrame. */\n    siteUrl?: string;\n    /** Screenshots do card de hover. `card` e o recorte 760x874 da grade. */\n    preview?: { desktop: string; mobile: string; card?: string };\n    /** Dirige a cor do apex do fragmento. Omitido = \"institucional\". */\n    type?: \"institucional\" | \"landing\" | \"webapp\" | \"ecommerce\";\n    stack?: string[];\n    /** Recortes de secao para a grade \"As Telas\". */\n    sections?: string[];\n    /** Presente = a pagina de case renderiza CaseShowcase. */\n    mockups?: { desktop3d?: string; mobile3d?: string; browser?: string; phone?: string };\n    /** Cores da marca do site capturado; tingem o gradiente do CaseShowcase. */\n    palette?: string[];\n  };",
+    "ProjetoGridCard": "  project: {\n    slug: string;\n    eyebrow: string;\n    title: string;\n    /** Resumo curto (1-2 frases), usado no card de hover da Paisagem. */\n    description: string;\n    meta: { cliente: string; setor: string; tipo: string; ano: string };\n    heroImages: string[];\n    overview: { heading: string; body: string[]; challenge: string };\n    gallery: string[];\n    /** \"published\" (default) e clicavel; \"coming-soon\" mostra \"Em breve\". */\n    status?: \"published\" | \"coming-soon\";\n    /** Dominio exibido na barra do BrowserFrame. */\n    siteUrl?: string;\n    /** Screenshots do card de hover. `card` e o recorte 760x874 da grade. */\n    preview?: { desktop: string; mobile: string; card?: string };\n    /** Dirige a cor do apex do fragmento. Omitido = \"institucional\". */\n    type?: \"institucional\" | \"landing\" | \"webapp\" | \"ecommerce\";\n    stack?: string[];\n    /** Recortes de secao para a grade \"As Telas\". */\n    sections?: string[];\n    /** Presente = a pagina de case renderiza CaseShowcase. */\n    mockups?: { desktop3d?: string; mobile3d?: string; browser?: string; phone?: string };\n    /** Cores da marca do site capturado; tingem o gradiente do CaseShowcase. */\n    palette?: string[];\n  };\n  /** Posicao na grade; dirige o numero exibido e o atraso da entrada. */\n  index: number;",
+    "ProjetosGallery": "  projects: {\n    slug: string;\n    eyebrow: string;\n    title: string;\n    /** Resumo curto (1-2 frases), usado no card de hover da Paisagem. */\n    description: string;\n    meta: { cliente: string; setor: string; tipo: string; ano: string };\n    heroImages: string[];\n    overview: { heading: string; body: string[]; challenge: string };\n    gallery: string[];\n    /** \"published\" (default) e clicavel; \"coming-soon\" mostra \"Em breve\". */\n    status?: \"published\" | \"coming-soon\";\n    /** Dominio exibido na barra do BrowserFrame. */\n    siteUrl?: string;\n    /** Screenshots do card de hover. `card` e o recorte 760x874 da grade. */\n    preview?: { desktop: string; mobile: string; card?: string };\n    /** Dirige a cor do apex do fragmento. Omitido = \"institucional\". */\n    type?: \"institucional\" | \"landing\" | \"webapp\" | \"ecommerce\";\n    stack?: string[];\n    /** Recortes de secao para a grade \"As Telas\". */\n    sections?: string[];\n    /** Presente = a pagina de case renderiza CaseShowcase. */\n    mockups?: { desktop3d?: string; mobile3d?: string; browser?: string; phone?: string };\n    /** Cores da marca do site capturado; tingem o gradiente do CaseShowcase. */\n    palette?: string[];\n  }[];",
+    "ProjectFacts": "  meta: { cliente: string; setor: string; tipo: string; ano: string };\n  /** Stack tecnica exibida na pagina de case (ex.: [\"Next.js\", \"React\"]). */\n  stack?: string[];",
+    "FilterChips": "  /** Tipos presentes na vitrine; define quais chips aparecem. */\n  types: (\"institucional\" | \"landing\" | \"webapp\" | \"ecommerce\")[];\n  /** Chip ativo. \"all\" e o estado sem filtro. */\n  active: \"all\" | \"institucional\" | \"landing\" | \"webapp\" | \"ecommerce\";\n  onSelect: (v: \"all\" | \"institucional\" | \"landing\" | \"webapp\" | \"ecommerce\") => void;",
+    "LpHero": "  lp: {\n    /** Vira a rota `/lp/<slug>`. */\n    slug: string;\n    eyebrow: string;\n    headline: string;\n    sub: string;\n    ctaLabel: string;\n    /** 3 ou 4 pontos de dor. Frases curtas, na pele de quem clicou. */\n    pains: string[];\n    /** Uma frase. O que muda depois. Nao e paragrafo. */\n    promise: string;\n    /** Slugs de data/cases.ts, na ordem em que provam. */\n    caseSlugs: string[];\n    /** 4 ou 5 objecoes reais. */\n    faq: { q: string; a: string }[];\n    /** Base da mensagem do WhatsApp; a origem da campanha e anexada em runtime. */\n    waMessage: string;\n    meta: { title: string; description: string; ogImage: string };\n  };",
+    "LpPains": "  lp: {\n    /** Vira a rota `/lp/<slug>`. */\n    slug: string;\n    eyebrow: string;\n    headline: string;\n    sub: string;\n    ctaLabel: string;\n    /** 3 ou 4 pontos de dor. Frases curtas, na pele de quem clicou. */\n    pains: string[];\n    /** Uma frase. O que muda depois. Nao e paragrafo. */\n    promise: string;\n    /** Slugs de data/cases.ts, na ordem em que provam. */\n    caseSlugs: string[];\n    /** 4 ou 5 objecoes reais. */\n    faq: { q: string; a: string }[];\n    /** Base da mensagem do WhatsApp; a origem da campanha e anexada em runtime. */\n    waMessage: string;\n    meta: { title: string; description: string; ogImage: string };\n  };",
+    "LpPromise": "  lp: {\n    /** Vira a rota `/lp/<slug>`. */\n    slug: string;\n    eyebrow: string;\n    headline: string;\n    sub: string;\n    ctaLabel: string;\n    /** 3 ou 4 pontos de dor. Frases curtas, na pele de quem clicou. */\n    pains: string[];\n    /** Uma frase. O que muda depois. Nao e paragrafo. */\n    promise: string;\n    /** Slugs de data/cases.ts, na ordem em que provam. */\n    caseSlugs: string[];\n    /** 4 ou 5 objecoes reais. */\n    faq: { q: string; a: string }[];\n    /** Base da mensagem do WhatsApp; a origem da campanha e anexada em runtime. */\n    waMessage: string;\n    meta: { title: string; description: string; ogImage: string };\n  };",
+    "LpProof": "  lp: {\n    /** Vira a rota `/lp/<slug>`. */\n    slug: string;\n    eyebrow: string;\n    headline: string;\n    sub: string;\n    ctaLabel: string;\n    /** 3 ou 4 pontos de dor. Frases curtas, na pele de quem clicou. */\n    pains: string[];\n    /** Uma frase. O que muda depois. Nao e paragrafo. */\n    promise: string;\n    /** Slugs de data/cases.ts, na ordem em que provam. */\n    caseSlugs: string[];\n    /** 4 ou 5 objecoes reais. */\n    faq: { q: string; a: string }[];\n    /** Base da mensagem do WhatsApp; a origem da campanha e anexada em runtime. */\n    waMessage: string;\n    meta: { title: string; description: string; ogImage: string };\n  };",
+    "LpFaq": "  lp: {\n    /** Vira a rota `/lp/<slug>`. */\n    slug: string;\n    eyebrow: string;\n    headline: string;\n    sub: string;\n    ctaLabel: string;\n    /** 3 ou 4 pontos de dor. Frases curtas, na pele de quem clicou. */\n    pains: string[];\n    /** Uma frase. O que muda depois. Nao e paragrafo. */\n    promise: string;\n    /** Slugs de data/cases.ts, na ordem em que provam. */\n    caseSlugs: string[];\n    /** 4 ou 5 objecoes reais. */\n    faq: { q: string; a: string }[];\n    /** Base da mensagem do WhatsApp; a origem da campanha e anexada em runtime. */\n    waMessage: string;\n    meta: { title: string; description: string; ogImage: string };\n  };",
+    "LpFinal": "  lp: {\n    /** Vira a rota `/lp/<slug>`. */\n    slug: string;\n    eyebrow: string;\n    headline: string;\n    sub: string;\n    ctaLabel: string;\n    /** 3 ou 4 pontos de dor. Frases curtas, na pele de quem clicou. */\n    pains: string[];\n    /** Uma frase. O que muda depois. Nao e paragrafo. */\n    promise: string;\n    /** Slugs de data/cases.ts, na ordem em que provam. */\n    caseSlugs: string[];\n    /** 4 ou 5 objecoes reais. */\n    faq: { q: string; a: string }[];\n    /** Base da mensagem do WhatsApp; a origem da campanha e anexada em runtime. */\n    waMessage: string;\n    meta: { title: string; description: string; ogImage: string };\n  };",
+    "MeshButton": "  /** Texto do botao. E dividido em palavras para a animacao por palavra. */\n  label: string;\n  /** Mostrar a seta vermelha a direita (default true). */\n  showArrow?: boolean;\n  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;\n  type?: \"button\" | \"submit\" | \"reset\";\n  disabled?: boolean;\n  className?: string;\n  id?: string;\n  style?: React.CSSProperties;"
+  },
+  "readmeHeader": ".design-sync/conventions.md",
+  "overrides": {
+    "CaseHero": {
+      "viewport": "1280x900",
+      "cardMode": "column"
+    },
+    "CaseOverview": {
+      "viewport": "1280x900",
+      "cardMode": "column"
+    },
+    "CaseScreens": {
+      "viewport": "1280x2000"
+    },
+    "CaseResponsive": {
+      "viewport": "1280x900",
+      "cardMode": "column"
+    },
+    "CaseShowcase": {
+      "viewport": "1280x1000"
+    },
+    "LpHero": {
+      "viewport": "1280x900",
+      "cardMode": "column"
+    },
+    "LpPains": {
+      "viewport": "1280x800"
+    },
+    "LpPromise": {
+      "viewport": "1280x700",
+      "cardMode": "column"
+    },
+    "LpProof": {
+      "viewport": "1280x1000",
+      "cardMode": "column"
+    },
+    "LpFaq": {
+      "viewport": "1280x900"
+    },
+    "LpFinal": {
+      "viewport": "1280x800",
+      "cardMode": "column"
+    },
+    "SiteHeader": {
+      "viewport": "1280x760",
+      "cardMode": "single",
+      "primaryStory": "Padrao"
+    },
+    "ProjetosGallery": {
+      "viewport": "1280x1100",
+      "cardMode": "column"
+    },
+    "ProjectsSection": {
+      "viewport": "1280x1100"
+    },
+    "ServicesSection": {
+      "viewport": "1280x1100"
+    },
+    "AboutSection": {
+      "viewport": "1280x1000"
+    },
+    "CapabilitiesSection": {
+      "viewport": "1280x1000"
+    },
+    "ProcessSection": {
+      "viewport": "1280x900"
+    },
+    "ContactSection": {
+      "viewport": "1280x800"
+    },
+    "ExperienceBridge": {
+      "viewport": "1280x800"
+    },
+    "Hero": {
+      "viewport": "1280x900"
+    },
+    "SiteFooter": {
+      "viewport": "1280x700"
+    },
+    "CaseBackButton": {
+      "cardMode": "single",
+      "primaryStory": "SobreOHero"
+    },
+    "StrokeText": {
+      "cardMode": "column"
+    },
+    "ProjetoGridCard": {
+      "cardMode": "column"
+    },
+    "SectionHead": {
+      "cardMode": "column"
+    },
+    "PhoneFrame": {
+      "cardMode": "column"
+    },
+    "MeshButton": {
+      "cardMode": "column"
+    },
+    "WhatsAppFab": {
+      "cardMode": "single",
+      "primaryStory": "SobreConteudo"
+    }
+  }
+}

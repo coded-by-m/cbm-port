@@ -35,3 +35,11 @@ yarn-error.log*
 
 # Coded Atlas — capturas cruas (input de build; assets convertidos vivem em public/cases/)
 coded-atlas/
+
+# design-sync
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules
+.design-sync/ds-package/

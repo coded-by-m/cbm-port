@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "..",
+    "paths": {
+      "@/components/zones/CTASection/FooterLandscape": ["./.design-sync/shims/null-canvas.tsx"],
+      "@/components/zones/ServicesSection/TerrainBackground": ["./.design-sync/shims/null-canvas.tsx"],
+      "next/link": ["./.design-sync/shims/next-link.tsx"],
+      "next/image": ["./.design-sync/shims/next-image.tsx"],
+      "next/navigation": ["./.design-sync/shims/next-navigation.ts"],
+      "next/dynamic": ["./.design-sync/shims/next-dynamic.tsx"],
+      "@/data/cases": ["./.design-sync/shims/cases.ts"],
+      "@/lib/analytics": ["./.design-sync/shims/analytics.ts"],
+      "@/*": ["./*"]
+    }
+  }
+}
