@@ -19,7 +19,7 @@ const ACCENT = "#FB3640";
 
 const NAV_BASE = [
   { label: "Laboratório", href: "/lab", external: false },
-  { label: "Contato", href: waLink(), external: true },
+  { label: "Contato", href: waLink(), external: true, cmId: "footer-nav-whatsapp" },
   {
     label: "Instagram",
     href: INSTAGRAM_URL,
@@ -82,6 +82,7 @@ export default function Footer({
   return (
     <footer
       ref={rootRef}
+      data-cm-section="footer"
       className="relative w-full overflow-hidden"
       style={{ background, minHeight: "86vh" }}
     >
@@ -150,6 +151,7 @@ export default function Footer({
                 href={item.href}
                 target={item.external ? "_blank" : undefined}
                 rel={item.external ? "noopener noreferrer" : undefined}
+                data-cm-id={"cmId" in item ? item.cmId : undefined}
                 data-cursor="triangle"
                 className="group flex items-center justify-between border-b border-[#F5F2ED]/10 py-3 text-[0.95rem] text-[#F5F2ED]/70 transition-colors hover:text-[#F5F2ED]"
                 style={{ fontFamily: PAN, fontWeight: 500 }}
@@ -176,6 +178,8 @@ export default function Footer({
                 href={waLink()}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-cm-role="whatsapp"
+                data-cm-id="footer-whatsapp"
                 data-cursor="triangle"
                 className="transition-colors hover:text-[#F5F2ED]"
               >

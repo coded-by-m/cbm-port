@@ -33,7 +33,7 @@ const H2: React.CSSProperties = {
 /** Hero — headline dirigida ao segmento, não à marca. */
 export function LpHero({ lp }: { lp: LandingConfig }) {
   return (
-    <section style={{ ...WRAP, paddingTop: "clamp(48px,7vh,84px)" }}>
+    <section data-cm-section="hero" style={{ ...WRAP, paddingTop: "clamp(48px,7vh,84px)" }}>
       <Reveal variant="wipe">
         <h1
           style={{
@@ -80,7 +80,7 @@ export function LpHero({ lp }: { lp: LandingConfig }) {
  */
 export function LpPains({ lp }: { lp: LandingConfig }) {
   return (
-    <section style={{ background: SURFACE.raised, borderTop: "1px solid #111511" }}>
+    <section data-cm-section="pains" style={{ background: SURFACE.raised, borderTop: "1px solid #111511" }}>
       <div style={WRAP}>
         <ul
           style={{
@@ -125,7 +125,7 @@ export function LpPains({ lp }: { lp: LandingConfig }) {
 /** Promessa — uma frase. O que muda depois. */
 export function LpPromise({ lp }: { lp: LandingConfig }) {
   return (
-    <section style={{ borderTop: "1px solid #111511" }}>
+    <section data-cm-section="promise" style={{ borderTop: "1px solid #111511" }}>
       <div style={{ ...WRAP, textAlign: "center" }}>
         <Reveal variant="wipe">
           <p
@@ -151,7 +151,7 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
     .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
   return (
-    <section style={{ borderTop: "1px solid #111511" }}>
+    <section data-cm-section="social-proof" style={{ borderTop: "1px solid #111511" }}>
       <div style={WRAP}>
         <Reveal variant="wipe">
           <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>
@@ -243,7 +243,7 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
 /** Como funciona — tira o medo de "quanto tempo isso vai tomar de mim". */
 export function LpProcess() {
   return (
-    <section style={{ background: SURFACE.raised, borderTop: "1px solid #111511" }}>
+    <section data-cm-section="process" style={{ background: SURFACE.raised, borderTop: "1px solid #111511" }}>
       <div style={WRAP}>
         <Reveal variant="wipe">
           <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>
@@ -303,7 +303,7 @@ export function LpProcess() {
  */
 export function LpFaq({ lp }: { lp: LandingConfig }) {
   return (
-    <section style={{ borderTop: "1px solid #111511" }}>
+    <section data-cm-section="faq" style={{ borderTop: "1px solid #111511" }}>
       <div style={{ ...WRAP, maxWidth: 860 }}>
         <div style={{ marginTop: 32 }}>
           {lp.faq.map((f, i) => (
@@ -326,7 +326,7 @@ export function LpFaq({ lp }: { lp: LandingConfig }) {
 /** Fechamento — a única porta no fim do corredor. */
 export function LpFinal({ lp }: { lp: LandingConfig }) {
   return (
-    <section style={{ background: SURFACE.raised, borderTop: "1px solid #111511" }}>
+    <section data-cm-section="contact" style={{ background: SURFACE.raised, borderTop: "1px solid #111511" }}>
       <div style={{ ...WRAP, textAlign: "center", paddingBlock: "clamp(72px,12vh,128px)" }}>
         <Reveal variant="wipe">
           <h2 style={{ ...H2, margin: "0 auto", maxWidth: "16ch" }}>

@@ -47,12 +47,14 @@ export function CaseReturnCTA({ siteUrl }: { siteUrl?: string }) {
 
         {siteUrl && (
           <div className="mt-2">
-            <CaseLiveButton url={siteUrl} />
+            <CaseLiveButton url={siteUrl} cmId="case-footer-live-site" />
           </div>
         )}
 
         <Link
           href="/#projetos"
+          data-cm-role="secondary-cta"
+          data-cm-id="case-more-projects"
           className="mt-2 font-display text-[11px] font-semibold uppercase tracking-[0.15em] text-cbm-gray-400 transition-colors duration-200 hover:text-cbm-white focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-white/20 focus-visible:outline-offset-[5px]"
         >
           ← Voltar à Paisagem

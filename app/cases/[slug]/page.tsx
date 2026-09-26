@@ -21,8 +21,9 @@ export async function generateMetadata({
   const project = getCaseBySlug(params.slug);
   if (!project) return {};
   return {
-    title: `${project.title} — Coded by M`,
+    title: project.title,
     description: project.description,
+    alternates: { canonical: `/cases/${project.slug}` },
   };
 }
 
@@ -35,7 +36,10 @@ export default function CasePage({
   if (!project) notFound();
 
   return (
-    <main className="case-fade-in" style={{ background: "#000F08", minHeight: "100vh" }}>
+    <main
+      className="case-fade-in"
+      data-cm-section="case-study"
+      data-cm-id={project.slug} style={{ background: "#000F08", minHeight: "100vh" }}>
       <CaseBackButton />
       <CaseHero project={project} />
       <CaseOverview project={project} />

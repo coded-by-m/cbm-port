@@ -16,7 +16,7 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function ServicesSection() {
   return (
-    <section id="servicos" style={{ background: INK.base }}>
+    <section id="servicos" data-cm-section="services" style={{ background: INK.base }}>
       <div
         style={{
           maxWidth: 1440,

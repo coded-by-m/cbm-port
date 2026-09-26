@@ -20,9 +20,12 @@ import { PANCHANG, SATOSHI } from "@/components/site/shared";
 export function ProjetoGridCard({
   project,
   index,
+  priority = false,
 }: {
   project: CaseProject;
   index: number;
+  /** Primeira dobra da vitrine: a miniatura é o LCP, não pode esperar o lazy. */
+  priority?: boolean;
 }) {
   const typeColor = project.type ? PROJECT_TYPE_COLOR[project.type] : "#FB3640";
   const num = String(index + 1).padStart(2, "0");
@@ -46,6 +49,8 @@ export function ProjetoGridCard({
       <Link
         href={`/cases/${project.slug}`}
         aria-label={`Ver o case ${project.title}`}
+        data-cm-role="secondary-cta"
+        data-cm-id={`case-${project.slug}`}
         style={{ position: "absolute", inset: 0, zIndex: 1 }}
       />
 
@@ -88,6 +93,7 @@ export function ProjetoGridCard({
             width={760}
             height={874}
             sizes="(max-width: 700px) 30vw, 178px"
+            priority={priority}
             className="site-shot-window"
             style={{ display: "block", width: "100%", height: "auto" }}
           />

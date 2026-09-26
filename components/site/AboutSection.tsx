@@ -23,7 +23,7 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function AboutSection() {
   return (
-    <section id="sobre" style={SECTION}>
+    <section id="sobre" data-cm-section="about" style={SECTION}>
       <div
         style={{
           display: "grid",

@@ -41,6 +41,7 @@ export function Hero() {
   return (
     <section
       id="top"
+      data-cm-section="hero"
       style={{
         position: "relative",
         minHeight: "100dvh",
@@ -232,6 +233,8 @@ export function Hero() {
 
               <a
                 href="#projetos"
+                data-cm-role="primary-cta"
+                data-cm-id="hero-projects"
                 className="site-link-underline"
                 style={{
                   alignSelf: "flex-start",
@@ -256,6 +259,8 @@ export function Hero() {
                 href={WA}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-cm-role="whatsapp"
+                data-cm-id="hero-whatsapp"
                 className="site-cta"
                 style={{
                   display: "flex",

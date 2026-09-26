@@ -101,7 +101,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
 
         {project.siteUrl && (
           <div className="mt-10" style={step(4)}>
-            <CaseLiveButton url={project.siteUrl} />
+            <CaseLiveButton url={project.siteUrl} cmId="case-hero-live-site" />
           </div>
         )}
       </div>

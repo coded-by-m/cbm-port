@@ -30,6 +30,7 @@ export function ProjetosGallery({ projects }: { projects: CaseProject[] }) {
 
   return (
     <main
+      data-cm-section="projects"
       style={{
         maxWidth: 1240,
         margin: "0 auto",
@@ -118,7 +119,7 @@ export function ProjetosGallery({ projects }: { projects: CaseProject[] }) {
                 // "Todos" funciona sem JavaScript.
                 className={visible ? "site-cell" : "site-cell is-hidden"}
               >
-                <ProjetoGridCard project={p} index={i} />
+                <ProjetoGridCard project={p} index={i} priority={i < 4} />
               </Reveal>
             );
           })}

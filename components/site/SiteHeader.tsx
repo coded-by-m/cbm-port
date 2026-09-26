@@ -50,7 +50,7 @@ const SOCIALS = [
   { label: "Instagram", href: INSTAGRAM_URL },
   { label: "LinkedIn", href: LINKEDIN_URL },
   { label: "GitHub", href: GITHUB_URL },
-  { label: "WhatsApp", href: WA },
+  { label: "WhatsApp", href: WA, cmId: "menu-social-whatsapp" },
 ];
 
 /**
@@ -246,6 +246,8 @@ export function SiteHeader() {
             href={WA}
             target="_blank"
             rel="noopener noreferrer"
+            data-cm-role="whatsapp"
+            data-cm-id="header-whatsapp"
             className="site-header-cta"
             style={{
               display: "inline-flex",
@@ -450,6 +452,8 @@ export function SiteHeader() {
               href={WA}
               target="_blank"
               rel="noopener noreferrer"
+              data-cm-role="whatsapp"
+              data-cm-id="menu-whatsapp"
               className="site-drawer-phone"
               style={{
                 fontFamily: SATOSHI,
@@ -485,6 +489,7 @@ export function SiteHeader() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-cm-id={"cmId" in s ? s.cmId : undefined}
                   className="site-social"
                   style={{
                     display: "inline-flex",

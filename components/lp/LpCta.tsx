@@ -44,6 +44,8 @@ export function LpCta({
       target="_blank"
       rel="noopener noreferrer"
       className="site-cta"
+      data-cm-role="whatsapp"
+      data-cm-id={source}
       onClick={() => trackLead(source)}
       style={{
         display: "inline-flex",

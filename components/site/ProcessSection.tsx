@@ -22,7 +22,7 @@ export function ProcessSection() {
   const last = PROCESS_STEPS.length - 1;
 
   return (
-    <section id="processo" style={SECTION}>
+    <section id="processo" data-cm-section="process" style={SECTION}>
       <SectionHead
         heading={SECTIONS.processo.heading}
         sub={SECTIONS.processo.sub}

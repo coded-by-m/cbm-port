@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "A Experiência",
   description:
     "A experiência WebGL da Coded by M — nove capítulos navegáveis, do símbolo ao convite. Design, tecnologia e pensamento estrutural em movimento.",
+  alternates: { canonical: "/experiencia" },
 };
 
 export default function ExperienciaPage() {

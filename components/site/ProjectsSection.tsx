@@ -17,6 +17,7 @@ export function ProjectsSection() {
   return (
     <section
       id="projetos"
+      data-cm-section="projects"
       style={{
         ...SECTION,
         // Sem régua nesta: ela cai bem na emenda com o hero, e uma linha

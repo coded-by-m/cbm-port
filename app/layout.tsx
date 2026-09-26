@@ -67,6 +67,8 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        {/* Coded Insights — analytics first-party. */}
+        <script defer src="https://insights.codedbym.com/tracker/v1.js" data-site="ci_pub_111f7f9b15d8d1c4bb6c77b2988079f5"></script>
       </head>
       <body className="min-h-screen bg-[#000F08] text-[#e0e0e0]">
         {children}

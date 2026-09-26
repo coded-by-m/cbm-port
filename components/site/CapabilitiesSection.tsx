@@ -109,7 +109,7 @@ export function CapabilitiesSection() {
   const ultima = SKILLS.length - 1;
 
   return (
-    <section id="capacidades" style={SECTION}>
+    <section id="capacidades" data-cm-section="capabilities" style={SECTION}>
       {/* Cabeçalho com o marcador da escala na mesma base do título */}
       <div
         style={{

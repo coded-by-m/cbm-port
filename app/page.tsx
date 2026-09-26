@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { SURFACE } from "@/components/site/shared";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
@@ -17,6 +18,11 @@ import Footer from "@/components/zones/CTASection/Footer";
  * desta rota não carregue a stack 3D. A experiência de 9 capítulos vive em
  * `/experiencia` e é linkada de lá.
  */
+/** Título e descrição vêm do layout raiz; aqui só a URL canônica. */
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
+
 export default function HomePage() {
   return (
     <div className="site-home" style={{ background: SURFACE.base, color: "#F5F2ED", overflowX: "hidden" }}>

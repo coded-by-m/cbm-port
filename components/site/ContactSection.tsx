@@ -12,7 +12,7 @@ const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 /** Fechamento: convite + WhatsApp + Instagram. */
 export function ContactSection() {
   return (
-    <section id="contato" style={SECTION}>
+    <section id="contato" data-cm-section="contact" style={SECTION}>
       <div style={{ display: "flex", flexDirection: "column", gap: 32, alignItems: "flex-start" }}>
         <h2
           style={{
@@ -48,6 +48,8 @@ export function ContactSection() {
             href={WA}
             target="_blank"
             rel="noopener noreferrer"
+            data-cm-role="whatsapp"
+            data-cm-id="contact-whatsapp"
             className="site-cta"
             style={{
               display: "inline-flex",

@@ -42,6 +42,8 @@ export function WhatsAppFab() {
       target="_blank"
       rel="noopener noreferrer"
       data-cursor="triangle"
+      data-cm-role="whatsapp"
+      data-cm-id="floating-whatsapp"
       aria-label="Falar no WhatsApp"
       className="group fixed bottom-6 right-6 z-40 flex items-center gap-2.5 border px-5 py-3.5 text-[#F5F2ED] shadow-[0_10px_30px_rgba(0,0,0,0.45)] backdrop-blur-sm transition-[transform,opacity,border-color] duration-300 hover:border-[#FB3640] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FB3640]"
       style={{

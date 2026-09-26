@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Projetos",
   description:
     "Seleção de projetos da Coded by M — landing pages e sites institucionais premium, do conceito ao site no ar.",
+  alternates: { canonical: "/projetos" },
   openGraph: {
     title: "Projetos",
     description:
