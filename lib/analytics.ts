@@ -8,7 +8,7 @@
  * Os scripts só carregam APÓS consentimento (LGPD) — ver components/analytics.
  */
 
-export const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-VBTVTZXE9C";
+export const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-Q83X8CQL3X";
 export const META_PIXEL_ID =
   process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1776271733361459";
 
