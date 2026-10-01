@@ -120,7 +120,7 @@ Depois:
 - Botão fixo do case: rótulo "Paisagem" → "Projetos" (o nome "Paisagem" era da home WebGL antiga).
 - Cabeçalho da vitrine: "experiência ↗" agora aponta para `/experiencia`.
 
-Ainda faltam: links entre cases ("próximo projeto"), cases → serviço correspondente, breadcrumb visível.
+Passada 2: breadcrumb visível e "Próximo: {Cliente} →" no fim de cada case. Ainda falta: case → página do serviço correspondente (depende das páginas de serviço).
 
 ---
 
@@ -238,12 +238,12 @@ Ver tabela em `SEO-CONTENT-STRATEGY.md` → *Search Intent Map*. Todas marcadas 
 | SEO-015 | Sem respostas para preço/prazo/escopo | P1 | alto | médio | baixo | ⏸ NECESSITA INFORMAÇÃO DO NEGÓCIO |
 | SEO-016 | LinkedIn do menu retorna 404; GitHub não confirmado | P1 | médio (confiança) | baixo | baixo | ⏸ NECESSITA INFORMAÇÃO DO NEGÓCIO |
 | SEO-017 | Confirmar natureza dos cases em `*.vercel.app` (cliente real × conceito) e afirmações como "40+ obras desde 2009" | P1 | alto (confiança) | baixo | alto se errado | ⏸ NECESSITA INFORMAÇÃO DO NEGÓCIO |
-| SEO-018 | Case sem cabeçalho/rodapé, sem "próximo projeto", sem breadcrumb visível | P2 | médio | médio | baixo | 📋 recomendado |
-| SEO-019 | `/experiencia` sem H1 e quase sem texto no HTML do servidor | P2 | baixo | baixo | baixo | 📋 recomendado |
-| SEO-020 | Hero do case carrega print de página inteira (LCP) | P2 | médio | médio | médio (visual) | 📋 recomendado |
+| SEO-018 | Case sem "próximo projeto" e sem breadcrumb visível | P2 | médio | médio | baixo | ✅ implementado (passada 2) |
+| SEO-019 | `/experiencia` sem H1 e quase sem texto no HTML do servidor | P2 | baixo | baixo | baixo | ✅ H1 implementado; texto segue curto |
+| SEO-020 | Hero do case carrega print de página inteira (LCP) | P2 | médio | médio | médio (visual) | ✅ pôster leve + Maison 3 MB → 426 KB |
 | SEO-021 | Sobre sem foto e sem página própria (E-E-A-T) | P2 | médio | médio | baixo | ⏸ requer material |
 | SEO-022 | Search Console / Bing Webmaster sem evidência de configuração | P2 | alto (medição) | baixo | baixo | ⏸ ação externa |
-| SEO-023 | Textos com data fixa ("Agenda 2026 limitada", "© 2026") | P3 | baixo | baixo | baixo | 📋 recomendado |
+| SEO-023 | Textos com data fixa ("Agenda 2026 limitada", "© 2026") | P3 | baixo | baixo | baixo | ✅ © dinâmico; "Agenda 2026" é afirmação comercial, fica com você |
 | SEO-024 | Coded Insights carrega antes do consentimento (LGPD, não SEO) | P3 | — | baixo | baixo | 📋 registrar |
 | SEO-025 | `llms.txt` ausente | P3 | baixo | baixo | baixo | OPCIONAL / EXPERIMENTAL — não criado |
 | SEO-026 | IndexNow | P3 | baixo | baixo | baixo | opcional — não implementado |

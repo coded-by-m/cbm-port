@@ -61,6 +61,12 @@ export interface CaseProject {
      * 260px de altura trava celular. Gerado com ffmpeg a partir do desktop.
      */
     card?: string;
+    /**
+     * Primeiro quadro do `desktop`, 16:10 e leve (scripts/build-case-posters.py).
+     * Pintado atrás do print no hero do case: aparece antes do print inteiro
+     * baixar, com os mesmos pixels do topo — é o LCP da página.
+     */
+    top?: string;
   };
   /**
    * Tipo de entrega — dirige a cor do apex do fragmento na Paisagem.

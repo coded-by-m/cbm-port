@@ -2,7 +2,14 @@ import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { CaseLiveButton } from "@/components/case/CaseLiveButton";
 
-export function CaseReturnCTA({ siteUrl }: { siteUrl?: string }) {
+export function CaseReturnCTA({
+  siteUrl,
+  next,
+}: {
+  siteUrl?: string;
+  /** O case seguinte na ordem da vitrine — o caminho natural depois deste. */
+  next?: { slug: string; title: string };
+}) {
   return (
     <section
       className="flex flex-col items-center justify-center gap-6 px-8 py-32 text-center"
@@ -59,6 +66,17 @@ export function CaseReturnCTA({ siteUrl }: { siteUrl?: string }) {
         >
           ← Todos os projetos
         </Link>
+
+        {next && (
+          <Link
+            href={`/cases/${next.slug}`}
+            data-cm-role="secondary-cta"
+            data-cm-id="case-next-project"
+            className="font-display text-[11px] font-semibold uppercase tracking-[0.15em] text-cbm-gray-400 transition-colors duration-200 hover:text-cbm-white focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-white/20 focus-visible:outline-offset-[5px]"
+          >
+            Próximo: {next.title} <span className="text-[#FB3640]">→</span>
+          </Link>
+        )}
       </Reveal>
     </section>
   );

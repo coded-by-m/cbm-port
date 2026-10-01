@@ -73,6 +73,10 @@ export default function CasePage({
   const project = getPublishedCase(params.slug);
   if (!project) notFound();
 
+  // Próximo publicado, na ordem da vitrine; o último volta ao primeiro.
+  const published = cases.filter((c) => c.status === "published");
+  const next = published[(published.indexOf(project) + 1) % published.length];
+
   const schema = graph(
     webPageSchema({
       path: `/cases/${project.slug}`,
@@ -100,7 +104,10 @@ export default function CasePage({
       <CaseShowcase project={project} />
       <CaseScreens project={project} />
       <CaseResponsive project={project} />
-      <CaseReturnCTA siteUrl={project.siteUrl} />
+      <CaseReturnCTA
+        siteUrl={project.siteUrl}
+        next={next && next !== project ? { slug: next.slug, title: next.title } : undefined}
+      />
       <style>{`
         @keyframes case-fade-in { from { opacity: 0 } to { opacity: 1 } }
         .case-fade-in { animation: case-fade-in 0.5s ease-out both; }

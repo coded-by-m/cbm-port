@@ -214,8 +214,10 @@ export default function Footer({
           >
             Construído, não montado.
           </span>
-          <span className="tracking-[0.1em]">
-            © 2026 Coded by M · Designed + coded by M
+          {/* O HTML estático sai com o ano do build; na virada do ano o
+              cliente corrige sem acusar divergência de hidratação. */}
+          <span className="tracking-[0.1em]" suppressHydrationWarning>
+            © {new Date().getFullYear()} Coded by M · Designed + coded by M
           </span>
         </div>
       </div>

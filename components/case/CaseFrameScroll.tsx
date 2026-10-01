@@ -17,6 +17,7 @@ import { LiveScreenshot } from "@/components/case/LiveScreenshot";
  */
 export function CaseFrameScroll({
   src,
+  poster,
   alt,
   fallback = null,
   lazy = false,
@@ -26,6 +27,8 @@ export function CaseFrameScroll({
   sensitivity = 5,
 }: {
   src?: string;
+  /** Primeiro quadro leve do `src` (ver `CaseProject.preview.top`). */
+  poster?: string;
   alt: string;
   fallback?: ReactNode;
   lazy?: boolean;
@@ -121,6 +124,7 @@ export function CaseFrameScroll({
     return (
       <LiveScreenshot
         src={src}
+        poster={poster}
         alt={alt}
         durationSec={autoDurationSec}
         lazy={lazy}
@@ -137,6 +141,20 @@ export function CaseFrameScroll({
       className="group relative h-full w-full overflow-hidden"
       style={interactive ? { cursor: "ns-resize" } : undefined}
     >
+      {/* Pôster: o primeiro quadro, leve e prioritário. Fica ATRÁS do print
+          com os mesmos pixels no topo — aparece antes e é coberto sem salto.
+          `fetchpriority` em minúsculas: o React 18 não conhece a prop. */}
+      {poster && (
+        // biome-ignore lint/a11y/useAltText: decorativo, o alt fica no print
+        <img
+          src={poster}
+          alt=""
+          aria-hidden
+          decoding="async"
+          {...{ fetchpriority: "high" }}
+          className="absolute left-0 top-0 w-full"
+        />
+      )}
       {/* biome-ignore lint/a11y/useAltText: alt é repassado */}
       <img
         ref={imgRef}

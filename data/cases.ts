@@ -54,6 +54,7 @@ export const cases: CaseProject[] = [
     siteUrl: "mj-engenharia-flame.vercel.app",
     preview: {
       desktop: "/cases/mj-engenharia/desktop-tall.webp",
+      top: "/cases/mj-engenharia/desktop-top.webp",
       mobile: "/cases/mj-engenharia/mobile-tall.webp",
       card: "/cases/mj-engenharia/card.webp",
     },
@@ -115,6 +116,7 @@ export const cases: CaseProject[] = [
     siteUrl: "estudiolentz.com.br",
     preview: {
       desktop: "/cases/estudio-lentz/desktop-tall.webp",
+      top: "/cases/estudio-lentz/desktop-top.webp",
       mobile: "/cases/estudio-lentz/mobile-tall.webp",
       card: "/cases/estudio-lentz/card.webp",
     },
@@ -160,6 +162,7 @@ export const cases: CaseProject[] = [
     siteUrl: "machadoplataformas.com.br",
     preview: {
       desktop: "/cases/machado/desktop-tall.webp",
+      top: "/cases/machado/desktop-top.webp",
       mobile: "/cases/machado/mobile-tall.webp",
       card: "/cases/machado/card.webp",
     },
@@ -203,7 +206,8 @@ export const cases: CaseProject[] = [
     status: "published",
     siteUrl: "lp-interiores.vercel.app",
     preview: {
-      desktop: "/cases/maison-etoile/desktop-tall.jpeg",
+      desktop: "/cases/maison-etoile/desktop-tall.webp",
+      top: "/cases/maison-etoile/desktop-top.webp",
       mobile: "/cases/maison-etoile/mobile-tall.jpeg",
       card: "/cases/maison-etoile/card.webp",
     },
@@ -247,6 +251,7 @@ export const cases: CaseProject[] = [
     siteUrl: "forma-viva.vercel.app",
     preview: {
       desktop: "/cases/forma-viva/desktop-tall.jpeg",
+      top: "/cases/forma-viva/desktop-top.webp",
       mobile: "/cases/forma-viva/mobile-tall.jpeg",
       card: "/cases/forma-viva/card.webp",
     },
@@ -290,6 +295,7 @@ export const cases: CaseProject[] = [
     siteUrl: "monteiro-nine.vercel.app",
     preview: {
       desktop: "/cases/estudio-monteiro/desktop-tall.jpeg",
+      top: "/cases/estudio-monteiro/desktop-top.webp",
       mobile: "/cases/estudio-monteiro/mobile-tall.jpeg",
       card: "/cases/estudio-monteiro/card.webp",
     },

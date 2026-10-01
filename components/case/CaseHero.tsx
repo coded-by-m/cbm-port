@@ -8,6 +8,7 @@ import { BrowserFrame } from "@/components/case/BrowserFrame";
 import { CaseFrameScroll } from "@/components/case/CaseFrameScroll";
 import { LogoMark } from "@/components/ui/LogoMark";
 import { CaseLiveButton } from "@/components/case/CaseLiveButton";
+import Link from "next/link";
 
 // Mesh triangulado sutil atrás do hero (toque 3D, coesão com a Home).
 const TerrainBackground = dynamic(
@@ -62,6 +63,27 @@ export function CaseHero({ project }: { project: CaseProject }) {
           (top-5, ~54px de altura) não sobrepor o eyebrow. */}
       <div className="relative z-10 flex flex-col justify-between px-6 pb-12 pt-20 sm:px-12 sm:py-16 lg:border-r lg:border-[#F5F2ED]/[0.06] xl:px-16 xl:py-20">
         <div>
+          {/* Onde se está. Espelha o BreadcrumbList do JSON-LD da página. */}
+          <nav aria-label="Trilha" className="mb-5" style={step(0)}>
+            <ol className="flex flex-wrap items-center gap-2 font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-600">
+              <li>
+                <Link href="/" className="transition-colors hover:text-cbm-gray-200">
+                  Início
+                </Link>
+              </li>
+              <li aria-hidden>/</li>
+              <li>
+                <Link href="/projetos" className="transition-colors hover:text-cbm-gray-200">
+                  Projetos
+                </Link>
+              </li>
+              <li aria-hidden>/</li>
+              <li aria-current="page" className="text-cbm-gray-400">
+                {project.title}
+              </li>
+            </ol>
+          </nav>
+
           <div className="mb-6 flex items-center gap-3" style={step(0)}>
             <span
               className="block h-px w-5 flex-shrink-0"
@@ -123,6 +145,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
             <div className="aspect-[16/10] w-full">
               <CaseFrameScroll
                 src={project.preview?.desktop}
+                poster={project.preview?.top}
                 alt={`${project.title} — site desktop`}
                 fallback={
                   <div className="flex h-full w-full items-center justify-center bg-[#070B08] opacity-20">

@@ -62,9 +62,11 @@ export function LogoIntro({
           className="flex flex-col items-center"
           style={{ opacity: built ? 1 : 0, transition: "opacity 1s ease" }}
         >
-          <p className="text-[0.65rem] font-light uppercase tracking-[0.5em] text-[#F5F2ED]/70">
+          {/* O título da página /experiencia. Preflight zera tamanho e peso
+              do h1, então as classes seguem valendo como antes. */}
+          <h1 className="text-[0.65rem] font-light uppercase tracking-[0.5em] text-[#F5F2ED]/70">
             Coded by M
-          </p>
+          </h1>
           {/* Descritor — diz ao usuário do que o site se trata. Subordinado ao
               selo (menor, mais discreto); "&" no vermelho da marca. */}
           <p

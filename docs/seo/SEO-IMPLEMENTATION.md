@@ -64,6 +64,25 @@ Impacto: zero com JS ligado; sem JS, o conteúdo aparece em vez de ficar em opac
 Solução: espaço entre os blocos do H1 (não gera caixa entre elementos de bloco → sem mudança visual). `textContent` passa de "Codedby MWeb Design" a "Coded by M Web Design".
 Arquivos alterados: `components/site/Hero.tsx`
 
+### SEO-018 — Navegação entre cases (passada 2)
+Solução: breadcrumb visível no topo do hero (Início / Projetos / Cliente), espelhando o `BreadcrumbList`; link "Próximo: {Cliente} →" no fim do case, na ordem da vitrine (o último volta ao primeiro).
+Arquivos alterados: `components/case/CaseHero.tsx`, `components/case/CaseReturnCTA.tsx`, `app/cases/[slug]/page.tsx`
+
+### SEO-019 — H1 na `/experiencia` (passada 2)
+Solução: o selo "Coded by M" da tela de entrada virou `<h1>` com as mesmas classes (o preflight zera tamanho/peso do h1, então nada muda na tela).
+Arquivos alterados: `components/home/LogoIntro.tsx`
+
+### SEO-020 — LCP do hero do case (passada 2)
+Problema: o quadro do hero mostra só o topo, mas nada aparecia até baixar o print inteiro (5–25 mil px de altura); o do Maison Étoile tinha 2880×24972 e 3 MB.
+Solução: `scripts/build-case-posters.py` gera `desktop-top.webp` (primeiro quadro 16:10, 20–175 KB) por case; `preview.top` em `data/cases.ts`; `CaseFrameScroll` e `LiveScreenshot` pintam o pôster atrás do print com `fetchpriority="high"` — mesmos pixels no topo, sem salto. Print do Maison reduzido para 1440×12486 webp (426 KB); o jpeg antigo saiu do repo.
+Arquivos alterados: `scripts/build-case-posters.py` (novo), `public/cases/*/desktop-top.webp` (novo), `public/cases/maison-etoile/desktop-tall.webp` (novo, substitui o `.jpeg`), `data/cases.ts`, `types/case.ts`, `components/case/CaseFrameScroll.tsx`, `components/case/LiveScreenshot.tsx`, `components/case/CaseHero.tsx`
+Como validar: PageSpeed Insights num case, antes × depois (LCP mobile).
+Manutenção: case novo → `python scripts/build-case-posters.py` e preencher `preview.top`.
+
+### SEO-023 — Ano do rodapé (passada 2)
+`© {ano atual}` com `suppressHydrationWarning` (o HTML estático leva o ano do build).
+Arquivos alterados: `components/zones/CTASection/Footer.tsx`
+
 ### Extras de metadata
 `applicationName`, `authors`, `creator` e `formatDetection.telephone=false` no layout raiz.
 
@@ -88,15 +107,6 @@ LinkedIn (`linkedin.com/company/codedbym`) retorna 404 e aparece no menu da home
 
 ### SEO-017 — Natureza dos cases
 MJ Engenharia, Maison Étoile, Forma Viva e Monteiro estão em domínios `*.vercel.app`. Se algum for projeto conceitual/de estudo e não cliente, isso precisa estar escrito no case (a home diz "Projetos entregues, no ar"). Afirmações sobre o cliente ("mais de 40 obras desde 2009") precisam ser do cliente. Confiança vale mais que volume de portfólio.
-
-### SEO-018 — Navegação do case
-Cabeçalho mínimo (logo → home), "Próximo projeto" no fim, breadcrumb visível (Início › Projetos › Cliente) — o `BreadcrumbList` já existe.
-
-### SEO-019 — `/experiencia`
-Um parágrafo real no HTML do servidor com H1 ("A Experiência — o site da Coded by M em WebGL") e o link "Ir direto aos projetos", visível na tela de entrada.
-
-### SEO-020 — LCP do case
-Servir um recorte do primeiro quadro do `preview.desktop` como imagem inicial e carregar o print inteiro só quando a rolagem automática começar.
 
 ### SEO-022 — Search Console e Bing
 Ação externa (ver `SEO-CONTENT-STRATEGY.md` → medição).

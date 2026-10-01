@@ -8,12 +8,15 @@ import { useState, type ReactNode } from "react";
  */
 export function LiveScreenshot({
   src,
+  poster,
   alt,
   fallback = null,
   durationSec = 35,
   lazy = false,
 }: {
   src?: string;
+  /** Primeiro quadro leve do `src`, pintado atrás enquanto ele baixa. */
+  poster?: string;
   alt: string;
   fallback?: ReactNode;
   durationSec?: number;
@@ -24,6 +27,20 @@ export function LiveScreenshot({
   if (!src || errored) return <>{fallback}</>;
   return (
     <div className="relative h-full w-full overflow-hidden">
+      {/* Pôster: o primeiro quadro, leve e prioritário. Fica ATRÁS do print
+          com os mesmos pixels no topo — aparece antes e é coberto sem salto.
+          `fetchpriority` em minúsculas: o React 18 não conhece a prop. */}
+      {poster && (
+        // biome-ignore lint/a11y/useAltText: decorativo, o alt fica no print
+        <img
+          src={poster}
+          alt=""
+          aria-hidden
+          decoding="async"
+          {...{ fetchpriority: "high" }}
+          className="absolute left-0 top-0 w-full"
+        />
+      )}
       {/* biome-ignore lint/a11y/useAltText: alt é repassado */}
       <img
         src={src}

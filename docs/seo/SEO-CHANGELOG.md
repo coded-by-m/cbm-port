@@ -78,3 +78,30 @@ Reason: 4 URLs vazias respondiam 200; o compartilhamento de um case mostrava a h
 - Noindex de `/lp/*`, `/lab`, `/ui-lab`, `/posts/*`.
 - URLs existentes (nenhuma rota indexada mudou de endereço).
 - Copy visual do hero, serviços, processo e sobre.
+
+---
+
+# Passada 2 — 2026-09-30
+
+## components/case/CaseHero.tsx
+- Breadcrumb visível (Início / Projetos / Cliente); pôster passado ao `CaseFrameScroll`.
+
+## components/case/CaseReturnCTA.tsx · app/cases/[slug]/page.tsx
+- "Próximo: {Cliente} →" no fim do case, na ordem da vitrine.
+
+## components/case/CaseFrameScroll.tsx · components/case/LiveScreenshot.tsx
+- Prop `poster`: primeiro quadro leve, `fetchpriority="high"`, atrás do print.
+
+## data/cases.ts · types/case.ts
+- `preview.top` em todos os cases publicados; Maison aponta para o `.webp` reduzido.
+
+## scripts/build-case-posters.py (novo) · public/cases/*/desktop-top.webp (novo)
+- Gera os pôsteres. Maison `desktop-tall.jpeg` (3 MB) → `desktop-tall.webp` (426 KB).
+
+## components/home/LogoIntro.tsx
+- Selo "Coded by M" da `/experiencia` vira `<h1>` (mesmo visual).
+
+## components/zones/CTASection/Footer.tsx
+- Ano do © dinâmico.
+
+Reason: navegação e contexto entre cases; LCP do hero do case; título na experiência.
