@@ -11,11 +11,7 @@ export const WHATSAPP_NUMBER = "5548999916638";
 export const INSTAGRAM_URL = "https://instagram.com/codedbymstudio";
 export const INSTAGRAM_HANDLE = "@codedbymstudio";
 
-/**
- * Redes do menu da home. LinkedIn e GitHub vieram do design aprovado e
- * NÃO ESTÃO VERIFICADOS — confira os dois antes de publicar.
- */
-export const LINKEDIN_URL = "https://www.linkedin.com/company/codedbym";
+/** GitHub da Coded by M (confirmado em 2026-09-30). Não há LinkedIn. */
 export const GITHUB_URL = "https://github.com/coded-by-m";
 
 /** Número formatado pra exibição. */

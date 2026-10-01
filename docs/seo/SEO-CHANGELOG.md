@@ -105,3 +105,34 @@ Reason: 4 URLs vazias respondiam 200; o compartilhamento de um case mostrava a h
 - Ano do © dinâmico.
 
 Reason: navegação e contexto entre cases; LCP do hero do case; título na experiência.
+
+---
+
+# Passada 3 — 2026-09-30 (respostas do negócio)
+
+Respostas: não há LinkedIn; o GitHub é da Coded by M; MJ Engenharia, Maison Étoile, Atelier Forma Viva e Estúdio Monteiro são projetos conceituais; H1 a critério; sem preço público ("preço justo").
+
+## types/case.ts · data/cases.ts
+- Campo `concept`; os 4 conceitos marcados, eyebrow "… / Projeto conceitual".
+
+## components/case/ProjectFacts.tsx · components/case/CaseHero.tsx
+- Conceito mostra "Marca" no lugar de "Cliente".
+
+## components/projetos/ProjetoGridCard.tsx · components/lp/LpBlocks.tsx
+- Card mostra "Conceito · ano". Título da prova da LP: "Escritórios que já estão apresentados assim." → "Sites de arquitetura e interiores, no ar pra conferir." (afirmava clientes que não existem).
+
+## data/home.ts
+- Projetos: "Projetos entregues, no ar e acessíveis." → "Projetos no ar, abertos pra conferir."; sub declara "dois para clientes e quatro conceituais".
+- Categoria do H1: "Web Design" → "Sites e landing pages".
+
+## app/cases/[slug]/page.tsx · lib/seo.ts · app/projetos/page.tsx
+- Conceito: title "{Marca} — {Tipo} conceitual", description começa com "Projeto conceitual da Coded by M.", schema sem `about` (cliente) e com `creativeWorkStatus`.
+- `sameAs` = Instagram + GitHub. Description da vitrine menciona clientes e conceitos.
+
+## lib/contact.ts · components/site/SiteHeader.tsx
+- LinkedIn removido do menu e das constantes.
+
+## scripts/build-og-images.py · public/og/cases/*
+- Imagem social do conceito diz "Conceito · {tipo}".
+
+Reason: confiança (E-E-A-T) — o site não pode apresentar conceito como entrega; menu sem link quebrado; H1 que diz o que o estúdio faz.

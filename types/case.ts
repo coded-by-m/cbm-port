@@ -42,6 +42,12 @@ export interface CaseProject {
    *  - "coming-soon": fragmento renderiza mas card mostra "Em breve" e click é no-op
    */
   status?: "published" | "coming-soon";
+  /**
+   * Projeto conceitual (estudo autoral, sem cliente contratante). Omitido =
+   * projeto de cliente. Muda o rótulo no case, no card, no título da página e
+   * no schema — o site nunca apresenta um conceito como entrega.
+   */
+  concept?: boolean;
   /** Domínio exibido na barra do BrowserFrame (ex.: "machadoplataformas.com.br"). */
   siteUrl?: string;
   /**

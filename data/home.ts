@@ -13,7 +13,7 @@ export const HERO = {
   /** A marca é o enunciado principal do hero. */
   brand: ["Coded", "by M"],
   /** A categoria, logo abaixo da marca e em corpo menor. */
-  lead: "Web Design",
+  lead: "Sites e landing pages",
   headline: "Projetamos a forma como sua empresa é percebida digitalmente.",
   sub: "Landing pages, sites institucionais e aplicações web — da estratégia ao deploy, no mesmo lugar.",
   ctaPrimary: "Começar meu projeto",
@@ -31,8 +31,8 @@ export const AVAILABILITY = [
 export const SECTIONS = {
   projetos: {
     label: "Projetos",
-    heading: "Projetos entregues, no ar e acessíveis.",
-    sub: "Seis projetos publicados entre 2025 e 2026 — landing pages de conversão e sites institucionais para arquitetura, engenharia e indústria. Cada um com o endereço no ar, aberto pra conferir.",
+    heading: "Projetos no ar, abertos pra conferir.",
+    sub: "Seis projetos entre 2025 e 2026 — dois para clientes e quatro conceituais, entre landing pages e sites institucionais para arquitetura, engenharia, interiores e indústria. Cada um com o endereço no ar.",
   },
   servicos: {
     label: "Serviços",

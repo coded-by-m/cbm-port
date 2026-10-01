@@ -15,7 +15,7 @@
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { ABOUT } from "@/data/about";
 import { SERVICES } from "@/data/services";
-import { INSTAGRAM_URL, WHATSAPP_DISPLAY } from "@/lib/contact";
+import { GITHUB_URL, INSTAGRAM_URL, WHATSAPP_DISPLAY } from "@/lib/contact";
 import type { CaseProject } from "@/types/case";
 
 export const ORG_ID = `${SITE_URL}/#organization`;
@@ -44,9 +44,8 @@ export const OG_SIZE = { width: 1200, height: 630 } as const;
  * Organization — o estúdio presta serviço a partir de Florianópolis, que é
  * o que o site declara no hero e no rodapé. Sem rua: o site não publica uma.
  *
- * `sameAs` só com o Instagram: LinkedIn e GitHub estão no menu mas não foram
- * confirmados como perfis oficiais (ver lib/contact.ts) — o LinkedIn
- * retornava 404 em 2026-09-30.
+ * `sameAs`: Instagram e GitHub, os dois perfis confirmados (2026-09-30). Não
+ * há LinkedIn.
  */
 export function organizationSchema(): Json {
   return {
@@ -66,7 +65,7 @@ export function organizationSchema(): Json {
       addressCountry: "BR",
     },
     founder: { "@id": FOUNDER_ID },
-    sameAs: [INSTAGRAM_URL],
+    sameAs: [INSTAGRAM_URL, GITHUB_URL],
     knowsAbout: [
       "Web design",
       "Desenvolvimento front-end",
@@ -157,6 +156,8 @@ export function breadcrumbSchema(items: { name: string; path: string }[]): Json 
  * `dateCreated` é só o ano — é o que a página mostra no campo "Ano". O
  * cliente entra como `about`, pelo nome, sem URL inventada: o endereço do
  * site no ar é o `url` da obra, porque é o que a página exibe e linka.
+ *
+ * Conceito não tem cliente: sai o `about` e entra `creativeWorkStatus`.
  */
 export function caseSchema(project: CaseProject): Json {
   const pageUrl = `${SITE_URL}/cases/${project.slug}`;
@@ -164,13 +165,17 @@ export function caseSchema(project: CaseProject): Json {
     "@type": "CreativeWork",
     "@id": `${pageUrl}#work`,
     name: project.title,
-    headline: `${project.title} — ${project.meta.tipo}`,
+    headline: project.concept
+      ? `${project.title} — ${project.meta.tipo} (projeto conceitual)`
+      : `${project.title} — ${project.meta.tipo}`,
     description: project.description,
     genre: project.meta.tipo,
     dateCreated: project.meta.ano,
     inLanguage: "pt-BR",
     creator: { "@id": ORG_ID },
-    about: { "@type": "Organization", name: project.meta.cliente },
+    ...(project.concept
+      ? { creativeWorkStatus: "Projeto conceitual" }
+      : { about: { "@type": "Organization", name: project.meta.cliente } }),
     ...(project.siteUrl ? { url: `https://${project.siteUrl}` } : {}),
     image: `${SITE_URL}${OG.case(project.slug)}`,
     mainEntityOfPage: { "@id": `${pageUrl}#webpage` },

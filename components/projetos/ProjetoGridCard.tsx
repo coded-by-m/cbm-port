@@ -137,7 +137,7 @@ export function ProjetoGridCard({
               color: "#6E6B66",
             }}
           >
-            {project.meta.ano}
+            {project.concept ? `Conceito · ${project.meta.ano}` : project.meta.ano}
           </span>
         </div>
 

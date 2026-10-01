@@ -133,6 +133,7 @@ def published_cases():
             "tipo": get(r'tipo: "([^"]+)"'),
             "setor": get(r'setor: "([^"]+)"'),
             "hero": get(r'heroImages: \[\s*"([^"]+)"'),
+            "concept": "concept: true" in b,
         }
 
 
@@ -156,7 +157,8 @@ if __name__ == "__main__":
         if not c["hero"]:
             print("sem hero:", c["slug"], file=sys.stderr)
             continue
-        card(f"cases/{c['slug']}.jpg", c["hero"], f"Case · {c['tipo']}",
+        kind = "Conceito" if c["concept"] else "Case"
+        card(f"cases/{c['slug']}.jpg", c["hero"], f"{kind} · {c['tipo']}",
              c["title"], c["setor"])
         n += 1
     print(f"{n} cases")

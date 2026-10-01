@@ -30,9 +30,24 @@ export function generateStaticParams() {
     .map((c) => ({ slug: c.slug }));
 }
 
-/** "Case Estúdio Lentz — Site Institucional Imersivo" — nome + o que foi feito. */
-function caseTitle(project: NonNullable<ReturnType<typeof getPublishedCase>>) {
-  return `Case ${project.title} — ${project.meta.tipo}`;
+type Published = NonNullable<ReturnType<typeof getPublishedCase>>;
+
+/**
+ * "Case Estúdio Lentz — Site Institucional Imersivo" — nome + o que foi feito.
+ * Conceito: "MJ Engenharia — Landing Page conceitual", sem a palavra "case",
+ * que sugere cliente.
+ */
+function caseTitle(project: Published) {
+  return project.concept
+    ? `${project.title} — ${project.meta.tipo} conceitual`
+    : `Case ${project.title} — ${project.meta.tipo}`;
+}
+
+/** A descrição do conceito avisa logo de saída que não houve cliente. */
+function caseDescription(project: Published) {
+  return project.concept
+    ? `Projeto conceitual da Coded by M. ${project.description}`
+    : project.description;
 }
 
 export async function generateMetadata({
@@ -43,23 +58,24 @@ export async function generateMetadata({
   const project = getPublishedCase(params.slug);
   if (!project) return {};
   const title = caseTitle(project);
+  const description = caseDescription(project);
   const url = `/cases/${project.slug}`;
   const image = OG.case(project.slug);
   return {
     title,
-    description: project.description,
+    description,
     alternates: { canonical: url },
     openGraph: {
       type: "article",
       title: `${title} · Coded by M`,
-      description: project.description,
+      description,
       url,
       images: [{ url: image, ...OG_SIZE, alt: `${project.title} — case da Coded by M` }],
     },
     twitter: {
       card: "summary_large_image",
       title: `${title} · Coded by M`,
-      description: project.description,
+      description,
       images: [image],
     },
   };
@@ -81,7 +97,7 @@ export default function CasePage({
     webPageSchema({
       path: `/cases/${project.slug}`,
       name: caseTitle(project),
-      description: project.description,
+      description: caseDescription(project),
       image: OG.case(project.slug),
     }),
     caseSchema(project),

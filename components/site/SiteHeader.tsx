@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   GITHUB_URL,
   INSTAGRAM_URL,
-  LINKEDIN_URL,
   WHATSAPP_DISPLAY,
   waLink,
 } from "@/lib/contact";
@@ -48,7 +47,6 @@ function LogoMarkSvg({ size = 16, stroke = 12 }) {
 
 const SOCIALS = [
   { label: "Instagram", href: INSTAGRAM_URL },
-  { label: "LinkedIn", href: LINKEDIN_URL },
   { label: "GitHub", href: GITHUB_URL },
   { label: "WhatsApp", href: WA, cmId: "menu-social-whatsapp" },
 ];

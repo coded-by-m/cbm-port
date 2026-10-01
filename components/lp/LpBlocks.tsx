@@ -155,7 +155,7 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
       <div style={WRAP}>
         <Reveal variant="wipe">
           <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>
-            Escritórios que já estão apresentados assim.
+            Sites de arquitetura e interiores, no ar pra conferir.
           </h2>
         </Reveal>
 
@@ -228,7 +228,7 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
                       color: "#9B9791",
                     }}
                   >
-                    {c.meta.setor} · {c.meta.ano}
+                    {c.meta.setor} · {c.concept ? "Conceito · " : ""}{c.meta.ano}
                   </span>
                 </div>
               </article>

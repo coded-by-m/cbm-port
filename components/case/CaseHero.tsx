@@ -119,7 +119,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
           </p>
 
           <div style={step(3)}>
-            <ProjectFacts meta={project.meta} stack={project.stack} />
+            <ProjectFacts meta={project.meta} stack={project.stack} concept={project.concept} />
           </div>
         </div>
 

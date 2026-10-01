@@ -233,11 +233,11 @@ Ver tabela em `SEO-CONTENT-STRATEGY.md` → *Search Intent Map*. Todas marcadas 
 | SEO-010 | Telas do case sem alt; alt "— preview" pouco descritivo | P3 | baixo | baixo | baixo | ✅ corrigido |
 | SEO-011 | Conteúdo invisível sem JS (`Reveal`) | P3 | baixo | baixo | baixo | ✅ corrigido |
 | SEO-012 | `textContent` do H1 colado ("Codedby M") | P3 | baixo | baixo | baixo | ✅ corrigido |
-| SEO-013 | H1 da home não diz o que o estúdio faz | P1 | alto | baixo | médio (copy da marca) | ⏸ requer aprovação |
+| SEO-013 | H1 da home não diz o que o estúdio faz | P1 | alto | baixo | médio (copy da marca) | ✅ categoria do H1: "Sites e landing pages" (passada 3) |
 | SEO-014 | Sem páginas de serviço | P1 | alto | alto | médio | ⏸ requer aprovação + conteúdo |
-| SEO-015 | Sem respostas para preço/prazo/escopo | P1 | alto | médio | baixo | ⏸ NECESSITA INFORMAÇÃO DO NEGÓCIO |
-| SEO-016 | LinkedIn do menu retorna 404; GitHub não confirmado | P1 | médio (confiança) | baixo | baixo | ⏸ NECESSITA INFORMAÇÃO DO NEGÓCIO |
-| SEO-017 | Confirmar natureza dos cases em `*.vercel.app` (cliente real × conceito) e afirmações como "40+ obras desde 2009" | P1 | alto (confiança) | baixo | alto se errado | ⏸ NECESSITA INFORMAÇÃO DO NEGÓCIO |
+| SEO-015 | Sem respostas para preço/prazo/escopo | P1 | alto | médio | baixo | ⏸ sem preço público (decisão: "preço justo"); prazo ainda em aberto |
+| SEO-016 | LinkedIn do menu retorna 404; GitHub não confirmado | P1 | médio (confiança) | baixo | baixo | ✅ LinkedIn removido (não existe); GitHub no `sameAs` |
+| SEO-017 | Cases em `*.vercel.app` apresentados como entregas | P1 | alto (confiança) | baixo | alto se errado | ✅ 4 marcados como conceituais em todo o site (passada 3) |
 | SEO-018 | Case sem "próximo projeto" e sem breadcrumb visível | P2 | médio | médio | baixo | ✅ implementado (passada 2) |
 | SEO-019 | `/experiencia` sem H1 e quase sem texto no HTML do servidor | P2 | baixo | baixo | baixo | ✅ H1 implementado; texto segue curto |
 | SEO-020 | Hero do case carrega print de página inteira (LCP) | P2 | médio | médio | médio (visual) | ✅ pôster leve + Maison 3 MB → 426 KB |

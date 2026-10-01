@@ -3,12 +3,15 @@ import type { CaseMeta } from "@/types/case";
 export function ProjectFacts({
   meta,
   stack,
+  concept = false,
 }: {
   meta: CaseMeta;
   stack?: string[];
+  /** Conceito não tem cliente: o campo vira "Marca". */
+  concept?: boolean;
 }) {
   const fields: { label: string; value: string }[] = [
-    { label: "Cliente", value: meta.cliente },
+    { label: concept ? "Marca" : "Cliente", value: meta.cliente },
     { label: "Setor",   value: meta.setor   },
     { label: "Tipo",    value: meta.tipo    },
     { label: "Ano",     value: meta.ano     },

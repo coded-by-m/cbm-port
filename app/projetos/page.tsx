@@ -10,7 +10,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Projetos de sites e landing pages";
 const DESCRIPTION =
-  "Sites institucionais e landing pages feitos pela Coded by M para arquitetura, engenharia, interiores e indústria — cada projeto com case e endereço no ar.";
+  "Sites institucionais e landing pages da Coded by M — projetos para clientes e conceituais em arquitetura, engenharia, interiores e indústria, cada um com case e endereço no ar.";
 
 export const metadata: Metadata = {
   title: TITLE,

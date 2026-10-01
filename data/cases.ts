@@ -3,7 +3,8 @@ import type { CaseProject } from "@/types/case";
 export const cases: CaseProject[] = [
   {
     slug: "mj-engenharia",
-    eyebrow: "Landing Page Premium / Case Study",
+    eyebrow: "Landing Page / Projeto conceitual",
+    concept: true,
     title: "MJ Engenharia",
     description:
       "Landing page de alta conversão para uma engenharia de prevenção contra incêndio em Santa Catarina — do dimensionamento ao carimbo de aprovação do CBMSC, numa narrativa técnica que gera contato qualificado.",
@@ -169,7 +170,8 @@ export const cases: CaseProject[] = [
   },
   {
     slug: "maison-etoile",
-    eyebrow: "Landing Page Premium / Case Study",
+    eyebrow: "Landing Page / Projeto conceitual",
+    concept: true,
     title: "Maison Étoile Interiors",
     description:
       "Landing page de alta conversão para um estúdio boutique de interiores de luxo em São Paulo — manifesto, portfólio e proposta numa única página cinematográfica.",
@@ -214,7 +216,8 @@ export const cases: CaseProject[] = [
   },
   {
     slug: "forma-viva",
-    eyebrow: "Site Institucional / Case Study",
+    eyebrow: "Site Institucional / Projeto conceitual",
+    concept: true,
     title: "Atelier Forma Viva",
     description:
       "Site institucional multi-página para um atelier de arquitetura residencial em Santa Catarina — projetos, atelier e processo com navegação editorial e foco em luz e matéria.",
@@ -258,7 +261,8 @@ export const cases: CaseProject[] = [
   },
   {
     slug: "estudio-monteiro",
-    eyebrow: "Site Institucional / Case Study",
+    eyebrow: "Site Institucional / Projeto conceitual",
+    concept: true,
     title: "Estúdio Monteiro",
     description:
       "Site institucional para um escritório de arquitetura autoral em São Paulo — design editorial escuro, tipografia serifada e obras selecionadas com páginas de projeto dedicadas.",
