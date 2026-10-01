@@ -32,9 +32,9 @@ export function CaseReturnCTA({ siteUrl }: { siteUrl?: string }) {
             </>
           ) : (
             <>
-              Voltar à
+              Outros
               <br />
-              Paisagem Digital
+              projetos
             </>
           )}
         </h2>
@@ -42,7 +42,7 @@ export function CaseReturnCTA({ siteUrl }: { siteUrl?: string }) {
         <p className="max-w-[340px] font-body text-[14px] font-light leading-[1.75] text-cbm-gray-400">
           {siteUrl
             ? "Abra o projeto no ar e navegue pelo resultado final."
-            : "Mais projetos aguardam na travessia. Cada fragmento é um trabalho construído."}
+            : "Cada projeto tem o case por dentro e o endereço no ar."}
         </p>
 
         {siteUrl && (
@@ -52,12 +52,12 @@ export function CaseReturnCTA({ siteUrl }: { siteUrl?: string }) {
         )}
 
         <Link
-          href="/#projetos"
+          href="/projetos"
           data-cm-role="secondary-cta"
           data-cm-id="case-more-projects"
           className="mt-2 font-display text-[11px] font-semibold uppercase tracking-[0.15em] text-cbm-gray-400 transition-colors duration-200 hover:text-cbm-white focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-white/20 focus-visible:outline-offset-[5px]"
         >
-          ← Voltar à Paisagem
+          ← Todos os projetos
         </Link>
       </Reveal>
     </section>

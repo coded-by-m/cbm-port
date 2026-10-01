@@ -92,7 +92,7 @@ export const LANDINGS: LandingConfig[] = [
       title: "Sites para escritórios de arquitetura",
       description:
         "Sites e landing pages para escritórios de arquitetura, interiores e engenharia. Feitos do zero, sem template — a apresentação que a sua obra merece.",
-      ogImage: "/cases/estudio-lentz/desktop-tall.webp",
+      ogImage: "/og/lp/arquitetura.jpg",
     },
   },
 ];

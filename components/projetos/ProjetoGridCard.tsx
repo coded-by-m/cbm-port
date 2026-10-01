@@ -89,7 +89,7 @@ export function ProjetoGridCard({
         {thumb && (
           <Image
             src={thumb}
-            alt={`${project.title} — preview`}
+            alt={`Topo da página inicial do site ${project.title}`}
             width={760}
             height={874}
             sizes="(max-width: 700px) 30vw, 178px"

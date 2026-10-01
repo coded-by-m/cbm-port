@@ -18,6 +18,7 @@ const PAN = '"Panchang", sans-serif';
 const ACCENT = "#FB3640";
 
 const NAV_BASE = [
+  { label: "Projetos", href: "/projetos", external: false },
   { label: "Laboratório", href: "/lab", external: false },
   { label: "Contato", href: waLink(), external: true, cmId: "footer-nav-whatsapp" },
   {

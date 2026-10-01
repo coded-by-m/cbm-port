@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { AVAILABILITY, HERO } from "@/data/home";
 import { waLink } from "@/lib/contact";
 import { Diamond, PANCHANG, SATOSHI, SURFACE, TriangleMark } from "./shared";
@@ -143,45 +144,53 @@ export function Hero() {
                     depois — o vermelho aqui é gesto, não elemento fixo, então
                     não gasta a cota de raridade da dobra. */}
                 {HERO.brand.map((word, i) => (
-                  <span
-                    key={word}
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: "0.06em",
-                      /* Reencosta as linhas: a caixa do StrokeText tem a
-                         altura da métrica, o desenho pede o entrelinha
-                         apertado que a marca sempre teve. */
-                      marginTop: i === 0 ? 0 : `${0.84 - STROKE_LINE_HEIGHT}em`,
-                    }}
-                  >
-                    <StrokeText
-                      text={word}
-                      fontFamily={PANCHANG}
-                      fontWeight={800}
-                      letterSpacing={-0.04 * 128}
-                      strokeColor="#FB3640"
-                      fillColor="#F5F2ED"
-                      strokeWidth={1.8}
-                      drawDuration={1.05}
-                      stagger={0.06}
-                      fillDelay={0.1}
-                      delay={0.2 + i * 0.34}
-                      /* O contorno some quando a cor fecha a palavra: o
-                         vermelho aqui e passagem, nao moldura. */
-                      fadeStrokeOut
-                    />
-
-                    {i === 0 && (
-                      <TriangleMark
-                        strokeWidth={6}
-                        /* Entra junto com a última letra de "Coded". */
-                        drawDelay={0.2 + 5 * 0.06}
-                        style={{ width: "0.3em", marginTop: "0.06em" }}
+                  <Fragment key={word}>
+                    {i > 0 && " "}
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "0.06em",
+                        /* Reencosta as linhas: a caixa do StrokeText tem a
+                           altura da métrica, o desenho pede o entrelinha
+                           apertado que a marca sempre teve. */
+                        marginTop: i === 0 ? 0 : `${0.84 - STROKE_LINE_HEIGHT}em`,
+                      }}
+                    >
+                      <StrokeText
+                        text={word}
+                        fontFamily={PANCHANG}
+                        fontWeight={800}
+                        letterSpacing={-0.04 * 128}
+                        strokeColor="#FB3640"
+                        fillColor="#F5F2ED"
+                        strokeWidth={1.8}
+                        drawDuration={1.05}
+                        stagger={0.06}
+                        fillDelay={0.1}
+                        delay={0.2 + i * 0.34}
+                        /* O contorno some quando a cor fecha a palavra: o
+                           vermelho aqui e passagem, nao moldura. */
+                        fadeStrokeOut
                       />
-                    )}
-                  </span>
+
+                      {i === 0 && (
+                        <TriangleMark
+                          strokeWidth={6}
+                          /* Entra junto com a última letra de "Coded". */
+                          drawDelay={0.2 + 5 * 0.06}
+                          style={{ width: "0.3em", marginTop: "0.06em" }}
+                        />
+                      )}
+                    </span>
+                  </Fragment>
                 ))}
+
+                {/* Espaço entre os blocos: não ocupa caixa (some entre
+                    elementos de bloco), mas faz o texto do h1 ler "Coded by M
+                    Web Design" para busca e leitor de tela, em vez de
+                    "Codedby MWeb Design". */}
+                {" "}
 
                 {/* A categoria, abaixo da marca e em corpo bem menor */}
                 <span

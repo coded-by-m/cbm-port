@@ -49,11 +49,10 @@ export function CaseScreens({ project }: { project: CaseProject }) {
                 <span className="pointer-events-none absolute right-3 top-2.5 z-10 font-display text-[10px] tracking-[0.25em] text-[#F5F2ED]/40 tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                {/* biome-ignore lint/a11y/useAltText: decorativo */}
+                {/* As telas SÃO o conteúdo do case — descritas, não decorativas. */}
                 <img
                   src={src}
-                  alt=""
-                  aria-hidden
+                  alt={`${project.title} — tela ${i + 1} do site`}
                   loading="lazy"
                   decoding="async"
                   className={`w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02] ${

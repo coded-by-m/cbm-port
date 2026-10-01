@@ -73,6 +73,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
           </div>
 
           <h1
+            data-reveal=""
             className="font-display font-extrabold uppercase text-cbm-white"
             style={{
               // vw maior → encolhe no mobile (cabe "PLATAFORMAS" em 1 linha)
@@ -88,6 +89,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
           </h1>
 
           <p
+            data-reveal=""
             className="mt-7 max-w-[460px] font-body text-[15px] font-light leading-[1.7] text-cbm-gray-200 sm:text-[17px]"
             style={step(2)}
           >

@@ -94,6 +94,8 @@ export function Reveal({
   return (
     <div ref={ref} className={className}>
       <div
+        /* Alvo do fallback `<noscript>` do layout raiz. */
+        data-reveal=""
         style={{
           ...(shown ? TO[variant] : FROM[variant]),
           transformOrigin: variant === "draw" ? "left center" : undefined,
