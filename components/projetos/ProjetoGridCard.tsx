@@ -37,6 +37,7 @@ export function ProjetoGridCard({
       style={{
         position: "relative",
         display: "flex",
+        flexWrap: "wrap",
         alignItems: "flex-start",
         gap: "clamp(12px,1.4vw,20px)",
         minWidth: 0,
@@ -112,9 +113,20 @@ export function ProjetoGridCard({
         />
       </div>
 
-      {/* Texto */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 0, flex: 1 }}>
-        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
+      {/* Texto. Base de 160px: abaixo disso (celular) desce pra baixo
+          da miniatura em vez de espremer numa coluna ilegível. */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 0, flex: "1 1 160px" }}>
+        {/* Quebra em vez de vazar: "Conceito · 2026" não encolhe, e ao lado de
+            um título longo não cabe na coluna de texto. */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            gap: "4px 12px",
+          }}
+        >
           <h3
             style={{
               margin: 0,
@@ -123,6 +135,10 @@ export function ProjetoGridCard({
               fontSize: "clamp(15px,1.5vw,19px)",
               letterSpacing: "-0.005em",
               color: "#F5F2ED",
+              // Rede de segurança: uma palavra longa em Panchang ("Plataformas")
+              // quebra em vez de vazar do card.
+              hyphens: "auto",
+              overflowWrap: "anywhere",
             }}
           >
             {project.title}
