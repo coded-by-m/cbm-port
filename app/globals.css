@@ -562,3 +562,236 @@ body:has(.site-home) {
 /* Célula filtrada fora da vista. Esconder em vez de desmontar mantém o
    catálogo inteiro no HTML inicial. */
 .is-hidden { display: none; }
+
+/* ── Projetos: muro à deriva ─────────────────────────────────────────────
+   O muro ocupa a tela inteira e o índice fica por cima, na esquerda. O plano
+   3D é centrado em --dw-cx (à direita no desktop), e a máscara radial segue o
+   mesmo centro: é ela que dissolve a borda de cima na emenda com o hero, sem
+   régua — o mesmo motivo de a seção antiga não ter borderTop. */
+.pj-section {
+  position: relative;
+  overflow: hidden;
+}
+.pj-stage {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+}
+.pj-wall {
+  position: absolute;
+  inset: 0;
+}
+/* Leitura do texto sobre o muro: o escuro da página avança da esquerda e
+   cobre a coluna de texto inteira (padding + 540px ≈ 45% num 1440) quase
+   opaco — o muro só aparece depois dela. O blur, mascarado pelo mesmo
+   degradê, apaga o detalhe dos recortes na faixa de transição, onde a
+   opacidade sozinha deixaria contorno de imagem brigando com o texto. */
+.pj-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(4, 8, 6, 0.98) 0%,
+    rgba(4, 8, 6, 0.95) 42%,
+    rgba(4, 8, 6, 0.7) 52%,
+    rgba(4, 8, 6, 0) 66%
+  );
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  -webkit-mask-image: linear-gradient(90deg, #000 50%, transparent 68%);
+  mask-image: linear-gradient(90deg, #000 50%, transparent 68%);
+}
+/* O conteúdo deixa o cursor passar pros tiles nas áreas vazias; só os
+   blocos de texto e o índice capturam. */
+.pj-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(96px, 12vh, 140px) clamp(24px, 5vw, 80px) clamp(72px, 10vh, 120px);
+  pointer-events: none;
+}
+.pj-head,
+.pj-list {
+  max-width: min(540px, 44vw);
+  pointer-events: auto;
+}
+
+.pj-index { border-top: 1px solid rgba(245, 242, 237, 0.1); }
+.pj-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(245, 242, 237, 0.1);
+  color: #b4b0aa;
+  text-decoration: none;
+  transition: color 300ms ease, border-color 300ms ease;
+}
+.pj-row .pj-title {
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pj-row .pj-arrow {
+  color: #6e6b66;
+  transition: color 300ms ease, transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pj-row.is-lit,
+.pj-row:focus-visible {
+  color: #f5f2ed;
+  border-bottom-color: var(--pj-color, #fb3640);
+}
+.pj-row.is-lit .pj-title,
+.pj-row:focus-visible .pj-title { transform: translateX(6px); }
+.pj-row.is-lit .pj-arrow,
+.pj-row:focus-visible .pj-arrow {
+  color: var(--pj-color, #fb3640);
+  transform: translate(2px, -2px);
+}
+.pj-row:focus-visible { outline: 1px solid #fb3640; outline-offset: 4px; }
+
+.dw {
+  --dw-cx: 64%;
+  --dw-edge: 34%;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  perspective: 1200px;
+  perspective-origin: var(--dw-cx) 50%;
+  -webkit-mask-image:
+    radial-gradient(ellipse 70% 80% at var(--dw-cx) 50%, #000 var(--dw-edge), transparent 100%),
+    linear-gradient(to top, #000 70%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(ellipse 70% 80% at var(--dw-cx) 50%, #000 var(--dw-edge), transparent 100%),
+    linear-gradient(to top, #000 70%, transparent 100%);
+  mask-composite: intersect;
+}
+.dw-plane {
+  position: absolute;
+  top: 50%;
+  left: var(--dw-cx);
+  display: flex;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.dw-col {
+  position: relative;
+  width: calc(var(--dw-tile-w) + var(--dw-gap));
+  transform-style: preserve-3d;
+}
+.dw-track {
+  display: flex;
+  flex-direction: column;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.dw-tile {
+  position: relative;
+  display: block;
+  flex: none;
+  width: 100%;
+  height: calc(var(--dw-tile-h) + var(--dw-gap));
+  outline: none;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  -webkit-user-drag: none;
+}
+/* Cantos retos — regra dura da marca, mesmo onde a referência arredonda. */
+.dw-inner {
+  position: absolute;
+  inset: calc(var(--dw-gap) / 2);
+  display: block;
+  overflow: hidden;
+  background: #0a120c;
+  opacity: 0.5;
+  transform: translateZ(0);
+  pointer-events: none;
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dw-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: saturate(0.82);
+  user-select: none;
+  transition: filter 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dw-veil {
+  position: absolute;
+  inset: 0;
+  background: #040806;
+  opacity: 0.45;
+  transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dw-corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-left: 2px solid;
+  border-top: 2px solid;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+/* O índice apontando um projeto: o resto do muro recua. */
+.dw[data-focus] .dw-inner { opacity: 0.18; }
+
+.dw-tile.is-active .dw-inner,
+.dw .dw-tile.is-match .dw-inner {
+  opacity: 1;
+  box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.75);
+}
+.dw-tile.is-active .dw-inner { transform: translateZ(var(--dw-lift)); }
+.dw-tile.is-active .dw-img,
+.dw-tile.is-match .dw-img { filter: saturate(1.04); }
+.dw-tile.is-active .dw-veil,
+.dw-tile.is-match .dw-veil { opacity: 0; }
+.dw-tile.is-active .dw-corner,
+.dw-tile.is-match .dw-corner { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dw-plane,
+  .dw-track { will-change: auto; }
+  .dw-inner,
+  .pj-row .pj-title { transition: opacity 200ms ease; }
+}
+
+/* Mobile: empilha. Título, o muro como faixa e o índice embaixo — sem hover
+   no toque, o índice é quem navega e não pode ficar sob imagem andando. */
+@media (max-width: 700px) {
+  .pj-stage {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+  }
+  .pj-content { display: contents; }
+  .pj-head {
+    order: 1;
+    max-width: none;
+    padding: clamp(56px, 9vh, 80px) 24px 0;
+  }
+  .pj-wall {
+    order: 2;
+    position: relative;
+    height: 58svh;
+    margin-top: -24px;
+  }
+  .pj-list {
+    order: 3;
+    max-width: none;
+    padding: 0 24px clamp(64px, 9vh, 88px);
+  }
+  .pj-shade { display: none; }
+  .dw { --dw-cx: 50%; --dw-edge: 28%; }
+}

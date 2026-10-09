@@ -1,50 +1,83 @@
 import { cases } from "@/data/cases";
 import { SECTIONS } from "@/data/home";
-import { SECTION, SectionHead } from "./shared";
-import { Reveal } from "@/components/ui/Reveal";
-import { ProjetoGridCard } from "@/components/projetos/ProjetoGridCard";
+import { PROJECT_TYPE_COLOR } from "@/lib/projectTypes";
+import type { CaseProject } from "@/types/case";
+import { SectionHead } from "./shared";
+import { ProjectsStage, type StageProject } from "./ProjectsStage";
+import type { DriftTile } from "./DriftWall";
+
+/** Recortes por projeto no muro. 6 projetos × 4 = 24 tiles em 5 colunas. */
+const SHOTS_PER_PROJECT = 4;
+
+const colorOf = (c: CaseProject) =>
+  c.type ? PROJECT_TYPE_COLOR[c.type] : "#FB3640";
 
 /**
- * Os 6 projetos publicados, na mesma célula que a vitrine `/projetos` usa —
- * numeral, thumbnail e texto lado a lado, em duas colunas.
+ * Recortes de um projeto, do mais reconhecível pro mais interno: o topo da
+ * home primeiro, depois hero, seções e galeria.
+ */
+function shotsOf(c: CaseProject) {
+  const all = [
+    c.preview?.top,
+    ...c.heroImages,
+    ...(c.sections ?? []),
+    ...c.gallery,
+  ];
+  return Array.from(new Set(all.filter((s): s is string => !!s))).slice(
+    0,
+    SHOTS_PER_PROJECT,
+  );
+}
+
+/**
+ * Tiles intercalados por projeto — o i-ésimo tile é do projeto `i % n`.
+ * Como o muro distribui por `i % colunas`, vizinhos de uma mesma coluna ficam
+ * a `colunas` posições de distância — com 6 projetos e 5 (ou 3) colunas,
+ * nunca no mesmo projeto.
+ */
+function buildTiles(projects: CaseProject[]): DriftTile[] {
+  const shots = projects.map(shotsOf);
+  const depth = Math.max(...shots.map((s) => s.length));
+  const tiles: DriftTile[] = [];
+  for (let k = 0; k < depth; k++) {
+    projects.forEach((p, i) => {
+      const src = shots[i][k];
+      if (src)
+        tiles.push({ src, slug: p.slug, title: p.title, color: colorOf(p) });
+    });
+  }
+  return tiles;
+}
+
+/**
+ * Projetos — tela cheia, o muro à deriva de fundo e o índice por cima.
  *
- * O card vem de `components/projetos` de propósito: home e vitrine dividindo
- * uma definição só, senão divergem na primeira mexida.
+ * Saiu do grid de cards: na home a seção é vitrine de clima, e o catálogo com
+ * descrição e stack continua em `/projetos`, onde `ProjetoGridCard` segue em
+ * uso.
  */
 export function ProjectsSection() {
   const published = cases.filter((c) => c.status === "published");
 
-  return (
-    <section
-      id="projetos"
-      data-cm-section="projects"
-      style={{
-        ...SECTION,
-        // Sem régua nesta: ela cai bem na emenda com o hero, e uma linha
-        // nítida no meio do degradê anula a dissolução. As outras seções
-        // mantêm a borda, que ali separa blocos de verdade.
-        borderTop: "none",
-        paddingTop: "clamp(40px,7vh,84px)",
-      }}
-    >
-      <SectionHead
-        heading={SECTIONS.projetos.heading}
-        sub={SECTIONS.projetos.sub}
-      />
+  const projects: StageProject[] = published.map((c) => ({
+    slug: c.slug,
+    title: c.title,
+    meta: c.concept ? `Conceito · ${c.meta.ano}` : c.meta.ano,
+    color: colorOf(c),
+  }));
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,420px),1fr))",
-          gap: "clamp(14px,1.6vw,20px)",
-        }}
-      >
-        {published.map((c, i) => (
-          <Reveal key={c.slug} delay={(i % 2) * 110} variant="scale" className="site-cell">
-            <ProjetoGridCard project={c} index={i} />
-          </Reveal>
-        ))}
-      </div>
+  return (
+    <section id="projetos" data-cm-section="projects" className="pj-section">
+      <ProjectsStage
+        head={
+          <SectionHead
+            heading={SECTIONS.projetos.heading}
+            sub={SECTIONS.projetos.sub}
+          />
+        }
+        projects={projects}
+        tiles={buildTiles(published)}
+      />
     </section>
   );
 }
