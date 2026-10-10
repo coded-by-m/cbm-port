@@ -27,6 +27,8 @@ export interface ServiceConfig {
   indicatedFor: string;
   /** Subject do mailto do CTA expandido. */
   mailSubject: string;
+  /** Página de serviço própria, quando existe — e o texto do link pra ela. */
+  page?: { href: string; label: string };
 }
 
 export const SERVICES: ServiceConfig[] = [
@@ -47,6 +49,7 @@ export const SERVICES: ServiceConfig[] = [
     indicatedFor:
       "Empresas com produto único ou campanha específica que precisam de uma página focada em conversão.",
     mailSubject: "Interesse em Landing Page",
+    page: { href: "/landing-page", label: "Criação de landing page" },
   },
   {
     slug: "sites-institucionais",
@@ -65,6 +68,7 @@ export const SERVICES: ServiceConfig[] = [
     indicatedFor:
       "Empresas que querem presença sólida, comunicando autoridade, produtos e cultura.",
     mailSubject: "Interesse em Site Institucional",
+    page: { href: "/site-institucional", label: "Site institucional sob medida" },
   },
   {
     slug: "aplicacoes-web",

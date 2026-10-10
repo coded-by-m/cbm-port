@@ -5,6 +5,8 @@
  * aprovado no Claude Design (projeto "Hero da home pronto", 2026-09-19).
  */
 
+import type { FaqItem } from "@/data/servicePages";
+
 /** Slug do projeto em destaque no hero. Trocar aqui troca a vitrine inteira. */
 export const FEATURED_SLUG = "estudio-lentz";
 
@@ -12,8 +14,11 @@ export const HERO = {
   eyebrow: "Estúdio independente · Florianópolis",
   /** A marca é o enunciado principal do hero. */
   brand: ["Coded", "by M"],
-  /** A categoria, logo abaixo da marca e em corpo menor. */
-  lead: "Sites e landing pages",
+  /**
+   * O H1 da página, logo abaixo da marca e em corpo menor. Diz serviço e
+   * cidade numa frase só — a marca acima é logo, não título.
+   */
+  lead: "Criação de sites e landing pages sob medida em Florianópolis",
   headline: "Projetamos a forma como sua empresa é percebida digitalmente.",
   sub: "Landing pages, sites institucionais e aplicações web — da estratégia ao deploy, no mesmo lugar.",
   ctaPrimary: "Começar meu projeto",
@@ -60,12 +65,47 @@ export const SECTIONS = {
     /** Marcador da escala, alinhado à direita do cabeçalho. */
     aside: "Escala 1 — 10",
   },
+  faq: {
+    label: "Dúvidas",
+    heading: "Perguntas frequentes",
+  },
   contato: {
     label: "Convite",
     heading: "Vamos construir a sua.",
     sub: "Conversa direta no WhatsApp: você conta o contexto, eu digo o que faria, quanto custa e em quanto tempo entrego.",
   },
 } as const;
+
+/**
+ * Perguntas frequentes da home — visíveis antes do convite e no `FAQPage`.
+ * PREENCHER = rascunho, fica fora do site e do schema até ter resposta.
+ */
+export const HOME_FAQ: FaqItem[] = [
+  {
+    q: "Quanto custa um site ou uma landing page?",
+    a: "Depende do escopo: quantidade de páginas, textos e integrações. Você conta o projeto no WhatsApp e eu respondo com valor e prazo antes de qualquer compromisso.",
+    links: [
+      { href: "/landing-page", label: "Landing page" },
+      { href: "/site-institucional", label: "Site institucional" },
+    ],
+  },
+  {
+    q: "Qual o prazo de entrega?",
+    a: "PREENCHER — prazo típico de landing page e de site institucional.",
+  },
+  {
+    q: "Hospedagem e domínio estão inclusos?",
+    a: "PREENCHER — o que entra na entrega e o que fica por conta do cliente.",
+  },
+  {
+    q: "Vocês atendem fora de Florianópolis?",
+    a: "Sim. O estúdio fica em Florianópolis, e atendo empresas de todo o Brasil de forma remota.",
+  },
+  {
+    q: "Como funciona o processo?",
+    a: "Em quatro etapas: estratégia (diagnóstico, escopo e posicionamento), design (arquitetura, identidade e protótipo), código (implementação e performance) e resultado — mensuração, ajustes e evolução depois do deploy.",
+  },
+];
 
 /**
  * Links do menu drawer — só âncoras desta página.

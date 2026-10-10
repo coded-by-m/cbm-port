@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SERVICES } from "@/data/services";
 import { SECTIONS } from "@/data/home";
 import { Diamond, INK, PANCHANG, SATOSHI } from "./shared";
@@ -195,6 +196,26 @@ export function ServicesSection() {
                   >
                     {s.indicatedFor}
                   </p>
+                  {s.page && (
+                    <Link
+                      href={s.page.href}
+                      className="site-link-underline"
+                      style={{
+                        alignSelf: "flex-start",
+                        marginTop: 8,
+                        paddingBottom: 4,
+                        fontFamily: PANCHANG,
+                        fontWeight: 600,
+                        fontSize: 10.5,
+                        letterSpacing: "0.16em",
+                        textTransform: "uppercase",
+                        color: INK.ink,
+                        textDecoration: "none",
+                      }}
+                    >
+                      {s.page.label} <span aria-hidden style={{ color: INK.signal }}>→</span>
+                    </Link>
+                  )}
                 </div>
               </article>
             </Reveal>

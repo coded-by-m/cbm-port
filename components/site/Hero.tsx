@@ -119,7 +119,7 @@ export function Hero() {
             <div
               style={{ flex: "1 1 300px", minWidth: 0, containerType: "inline-size" }}
             >
-              <h1
+              <div
                 /* Liga o cursor-triângulo da marca sobre a palavra. */
                 data-cursor="triangle"
                 style={{
@@ -143,6 +143,9 @@ export function Hero() {
                     O contorno entra no vermelho do sinal e o osso inunda
                     depois — o vermelho aqui é gesto, não elemento fixo, então
                     não gasta a cota de raridade da dobra. */}
+                {/* A marca é o logo: leitor de tela lê "Coded by M" uma vez,
+                    não letra por letra. O título da página é o h1 abaixo. */}
+                <span role="img" aria-label="Coded by M" style={{ display: "block" }}>
                 {HERO.brand.map((word, i) => (
                   <Fragment key={word}>
                     {i > 0 && " "}
@@ -185,33 +188,30 @@ export function Hero() {
                     </span>
                   </Fragment>
                 ))}
+                </span>
 
-                {/* Espaço entre os blocos: não ocupa caixa (some entre
-                    elementos de bloco), mas faz o texto do h1 ler "Coded by M
-                    Web Design" para busca e leitor de tela, em vez de
-                    "Codedby MWeb Design". */}
-                {" "}
-
-                {/* A categoria, abaixo da marca e em corpo bem menor */}
-                <span
+                {/* O h1: serviço + cidade, abaixo da marca e em corpo bem
+                    menor. Frase inteira, sem quebrar em letras. */}
+                <h1
                   className="site-letter"
                   style={{
                     display: "block",
-                    /* Em do PRÓPRIO corpo (0.3em do h1), então o número é
-                       grande de propósito: 0.9em aqui dá ~35px no desktop e
-                       encolhe junto com a marca. */
-                    marginTop: "0.9em",
-                    fontSize: "0.3em",
+                    maxWidth: "26ch",
+                    /* Em do PRÓPRIO corpo (0.2em do bloco), então o número é
+                       grande de propósito e encolhe junto com a marca. */
+                    margin: "1.2em 0 0",
+                    fontSize: "0.2em",
                     fontWeight: 700,
-                    letterSpacing: "0.02em",
-                    lineHeight: 1,
+                    letterSpacing: "0.01em",
+                    lineHeight: 1.2,
                     color: "#B4B0AA",
+                    textWrap: "balance",
                     animationDelay: "0.72s",
                   }}
                 >
                   {HERO.lead}
-                </span>
-              </h1>
+                </h1>
+              </div>
             </div>
 
             {/* Texto, link e CTA em bloco */}

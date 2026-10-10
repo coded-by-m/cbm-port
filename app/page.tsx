@@ -8,10 +8,20 @@ import { ServicesSection } from "@/components/site/ServicesSection";
 import { ProcessSection } from "@/components/site/ProcessSection";
 import { AboutSection } from "@/components/site/AboutSection";
 import { CapabilitiesSection } from "@/components/site/CapabilitiesSection";
+import { FaqSection } from "@/components/site/FaqSection";
 import { ContactSection } from "@/components/site/ContactSection";
 import Footer from "@/components/zones/CTASection/Footer";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { HOME_DESCRIPTION, HOME_TITLE, OG, OG_SIZE, graph, webPageSchema } from "@/lib/seo";
+import { HOME_FAQ } from "@/data/home";
+import {
+  HOME_DESCRIPTION,
+  HOME_TITLE,
+  OG,
+  OG_SIZE,
+  faqPageSchema,
+  graph,
+  webPageSchema,
+} from "@/lib/seo";
 
 /**
  * Home estática — a porta de entrada do site.
@@ -45,6 +55,7 @@ const PAGE_SCHEMA = graph(
     description: HOME_DESCRIPTION,
     image: OG.home,
   }),
+  faqPageSchema("/", HOME_FAQ),
 );
 
 export default function HomePage() {
@@ -60,6 +71,7 @@ export default function HomePage() {
         <ProcessSection />
         <AboutSection />
         <CapabilitiesSection />
+        <FaqSection />
         <ContactSection />
       </main>
       <Footer background={SURFACE.base} />
