@@ -71,8 +71,9 @@ export function ProjetosGallery({ projects }: { projects: CaseProject[] }) {
             textWrap: "pretty",
           }}
         >
-          Do conceito ao site no ar. Cada projeto abre o case por dentro — e o
-          endereço real, pra você conferir.
+          Seleção de sites e landing pages criados pela Coded by M para empresas
+          e profissionais de todo o Brasil. Cada projeto abre o case por dentro
+          — e o endereço real, pra você conferir.
         </p>
       </Reveal>
 

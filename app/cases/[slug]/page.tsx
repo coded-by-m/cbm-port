@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cases, getCaseBySlug } from "@/data/cases";
+import { serviceLinksForCase } from "@/data/servicePages";
 import { CaseHero } from "@/components/case/CaseHero";
 import { CaseOverview } from "@/components/case/CaseOverview";
 import { CaseShowcase } from "@/components/case/CaseShowcase";
@@ -34,14 +35,16 @@ export function generateStaticParams() {
 type Published = NonNullable<ReturnType<typeof getPublishedCase>>;
 
 /**
- * "Case Estúdio Lentz — Site Institucional Imersivo" — nome + o que foi feito.
- * Conceito: "MJ Engenharia — Landing Page conceitual", sem a palavra "case",
- * que sugere cliente.
+ * "[Título] — [tipo] para [nicho]", e o template do layout fecha com
+ * "· Coded by M". Ex.: "Machado Plataformas — Site Institucional para
+ * implementos rodoviários". Conceito leva "conceitual" logo após o tipo,
+ * sem a palavra "case", que sugere cliente.
  */
 function caseTitle(project: Published) {
-  return project.concept
-    ? `${project.title} — ${project.meta.tipo} conceitual`
-    : `Case ${project.title} — ${project.meta.tipo}`;
+  const kind = project.concept ? `${project.meta.tipo} conceitual` : project.meta.tipo;
+  return project.niche
+    ? `${project.title} — ${kind} para ${project.niche}`
+    : `${project.title} — ${kind}`;
 }
 
 /** A descrição do conceito avisa logo de saída que não houve cliente. */
@@ -125,6 +128,7 @@ export default function CasePage({
       <CaseReturnCTA
         siteUrl={project.siteUrl}
         next={next && next !== project ? { slug: next.slug, title: next.title } : undefined}
+        {...serviceLinksForCase(project)}
       />
       <style>{`
         @keyframes case-fade-in { from { opacity: 0 } to { opacity: 1 } }

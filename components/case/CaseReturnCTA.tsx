@@ -2,13 +2,21 @@ import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { CaseLiveButton } from "@/components/case/CaseLiveButton";
 
+type Href = { href: string; label: string };
+
 export function CaseReturnCTA({
   siteUrl,
   next,
+  service,
+  niche,
 }: {
   siteUrl?: string;
   /** O case seguinte na ordem da vitrine — o caminho natural depois deste. */
   next?: { slug: string; title: string };
+  /** A página do serviço mais próximo deste case. */
+  service?: Href;
+  /** A página de nicho, quando o case é do setor dela. */
+  niche?: Href;
 }) {
   return (
     <section
@@ -76,6 +84,30 @@ export function CaseReturnCTA({
           >
             Próximo: {next.title} <span className="text-[#FB3640]">→</span>
           </Link>
+        )}
+
+        {service && (
+          <p className="mt-6 max-w-[420px] border-t border-white/10 pt-6 font-body text-[14px] font-light leading-[1.75] text-cbm-gray-400">
+            Precisa de um projeto assim? Conheça a{" "}
+            <Link
+              href={service.href}
+              className="text-cbm-white underline decoration-[#FB3640] underline-offset-4 transition-colors hover:text-[#FB3640]"
+            >
+              {service.label}
+            </Link>
+            .
+            {niche && (
+              <>
+                <br />
+                <Link
+                  href={niche.href}
+                  className="text-cbm-white underline decoration-[#FB3640] underline-offset-4 transition-colors hover:text-[#FB3640]"
+                >
+                  {niche.label}
+                </Link>
+              </>
+            )}
+          </p>
         )}
       </Reveal>
     </section>

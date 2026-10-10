@@ -127,7 +127,9 @@ export function ProjetoGridCard({
             gap: "4px 12px",
           }}
         >
-          <h3
+          {/* h2: na /projetos cada card é uma seção do catálogo, logo
+              abaixo do h1. */}
+          <h2
             style={{
               margin: 0,
               fontFamily: PANCHANG,
@@ -142,7 +144,7 @@ export function ProjetoGridCard({
             }}
           >
             {project.title}
-          </h3>
+          </h2>
           <span
             style={{
               flex: "none",

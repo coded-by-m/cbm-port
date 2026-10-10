@@ -2,7 +2,7 @@ import type { CaseProject } from "@/types/case";
 import { Reveal } from "@/components/ui/Reveal";
 
 export function CaseOverview({ project }: { project: CaseProject }) {
-  const { heading, body, challenge } = project.overview;
+  const { heading, body, challenge, result } = project.overview;
 
   if (!heading && body.length === 0 && !challenge) return null;
 
@@ -50,14 +50,26 @@ export function CaseOverview({ project }: { project: CaseProject }) {
 
         {/* Right — challenge block */}
         <Reveal className="w-full lg:w-[280px] lg:flex-shrink-0" delay={120}>
+          {/* h2 com cara de rótulo: na estrutura da página o desafio e o
+              resultado são seções, mesmo pequenos no desenho. */}
           <div className="border border-cbm-gray-800 p-6">
-            <p className="mb-3 font-body text-[8px] uppercase tracking-[0.35em] text-cbm-gray-600">
+            <h2 className="mb-3 font-body text-[8px] font-normal uppercase tracking-[0.35em] text-cbm-gray-600">
               Desafio
-            </p>
+            </h2>
             <p className="font-body text-[13px] font-light leading-[1.75] text-cbm-gray-400">
               {challenge}
             </p>
           </div>
+          {result && (
+            <div className="mt-4 border border-cbm-gray-800 p-6">
+              <h2 className="mb-3 font-body text-[8px] font-normal uppercase tracking-[0.35em] text-cbm-gray-600">
+                Resultado
+              </h2>
+              <p className="font-body text-[13px] font-light leading-[1.75] text-cbm-gray-400">
+                {result}
+              </p>
+            </div>
+          )}
         </Reveal>
 
       </div>

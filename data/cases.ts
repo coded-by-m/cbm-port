@@ -5,6 +5,7 @@ export const cases: CaseProject[] = [
     slug: "mj-engenharia",
     eyebrow: "Landing Page / Case Study",
     title: "MJ Engenharia",
+    niche: "engenharia de prevenção contra incêndio",
     description:
       "Landing page de alta conversão para uma engenharia de prevenção contra incêndio em Santa Catarina — do dimensionamento ao carimbo de aprovação do CBMSC, numa narrativa técnica que gera contato qualificado.",
     meta: {
@@ -64,6 +65,7 @@ export const cases: CaseProject[] = [
     eyebrow: "Site Institucional Imersivo / Projeto conceitual",
     concept: true,
     title: "Estúdio Lentz",
+    niche: "escritório de arquitetura",
     description:
       "Site institucional imersivo para um escritório de arquitetura em Florianópolis — um canvas 3D fixo onde o scroll ergue a obra camada a camada, da planta ao espaço habitado.",
     meta: {
@@ -126,6 +128,7 @@ export const cases: CaseProject[] = [
     slug: "machado-plataformas",
     eyebrow: "Web Design Premium / Case Study",
     title: "Machado Plataformas",
+    niche: "implementos rodoviários",
     description:
       "Site institucional premium para uma empresa técnica de implementos rodoviários, com foco em percepção de valor, clareza comercial e presença digital mais profissional.",
     meta: {
@@ -173,6 +176,7 @@ export const cases: CaseProject[] = [
     eyebrow: "Landing Page / Projeto conceitual",
     concept: true,
     title: "Maison Étoile Interiors",
+    niche: "estúdio de interiores",
     description:
       "Landing page de alta conversão para um estúdio boutique de interiores de luxo em São Paulo — manifesto, portfólio e proposta numa única página cinematográfica.",
     meta: {
@@ -219,6 +223,7 @@ export const cases: CaseProject[] = [
     eyebrow: "Site Institucional / Projeto conceitual",
     concept: true,
     title: "Atelier Forma Viva",
+    niche: "atelier de arquitetura",
     description:
       "Site institucional multi-página para um atelier de arquitetura residencial em Santa Catarina — projetos, atelier e processo com navegação editorial e foco em luz e matéria.",
     meta: {
@@ -264,6 +269,7 @@ export const cases: CaseProject[] = [
     eyebrow: "Site Institucional / Projeto conceitual",
     concept: true,
     title: "Estúdio Monteiro",
+    niche: "escritório de arquitetura",
     description:
       "Site institucional para um escritório de arquitetura autoral em São Paulo — design editorial escuro, tipografia serifada e obras selecionadas com páginas de projeto dedicadas.",
     meta: {
