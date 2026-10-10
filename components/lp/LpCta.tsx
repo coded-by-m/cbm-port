@@ -2,16 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { waLink } from "@/lib/contact";
-import { trackLead } from "@/lib/analytics";
 import { messageWithCampaign, readCampaign } from "@/lib/campaign";
 import { PANCHANG, SURFACE } from "@/components/site/shared";
 
 /**
  * O único CTA da landing, em três tamanhos.
  *
- * Faz duas coisas que o link cru não faz: dispara o evento de conversão antes
- * de sair, e anexa a origem da campanha à mensagem — sem isso o lead chega
- * anônimo e não dá pra saber qual anúncio pagou por ele.
+ * Anexa a origem da campanha à mensagem — sem isso o lead chega anônimo e não
+ * dá pra saber qual anúncio pagou por ele. O evento de conversão sai pelo
+ * listener global do `Analytics`, com `source` como `location`.
  *
  * A leitura da URL acontece em `useEffect` de propósito: no servidor não há
  * `location`, e ler durante a renderização quebraria a hidratação.
@@ -46,7 +45,6 @@ export function LpCta({
       className="site-cta"
       data-cm-role="whatsapp"
       data-cm-id={source}
-      onClick={() => trackLead(source)}
       style={{
         display: "inline-flex",
         alignItems: "center",

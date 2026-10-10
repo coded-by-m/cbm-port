@@ -3,8 +3,7 @@ import type { CaseProject } from "@/types/case";
 export const cases: CaseProject[] = [
   {
     slug: "mj-engenharia",
-    eyebrow: "Landing Page / Projeto conceitual",
-    concept: true,
+    eyebrow: "Landing Page / Case Study",
     title: "MJ Engenharia",
     description:
       "Landing page de alta conversão para uma engenharia de prevenção contra incêndio em Santa Catarina — do dimensionamento ao carimbo de aprovação do CBMSC, numa narrativa técnica que gera contato qualificado.",
@@ -62,7 +61,8 @@ export const cases: CaseProject[] = [
   },
   {
     slug: "estudio-lentz",
-    eyebrow: "Site Institucional Imersivo / Case Study",
+    eyebrow: "Site Institucional Imersivo / Projeto conceitual",
+    concept: true,
     title: "Estúdio Lentz",
     description:
       "Site institucional imersivo para um escritório de arquitetura em Florianópolis — um canvas 3D fixo onde o scroll ergue a obra camada a camada, da planta ao espaço habitado.",

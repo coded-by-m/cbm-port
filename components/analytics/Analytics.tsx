@@ -8,6 +8,8 @@ import {
   META_PIXEL_ID,
   CONSENT_EVENT,
   getConsent,
+  contactKind,
+  trackContact,
   type ConsentValue,
 } from "@/lib/analytics";
 
@@ -43,6 +45,31 @@ export function Analytics() {
     window.gtag?.("event", "page_view", { page_path: pathname });
     window.fbq?.("track", "PageView");
   }, [pathname, consent]);
+
+  // Cliques de contato → GA4. Um listener só, em captura: pega todo link
+  // `wa.me`/`mailto:` sem cada botão ter que lembrar de chamar nada, e roda
+  // antes da navegação (o beacon sobrevive à saída da página).
+  useEffect(() => {
+    if (consent !== "granted") return;
+    const onClick = (e: MouseEvent) => {
+      if (e.type === "auxclick" && e.button !== 1) return;
+      const link = (e.target as Element | null)?.closest?.("a[href]");
+      if (!link) return;
+      const kind = contactKind(link.getAttribute("href") ?? "");
+      if (!kind) return;
+      const location =
+        link.closest("[data-cm-id]")?.getAttribute("data-cm-id") ??
+        link.closest("[data-cm-section]")?.getAttribute("data-cm-section") ??
+        "unknown";
+      trackContact(kind, location);
+    };
+    document.addEventListener("click", onClick, { capture: true });
+    document.addEventListener("auxclick", onClick, { capture: true });
+    return () => {
+      document.removeEventListener("click", onClick, { capture: true });
+      document.removeEventListener("auxclick", onClick, { capture: true });
+    };
+  }, [consent]);
 
   if (consent !== "granted") return null;
 

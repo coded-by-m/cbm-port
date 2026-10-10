@@ -8,6 +8,7 @@ import { CaseScreens } from "@/components/case/CaseScreens";
 import { CaseResponsive } from "@/components/case/CaseResponsive";
 import { CaseReturnCTA } from "@/components/case/CaseReturnCTA";
 import { CaseBackButton } from "@/components/case/CaseBackButton";
+import { TrackProjectView } from "@/components/case/TrackProjectView";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { OG, OG_SIZE, breadcrumbSchema, caseSchema, graph, webPageSchema } from "@/lib/seo";
 
@@ -114,6 +115,7 @@ export default function CasePage({
       data-cm-section="case-study"
       data-cm-id={project.slug} style={{ background: "#000F08", minHeight: "100vh" }}>
       <JsonLd data={schema} />
+      <TrackProjectView slug={project.slug} />
       <CaseBackButton />
       <CaseHero project={project} />
       <CaseOverview project={project} />

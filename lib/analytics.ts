@@ -33,21 +33,60 @@ export function setConsent(value: ConsentValue) {
 }
 
 /**
- * Dispara o evento de conversão antes de abrir o WhatsApp.
+ * Clique de contato → GA4 (+ Lead no Meta, se for WhatsApp).
+ *
+ * Chamado pelo listener global do `Analytics`, não por cada botão: qualquer
+ * link `wa.me`/`mailto:` do site dispara, inclusive os que ainda vão nascer.
+ * `location` é o `data-cm-id` do link (o mesmo que o Coded Insights lê), ou a
+ * seção onde ele está.
+ *
+ * O Coded Insights não passa por aqui: o tracker dele já captura esses cliques
+ * sozinho, sem consentimento (first-party, sem cookie). O GA4 e o Meta só
+ * existem depois do consentimento — sem ele `gtag`/`fbq` são `undefined`.
+ *
+ * `generate_lead` continua saindo junto do `whatsapp_click`: é o evento-chave
+ * que o GA4 já conhece, e trocar o nome zeraria o histórico.
  *
  * Não prova que a pessoa mandou a mensagem — prova que ela pediu o contato.
- * Ainda assim é muito melhor que deixar o Meta otimizar por "clique em link
- * de saída", que é o sinal que ele usaria sem isto.
- *
- * Silencioso sem consentimento: os scripts nem existem, então `gtag` e `fbq`
- * são `undefined` e a chamada apenas não acontece.
  */
-export function trackLead(source: string) {
+export function trackContact(kind: "whatsapp" | "email", location: string) {
   if (typeof window === "undefined") return;
   if (getConsent() !== "granted") return;
+  const params = { location, transport_type: "beacon" };
+  if (kind === "email") {
+    window.gtag?.("event", "email_click", params);
+    return;
+  }
+  window.gtag?.("event", "whatsapp_click", params);
   window.gtag?.("event", "generate_lead", {
     event_category: "contato",
-    event_label: source,
+    event_label: location,
+    transport_type: "beacon",
   });
-  window.fbq?.("track", "Lead", { content_name: source });
+  window.fbq?.("track", "Lead", { content_name: location });
+}
+
+/** O tipo de contato de um link, ou null se não for contato. */
+export function contactKind(href: string): "whatsapp" | "email" | null {
+  let url: URL;
+  try {
+    url = new URL(href, window.location.href);
+  } catch {
+    return null;
+  }
+  if (url.protocol === "mailto:") return "email";
+  if (url.protocol === "whatsapp:") return "whatsapp";
+  return /(^|\.)(wa\.me|whatsapp\.com)$/.test(url.hostname) ? "whatsapp" : null;
+}
+
+/**
+ * Abertura de um case. Vai pro GA4 (com consentimento) e pro Coded Insights
+ * como evento próprio — o nome precisa de separador (`project.view`), regra
+ * do tracker para eventos customizados.
+ */
+export function trackProjectView(slug: string) {
+  if (typeof window === "undefined") return;
+  window.codedInsights?.track("project.view", { element_id: slug });
+  if (getConsent() !== "granted") return;
+  window.gtag?.("event", "project_view", { project: slug });
 }
