@@ -19,6 +19,7 @@ const ACCENT = "#FB3640";
 
 const NAV_BASE = [
   { label: "Projetos", href: "/projetos", external: false },
+  { label: "Sobre", href: "/sobre", external: false },
   { label: "Laboratório", href: "/lab", external: false },
   { label: "Contato", href: waLink(), external: true, cmId: "footer-nav-whatsapp" },
   {
@@ -26,6 +27,13 @@ const NAV_BASE = [
     href: INSTAGRAM_URL,
     external: true,
   },
+];
+
+/** Páginas de serviço — links de texto pra busca e pra quem rola até o fim. */
+const SERVICE_LINKS = [
+  { href: "/landing-page", label: "Criação de landing page" },
+  { href: "/site-institucional", label: "Site institucional" },
+  { href: "/sites-para-arquitetura", label: "Sites para arquitetura" },
 ];
 
 /**
@@ -169,8 +177,27 @@ export default function Footer({
             ))}
           </nav>
 
-          {/* Coluna 3 — contato + atalhos */}
+          {/* Coluna 3 — serviços + contato */}
           <div className="flex flex-col gap-6" style={rise(240)}>
+            <nav aria-label="Serviços" className="flex flex-col gap-1.5">
+              <span
+                className="mb-1 text-[0.62rem] uppercase tracking-[0.3em] text-[#F5F2ED]/40"
+                style={{ fontFamily: SAT, fontWeight: 500 }}
+              >
+                Serviços
+              </span>
+              {SERVICE_LINKS.map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  data-cursor="triangle"
+                  className="text-[0.8rem] text-[#F5F2ED]/60 transition-colors hover:text-[#F5F2ED]"
+                  style={{ fontFamily: SAT, fontWeight: 400 }}
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
             <div
               className="flex flex-col gap-1.5 text-[0.8rem] text-[#F5F2ED]/60"
               style={{ fontFamily: SAT, fontWeight: 400 }}
@@ -196,7 +223,7 @@ export default function Footer({
                 {INSTAGRAM_HANDLE}
               </a>
               <span className="uppercase tracking-[0.2em] text-[#F5F2ED]/40">
-                Florianópolis · BR
+                Florianópolis - SC · BR
               </span>
             </div>
 

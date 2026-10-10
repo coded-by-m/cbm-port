@@ -1,0 +1,14 @@
+# Coded by M
+
+> Estúdio de web design e desenvolvimento em Florianópolis - SC, com atendimento remoto em todo o Brasil.
+> Landing pages, sites institucionais e aplicações web feitos do zero, com código próprio, da estratégia ao deploy. Contato pelo WhatsApp.
+
+## Páginas principais
+
+- [Início](https://www.codedbym.com/): apresentação do estúdio, projetos, serviços, processo e perguntas frequentes.
+- [Criação de landing page](https://www.codedbym.com/landing-page): o que está incluso, como funciona e perguntas frequentes sobre landing pages sob medida.
+- [Site institucional](https://www.codedbym.com/site-institucional): sites institucionais sob medida para empresas, de 5 a 12 páginas.
+- [Sites para arquitetura e interiores](https://www.codedbym.com/sites-para-arquitetura): sites e portfólios para escritórios de arquitetura e design de interiores.
+- [Projetos](https://www.codedbym.com/projetos): todos os cases publicados, com o endereço do site no ar. Projetos conceituais são identificados como tais.
+- [Sobre](https://www.codedbym.com/sobre): quem é o fundador, Matheus Mendes, e como o estúdio trabalha.
+- [A Experiência](https://www.codedbym.com/experiencia): demonstração interativa em WebGL do que o estúdio cria.

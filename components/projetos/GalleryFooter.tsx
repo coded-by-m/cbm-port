@@ -1,7 +1,22 @@
+import Link from "next/link";
 import { waLink } from "@/lib/contact";
+import { publishedPosts } from "@/data/blog";
 
-/** Rodapé CTA da vitrine. WhatsApp como único canal de contato. */
-export function GalleryFooter() {
+/** Links internos do rodapé: serviços, vitrine, sobre e blog (se houver artigo). */
+const LINKS = [
+  { href: "/landing-page", label: "Criação de landing page" },
+  { href: "/site-institucional", label: "Site institucional" },
+  { href: "/sites-para-arquitetura", label: "Sites para arquitetura" },
+  { href: "/projetos", label: "Projetos" },
+  { href: "/sobre", label: "Sobre" },
+  ...(publishedPosts().length ? [{ href: "/blog", label: "Blog" }] : []),
+];
+
+/**
+ * Rodapé CTA da vitrine e das páginas de serviço. WhatsApp como único canal
+ * de contato, e os serviços linkados — `current` omite a página em que se está.
+ */
+export function GalleryFooter({ current }: { current?: string }) {
   const waHref = waLink(
     "Olá! Vi o portfólio da Coded by M e gostaria de conversar sobre um projeto.",
   );
@@ -28,6 +43,26 @@ export function GalleryFooter() {
           </a>
         </div>
       </div>
+      <nav
+        aria-label="Serviços"
+        className="mx-auto flex max-w-6xl flex-col gap-3 border-t border-[#F5F2ED]/10 px-5 py-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8"
+      >
+        <span className="text-[0.62rem] uppercase tracking-[0.3em] text-[#F5F2ED]/40">
+          Serviços
+        </span>
+        {LINKS.filter((l) => l.href !== current).map((l) => (
+          <Link
+            key={l.href}
+            href={l.href}
+            className="text-[0.8rem] text-[#F5F2ED]/65 transition-colors hover:text-[#F5F2ED] focus-visible:text-[#F5F2ED]"
+          >
+            {l.label}
+          </Link>
+        ))}
+        <span className="text-[0.62rem] uppercase tracking-[0.2em] text-[#F5F2ED]/35 sm:ml-auto">
+          Coded by M · Florianópolis - SC
+        </span>
+      </nav>
     </footer>
   );
 }

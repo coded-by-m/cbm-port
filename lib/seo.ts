@@ -17,6 +17,7 @@ import { ABOUT } from "@/data/about";
 import { SERVICES } from "@/data/services";
 import { GITHUB_URL, INSTAGRAM_URL, WHATSAPP_DISPLAY } from "@/lib/contact";
 import type { CaseProject } from "@/types/case";
+import { faqAnswerText, isFilled, type FaqItem } from "@/data/servicePages";
 
 export const ORG_ID = `${SITE_URL}/#organization`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
@@ -25,9 +26,9 @@ export const FOUNDER_ID = `${SITE_URL}/#founder`;
 type Json = Record<string, unknown>;
 
 /** Título e descrição da home — também o padrão de quem não declara os seus. */
-export const HOME_TITLE = "Coded by M — Criação de sites e landing pages sob medida";
+export const HOME_TITLE = "Criação de sites e landing pages em Florianópolis · Coded by M";
 export const HOME_DESCRIPTION =
-  "Estúdio de web design em Florianópolis. Landing pages, sites institucionais e aplicações web feitos do zero, com código próprio — da estratégia ao deploy.";
+  "Estúdio de web design em Florianópolis. Landing pages e sites institucionais feitos do zero, com código próprio. Atendemos todo o Brasil — peça um orçamento.";
 
 /** Imagem social padrão por rota (geradas por scripts/build-og-images.py). */
 export const OG = {
@@ -64,6 +65,10 @@ export function organizationSchema(): Json {
       addressRegion: "SC",
       addressCountry: "BR",
     },
+    // O que o site diz no hero, no rodapé e nas páginas de serviço: o estúdio
+    // fica em Florianópolis e atende o Brasil inteiro, remoto.
+    areaServed: AREA_SERVED,
+    // priceRange: só se os preços forem publicados (ver SHOW_PRICES).
     founder: { "@id": FOUNDER_ID },
     sameAs: [INSTAGRAM_URL, GITHUB_URL],
     knowsAbout: [
@@ -180,6 +185,71 @@ export function caseSchema(project: CaseProject): Json {
     image: `${SITE_URL}${OG.case(project.slug)}`,
     mainEntityOfPage: { "@id": `${pageUrl}#webpage` },
     ...(project.stack?.length ? { keywords: project.stack.join(", ") } : {}),
+  };
+}
+
+const AREA_SERVED = [
+  { "@type": "City", name: "Florianópolis" },
+  { "@type": "Country", name: "Brasil" },
+];
+
+/** Um serviço oferecido pela organização (páginas de serviço). */
+export function serviceSchema(opts: {
+  path: string;
+  name: string;
+  description: string;
+}): Json {
+  const url = `${SITE_URL}${opts.path}`;
+  return {
+    "@type": "Service",
+    "@id": `${url}#service`,
+    name: opts.name,
+    description: opts.description,
+    url,
+    serviceType: opts.name,
+    provider: { "@id": ORG_ID },
+    areaServed: { "@type": "Country", name: "Brasil" },
+    mainEntityOfPage: { "@id": `${url}#webpage` },
+  };
+}
+
+/**
+ * FAQPage a partir das MESMAS perguntas que a página mostra. Rascunhos
+ * (PREENCHER) ficam fora aqui e na página — o filtro é o mesmo.
+ */
+export function faqPageSchema(path: string, items: FaqItem[]): Json {
+  const url = `${SITE_URL}${path === "/" ? "" : path}`;
+  return {
+    "@type": "FAQPage",
+    "@id": `${url}#faq`,
+    mainEntity: items.filter(isFilled).map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: faqAnswerText(f) },
+    })),
+  };
+}
+
+/** Um artigo do blog, assinado pelo fundador. */
+export function articleSchema(opts: {
+  path: string;
+  title: string;
+  description: string;
+  datePublished: string;
+  dateModified?: string;
+}): Json {
+  const url = `${SITE_URL}${opts.path}`;
+  return {
+    "@type": "Article",
+    "@id": `${url}#article`,
+    headline: opts.title,
+    description: opts.description,
+    datePublished: opts.datePublished,
+    dateModified: opts.dateModified ?? opts.datePublished,
+    inLanguage: "pt-BR",
+    author: { "@id": FOUNDER_ID },
+    publisher: { "@id": ORG_ID },
+    mainEntityOfPage: { "@id": `${url}#webpage` },
   };
 }
 

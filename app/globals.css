@@ -559,6 +559,14 @@ body:has(.site-home) {
   text-wrap: pretty;
 }
 
+.lp-faq > p a {
+  color: #f5f2ed;
+  text-decoration: underline;
+  text-decoration-color: #fb3640;
+  text-underline-offset: 3px;
+}
+.lp-faq > p a:hover { color: #fb3640; }
+
 /* Célula filtrada fora da vista. Esconder em vez de desmontar mantém o
    catálogo inteiro no HTML inicial. */
 .is-hidden { display: none; }
