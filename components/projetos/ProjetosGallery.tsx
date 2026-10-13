@@ -11,7 +11,7 @@ import { ProjetoGridCard } from "./ProjetoGridCard";
  * Grade de projetos.
  *
  * Uma lista única filtrada por chips, em vez das faixas por tipo de antes: com
- * seis projetos, agrupar criava faixas de um item só e a página lia como uma
+ * vários projetos, agrupar criava faixas de um item só e a página lia como uma
  * sequência de listas curtas em vez de um catálogo.
  *
  * O filtro esconde por CSS e não desmonta: as células continuam no HTML

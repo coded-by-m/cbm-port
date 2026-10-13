@@ -3,8 +3,7 @@ import type { CaseProject } from "@/types/case";
 export const cases: CaseProject[] = [
   {
     slug: "mj-engenharia",
-    eyebrow: "Landing Page / Projeto conceitual",
-    concept: true,
+    eyebrow: "Landing Page Premium / Case Study",
     title: "MJ Engenharia",
     description:
       "Landing page de alta conversão para uma engenharia de prevenção contra incêndio em Santa Catarina — do dimensionamento ao carimbo de aprovação do CBMSC, numa narrativa técnica que gera contato qualificado.",
@@ -120,6 +119,182 @@ export const cases: CaseProject[] = [
       top: "/cases/estudio-lentz/desktop-top.webp",
       mobile: "/cases/estudio-lentz/mobile-tall.webp",
       card: "/cases/estudio-lentz/card.webp",
+    },
+  },
+  {
+    slug: "valdete-costuras",
+    eyebrow: "Landing Page / Case Study",
+    title: "Valdete Costuras",
+    description:
+      "Landing page para um ateliê de costura em Palhoça — ajustes, consertos e uniformes com a voz de quem atende pessoalmente, do recado no WhatsApp à peça pronta.",
+    meta: {
+      cliente: "Valdete Costuras",
+      setor: "Costura / Ateliê",
+      tipo: "Landing Page",
+      ano: "2026",
+    },
+    type: "landing",
+    stack: [
+      "Next.js (App Router)",
+      "React",
+      "Tailwind CSS",
+      "Cormorant Garamond + Jost + Alex Brush",
+      "Vercel",
+    ],
+    heroImages: [
+      "/cases/valdete-costuras/hero-1.webp",
+      "/cases/valdete-costuras/hero-2.webp",
+      "/cases/valdete-costuras/hero-3.webp",
+    ],
+    sections: [
+      "/cases/valdete-costuras/section-01.webp",
+      "/cases/valdete-costuras/section-02.webp",
+      "/cases/valdete-costuras/section-03.webp",
+      "/cases/valdete-costuras/section-04.webp",
+    ],
+    overview: {
+      heading: "A peça no ponto certo",
+      body: [
+        "A Valdete costura há mais de trinta anos em Palhoça: bainha, zíper, ajuste, conserto e uniforme para empresa. O ofício já tinha reputação de quem indica pra quem precisa. A landing dá a esse atendimento um endereço — direto, próximo, com a cara de quem faz a peça.",
+        "A página organiza o pedido antes de a cliente sair de casa. O hero diz o ofício e a cidade; a grade (bainha, ajuste, zíper, conserto, botão, reforma) deixa o serviço óbvio; diferenciais, o caminho em três tempos e o bloco de uniformes separam a pessoa da empresa. Depoimentos, endereço na Reinoldo Alves e o horário fecham a confiança. O WhatsApp acompanha cada decisão.",
+        "Cormorant Garamond carrega o nome com a calma de um ateliê; Jost sustenta a leitura; Alex Brush assina a marca. O fundo quente mantém o tom de quem faz à mão, e o caminho até a mensagem continua curto.",
+      ],
+      challenge:
+        "Dar a um ateliê de bairro, com ofício real e atendimento pessoal, uma presença que explique o serviço, passe confiança e leve ao WhatsApp com a mesma proximidade do balcão.",
+    },
+    gallery: [],
+    mockups: {
+      desktop3d: "/cases/valdete-costuras/mockup-desktop-3d.webp",
+      mobile3d: "/cases/valdete-costuras/mockup-mobile-3d.webp",
+      browser: "/cases/valdete-costuras/mockup-browser.webp",
+      phone: "/cases/valdete-costuras/mockup-phone.webp",
+    },
+    palette: ["#fbf6f2", "#2a2422", "#6a4038", "#3a2a28"],
+    status: "published",
+    siteUrl: "www.valdetecosturas.com.br",
+    preview: {
+      desktop: "/cases/valdete-costuras/desktop-tall.webp",
+      top: "/cases/valdete-costuras/desktop-top.webp",
+      mobile: "/cases/valdete-costuras/mobile-tall.webp",
+      card: "/cases/valdete-costuras/card.webp",
+    },
+  },
+  {
+    slug: "stige",
+    eyebrow: "Site Institucional / Projeto conceitual",
+    concept: true,
+    title: "Stige",
+    description:
+      "Site institucional para uma empresa de escadas planejadas em Palhoça — geometria, material e processo numa página escura e técnica, pronta para receber a obra real.",
+    meta: {
+      cliente: "Stige",
+      setor: "Escadas planejadas",
+      tipo: "Site Institucional",
+      ano: "2026",
+    },
+    type: "institucional",
+    stack: [
+      "Next.js (App Router)",
+      "React",
+      "CSS Modules",
+      "Hanken Grotesk",
+      "Vercel",
+    ],
+    heroImages: [
+      "/cases/stige/hero-1.webp",
+      "/cases/stige/hero-2.webp",
+      "/cases/stige/hero-3.webp",
+    ],
+    sections: [
+      "/cases/stige/section-01.webp",
+      "/cases/stige/section-02.webp",
+      "/cases/stige/section-03.webp",
+      "/cases/stige/section-04.webp",
+    ],
+    overview: {
+      heading: "A escada como peça",
+      body: [
+        "A Stige projeta escadas sob medida em Palhoça e atende a Grande Florianópolis. O site conceitual trata a escada como arquitetura: o caminho entre dois pavimentos que pode definir o ambiente. A estrutura já está desenhada para o acervo real — obra, material e etapa — entrar no lugar certo.",
+        "O sistema é escuro e medido. O hero enuncia o ofício e a região; um manifesto curto muda o tom; a seleção mostra as geometrias (reta, helicoidal, espelho fechado); o processo vai da conversa inicial à finalização; concreto, metal, madeira e pedra entram como matéria. O fechamento pede o espaço.",
+        "Hanken Grotesk faz o papel inteiro — título, texto e rótulo — com o peso de um desenho técnico. Pouca cor, muita estrutura. Um institucional que já se comporta como o escritório, à espera das obras que vão ocupar os lugares marcados.",
+      ],
+      challenge:
+        "Dar forma à presença de uma empresa real de escadas planejadas enquanto o acervo ainda se fecha: uma página que comunique precisão e segurança, pronta para receber projeto, material e cidade de verdade.",
+    },
+    gallery: [],
+    mockups: {
+      desktop3d: "/cases/stige/mockup-desktop-3d.webp",
+      mobile3d: "/cases/stige/mockup-mobile-3d.webp",
+      browser: "/cases/stige/mockup-browser.webp",
+      phone: "/cases/stige/mockup-phone.webp",
+    },
+    palette: ["#f4f1ea", "#9aa3ae", "#2a2e34", "#8e99a6"],
+    status: "published",
+    siteUrl: "stige-rose.vercel.app",
+    preview: {
+      desktop: "/cases/stige/desktop-tall.webp",
+      top: "/cases/stige/desktop-top.webp",
+      mobile: "/cases/stige/mobile-tall.webp",
+      card: "/cases/stige/card.webp",
+    },
+  },
+  {
+    slug: "cafe-aroma",
+    eyebrow: "Landing Page / Projeto conceitual",
+    concept: true,
+    title: "Café Aroma",
+    description:
+      "Landing page para um café especial em São Paulo — do grão à assinatura, com cardápio, origem e clube numa página só, no tom de quem trata o café como ofício.",
+    meta: {
+      cliente: "Café Aroma",
+      setor: "Café especial",
+      tipo: "Landing Page",
+      ano: "2026",
+    },
+    type: "landing",
+    stack: [
+      "Next.js (App Router)",
+      "React",
+      "Tailwind CSS",
+      "Playfair Display + Inter",
+      "Vercel",
+    ],
+    heroImages: [
+      "/cases/cafe-aroma/hero-1.webp",
+      "/cases/cafe-aroma/hero-2.webp",
+      "/cases/cafe-aroma/hero-3.webp",
+    ],
+    sections: [
+      "/cases/cafe-aroma/section-01.webp",
+      "/cases/cafe-aroma/section-02.webp",
+      "/cases/cafe-aroma/section-03.webp",
+      "/cases/cafe-aroma/section-04.webp",
+    ],
+    overview: {
+      heading: "Do grão à xícara",
+      body: [
+        "O Café Aroma é um estudo de presença para um café especial: origem, torra e xícara no mesmo endereço, com o pedido e a assinatura ao alcance. A página condensa o que uma casa assim precisa mostrar antes da escolha — o que se bebe, de onde vem e como chega todo mês.",
+        "A descida é em capítulos. O hero fixa a promessa; os favoritos colocam espresso, cappuccino, cold brew e filtrado lado a lado; a história e o processo (fazenda, torra, controle, xícara) sustentam a origem; os planos do clube fecham a conversão no mesmo tom editorial.",
+        "Playfair Display dá o serifado de rótulo aos títulos; Inter segura o miúdo. A paleta quente — creme, café e o dourado da torra — mantém a página perto da xícara, e cada bloco termina num passo claro: ver o cardápio, assinar, pedir.",
+      ],
+      challenge:
+        "Reunir cardápio, origem e assinatura numa landing só, com a calma de um café especial e a clareza de quem precisa escolher um plano ou um pedido.",
+    },
+    gallery: [],
+    mockups: {
+      desktop3d: "/cases/cafe-aroma/mockup-desktop-3d.webp",
+      mobile3d: "/cases/cafe-aroma/mockup-mobile-3d.webp",
+      browser: "/cases/cafe-aroma/mockup-browser.webp",
+      phone: "/cases/cafe-aroma/mockup-phone.webp",
+    },
+    palette: ["#f7f1e6", "#1c120c", "#6b4a28", "#c6a15a"],
+    status: "published",
+    siteUrl: "cafearoma-one.vercel.app",
+    preview: {
+      desktop: "/cases/cafe-aroma/desktop-tall.webp",
+      top: "/cases/cafe-aroma/desktop-top.webp",
+      mobile: "/cases/cafe-aroma/mobile-tall.webp",
+      card: "/cases/cafe-aroma/card.webp",
     },
   },
   {

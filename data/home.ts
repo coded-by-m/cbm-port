@@ -32,7 +32,7 @@ export const SECTIONS = {
   projetos: {
     label: "Projetos",
     heading: "Projetos no ar, abertos pra conferir.",
-    sub: "Seis projetos entre 2025 e 2026 — dois para clientes e quatro conceituais, entre landing pages e sites institucionais para arquitetura, engenharia, interiores e indústria. Cada um com o endereço no ar.",
+    sub: "Nove projetos entre 2025 e 2026 — quatro para clientes e cinco conceituais, entre landing pages e sites institucionais para arquitetura, engenharia, interiores, costura, café e indústria. Cada um com o endereço no ar.",
   },
   servicos: {
     label: "Serviços",
