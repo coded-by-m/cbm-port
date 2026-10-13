@@ -5,7 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ProjetoGridCard } from "@/components/projetos/ProjetoGridCard";
 
 /**
- * Os 6 projetos publicados, na mesma célula que a vitrine `/projetos` usa —
+ * Os projetos publicados, na mesma célula que a vitrine `/projetos` usa —
  * numeral, thumbnail e texto lado a lado, em duas colunas.
  *
  * O card vem de `components/projetos` de propósito: home e vitrine dividindo
