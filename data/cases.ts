@@ -113,7 +113,7 @@ export const cases: CaseProject[] = [
     },
     palette: ["#e5e7eb", "#14160f", "#FB3640", "#3a3d34"],
     status: "published",
-    siteUrl: "estudiolentz.com.br",
+    siteUrl: "estudio-lentz.vercel.app",
     preview: {
       desktop: "/cases/estudio-lentz/desktop-tall.webp",
       top: "/cases/estudio-lentz/desktop-top.webp",
