@@ -619,7 +619,9 @@ body:has(.site-home) {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: clamp(96px, 12vh, 140px) clamp(24px, 5vw, 80px) clamp(72px, 10vh, 120px);
+  /* Nove linhas no índice: o respiro de quando eram seis empurrava o último
+     case e o "ver todos" para baixo da dobra num notebook. */
+  padding: clamp(76px, 8vh, 104px) clamp(24px, 5vw, 80px) clamp(32px, 4vh, 56px);
   pointer-events: none;
 }
 .pj-head,
@@ -633,7 +635,7 @@ body:has(.site-home) {
   display: flex;
   align-items: baseline;
   gap: 14px;
-  padding: 13px 0;
+  padding: 8px 0;
   border-bottom: 1px solid rgba(245, 242, 237, 0.1);
   color: #b4b0aa;
   text-decoration: none;

@@ -146,17 +146,20 @@ export function TriangleMark({
 export function SectionHead({
   heading,
   sub,
+  dense = false,
 }: {
   heading: string;
   sub?: string;
+  /** Título e apoio um pouco menores — a seção de projetos cabe 9 linhas na tela. */
+  dense?: boolean;
 }) {
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: 18,
-        marginBottom: "clamp(40px,5vh,60px)",
+        gap: dense ? 12 : 18,
+        marginBottom: dense ? "clamp(18px,2.4vh,28px)" : "clamp(40px,5vh,60px)",
       }}
     >
       <Reveal variant="wipe"><h2
@@ -165,7 +168,7 @@ export function SectionHead({
           maxWidth: "20ch",
           fontFamily: PANCHANG,
           fontWeight: 700,
-          fontSize: "clamp(30px,4vw,52px)",
+          fontSize: dense ? "clamp(28px,2.7vw,40px)" : "clamp(30px,4vw,52px)",
           letterSpacing: "-0.012em",
           lineHeight: 1.04,
           color: "#F5F2ED",
@@ -181,8 +184,8 @@ export function SectionHead({
             maxWidth: "60ch",
             fontFamily: SATOSHI,
             fontWeight: 400,
-            fontSize: "clamp(15px,1.4vw,17px)",
-            lineHeight: 1.7,
+            fontSize: dense ? "clamp(14px,1.15vw,15.5px)" : "clamp(15px,1.4vw,17px)",
+            lineHeight: dense ? 1.5 : 1.7,
             color: "#C8C4BE",
             textWrap: "pretty",
           }}
