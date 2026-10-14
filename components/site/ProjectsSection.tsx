@@ -6,7 +6,7 @@ import { SectionHead } from "./shared";
 import { ProjectsStage, type StageProject } from "./ProjectsStage";
 import type { DriftTile } from "./DriftWall";
 
-/** Recortes por projeto no muro. 6 projetos × 4 = 24 tiles em 5 colunas. */
+/** Recortes por projeto no muro. 9 projetos × 4 = 36 tiles em 5 colunas. */
 const SHOTS_PER_PROJECT = 4;
 
 const colorOf = (c: CaseProject) =>
@@ -32,7 +32,7 @@ function shotsOf(c: CaseProject) {
 /**
  * Tiles intercalados por projeto — o i-ésimo tile é do projeto `i % n`.
  * Como o muro distribui por `i % colunas`, vizinhos de uma mesma coluna ficam
- * a `colunas` posições de distância — com 6 projetos e 5 (ou 3) colunas,
+ * a `colunas` posições de distância — com 9 projetos e 5 (ou 3) colunas,
  * nunca no mesmo projeto.
  */
 function buildTiles(projects: CaseProject[]): DriftTile[] {
