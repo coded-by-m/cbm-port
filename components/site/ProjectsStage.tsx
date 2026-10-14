@@ -119,7 +119,7 @@ export function ProjectsStage({
               display: "inline-flex",
               alignItems: "center",
               gap: 10,
-              marginTop: "clamp(22px,3vh,32px)",
+              marginTop: "clamp(14px,2vh,22px)",
               fontFamily: PANCHANG,
               fontWeight: 600,
               fontSize: 10.5,

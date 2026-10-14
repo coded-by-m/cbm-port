@@ -39,6 +39,37 @@ const columnFactor = (index: number, variance: number) => {
 /** Abaixo disso o muro vira bloco empilhado: menos colunas, sem parallax. */
 const COMPACT_MQ = "(max-width: 700px)";
 
+function gcd(a: number, b: number): number {
+  let x = Math.abs(a);
+  let y = Math.abs(b);
+  while (y) {
+    const t = y;
+    y = x % y;
+    x = t;
+  }
+  return x;
+}
+
+/**
+ * Desktop fica em 5. No compacto o desenho pede 3, mas 3 e 9 têm divisor
+ * comum: cada coluna só repetiria três projetos (Valdete numa, Stige noutra).
+ * 2 é o mais próximo que ainda é coprimo com 9, então cada faixa percorre
+ * os nove. Com outra contagem que já é coprima, a preferência original fica.
+ */
+export function driftColumnCount(compact: boolean, projects: number): number {
+  const preferred = compact ? 3 : 5;
+  if (projects <= 1) return 1;
+  const count = Math.min(preferred, projects);
+  if (gcd(count, projects) === 1) return count;
+  const candidates = compact ? [2, 4] : [4, 6, 7, 3];
+  for (const candidate of candidates) {
+    if (candidate >= 1 && candidate <= projects && gcd(candidate, projects) === 1) {
+      return candidate;
+    }
+  }
+  return count;
+}
+
 export function DriftWall({
   tiles,
   highlight = null,
@@ -122,7 +153,11 @@ export function DriftWall({
     return () => io.disconnect();
   }, []);
 
-  const columns = compact ? 3 : 5;
+  const projectCount = useMemo(
+    () => new Set(tiles.map((t) => t.slug)).size,
+    [tiles],
+  );
+  const columns = driftColumnCount(compact, projectCount);
   // O tile acompanha a largura do muro: fixo em px, 5 colunas de 200px
   // sobram num monitor largo e estouram num notebook.
   const tileW = Math.round(
