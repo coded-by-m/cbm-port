@@ -35,12 +35,12 @@ export function generateStaticParams() {
 type Published = NonNullable<ReturnType<typeof getPublishedCase>>;
 
 /**
- * "[Título] — [tipo] para [nicho]", e o template do layout fecha com
- * "· Coded by M". Ex.: "Machado Plataformas — Site Institucional para
- * implementos rodoviários". Conceito leva "conceitual" logo após o tipo,
- * sem a palavra "case", que sugere cliente.
+ * Título da aba, sem o sufixo — o template do layout fecha com
+ * "· Coded by M". `seoTitle` encurta o que a fórmula montaria. Sem ele,
+ * conceito ainda leva "conceitual" (e a description já avisa que é conceito).
  */
 function caseTitle(project: Published) {
+  if (project.seoTitle) return project.seoTitle;
   const kind = project.concept ? `${project.meta.tipo} conceitual` : project.meta.tipo;
   return project.niche
     ? `${project.title} — ${kind} para ${project.niche}`

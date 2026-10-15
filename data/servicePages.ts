@@ -84,7 +84,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     serviceName: "Criação de landing page sob medida",
     meta: {
       // Sem sufixo: o `template` do layout raiz acrescenta "· Coded by M".
-      title: "Landing page sob medida · Criação profissional",
+      title: "Landing page profissional em Florianópolis",
       description:
         "Landing pages feitas do zero, rápidas e focadas em conversão. Estúdio em Florianópolis, atendimento em todo o Brasil. Peça seu orçamento pelo WhatsApp.",
     },
@@ -127,7 +127,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     label: "Site institucional",
     serviceName: "Criação de site institucional sob medida",
     meta: {
-      title: "Site institucional para empresas · Sob medida",
+      title: "Criação de site institucional sob medida",
       description:
         "Sites institucionais exclusivos, rápidos e prontos para o Google. Criação sob medida em Florianópolis, atendimento em todo o Brasil. Solicite um orçamento.",
     },

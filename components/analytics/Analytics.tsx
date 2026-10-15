@@ -10,6 +10,7 @@ import {
   getConsent,
   contactKind,
   trackContact,
+  trackEvent,
   type ConsentValue,
 } from "@/lib/analytics";
 
@@ -46,11 +47,14 @@ export function Analytics() {
     window.fbq?.("track", "PageView");
   }, [pathname, consent]);
 
-  // Cliques de contato → GA4. Um listener só, em captura: pega todo link
-  // `wa.me`/`mailto:` sem cada botão ter que lembrar de chamar nada, e roda
-  // antes da navegação (o beacon sobrevive à saída da página).
+  // Contato e formulário → Coded Insights sempre (first-party, sem cookie).
+  // GA4/Meta continuam atrás do consentimento, dentro de `trackEvent`.
+  //
+  // O listener fica em `window` na captura: roda antes do autocapture do
+  // tracker (que escuta `document`). `stopPropagation` evita o evento em
+  // dobro. O default do link segue — a navegação não é cancelada. Se o
+  // tracker ainda não carregou, o clique segue e o autocapture cobre.
   useEffect(() => {
-    if (consent !== "granted") return;
     const onClick = (e: MouseEvent) => {
       if (e.type === "auxclick" && e.button !== 1) return;
       const link = (e.target as Element | null)?.closest?.("a[href]");
@@ -58,17 +62,54 @@ export function Analytics() {
       const kind = contactKind(link.getAttribute("href") ?? "");
       if (!kind) return;
       const location =
-        link.closest("[data-cm-id]")?.getAttribute("data-cm-id") ??
+        link.getAttribute("data-cm-id") ??
         link.closest("[data-cm-section]")?.getAttribute("data-cm-section") ??
         "unknown";
-      trackContact(kind, location);
+      const section =
+        link.closest("[data-cm-section]")?.getAttribute("data-cm-section") ?? undefined;
+      trackContact(kind, location, section);
+      if (window.__codedInsightsInternals?.emit) e.stopPropagation();
     };
-    document.addEventListener("click", onClick, { capture: true });
-    document.addEventListener("auxclick", onClick, { capture: true });
+    const onSubmit = (e: Event) => {
+      const form = e.target;
+      if (!(form instanceof HTMLFormElement)) return;
+      if (form.getAttribute("role") === "search" || form.querySelector('input[type="password"]')) {
+        return;
+      }
+      trackEvent("form_submit", {
+        form_id: form.getAttribute("data-cm-id") || form.id || form.getAttribute("name") || undefined,
+        form_role: form.getAttribute("data-cm-role") || undefined,
+        section: form.closest("[data-cm-section]")?.getAttribute("data-cm-section") || undefined,
+      });
+      if (window.__codedInsightsInternals?.emit) e.stopPropagation();
+    };
+    window.addEventListener("click", onClick, true);
+    window.addEventListener("auxclick", onClick, true);
+    window.addEventListener("submit", onSubmit, true);
     return () => {
-      document.removeEventListener("click", onClick, { capture: true });
-      document.removeEventListener("auxclick", onClick, { capture: true });
+      window.removeEventListener("click", onClick, true);
+      window.removeEventListener("auxclick", onClick, true);
+      window.removeEventListener("submit", onSubmit, true);
     };
+  }, []);
+
+  // `?debug_mode=true` liga o DebugView do GA4 depois do consentimento,
+  // sem mudar o HTML do servidor. O gtag chega depois do script, então
+  // espera ele aparecer.
+  useEffect(() => {
+    if (consent !== "granted") return;
+    if (new URLSearchParams(window.location.search).get("debug_mode") !== "true") return;
+    let tries = 0;
+    const id = window.setInterval(() => {
+      tries += 1;
+      if (window.gtag) {
+        window.gtag("config", GA_ID, { debug_mode: true });
+        window.clearInterval(id);
+      } else if (tries > 20) {
+        window.clearInterval(id);
+      }
+    }, 250);
+    return () => window.clearInterval(id);
   }, [consent]);
 
   if (consent !== "granted") return null;

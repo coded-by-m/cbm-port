@@ -197,10 +197,11 @@ export function Hero() {
                   style={{
                     display: "block",
                     maxWidth: "26ch",
-                    /* Em do PRÓPRIO corpo (0.2em do bloco), então o número é
-                       grande de propósito e encolhe junto com a marca. */
+                    /* Em do corpo da marca (0.2em), com piso de 14px: em 390px
+                       o 0.2em caía para ~10,6px. No desktop o 0.2em já passa
+                       de 14px, então o piso não muda a marca grande. */
                     margin: "1.2em 0 0",
-                    fontSize: "0.2em",
+                    fontSize: "max(0.2em, 14px)",
                     fontWeight: 700,
                     letterSpacing: "0.01em",
                     lineHeight: 1.2,

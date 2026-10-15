@@ -21,7 +21,7 @@ const NAV_BASE = [
   { label: "Projetos", href: "/projetos", external: false },
   { label: "Sobre", href: "/sobre", external: false },
   { label: "Laboratório", href: "/lab", external: false },
-  { label: "Contato", href: waLink(), external: true, cmId: "footer-nav-whatsapp" },
+  { label: "Contato", href: waLink(), external: true, cmId: "footer-nav-whatsapp", cmRole: "whatsapp" },
   {
     label: "Instagram",
     href: INSTAGRAM_URL,
@@ -161,6 +161,7 @@ export default function Footer({
                 target={item.external ? "_blank" : undefined}
                 rel={item.external ? "noopener noreferrer" : undefined}
                 data-cm-id={"cmId" in item ? item.cmId : undefined}
+                data-cm-role={"cmRole" in item ? item.cmRole : undefined}
                 data-cursor="triangle"
                 className="group flex items-center justify-between border-b border-[#F5F2ED]/10 py-3 text-[0.95rem] text-[#F5F2ED]/70 transition-colors hover:text-[#F5F2ED]"
                 style={{ fontFamily: PAN, fontWeight: 500 }}

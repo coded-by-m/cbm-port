@@ -40,6 +40,11 @@ export interface CaseProject {
    * para [niche]". Ex.: "escritório de arquitetura".
    */
   niche?: string;
+  /**
+   * Título da aba, sem o sufixo "· Coded by M" (o template do layout
+   * acrescenta). Quando omitido, o título sai de `title` + tipo + niche.
+   */
+  seoTitle?: string;
   /** Resumo curto (1-2 frases) usado no card de hover na Paisagem. */
   description: string;
   meta: CaseMeta;
