@@ -48,7 +48,7 @@ function LogoMarkSvg({ size = 16, stroke = 12 }) {
 const SOCIALS = [
   { label: "Instagram", href: INSTAGRAM_URL },
   { label: "GitHub", href: GITHUB_URL },
-  { label: "WhatsApp", href: WA, cmId: "menu-social-whatsapp" },
+  { label: "WhatsApp", href: WA, cmId: "menu-social-whatsapp", cmRole: "whatsapp" },
 ];
 
 /**
@@ -488,6 +488,7 @@ export function SiteHeader() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-cm-id={"cmId" in s ? s.cmId : undefined}
+                  data-cm-role={"cmRole" in s ? s.cmRole : undefined}
                   className="site-social"
                   style={{
                     display: "inline-flex",

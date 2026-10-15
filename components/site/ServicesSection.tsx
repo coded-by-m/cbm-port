@@ -64,7 +64,12 @@ export function ServicesSection() {
                 textWrap: "pretty",
               }}
             >
-              {SECTIONS.servicos.sub}
+              {SECTIONS.servicos.sub}{" "}
+              Para uma campanha, o caminho é uma{" "}
+              <Link href="/landing-page" className="site-inline-link">
+                landing page em Florianópolis
+              </Link>
+              .
             </p>
           </Reveal>
         </div>

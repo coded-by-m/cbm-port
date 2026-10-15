@@ -6,6 +6,7 @@ export const cases: CaseProject[] = [
     eyebrow: "Landing Page / Case Study",
     title: "MJ Engenharia",
     niche: "engenharia de prevenção contra incêndio",
+    seoTitle: "MJ Engenharia — Landing Page para prevenção de incêndio",
     description:
       "Landing page de alta conversão para uma engenharia de prevenção contra incêndio em Santa Catarina — do dimensionamento ao carimbo de aprovação do CBMSC, numa narrativa técnica que gera contato qualificado.",
     meta: {
@@ -66,6 +67,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Estúdio Lentz",
     niche: "escritório de arquitetura",
+    seoTitle: "Estúdio Lentz — Site Institucional para arquitetura",
     description:
       "Site institucional imersivo para um escritório de arquitetura em Florianópolis — um canvas 3D fixo onde o scroll ergue a obra camada a camada, da planta ao espaço habitado.",
     meta: {
@@ -189,6 +191,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Stige",
     niche: "empresa de escadas planejadas",
+    seoTitle: "Stige — Site Institucional para escadas planejadas",
     description:
       "Site institucional para uma empresa de escadas planejadas em Palhoça — geometria, material e processo numa página escura e técnica, pronta para receber a obra real.",
     meta: {
@@ -249,6 +252,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Nord Arch",
     niche: "escritório de arquitetura",
+    seoTitle: "Nord Arch — Site Institucional para arquitetura",
     description:
       "Estudo conceitual para um escritório de arquitetura em Santa Catarina: obras em tela cheia, tipografia técnica e um arquivo de projetos numerado (NA-01…), do litoral à serra.",
     meta: {
@@ -309,6 +313,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Café Aroma",
     niche: "café especial",
+    seoTitle: "Café Aroma — Landing Page para café especial",
     description:
       "Landing page para um café especial em São Paulo — do grão à assinatura, com cardápio, origem e clube numa página só, no tom de quem trata o café como ofício.",
     meta: {
@@ -368,6 +373,7 @@ export const cases: CaseProject[] = [
     eyebrow: "Web Design Premium / Case Study",
     title: "Machado Plataformas",
     niche: "implementos rodoviários",
+    seoTitle: "Machado Plataformas — Site Institucional",
     description:
       "Site institucional premium para uma empresa técnica de implementos rodoviários, com foco em percepção de valor, clareza comercial e presença digital mais profissional.",
     meta: {
@@ -416,6 +422,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Maison Étoile Interiors",
     niche: "estúdio de interiores",
+    seoTitle: "Maison Étoile — Landing Page para interiores",
     description:
       "Landing page de alta conversão para um estúdio boutique de interiores de luxo em São Paulo — manifesto, portfólio e proposta numa única página cinematográfica.",
     meta: {
@@ -463,6 +470,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Atelier Forma Viva",
     niche: "atelier de arquitetura",
+    seoTitle: "Atelier Forma Viva — Site Institucional de arquitetura",
     description:
       "Site institucional multi-página para um atelier de arquitetura residencial em Santa Catarina — projetos, atelier e processo com navegação editorial e foco em luz e matéria.",
     meta: {
@@ -509,6 +517,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Estúdio Monteiro",
     niche: "escritório de arquitetura",
+    seoTitle: "Estúdio Monteiro — Site Institucional para arquitetura",
     description:
       "Site institucional para um escritório de arquitetura autoral em São Paulo — design editorial escuro, tipografia serifada e obras selecionadas com páginas de projeto dedicadas.",
     meta: {

@@ -80,6 +80,20 @@ body:has(.site-home) {
 .site-link-underline:hover::after { transform: scaleX(1); }
 .site-link-underline:hover { color: #fb3640; }
 
+/* Link no meio de um parágrafo (bloco claro da home). O vermelho escuro
+   segura contraste sobre #F5F2ED; o #FB3640 da marca não segura. */
+.site-inline-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: #c42030;
+  text-underline-offset: 3px;
+}
+.site-inline-link:hover { color: #c42030; }
+.site-inline-link:focus-visible {
+  outline: 2px solid #c42030;
+  outline-offset: 2px;
+}
+
 /* Rodape e redes: mesmo gesto, sem o vermelho. */
 .site-footer-link,
 .site-social { position: relative; }
