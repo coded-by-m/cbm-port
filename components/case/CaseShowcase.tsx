@@ -69,6 +69,24 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
             )}
           </div>
         </Reveal>
+
+        {project.video && (
+          <Reveal delay={180}>
+            <figure className="mx-auto mt-16 w-full max-w-[920px] sm:mt-20">
+              <video
+                src={project.video}
+                poster={project.heroImages[0]}
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full bg-[#070B08]"
+              />
+              <figcaption className="mt-3 font-body text-[11px] uppercase tracking-[0.22em] text-cbm-gray-600">
+                Vitrine
+              </figcaption>
+            </figure>
+          </Reveal>
+        )}
       </div>
     </section>
   );

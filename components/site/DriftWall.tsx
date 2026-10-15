@@ -11,6 +11,7 @@ import {
   useState,
   type CSSProperties,
 } from "react";
+import { driftColumnCount } from "@/lib/driftColumns";
 
 /**
  * Muro de recortes à deriva — colunas de imagens num plano 3D inclinado,
@@ -38,37 +39,6 @@ const columnFactor = (index: number, variance: number) => {
 
 /** Abaixo disso o muro vira bloco empilhado: menos colunas, sem parallax. */
 const COMPACT_MQ = "(max-width: 700px)";
-
-function gcd(a: number, b: number): number {
-  let x = Math.abs(a);
-  let y = Math.abs(b);
-  while (y) {
-    const t = y;
-    y = x % y;
-    x = t;
-  }
-  return x;
-}
-
-/**
- * Desktop fica em 5. No compacto o desenho pede 3, mas 3 e 9 têm divisor
- * comum: cada coluna só repetiria três projetos (Valdete numa, Stige noutra).
- * 2 é o mais próximo que ainda é coprimo com 9, então cada faixa percorre
- * os nove. Com outra contagem que já é coprima, a preferência original fica.
- */
-export function driftColumnCount(compact: boolean, projects: number): number {
-  const preferred = compact ? 3 : 5;
-  if (projects <= 1) return 1;
-  const count = Math.min(preferred, projects);
-  if (gcd(count, projects) === 1) return count;
-  const candidates = compact ? [2, 4] : [4, 6, 7, 3];
-  for (const candidate of candidates) {
-    if (candidate >= 1 && candidate <= projects && gcd(candidate, projects) === 1) {
-      return candidate;
-    }
-  }
-  return count;
-}
 
 export function DriftWall({
   tiles,

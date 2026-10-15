@@ -37,7 +37,7 @@ export const SECTIONS = {
   projetos: {
     label: "Projetos",
     heading: "Projetos no ar, abertos pra conferir.",
-    sub: "Nove projetos entre 2025 e 2026 — três para clientes e seis conceituais, entre landing pages e sites institucionais para arquitetura, engenharia, interiores, costura, café e indústria. Cada um com o endereço no ar.",
+    sub: "Dez projetos entre 2025 e 2026 — três para clientes e sete conceituais, entre landing pages e sites institucionais para arquitetura, engenharia, interiores, costura, café e indústria. Cada um com o endereço no ar.",
   },
   servicos: {
     label: "Serviços",

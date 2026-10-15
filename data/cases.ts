@@ -244,6 +244,66 @@ export const cases: CaseProject[] = [
     },
   },
   {
+    slug: "nord-arch",
+    eyebrow: "Site Institucional / Projeto conceitual",
+    concept: true,
+    title: "Nord Arch",
+    niche: "escritório de arquitetura",
+    description:
+      "Estudo conceitual para um escritório de arquitetura em Santa Catarina: obras em tela cheia, tipografia técnica e um arquivo de projetos numerado (NA-01…), do litoral à serra.",
+    meta: {
+      cliente: "Nord Arch",
+      setor: "Arquitetura",
+      tipo: "Site Institucional",
+      ano: "2026",
+    },
+    type: "institucional",
+    stack: [
+      "Vite",
+      "React + TypeScript",
+      "Michroma + Aktiv Grotesk + Eurostile",
+      "Vercel",
+    ],
+    heroImages: [
+      "/cases/nord-arch/hero-1.webp",
+      "/cases/nord-arch/hero-2.webp",
+      "/cases/nord-arch/hero-3.webp",
+    ],
+    sections: [
+      "/cases/nord-arch/section-01.webp",
+      "/cases/nord-arch/section-02.webp",
+      "/cases/nord-arch/section-03.webp",
+      "/cases/nord-arch/section-04.webp",
+    ],
+    overview: {
+      heading: "Do litoral à serra",
+      body: [
+        "A Nord Arch é um estudo de presença para um escritório de arquitetura em Santa Catarina — do litoral à serra, sem cliente contratante. O site trata cada obra como peça em tela cheia e guarda o conjunto num arquivo numerado (NA-01…), pronto para a obra real entrar no lugar marcado.",
+        "A descida é técnica e curta. O hero enuncia o ofício e o território; os projetos abrem em tela cheia; o arquivo numera as obras; o estúdio e o contato fecham o caminho. A mesma estrutura serve o desktop e o celular — a obra continua inteira, só muda o enquadramento.",
+        "Michroma, Aktiv Grotesk e Eurostile fazem o papel de desenho técnico: título, texto e rótulo. Pouca cor, muita estrutura. Um institucional que já se comporta como o escritório, à espera das obras que vão ocupar os números.",
+      ],
+      challenge:
+        "Dar forma à presença de um escritório de arquitetura entre o litoral e a serra — obras em tela cheia e um arquivo numerado — sem apresentar o estudo como entrega de cliente.",
+    },
+    gallery: [],
+    mockups: {
+      desktop3d: "/cases/nord-arch/mockup-desktop-3d.webp",
+      browser: "/cases/nord-arch/mockup-browser.webp",
+      phone: "/cases/nord-arch/mockup-phone.webp",
+    },
+    palette: ["#f3f1ec", "#141614", "#8a8478", "#c5bba8"],
+    status: "published",
+    siteUrl: "nord-arch.vercel.app",
+    video: "/cases/nord-arch/vitrine.mp4",
+    reel: "/cases/nord-arch/reel.mp4",
+    preview: {
+      desktop: "/cases/nord-arch/desktop-tall.webp",
+      top: "/cases/nord-arch/desktop-top.webp",
+      mobile: "/cases/nord-arch/mobile-tall.webp",
+      card: "/cases/nord-arch/card.webp",
+    },
+  },
+  {
     slug: "cafe-aroma",
     eyebrow: "Landing Page / Projeto conceitual",
     concept: true,
