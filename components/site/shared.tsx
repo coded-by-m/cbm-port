@@ -150,7 +150,7 @@ export function SectionHead({
 }: {
   heading: string;
   sub?: string;
-  /** Título e apoio um pouco menores — a seção de projetos cabe 9 linhas na tela. */
+  /** Título e apoio um pouco menores — a seção de projetos cabe 10 linhas na tela. */
   dense?: boolean;
 }) {
   return (

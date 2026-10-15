@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import type { CaseProject } from "@/types/case";
 import { Reveal } from "@/components/ui/Reveal";
 import { PhoneFrame } from "@/components/case/PhoneFrame";
@@ -7,7 +10,16 @@ import { LogoMark } from "@/components/ui/LogoMark";
 /** Seção que mostra a versão mobile no PhoneFrame (scroll interativo do mobile-tall). */
 export function CaseResponsive({ project }: { project: CaseProject }) {
   const mobile = project.preview?.mobile;
-  if (!mobile) return null;
+  const reel = project.reel;
+  const [playReel, setPlayReel] = useState(Boolean(reel));
+
+  useEffect(() => {
+    if (!reel) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setPlayReel(!reduce);
+  }, [reel]);
+
+  if (!mobile && !reel) return null;
 
   return (
     <section
@@ -41,17 +53,29 @@ export function CaseResponsive({ project }: { project: CaseProject }) {
           <div className="w-[230px] sm:w-[260px]">
             <PhoneFrame>
               <div className="aspect-[9/16] w-full">
-                <CaseFrameScroll
-                  src={mobile}
-                  alt={`${project.title} — site mobile`}
-                  autoDurationSec={28}
-                  lazy
-                  fallback={
-                    <div className="flex h-full w-full items-center justify-center bg-[#070B08] opacity-20">
-                      <LogoMark size={32} />
-                    </div>
-                  }
-                />
+                {playReel && reel ? (
+                  <video
+                    src={reel}
+                    poster={mobile}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <CaseFrameScroll
+                    src={mobile}
+                    alt={`${project.title} — site mobile`}
+                    autoDurationSec={28}
+                    lazy
+                    fallback={
+                      <div className="flex h-full w-full items-center justify-center bg-[#070B08] opacity-20">
+                        <LogoMark size={32} />
+                      </div>
+                    }
+                  />
+                )}
               </div>
             </PhoneFrame>
           </div>

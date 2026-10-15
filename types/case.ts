@@ -103,4 +103,14 @@ export interface CaseProject {
   mockups?: CaseMockups;
   /** Cores da marca do site capturado — tingem o gradiente do CaseShowcase. */
   palette?: string[];
+  /**
+   * Vídeo vitrine (mp4), paisagem. Quando presente, entra no showcase
+   * depois dos mockups. Conceito sem vídeo omite o bloco.
+   */
+  video?: string;
+  /**
+   * Reel vertical (mp4). Quando presente, o phone frame da seção
+   * responsiva toca ele no lugar do scroll da imagem.
+   */
+  reel?: string;
 }
