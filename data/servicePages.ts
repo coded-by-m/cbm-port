@@ -127,7 +127,8 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     label: "Site institucional",
     serviceName: "Criação de site institucional sob medida",
     meta: {
-      title: "Criação de site institucional sob medida",
+      // Sem sufixo: o `template` do layout raiz acrescenta "· Coded by M".
+      title: "Criação de site institucional em Florianópolis",
       description:
         "Sites institucionais exclusivos, rápidos e prontos para o Google. Criação sob medida em Florianópolis, atendimento em todo o Brasil. Solicite um orçamento.",
     },
