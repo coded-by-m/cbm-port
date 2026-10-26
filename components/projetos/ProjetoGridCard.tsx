@@ -116,8 +116,8 @@ export function ProjetoGridCard({
       {/* Texto. Base de 160px: abaixo disso (celular) desce pra baixo
           da miniatura em vez de espremer numa coluna ilegível. */}
       <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 0, flex: "1 1 160px" }}>
-        {/* Quebra em vez de vazar: "Conceito · 2026" não encolhe, e ao lado de
-            um título longo não cabe na coluna de texto. */}
+        {/* Quebra em vez de vazar: o rótulo não encolhe, e ao lado de um
+            título longo não cabe na coluna de texto. */}
         <div
           style={{
             display: "flex",
@@ -127,9 +127,8 @@ export function ProjetoGridCard({
             gap: "4px 12px",
           }}
         >
-          {/* h2: na /projetos cada card é uma seção do catálogo, logo
-              abaixo do h1. */}
-          <h2
+          {/* h3: o catálogo tem H2 de grupo (clientes / conceituais). */}
+          <h3
             style={{
               margin: 0,
               fontFamily: PANCHANG,
@@ -144,18 +143,47 @@ export function ProjetoGridCard({
             }}
           >
             {project.title}
-          </h2>
+          </h3>
           <span
             style={{
+              display: "inline-flex",
+              flexWrap: "wrap",
+              alignItems: "baseline",
+              gap: "6px 8px",
               flex: "none",
-              fontFamily: SATOSHI,
-              fontWeight: 400,
-              fontSize: 10,
-              letterSpacing: "0.18em",
-              color: "#6E6B66",
+              maxWidth: "100%",
             }}
           >
-            {project.concept ? `Conceito · ${project.meta.ano}` : project.meta.ano}
+            {project.concept && (
+              /* Mesma borda e o mesmo texto do chip inativo do filtro,
+                 em corpo de legenda. Rótulo, não controle — sem raio. */
+              <span
+                style={{
+                  border: "1px solid rgba(245,242,237,0.15)",
+                  padding: "3px 7px",
+                  fontFamily: SATOSHI,
+                  fontWeight: 500,
+                  fontSize: 10,
+                  letterSpacing: "0.18em",
+                  lineHeight: 1.4,
+                  textTransform: "uppercase",
+                  color: "rgba(245,242,237,0.55)",
+                }}
+              >
+                conceitual
+              </span>
+            )}
+            <span
+              style={{
+                fontFamily: SATOSHI,
+                fontWeight: 400,
+                fontSize: 10,
+                letterSpacing: "0.18em",
+                color: "#6E6B66",
+              }}
+            >
+              {project.meta.ano}
+            </span>
           </span>
         </div>
 

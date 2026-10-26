@@ -573,13 +573,19 @@ body:has(.site-home) {
   text-wrap: pretty;
 }
 
-.lp-faq > p a {
+.lp-faq > p a,
+.projetos-text-link {
   color: #f5f2ed;
   text-decoration: underline;
   text-decoration-color: #fb3640;
   text-underline-offset: 3px;
 }
-.lp-faq > p a:hover { color: #fb3640; }
+.lp-faq > p a:hover,
+.projetos-text-link:hover { color: #fb3640; }
+.projetos-text-link:focus-visible {
+  outline: 2px solid #fb3640;
+  outline-offset: 4px;
+}
 
 /* Célula filtrada fora da vista. Esconder em vez de desmontar mantém o
    catálogo inteiro no HTML inicial. */

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getPublishedProjects } from "@/lib/galleryData";
+import { getPublishedProjects, portfolioGroups } from "@/lib/galleryData";
+import { PROJETOS_INTRO, PROJETOS_TITLE } from "@/data/projetos";
 import { SURFACE } from "@/components/site/shared";
 import { GalleryHeader } from "@/components/projetos/GalleryHeader";
 import { GalleryFooter } from "@/components/projetos/GalleryFooter";
@@ -8,9 +9,8 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { OG, OG_SIZE, breadcrumbSchema, graph, webPageSchema } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "Projetos de sites e landing pages";
-const DESCRIPTION =
-  "Sites institucionais e landing pages da Coded by M — projetos para clientes e conceituais em arquitetura, engenharia, interiores e indústria, cada um com case e endereço no ar.";
+const TITLE = PROJETOS_TITLE;
+const DESCRIPTION = PROJETOS_INTRO;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 };
 
 export default function ProjetosPage() {
-  const projects = getPublishedProjects();
+  const projects = portfolioGroups(getPublishedProjects()).ordered;
   const schema = graph(
     {
       ...webPageSchema({

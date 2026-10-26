@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cases } from "@/data/cases";
 import { PROCESS_STEPS } from "@/data/process";
-import { SHOW_PRICES, type ServicePageConfig } from "@/data/servicePages";
+import type { ServicePageConfig } from "@/data/servicePages";
 import { Reveal } from "@/components/ui/Reveal";
 import { Diamond, PANCHANG, SATOSHI, SUNKEN_RGB, SURFACE } from "@/components/site/shared";
 import { GalleryHeader } from "@/components/projetos/GalleryHeader";
@@ -132,7 +132,14 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
 
   const schema = graph(
     webPageSchema({ path, name: page.meta.title, description: page.meta.description }),
-    serviceSchema({ path, name: page.serviceName, description: page.meta.description }),
+    serviceSchema({
+      path,
+      name: page.serviceName,
+      description: page.meta.description,
+      offer: page.investimento
+        ? { price: page.investimento.price, description: page.investimento.body }
+        : undefined,
+    }),
     faqPageSchema(path, page.faq),
     breadcrumbSchema([
       { name: "Início", path: "/" },
@@ -228,11 +235,11 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
         <section style={{ ...BAND, background: SURFACE.raised }}>
           <div style={WRAP}>
             <Reveal variant="wipe">
-              <h2 style={H2}>Prazo e investimento</h2>
+              <h2 style={H2}>{page.investimento ? "Investimento" : "Prazo e investimento"}</h2>
             </Reveal>
             <p style={{ ...BODY, marginTop: 20 }}>
-              {SHOW_PRICES && page.price
-                ? page.price
+              {page.investimento
+                ? page.investimento.body
                 : "Orçamento sob medida e sem compromisso: você conta o projeto pelo WhatsApp e recebe valor e prazo antes de decidir qualquer coisa."}
             </p>
           </div>
