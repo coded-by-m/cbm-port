@@ -5,7 +5,7 @@
  * aprovado no Claude Design (projeto "Hero da home pronto", 2026-09-19).
  */
 
-import type { FaqItem } from "@/data/servicePages";
+import { PUBLIC_PRICE, type FaqItem } from "@/data/servicePages";
 
 /** Slug do projeto em destaque no hero. Trocar aqui troca a vitrine inteira. */
 export const FEATURED_SLUG = "estudio-lentz";
@@ -83,7 +83,7 @@ export const SECTIONS = {
 export const HOME_FAQ: FaqItem[] = [
   {
     q: "Quanto custa um site ou uma landing page?",
-    a: "Depende do escopo: quantidade de páginas, textos e integrações. Você conta o projeto no WhatsApp e eu respondo com valor e prazo antes de qualquer compromisso.",
+    a: `Landing a partir de ${PUBLIC_PRICE.landing.display}. Institucional a partir de ${PUBLIC_PRICE.institucional.display}. Em ambos o valor final depende do projeto; no WhatsApp fecho valor e prazo antes do compromisso.`,
     links: [
       { href: "/landing-page", label: "Landing page" },
       { href: "/site-institucional", label: "Site institucional" },

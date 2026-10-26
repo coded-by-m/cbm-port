@@ -11,7 +11,11 @@
  * ATENÇÃO — respostas marcadas com PREENCHER dependem de números que só o
  * Matheus tem (prazo, hospedagem). Elas NÃO aparecem no site nem no schema
  * enquanto tiverem o marcador (ver `isFilled`): melhor uma pergunta a menos
- * que uma resposta inventada. Preço não é publicado (decisão de 2026-09-30).
+ * que uma resposta inventada.
+ *
+ * Preço público (Matheus, 2026-10-26): landing a partir de R$ 600 e site
+ * institucional a partir de R$ 1.500. O valor final depende do projeto.
+ * Arquitetura não tem número publicado — a resposta segue sem faixa.
  */
 
 export interface FaqItem {
@@ -34,10 +38,13 @@ export function faqAnswerText(f: FaqItem) {
 }
 
 /**
- * Preço público. Desligado por decisão (2026-09-30): sem faixa no site, sem
- * `priceRange` no schema. Ligar exige preencher `price` em cada página.
+ * Pisos publicados. `amount` entra no Offer (`price` + BRL, sem separador).
+ * `display` é o que a pessoa lê. Sem aggregateRating.
  */
-export const SHOW_PRICES = false;
+export const PUBLIC_PRICE = {
+  landing: { amount: "600", display: "R$ 600" },
+  institucional: { amount: "1500", display: "R$ 1.500" },
+} as const;
 
 export interface ServicePageConfig {
   /** Vira a rota: `/<slug>`. */
@@ -58,8 +65,11 @@ export interface ServicePageConfig {
   extraSections?: { heading: string; body?: string[]; list?: string[] }[];
   includesHeading: string;
   includes: string[];
-  /** Só usado com SHOW_PRICES = true. Ex.: "A partir de R$ …". */
-  price?: string;
+  /**
+   * Seção Investimento + Offer da página. O `body` é o parágrafo visível;
+   * o JSON-LD repete esse texto. Sem isto, a página não publica preço.
+   */
+  investimento?: { price: string; body: string };
   /** Slugs de `data/cases.ts`, na ordem em que provam. */
   caseSlugs: string[];
   projectsHeading: string;
@@ -74,8 +84,13 @@ const ATENDE_BRASIL: FaqItem = {
   a: "Sim, atendo todo o Brasil de forma remota.",
 };
 
+/** Página sem piso publicado (arquitetura). Não inventar número. */
 const PRECO_TEXTO =
   "Depende do escopo: quantidade de seções ou páginas, textos e integrações. Você conta o projeto no WhatsApp e eu respondo com valor e prazo antes de qualquer compromisso.";
+
+const LANDING_PRECO = `A partir de ${PUBLIC_PRICE.landing.display}. O valor final depende do projeto (seções, formulários, integrações). Orçamento claro no WhatsApp.`;
+
+const INSTITUCIONAL_PRECO = `A partir de ${PUBLIC_PRICE.institucional.display}. O valor final depende do projeto — páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`;
 
 export const SERVICE_PAGES: ServicePageConfig[] = [
   {
@@ -102,10 +117,14 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       "SEO técnico e carregamento rápido",
       "Publicação e handover",
     ],
+    investimento: {
+      price: PUBLIC_PRICE.landing.amount,
+      body: `Landing page sob medida a partir de ${PUBLIC_PRICE.landing.display}. O valor final depende do projeto (seções, formulários, integrações). Orçamento claro no WhatsApp.`,
+    },
     caseSlugs: ["mj-engenharia", "maison-etoile"],
     projectsHeading: "Landing pages no ar",
     faq: [
-      { q: "Quanto custa uma landing page?", a: PRECO_TEXTO },
+      { q: "Quanto custa uma landing page?", a: LANDING_PRECO },
       { q: "Em quanto tempo fica pronta?", a: "PREENCHER — prazo típico de uma landing page." },
       { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER — o que entra na entrega e o que fica por conta do cliente." },
       ATENDE_BRASIL,
@@ -146,10 +165,14 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       "Integração com WhatsApp e métricas configuradas",
       "CMS leve e handover",
     ],
+    investimento: {
+      price: PUBLIC_PRICE.institucional.amount,
+      body: `Site institucional a partir de ${PUBLIC_PRICE.institucional.display}, dependendo do projeto — páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`,
+    },
     caseSlugs: ["machado-plataformas", "estudio-lentz", "forma-viva", "estudio-monteiro"],
     projectsHeading: "Sites institucionais no ar",
     faq: [
-      { q: "Quanto custa um site institucional?", a: PRECO_TEXTO },
+      { q: "Quanto custa um site institucional?", a: INSTITUCIONAL_PRECO },
       { q: "Qual o prazo de entrega?", a: "PREENCHER — prazo típico de um site institucional." },
       {
         q: "Quantas páginas o site tem?",

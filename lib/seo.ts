@@ -2,9 +2,12 @@
  * Dados estruturados (schema.org, JSON-LD) — fonte única.
  *
  * Regra: tudo que entra aqui está VISÍVEL em alguma página do site. Nada de
- * nota, avaliação, preço, endereço de rua ou rede social não confirmada — o
- * schema descreve a página, não a promove. Se um dado não aparece para quem
- * lê, ele não aparece para o robô.
+ * nota, avaliação, endereço de rua ou rede social não confirmada — o schema
+ * descreve a página, não a promove. Se um dado não aparece para quem lê, ele
+ * não aparece para o robô.
+ *
+ * Preço só no `Offer` das páginas que publicam o piso (landing e
+ * institucional). Sem `aggregateRating`.
  *
  * As entidades se ligam por `@id` (URL + fragmento), pra que o grafo de cada
  * página aponte para a mesma organização em vez de redeclará-la:
@@ -68,7 +71,6 @@ export function organizationSchema(): Json {
     // O que o site diz no hero, no rodapé e nas páginas de serviço: o estúdio
     // fica em Florianópolis e atende o Brasil inteiro, remoto.
     areaServed: AREA_SERVED,
-    // priceRange: só se os preços forem publicados (ver SHOW_PRICES).
     founder: { "@id": FOUNDER_ID },
     sameAs: [INSTAGRAM_URL, GITHUB_URL],
     knowsAbout: [
@@ -193,11 +195,18 @@ const AREA_SERVED = [
   { "@type": "Country", name: "Brasil" },
 ];
 
-/** Um serviço oferecido pela organização (páginas de serviço). */
+/**
+ * Um serviço oferecido pela organização (páginas de serviço).
+ *
+ * `offer` só quando a página mostra o piso. `description` é o parágrafo da
+ * seção Investimento — "a partir de", e o valor final depende do escopo.
+ * Sem `aggregateRating`.
+ */
 export function serviceSchema(opts: {
   path: string;
   name: string;
   description: string;
+  offer?: { price: string; description: string };
 }): Json {
   const url = `${SITE_URL}${opts.path}`;
   return {
@@ -210,6 +219,17 @@ export function serviceSchema(opts: {
     provider: { "@id": ORG_ID },
     areaServed: { "@type": "Country", name: "Brasil" },
     mainEntityOfPage: { "@id": `${url}#webpage` },
+    ...(opts.offer
+      ? {
+          offers: {
+            "@type": "Offer",
+            url,
+            price: opts.offer.price,
+            priceCurrency: "BRL",
+            description: opts.offer.description,
+          },
+        }
+      : {}),
   };
 }
 

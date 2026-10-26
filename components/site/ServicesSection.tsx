@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PUBLIC_PRICE } from "@/data/servicePages";
 import { SERVICES } from "@/data/services";
 import { SECTIONS } from "@/data/home";
 import { Diamond, INK, PANCHANG, SATOSHI } from "./shared";
@@ -226,6 +227,28 @@ export function ServicesSection() {
             </Reveal>
           ))}
         </div>
+
+        <p
+          style={{
+            margin: "clamp(32px,4.5vh,48px) 0 0",
+            maxWidth: "62ch",
+            fontFamily: SATOSHI,
+            fontWeight: 400,
+            fontSize: "clamp(15px,1.4vw,17px)",
+            lineHeight: 1.7,
+            color: INK.body,
+            textWrap: "pretty",
+          }}
+        >
+          <Link href="/landing-page" className="site-inline-link">
+            Landing page
+          </Link>{" "}
+          a partir de {PUBLIC_PRICE.landing.display} ·{" "}
+          <Link href="/site-institucional" className="site-inline-link">
+            site institucional
+          </Link>{" "}
+          a partir de {PUBLIC_PRICE.institucional.display} — o valor final depende do projeto.
+        </p>
       </div>
     </section>
   );
