@@ -160,11 +160,11 @@ export function ProjetoGridCard({
               <span
                 style={{
                   border: "1px solid rgba(245,242,237,0.15)",
-                  padding: "3px 7px",
+                  padding: "4px 8px",
                   fontFamily: SATOSHI,
                   fontWeight: 500,
-                  fontSize: 10,
-                  letterSpacing: "0.18em",
+                  fontSize: "0.7rem",
+                  letterSpacing: "0.22em",
                   lineHeight: 1.4,
                   textTransform: "uppercase",
                   color: "rgba(245,242,237,0.55)",
