@@ -37,7 +37,9 @@ export function CaseScreens({ project }: { project: CaseProject }) {
           const wide = i % 3 === 0; // a cada 3, painel largo
           return (
             <Reveal
-              key={src + i}
+              // Caminho puro. Colar o índice no key (src + i) entra no HTML
+              // do RSC como section-02.webp4 e o Google pede esse 404.
+              key={src}
               delay={(i % 2) * 90}
               className={wide ? "sm:col-span-2" : ""}
             >
