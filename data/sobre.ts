@@ -20,7 +20,7 @@ export const SOBRE_FAQ: FaqItem[] = [
   },
   {
     q: "Quem faz os projetos?",
-    a: "Matheus Mendes — fundador, web designer e desenvolvedor. Formado em Análise e Desenvolvimento de Sistemas; cada projeto passa por estratégia, design, código e acompanhamento depois do deploy.",
+    a: "Matheus Mendes, fundador, web designer e desenvolvedor. Formado em Análise e Desenvolvimento de Sistemas; cada projeto passa por estratégia, design, código e acompanhamento depois do deploy.",
   },
   {
     q: "Como falar com o estúdio?",
