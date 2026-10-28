@@ -48,9 +48,12 @@ export const OG_SIZE = { width: 1200, height: 630 } as const;
  * Organization — o estúdio presta serviço a partir de Florianópolis, que é
  * o que o site declara no hero e no rodapé. Sem rua: o site não publica uma.
  *
- * `sameAs`: Instagram e GitHub, os dois perfis confirmados (2026-09-30). Não
- * há LinkedIn.
+ * `sameAs`: Instagram e GitHub (confirmados em 2026-09-30) e o Google Maps
+ * do estúdio (cid 1362888323480500884, NAP aprovado pelo Sentinel em
+ * 2026-10-28). Não há LinkedIn.
  */
+const GOOGLE_MAPS_URL = "https://maps.google.com/?cid=1362888323480500884";
+
 export function organizationSchema(): Json {
   return {
     "@type": "ProfessionalService",
@@ -72,7 +75,7 @@ export function organizationSchema(): Json {
     // fica em Florianópolis e atende o Brasil inteiro, remoto.
     areaServed: AREA_SERVED,
     founder: { "@id": FOUNDER_ID },
-    sameAs: [INSTAGRAM_URL, GITHUB_URL],
+    sameAs: [INSTAGRAM_URL, GITHUB_URL, GOOGLE_MAPS_URL],
     knowsAbout: [
       "Web design",
       "Desenvolvimento front-end",
