@@ -51,6 +51,16 @@ export const PROSE_H2: CSSProperties = {
   color: "#F5F2ED",
 };
 
+/** Pergunta de FAQ dentro da coluna de prosa. */
+export const PROSE_H3: CSSProperties = {
+  margin: "28px 0 0",
+  fontFamily: SATOSHI,
+  fontWeight: 600,
+  fontSize: "clamp(16px,1.5vw,18px)",
+  lineHeight: 1.4,
+  color: "#F5F2ED",
+};
+
 export const PROSE_P: CSSProperties = {
   margin: "18px 0 0",
   fontFamily: SATOSHI,

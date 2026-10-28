@@ -14,6 +14,12 @@ export const INSTAGRAM_HANDLE = "@codedbymstudio";
 /** GitHub da Coded by M (confirmado em 2026-09-30). Não há LinkedIn. */
 export const GITHUB_URL = "https://github.com/coded-by-m";
 
+/**
+ * Perfil do estúdio no Google Maps. O cid é o NAP aprovado (2026-10-28).
+ * O mesmo href aparece no HTML de /sobre e no `sameAs` do ProfessionalService.
+ */
+export const GOOGLE_MAPS_URL = "https://maps.google.com/?cid=1362888323480500884";
+
 /** Número formatado pra exibição. */
 export const WHATSAPP_DISPLAY = "+55 48 99991-6638";
 
