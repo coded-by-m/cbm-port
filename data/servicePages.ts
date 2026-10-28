@@ -20,21 +20,60 @@
 
 export interface FaqItem {
   q: string;
+  /**
+   * Resposta em texto. `{0}`, `{1}`… marcam um link de `links` no meio da
+   * frase. Sem marcador, os links entram no fim como "Veja: …".
+   */
   a: string;
-  /** Links opcionais ao fim da resposta. Entram no schema como texto. */
+  /** Links da resposta. No JSON-LD entra só o rótulo, nunca a URL nem HTML. */
   links?: { href: string; label: string }[];
 }
+
+export type FaqSegment =
+  | { type: "text"; text: string }
+  | { type: "link"; href: string; label: string };
 
 /** Resposta pronta pra publicar — sem o marcador de rascunho. */
 export function isFilled(f: FaqItem) {
   return !f.a.includes("PREENCHER");
 }
 
-/** Texto da resposta como o leitor vê, link incluído — o mesmo vai pro schema. */
+/**
+ * A resposta na ordem em que a página mostra. O schema usa o mesmo recorte,
+ * só que em texto puro (rótulo do link, sem HTML e sem URL).
+ */
+export function faqAnswerSegments(f: FaqItem): FaqSegment[] {
+  const links = f.links ?? [];
+  if (links.length && /\{\d+\}/.test(f.a)) {
+    const segments: FaqSegment[] = [];
+    f.a.split(/\{(\d+)\}/).forEach((chunk, i) => {
+      if (i % 2 === 0) {
+        if (chunk) segments.push({ type: "text", text: chunk });
+        return;
+      }
+      const link = links[Number(chunk)];
+      if (link) segments.push({ type: "link", href: link.href, label: link.label });
+    });
+    return segments;
+  }
+
+  const segments: FaqSegment[] = [{ type: "text", text: f.a }];
+  if (links.length) {
+    segments.push({ type: "text", text: " Veja: " });
+    links.forEach((link, i) => {
+      if (i > 0) segments.push({ type: "text", text: " e " });
+      segments.push({ type: "link", href: link.href, label: link.label });
+    });
+    segments.push({ type: "text", text: "." });
+  }
+  return segments;
+}
+
+/** Texto da resposta como o leitor vê, sem HTML — o mesmo vai pro schema. */
 export function faqAnswerText(f: FaqItem) {
-  return f.links?.length
-    ? `${f.a} Veja: ${f.links.map((l) => l.label).join(" e ")}.`
-    : f.a;
+  return faqAnswerSegments(f)
+    .map((segment) => (segment.type === "link" ? segment.label : segment.text))
+    .join("");
 }
 
 /**
@@ -137,6 +176,10 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
         a: "Landing page quando existe uma ação principal — um serviço, uma campanha, um anúncio. Site institucional quando a empresa precisa apresentar serviços, história e projetos em várias páginas.",
         links: [{ href: "/site-institucional", label: "Site institucional" }],
       },
+      {
+        q: "Em quanto tempo uma landing page fica pronta?",
+        a: "O prazo depende do escopo (seções, textos, integrações) e é fechado no orçamento no WhatsApp, antes de começar — em geral mais rápido que um site institucional de várias páginas.",
+      },
     ],
     waMessage: "Olá! Vim pela página de landing page da Coded by M e quero um orçamento.",
     ctaSource: "lp-page",
@@ -181,6 +224,15 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER — o que entra na entrega e o que fica por conta do cliente." },
       { q: "Como funciona a manutenção depois da entrega?", a: "PREENCHER — suporte, ajustes e evolução após a publicação." },
       ATENDE_BRASIL,
+      {
+        q: "Landing page ou site institucional: qual escolher?",
+        a: "Site institucional quando você precisa apresentar a empresa em profundidade (serviços, história, projetos). Landing page quando o foco é uma única ação ou campanha. Veja também: {0}.",
+        links: [{ href: "/landing-page", label: "Landing page" }],
+      },
+      {
+        q: "Em quanto tempo o site fica pronto?",
+        a: "O prazo depende do número de páginas e do conteúdo e entra no orçamento no WhatsApp, antes de começar.",
+      },
     ],
     waMessage: "Olá! Vim pela página de site institucional da Coded by M e quero um orçamento.",
     ctaSource: "institucional-page",

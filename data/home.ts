@@ -83,27 +83,33 @@ export const SECTIONS = {
 export const HOME_FAQ: FaqItem[] = [
   {
     q: "Quanto custa um site ou uma landing page?",
-    a: `Landing a partir de ${PUBLIC_PRICE.landing.display}. Institucional a partir de ${PUBLIC_PRICE.institucional.display}. Em ambos o valor final depende do projeto; no WhatsApp fecho valor e prazo antes do compromisso.`,
+    a: `Landing page a partir de ${PUBLIC_PRICE.landing.display}. Site institucional a partir de ${PUBLIC_PRICE.institucional.display}. Em ambos o valor final depende do projeto; no WhatsApp eu fecho valor e prazo antes de qualquer compromisso.`,
     links: [
       { href: "/landing-page", label: "Landing page" },
       { href: "/site-institucional", label: "Site institucional" },
     ],
   },
   {
-    q: "Qual o prazo de entrega?",
-    a: "PREENCHER — prazo típico de landing page e de site institucional.",
+    q: "Landing page ou site institucional: qual escolher?",
+    a: "Landing page quando há uma ação principal (campanha, serviço, anúncio). Site institucional quando a empresa precisa de várias páginas — serviços, história, projetos. Se for escritório de arquitetura ou interiores, veja também {0}.",
+    links: [{ href: "/sites-para-arquitetura", label: "sites para arquitetura" }],
   },
   {
-    q: "Hospedagem e domínio estão inclusos?",
-    a: "PREENCHER — o que entra na entrega e o que fica por conta do cliente.",
+    q: "Em quanto tempo fica pronto?",
+    a: "O prazo depende do escopo e entra no orçamento no WhatsApp, antes de começar. Landing page costuma ser mais rápida; site institucional leva mais tempo porque tem mais páginas e conteúdo.",
   },
   {
     q: "Vocês atendem fora de Florianópolis?",
-    a: "Sim. O estúdio fica em Florianópolis, e atendo empresas de todo o Brasil de forma remota.",
+    a: "Sim. O estúdio fica em Florianópolis e atendo empresas de todo o Brasil de forma remota.",
   },
   {
     q: "Como funciona o processo?",
     a: "Em quatro etapas: estratégia (diagnóstico, escopo e posicionamento), design (arquitetura, identidade e protótipo), código (implementação e performance) e resultado — mensuração, ajustes e evolução depois do deploy.",
+  },
+  {
+    // Fora deste PR: sem política publicada. PREENCHER fica fora do HTML e do FAQPage.
+    q: "Hospedagem e domínio estão inclusos?",
+    a: "PREENCHER — o que entra na entrega e o que fica por conta do cliente.",
   },
 ];
 

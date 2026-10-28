@@ -1,3 +1,5 @@
+import { waLink } from "@/lib/contact";
+
 /**
  * Os 3 serviços da Coded by M.
  *
@@ -29,6 +31,11 @@ export interface ServiceConfig {
   mailSubject: string;
   /** Página de serviço própria, quando existe — e o texto do link pra ela. */
   page?: { href: string; label: string };
+  /**
+   * CTA externo quando ainda não há página 200. Não inventar rota
+   * (`/aplicacoes-web` responde 404).
+   */
+  cta?: { href: string; label: string };
 }
 
 export const SERVICES: ServiceConfig[] = [
@@ -87,5 +94,11 @@ export const SERVICES: ServiceConfig[] = [
     indicatedFor:
       "Empresas com processos digitais, equipes que precisam de ferramentas internas, ou SaaS em formação.",
     mailSubject: "Interesse em Aplicação Web",
+    cta: {
+      href: waLink(
+        "Olá! Vim pelo site da Coded by M e quero falar sobre uma aplicação web.",
+      ),
+      label: "Falar no WhatsApp",
+    },
   },
 ];

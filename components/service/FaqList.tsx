@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Link from "next/link";
-import { isFilled, type FaqItem } from "@/data/servicePages";
+import { faqAnswerSegments, isFilled, type FaqItem } from "@/data/servicePages";
 import { Reveal } from "@/components/ui/Reveal";
 
 /**
@@ -20,19 +20,15 @@ export function FaqList({ items }: { items: FaqItem[] }) {
               <span aria-hidden className="lp-faq-mark" />
             </summary>
             <p>
-              {f.a}
-              {f.links?.length ? (
-                <>
-                  {" "}Veja:{" "}
-                  {f.links.map((l, j) => (
-                    <Fragment key={l.href}>
-                      {j > 0 && " e "}
-                      <Link href={l.href}>{l.label}</Link>
-                    </Fragment>
-                  ))}
-                  .
-                </>
-              ) : null}
+              {faqAnswerSegments(f).map((segment, j) =>
+                segment.type === "link" ? (
+                  <Link key={j} href={segment.href}>
+                    {segment.label}
+                  </Link>
+                ) : (
+                  <Fragment key={j}>{segment.text}</Fragment>
+                ),
+              )}
             </p>
           </details>
         </Reveal>

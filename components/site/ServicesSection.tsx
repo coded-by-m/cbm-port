@@ -1,9 +1,23 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { PUBLIC_PRICE } from "@/data/servicePages";
 import { SERVICES } from "@/data/services";
 import { SECTIONS } from "@/data/home";
 import { Diamond, INK, PANCHANG, SATOSHI } from "./shared";
 import { Reveal } from "@/components/ui/Reveal";
+
+const CARD_CTA: CSSProperties = {
+  alignSelf: "flex-start",
+  marginTop: 8,
+  paddingBottom: 4,
+  fontFamily: PANCHANG,
+  fontWeight: 600,
+  fontSize: 10.5,
+  letterSpacing: "0.16em",
+  textTransform: "uppercase",
+  color: INK.ink,
+  textDecoration: "none",
+};
 
 /**
  * Os 3 serviços — a lasca de luz que corta o escuro.
@@ -65,12 +79,10 @@ export function ServicesSection() {
                 textWrap: "pretty",
               }}
             >
-              {SECTIONS.servicos.sub}{" "}
-              Para uma campanha, o caminho é uma{" "}
-              <Link href="/landing-page" className="site-inline-link">
-                landing page em Florianópolis
-              </Link>
-              .
+              {SECTIONS.servicos.sub} Para uma campanha, o caminho é uma{" "}
+              <Link href="/landing-page" className="site-inline-link">landing page</Link>; para presença completa, um{" "}
+              <Link href="/site-institucional" className="site-inline-link">site institucional</Link>. Escritórios de arquitetura e interiores têm página própria:{" "}
+              <Link href="/sites-para-arquitetura" className="site-inline-link">sites para arquitetura</Link>.
             </p>
           </Reveal>
         </div>
@@ -202,26 +214,27 @@ export function ServicesSection() {
                   >
                     {s.indicatedFor}
                   </p>
-                  {s.page && (
+                  {s.page ? (
                     <Link
                       href={s.page.href}
                       className="site-link-underline"
-                      style={{
-                        alignSelf: "flex-start",
-                        marginTop: 8,
-                        paddingBottom: 4,
-                        fontFamily: PANCHANG,
-                        fontWeight: 600,
-                        fontSize: 10.5,
-                        letterSpacing: "0.16em",
-                        textTransform: "uppercase",
-                        color: INK.ink,
-                        textDecoration: "none",
-                      }}
+                      style={CARD_CTA}
                     >
                       {s.page.label} <span aria-hidden style={{ color: INK.signal }}>→</span>
                     </Link>
-                  )}
+                  ) : s.cta ? (
+                    <a
+                      href={s.cta.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-cm-role="whatsapp"
+                      data-cm-id="services-aplicacoes-whatsapp"
+                      className="site-link-underline"
+                      style={CARD_CTA}
+                    >
+                      {s.cta.label} <span aria-hidden style={{ color: INK.signal }}>→</span>
+                    </a>
+                  ) : null}
                 </div>
               </article>
             </Reveal>
