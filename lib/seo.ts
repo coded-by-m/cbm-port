@@ -18,7 +18,7 @@
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { ABOUT } from "@/data/about";
 import { SERVICES } from "@/data/services";
-import { GITHUB_URL, INSTAGRAM_URL, WHATSAPP_DISPLAY } from "@/lib/contact";
+import { GITHUB_URL, GOOGLE_MAPS_URL, INSTAGRAM_URL, WHATSAPP_DISPLAY } from "@/lib/contact";
 import type { CaseProject } from "@/types/case";
 import { faqAnswerText, isFilled, type FaqItem } from "@/data/servicePages";
 
@@ -51,8 +51,19 @@ export const OG_SIZE = { width: 1200, height: 630 } as const;
  * `sameAs`: Instagram e GitHub (confirmados em 2026-09-30) e o Google Maps
  * do estúdio (cid 1362888323480500884, NAP aprovado pelo Sentinel em
  * 2026-10-28). Não há LinkedIn.
+ *
+ * `knowsAbout` é compartilhado com a Person do fundador.
  */
-const GOOGLE_MAPS_URL = "https://maps.google.com/?cid=1362888323480500884";
+const KNOWS_ABOUT = [
+  "Web design",
+  "Desenvolvimento front-end",
+  "Next.js",
+  "React",
+  "Design system",
+  "WebGL",
+  "SEO técnico",
+  "Performance web",
+];
 
 export function organizationSchema(): Json {
   return {
@@ -76,16 +87,7 @@ export function organizationSchema(): Json {
     areaServed: AREA_SERVED,
     founder: { "@id": FOUNDER_ID },
     sameAs: [INSTAGRAM_URL, GITHUB_URL, GOOGLE_MAPS_URL],
-    knowsAbout: [
-      "Web design",
-      "Desenvolvimento front-end",
-      "Next.js",
-      "React",
-      "Design system",
-      "WebGL",
-      "SEO técnico",
-      "Performance web",
-    ],
+    knowsAbout: KNOWS_ABOUT,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Serviços",
@@ -102,14 +104,20 @@ export function organizationSchema(): Json {
   };
 }
 
+/**
+ * A pessoa por trás do estúdio. `description` é a bio já publicada.
+ * Sem foto, LinkedIn/`sameAs` ou e-mail: isso não está no ar.
+ */
 export function founderSchema(): Json {
   return {
     "@type": "Person",
     "@id": FOUNDER_ID,
     name: ABOUT.founder.name,
-    jobTitle: "Fundador",
+    jobTitle: "Fundador, web designer e desenvolvedor",
+    url: `${SITE_URL}/sobre`,
     worksFor: { "@id": ORG_ID },
     description: ABOUT.founder.bio,
+    knowsAbout: KNOWS_ABOUT,
   };
 }
 
