@@ -137,7 +137,7 @@ export function webPageSchema(opts: {
   path: string;
   name: string;
   description: string;
-  type?: "WebPage" | "CollectionPage" | "AboutPage";
+  type?: "WebPage" | "CollectionPage" | "AboutPage" | "ContactPage";
   image?: string;
 }): Json {
   const url = `${SITE_URL}${opts.path === "/" ? "" : opts.path}`;

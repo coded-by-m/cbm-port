@@ -31,6 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     { url: `${SITE_URL}/projetos`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/sobre`, changeFrequency: "yearly", priority: 0.5 },
+    { url: `${SITE_URL}/contato`, changeFrequency: "yearly", priority: 0.6 },
     // Blog só entra com artigo publicado: rascunho não existe pro público.
     ...(publishedPosts().length
       ? [
