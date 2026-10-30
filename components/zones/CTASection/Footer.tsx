@@ -21,7 +21,7 @@ const NAV_BASE = [
   { label: "Projetos", href: "/projetos", external: false },
   { label: "Sobre", href: "/sobre", external: false },
   { label: "Laboratório", href: "/lab", external: false },
-  { label: "Contato", href: waLink(), external: true, cmId: "footer-nav-whatsapp", cmRole: "whatsapp" },
+  { label: "Contato", href: "/contato", external: false },
   {
     label: "Instagram",
     href: INSTAGRAM_URL,

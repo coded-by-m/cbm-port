@@ -98,6 +98,10 @@ export default function SobrePage() {
         <Link href="/projetos" style={PROSE_LINK}>
           projetos
         </Link>
+        {" e a "}
+        <Link href="/contato" style={PROSE_LINK}>
+          página de contato
+        </Link>
         .
       </p>
     </ProseShell>

@@ -1,14 +1,12 @@
-import { INSTAGRAM_URL, waLink } from "@/lib/contact";
+import { INSTAGRAM_URL } from "@/lib/contact";
 import { PANCHANG, SATOSHI } from "./shared";
-
-const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
 const LINKS = [
   { label: "Início", href: "#top", external: false },
   { label: "Projetos", href: "#projetos", external: false },
   { label: "A Experiência", href: "/experiencia", external: false },
   { label: "Instagram", href: INSTAGRAM_URL, external: true },
-  { label: "Contato", href: WA, external: true },
+  { label: "Contato", href: "/contato", external: false },
 ];
 
 const linkStyle: React.CSSProperties = {
