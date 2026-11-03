@@ -4,6 +4,7 @@ import Link from "next/link";
 import { cases } from "@/data/cases";
 import { PROCESS_STEPS } from "@/data/process";
 import type { ServicePageConfig } from "@/data/servicePages";
+import { CALC_PATH } from "@/data/calculadoraPreco";
 import { Reveal } from "@/components/ui/Reveal";
 import { Diamond, PANCHANG, SATOSHI, SUNKEN_RGB, SURFACE } from "@/components/site/shared";
 import { GalleryHeader } from "@/components/projetos/GalleryHeader";
@@ -255,6 +256,17 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
                 {page.guide.after}
               </p>
             ) : null}
+            <p style={{ ...BODY, marginTop: 18 }}>
+              {"Para ver a faixa de uma landing page ou de um site institucional, use a "}
+              <Link
+                href={CALC_PATH}
+                className="site-link-underline"
+                style={{ color: "#F5F2ED" }}
+              >
+                calculadora de preço de site
+              </Link>
+              .
+            </p>
           </div>
         </section>
 

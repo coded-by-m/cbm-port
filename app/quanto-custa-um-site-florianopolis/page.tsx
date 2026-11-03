@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ABOUT } from "@/data/about";
+import { CALC_PATH } from "@/data/calculadoraPreco";
 import {
   QUANTO_CUSTA_CRUMB,
   QUANTO_CUSTA_CTA,
@@ -173,6 +174,13 @@ export default function QuantoCustaPage() {
           </table>
         </div>
         <p style={PROSE_P}>{QUANTO_CUSTA_TABLE_NOTE}</p>
+        <p style={PROSE_P}>
+          {"Para ver a faixa do seu caso, use a "}
+          <Link href={CALC_PATH} style={PROSE_LINK}>
+            calculadora de preço de site
+          </Link>
+          .
+        </p>
 
         <h2 style={PROSE_H2}>O que faz o preço de um site variar</h2>
         <ul style={{ ...LIST, listStyle: "disc" }}>
@@ -287,6 +295,10 @@ export default function QuantoCustaPage() {
           {" · "}
           <Link href="/site-institucional" style={PROSE_LINK}>
             Site institucional
+          </Link>
+          {" · "}
+          <Link href={CALC_PATH} style={PROSE_LINK}>
+            Calculadora de preço de site
           </Link>
           {" · "}
           <Link href="/contato" style={PROSE_LINK}>
