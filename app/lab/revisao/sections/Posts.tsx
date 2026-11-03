@@ -5,6 +5,7 @@ import { SLIDE_W, SLIDE_H } from "@/app/posts/_shared/chrome";
 import * as apresentacao from "@/app/posts/apresentacao/slides";
 import * as importancia from "@/app/posts/importancia/slides";
 import * as projeto from "@/app/posts/projeto/slides";
+import * as machado from "@/app/posts/machado/slides";
 import { cbm } from "@/lib/palette";
 import { Item } from "../Item";
 
@@ -14,12 +15,10 @@ const CARROSSEIS: [string, ReactNode[]][] = [
   ["apresentacao", apresentacao.SLIDES],
   ["importancia", importancia.SLIDES],
   ["projeto", projeto.SLIDES],
+  ["machado", machado.SLIDES],
 ];
 
-/**
- * Seção P: os carrosséis em miniatura, um item por carrossel. Carrossel novo
- * entra aqui quando for commitado (o `machado` ainda é rascunho).
- */
+/** Seção P: os carrosséis em miniatura, um item por carrossel. */
 export function Posts() {
   return (
     <div style={{ display: "grid", gap: 16 }}>
