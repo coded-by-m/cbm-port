@@ -13,6 +13,7 @@
 export { LogoMark } from "../components/ui/LogoMark";
 export { MeshButton } from "../components/ui/MeshButton";
 export { FillButton } from "../components/ui/FillButton";
+export { TriArrow } from "../components/ui/TriArrow";
 export { Reveal } from "../components/ui/Reveal";
 export { TriText } from "../components/ui/TriText";
 export { WhatsAppFab } from "../components/ui/WhatsAppFab";

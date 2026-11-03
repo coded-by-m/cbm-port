@@ -2,6 +2,11 @@
 
 # Coded by M — Wireframe Completo da Home
 
+> **Registro histórico.** Este documento descreve a direção da época, com o preto esverdeado
+> (`#000F08`) e a "temperatura verde". Desde 2026-11-03 a paleta é **Neutro** (`#0A0A0A`, cinzas
+> neutros), definida em `lib/palette.ts`. Para cores, botões e regras atuais, veja
+> `DESIGN-LANGUAGE.md`.
+
 ## Como Ler Este Documento
 
 Este documento descreve a Home completa seção por seção, permitindo visualizá-la

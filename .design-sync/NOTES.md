@@ -209,9 +209,15 @@ O que mudou desde o primeiro envio. **Enviado em 2026-11-03** (re-sync atômico,
 
 ### Re-sync risks (adições)
 
-- `guidelines/DESIGN-LANGUAGE.md` e `guidelines/10-design-system.md` (copiados
-  de `DESIGN-LANGUAGE.md` e `docs/`) **ainda descrevem o preto esverdeado e a
-  "temperatura verde"**. Foram enviados assim. Atualize as fontes no repo e
-  reenvie.
+- ~~Guias com o preto esverdeado~~: **resolvido no envio seguinte.**
+  `DESIGN-LANGUAGE.md` e `docs/10-design-system.md` foram reescritos para a
+  paleta Neutro. `docs/08.5`, `09` e `11` ganharam um aviso de registro
+  histórico e continuam citando os valores antigos de propósito.
+- **Lotes grandes podem dar HTTP 500 no `write_files`.** Um lote de 131
+  arquivos com fontes e `_vendor` junto falhou. Em lotes de cerca de 60
+  arquivos de texto, com os binários num lote próprio, passou.
 - `ProjectFacts` e outros rótulos pequenos usam `gray-600` (cerca de 2,7:1
   sobre o fundo). Não é defeito de render, mas o agente pode copiar o padrão.
+- **`TriArrow`** entrou no design system (envio de 2026-11-03, segunda rodada).
+  Ele substitui as setas de texto em todo o site, e o `conventions.md` agora
+  proíbe →, ↗ e ←.

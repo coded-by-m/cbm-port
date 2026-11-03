@@ -60,6 +60,10 @@ execução; uma classe inventada não existe. Existem estas da família `cbm-*`:
 
 Não crie botões novos com `background: #FB3640` na mão: use o `FillButton`.
 
+**Setas: `TriArrow`, nunca →, ↗ ou ←.** `dir="right"` para avançar, `"left"` para voltar,
+`"up-right"` (cunha de canto) para link que abre. Herda cor e tamanho do texto ao lado e avança
+no hover de um link.
+
 ### Regras duras
 
 - **`border-radius: 0`.** Sem exceção. Cantos retos são identidade.

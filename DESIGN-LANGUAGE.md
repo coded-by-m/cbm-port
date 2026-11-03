@@ -1,32 +1,32 @@
 # Design Language — Sistema Portátil
 
 > Destilação do sistema de design da **Coded by M** em uma referência **portátil e reutilizável**.
-> Copie este arquivo para qualquer projeto novo. Ele carrega a *gramática visual* (estrutura, temperatura,
-> raridade, motion) independente da marca — e mostra onde trocar o que for específico de marca.
+> Copie este arquivo para qualquer projeto novo. Ele carrega a *gramática visual* (estrutura,
+> raridade, malha triangulada, motion) independente da marca, e mostra onde trocar o que for
+> específico de marca.
 >
-> A fonte original é específica da Home cinematográfica da CbM (`docs/10-design-system.md`,
-> `docs/08.5-visual-direction.md`). **Este documento é a versão que viaja.** Valores aqui refletem o
-> **código em produção** (`tailwind.config.ts`, componentes), não apenas a especificação.
+> Valores aqui refletem o **código em produção** (`lib/palette.ts`, `tailwind.config.ts`,
+> componentes). **Paleta atual: Neutro, desde 2026-11-03.** O preto esverdeado (`#000F08`) e o
+> princípio de "temperatura verde" foram aposentados; documentos de processo em `docs/` (08.5, 09,
+> 11) ainda citam os valores antigos como registro histórico.
 
 ---
 
 ## 0. O núcleo em uma frase
 
-**Fundo profundo + estrutura quente + um único sinal que corta.**
-
-Três elementos, nada mais. Toda a identidade é construída sobre essa gramática de três cores.
-Se você entender só isso, já pode replicar 80% do caráter em outro projeto:
+**Fundo preto neutro + estrutura off-white + um único sinal vermelho que corta**, com a malha
+triangulada como assinatura.
 
 | Papel | O que é | Regra |
 |---|---|---|
-| **Base** | O espaço escuro onde tudo existe | Nunca preto puro — sempre com *temperatura* |
-| **Estrutura** | Texto, linhas, geometria, UI primária | Nunca branco puro — sempre quente |
+| **Base** | O espaço escuro onde tudo existe | Preto neutro, sem matiz. Nunca `#000` puro: a escada de superfícies precisa de onde recuar |
+| **Estrutura** | Texto, linhas, geometria, UI primária | Off-white `#F5F2ED`, nunca `#fff` |
 | **Sinal** | A cor de ação/destaque que corta | Raro. Máx. 2–3 por viewport |
 
 Quatro princípios que governam cada decisão:
 
 1. **Construção, não decoração.** Cada linha, ponto, borda existe como parte de uma estrutura. Ornamento sem função é ruído.
-2. **Temperatura, não neutro.** As cores têm viés (verde no escuro, bege no claro). Trocar por `#000`/`#fff` mata a identidade.
+2. **O calor mora na estrutura, não no fundo.** O fundo é neutro; o off-white e o vermelho carregam a temperatura da marca.
 3. **Raridade cria impacto.** O sinal só funciona porque aparece pouco. Quanto mais raro, mais forte.
 4. **Angular, não arredondado.** `border-radius: 0` em botões, cards, overlays. Curvas só em elementos circulares com motivo.
 
@@ -37,122 +37,116 @@ Quatro princípios que governam cada decisão:
 ### 1.1 O trio canônico (a identidade inteira)
 
 ```
-Base      #000F08   "Deep Black"  — fundo de página, canvas 3D, fog. NÃO é #000000 (tem verde imperceptível).
-Estrutura #F5F2ED   "Off White"   — texto, wireframe 3D, logo. NÃO é #ffffff (tem bege quente).
-Sinal     #FB3640   "Signal Red"  — ação, hotspot ativo, conector, foco. Raro por regra.
+Base      #0A0A0A   "Neutral Black" — fundo de página, canvas 3D, fog. Sem matiz; não é #000.
+Estrutura #F5F2ED   "Off White"     — texto, wireframe 3D, logo. NÃO é #ffffff (tem bege quente).
+Sinal     #FB3640   "Signal Red"    — ação, hotspot ativo, conector, foco. Raro por regra.
 ```
 
-Estes três nunca mudam dentro da CbM. **Para outra marca, o `#FB3640` é o único que você deve trocar**
-(veja §9 "Adaptar a uma nova marca"). Base e estrutura mantêm a *temperatura*, mesmo que o hue mude.
+Estrutura e sinal nunca mudam dentro da CbM. **Para outra marca, o `#FB3640` é o primeiro a trocar**
+(veja §9 "Adaptar a uma nova marca").
 
-### 1.2 Paleta completa (valores em produção)
+### 1.2 Paleta completa (valores em produção, `lib/palette.ts`)
+
+Toda cor é um token da paleta ativa. O código nunca escreve o hex: usa variável CSS, classe
+Tailwind ou `cbm("token")` (ver §1.4). Trocar a paleta inteira é trocar uma linha
+(`ACTIVE_PALETTE`).
 
 ```
-base            #000F08   fundo base
-forest          #070B08   fundos secundários, cards, overlays (bem mais escuro que a base)
+Superfícies, do recuado ao destacado
+sunken          #050505   cards que recuam em relação à página
+page            #0A0A0A   fundo global, canvas 3D, fog
+base            #0A0A0A   fundo das seções da home
+surface         #0F0F0F   fundos secundários, overlays
+raised          #121212   faixas que destacam como objeto
+drawer          #141414   painel do menu
+frame-bar       #121212   barra da moldura de browser
+frame           #171717   corpo da moldura / tela de mockup
+card            #1A1A1A   cards elevados
+border          #1C1C1C   borda padrão, quase invisível
+border-active   #2A2A2A   borda em hover/ativo
+line            #262626   filetes e contornos visíveis
+
+Marca (iguais em toda paleta)
 white           #F5F2ED   texto/estrutura primária
 red             #FB3640   sinal / ação
-red-dark        #C42030   hover do sinal
-border          #111511   borda padrão (temperatura verde, quase invisível)
-border-active   #1A2418   borda em hover/estado ativo
-cursor-gray     #97938b   cor do cursor customizado
+red-dark        #C42030   vermelho para TEXTO sobre claro
 
-gray-100        #E8E4DE   texto sobre fundos claros
-gray-200        #C8C4BE   texto de corpo importante
-gray-400        #8A8780   texto secundário, labels, datas
-gray-600        #4A4844   texto terciário, captions, numerações
-gray-800        #1E1E1A   separadores leves
+Cinzas (neutros)
+gray-50  #F2F2F2   gray-100 #E5E5E5   gray-200 #C9C9C9   gray-300 #ADADAD   gray-400 #8F8F8F
+gray-500 #737373   gray-600 #575757   gray-700 #3D3D3D   gray-800 #262626   gray-900 #171717
+
+Apoio (posts, estados, gráficos; nunca ação)
+success #4CC38A   warning #F2B33D   info #5B9BF0   accent-2 #8FB3C9
 ```
 
-> **Nota de fork:** a spec antiga (`docs/10`) usava verdes mais claros (`forest #0E1810`,
-> `border #1a2a1e`, `border-active #2a4a32`). O **código evoluiu para verdes mais escuros/subliminares**
-> (acima). Ao portar, use os valores de código — são os que renderizam hoje. Se quiser cards mais
-> presentes, os valores antigos ainda são uma alternativa válida.
+### 1.3 Tokens prontos: Tailwind
 
-### 1.3 Tokens prontos — Tailwind
+As cores do Tailwind leem as variáveis, então mudam junto com a paleta:
 
 ```ts
 // tailwind.config.ts
-theme: {
-  extend: {
-    colors: {
-      cbm: {
-        black:           "#000F08",
-        forest:          "#070B08",
-        white:           "#F5F2ED",
-        red:             "#FB3640",
-        "red-dark":      "#C42030",
-        border:          "#111511",
-        "border-active": "#1A2418",
-        gray: {
-          100: "#E8E4DE",
-          200: "#C8C4BE",
-          400: "#8A8780",
-          600: "#4A4844",
-          800: "#1E1E1A",
-        },
-      },
-    },
-    fontFamily: {
-      display: ["Panchang", "sans-serif"],
-      body:    ["Satoshi", "sans-serif"],
-    },
-  },
-}
+import { TOKENS } from "./lib/palette";
+const v = (t: string) => `rgb(var(--cbm-${t}) / <alpha-value>)`;
+// cbm.page, cbm.base, cbm.surface, ..., cbm.gray["400"], cbm.red ...
+// uso: bg-cbm-page, text-cbm-gray-200, border-cbm-line/60
 ```
 
-### 1.4 Tokens prontos — CSS Custom Properties
+### 1.4 Tokens prontos: CSS Custom Properties
+
+`paletteCss(ACTIVE_PALETTE)` injeta no `<head>` um bloco `:root` com canais RGB soltos:
 
 ```css
 :root {
-  /* Cor */
-  --base:          #000F08;
-  --forest:        #070B08;
-  --white:         #F5F2ED;
-  --signal:        #FB3640;
-  --signal-dark:   #C42030;
-  --border:        #111511;
-  --border-active: #1A2418;
-  --cursor:        #97938b;
-
-  --gray-100: #E8E4DE;
-  --gray-200: #C8C4BE;
-  --gray-400: #8A8780;
-  --gray-600: #4A4844;
-  --gray-800: #1E1E1A;
-
-  /* Glow do sinal — teto rígido 0.08 */
-  --glow:        rgba(251, 54, 64, 0.06);
-  --glow-strong: rgba(251, 54, 64, 0.08);
+  --cbm-page: 10 10 10;
+  --cbm-base: 10 10 10;
+  --cbm-white: 245 242 237;
+  --cbm-red: 251 54 64;
+  /* ... um por token ... */
 }
+
+/* uso */
+.card { background: rgb(var(--cbm-card)); border: 1px solid rgb(var(--cbm-border)); }
+.overlay { background: rgb(var(--cbm-page) / 0.85); }
 ```
+
+Em estilo inline (React): `cbm("card")` devolve `rgb(var(--cbm-card))` e `cbm("page", 0.85)` o
+mesmo com alpha. Para three.js, que não lê variável CSS: `paletteHex("page")`, chamado no render.
+
+Glow do sinal: teto rígido de 0.08 (`rgb(var(--cbm-red) / 0.06)` a `0.08`).
 
 ### 1.5 Mapeamento semântico
 
 ```
-Fundo de página          base
-Fundo de card/overlay    forest
+Fundo de página          page / base
+Fundo de card/overlay    surface / card
 Título                   white
 Corpo                    gray-200
 Texto secundário         gray-400
-Texto terciário/caption  gray-600
-Separador                gray-800 | border
+Decorativo (não texto)   gray-600
+Separador                border | line
 
-Ação primária (bg)       signal        Ação primária (texto)   base
-Ação secundária (texto)  white         Ação secundária (borda) border-active
+Conversão (CTA)          FillButton: red sólido, texto page
+Botão da marca           MeshButton: vazado, malha que acorda
+Seta / "abre"            TriArrow (triângulo da marca), nunca → ↗ ←
 
 Borda padrão             border        Borda hover/ativa       border-active
-Label/tag                signal @ 0.7 opacity
-Destaque inline / foco   signal
+Destaque inline / foco   red
 ```
 
-### 1.6 Contraste (verificado)
+### 1.6 Contraste (verificado, paleta Neutro)
 
 ```
-white sobre base       15.7:1  AAA
-gray-400 sobre base     4.7:1  AA
-signal (foco) sobre base — suficiente p/ WCAG AA sem cor alternativa
+white    sobre base   17.7:1  AAA
+gray-200 sobre base   12.0:1  AAA
+gray-400 sobre base    6.1:1  AA      ← mínimo para texto secundário
+gray-500 sobre base    4.2:1  só texto grande
+gray-600 sobre base    2.7:1  decorativo, nunca texto que precisa ser lido
+red      sobre base    5.4:1  AA
+page     sobre red     5.4:1  AA      (texto do FillButton)
+red      sobre white   3.3:1  reprova AA para texto → use red-dark (5.2:1)
 ```
+
+O contraste dos botões em todos os estados é provado por teste: `node --test scripts/buttons.test.mts`.
 
 ---
 
@@ -348,25 +342,26 @@ Estes são os componentes que dão o *caráter* — não só tokens. Reimplement
 ```
 Foco = identidade **e** acessibilidade juntas. Nunca `outline: none` sem substituto.
 
-### 5.2 Botão primário (mesh procedural)
+### 5.2 Os dois botões
 
-O CTA-assinatura é um botão retangular com **malha triangulada procedural** animada por frame
-(via `setAttribute` direto no SVG, zero re-render). No hover: halo radial seguindo o cursor,
-wash diagonal do sinal, seta vermelha que gira. Versão simplificada, portável:
+**`FillButton`, o CTA de conversão.** Vermelho sólido em repouso, texto `page` em Panchang 700.
+No hover, a malha triangulada se pinta de off-white **a partir do ponto por onde o cursor
+entrou** (onda de ~1s), e recolhe para o ponto de saída. O texto fica escuro o tempo todo:
+legível sobre o vermelho, o off-white e qualquer mistura no meio. Pelo teclado, a onda parte da
+esquerda. Um por tela, no máximo dois.
+
+**`MeshButton`, o botão da marca.** Vazado, borda off-white/55, com uma malha triangulada gerada
+no tamanho real do botão: quase apagada em repouso (0.08) e acesa só num círculo de 90px em volta
+do cursor (0.85). Uma placa escura esfumada fica atrás do rótulo, então nenhuma linha cruza as
+letras. A seta é o triângulo vermelho, que **avança** no hover (nunca gira).
 
 ```
-Base:    px-12 py-7 · uppercase · Satoshi 500 · tracking 0.3em
-         bg base/60 · backdrop-blur-sm · border 1px white/55 · radius 0
-Hover:   border white/100 · halo radial rgba(245,242,237,0.22) no ponto do cursor
-         + wash linear-gradient(120deg, transparent, rgba(251,54,64,0.08), transparent)
-Ícone:   seta/triângulo do sinal que gira no hover
+Os dois: border-radius 0 · foco 2px · nada anima em repouso · prefers-reduced-motion respeitado
+Contraste em todos os estados provado em scripts/buttons.test.mts (alphas em buttonSpec.ts)
 ```
 
-Variante sólida clássica (fallback simples):
-```
-bg signal · text base · px-7 py-3.5 · Panchang 600 11px tracking 0.15em uppercase · radius 0
-hover: bg signal-dark · transition background 150ms
-```
+**Setas de texto (→ ↗ ←) não existem no sistema.** Use `TriArrow`: triângulo para a frente, para
+trás, ou a cunha de canto (◥) para link que abre.
 
 ### 5.3 Cursor customizado zone-aware
 
@@ -388,11 +383,11 @@ só nas zonas ativas.
 
 ### 5.5 Wipe de transição direcional
 
-Navegação capítulo-a-capítulo não é scroll: um painel full-screen `base #000F08` varre na direção do
+Navegação capítulo-a-capítulo não é scroll: um painel full-screen na cor `page` varre na direção do
 movimento (GSAP): cobre `yPercent 100→0, 0.42s power3.in`, troca o conteúdo escondido, revela
 `0→-100, 0.5s power3.out`. Além dele, um **overlay acoplado ao scroll** que escurece para `0.92` de
-opacidade quando a emenda entre seções cruza o centro do viewport — dissolve entre cenas pelo verde
-da marca em vez de corte seco.
+opacidade quando a emenda entre seções cruza o centro do viewport — dissolve entre cenas pelo preto
+da base em vez de corte seco.
 
 ### 5.6 Logo como construção
 
@@ -407,15 +402,15 @@ sequência de construção. Conceito replicável: *o logo é desenhado, não col
 ### Card
 
 ```
-bg forest · border 1px border · border-left 2px signal (acento de identidade) · radius 0
-shadow 0 2px 12px rgba(0,0,0,0.28)
-  categoria:  Satoshi 500 · 9px · tracking 0.32em · uppercase · signal @ 0.7
+bg surface ou card · border 1px border · radius 0
+  categoria:  Satoshi 500 · 9px · tracking 0.32em · uppercase · gray-400
   título:     Panchang 700 · 14–16px · white
-  descrição:  Satoshi 300 · 12–13px · gray-400 · LH 1.7
-  CTA inline: Panchang 600 · 11px · tracking 0.15em · uppercase · white
-              border-bottom 1px signal · hover: white → signal
+  descrição:  Satoshi 400 · 13–14px · gray-200 · LH 1.6
+  link:       texto + TriArrow, sublinhado que se desenha no hover (site-link-underline)
 hover: border → border-active · transition border-color 200ms
 ```
+
+Sem barra lateral colorida: destaque vem de hierarquia, não de enfeite (§8).
 
 ### Navbar glass
 
@@ -447,7 +442,7 @@ Post-processing   nenhum (sem bloom/DoF)
 Assets            geometria procedural — sem .glb/.gltf, sem texturas
 DPR               [1, 1.5] em produção (evitar 2.0 em mobile)
 frameloop         "demand" quando parado · "always" quando há movimento
-Fundo/fog         mesma cor da base (#000F08) — sem horizonte visível, profundidade infinita
+Fundo/fog         mesma cor da página (`page`, via paletteHex) — sem horizonte visível
 Câmera            fov 42 · near 0.1 · far 100
 Estrutura         nós/arestas em white; ápice ativo em signal; camadas distantes recuam por opacidade
 Canvas            aria-hidden="true" · conteúdo textual SEMPRE em HTML, nunca no canvas
@@ -463,12 +458,23 @@ congelar quando fora de foco.
 
 **Cor**
 ```
-✗ #000000 como fundo (preto puro sem temperatura → dashboard genérico)
+✗ #000000 puro como fundo (achata a escada de superfícies: sunken e base viram o mesmo preto)
+✗ hex escrito à mão no código (use os tokens da paleta; o detector scripts/check-green.mjs acusa verdes)
 ✗ #ffffff como texto (branco frio → look bootstrap)
-✗ azul, roxo, cyan, verde-lima em qualquer elemento
+✗ azul, roxo, cyan, verde-lima em elementos de interface (apoio só em posts e gráficos)
 ✗ gradiente linear como fundo de seção (#000→#111 é o sinal nº1 de dark theme sem identidade)
 ✗ sombras coloridas exceto o sinal @ opacity ≤ 0.08
 ✗ mais de 2–3 elementos do sinal visíveis ao mesmo tempo
+```
+
+**Padrões de "AI slop"** (removidos do site em 2026-11-03)
+```
+✗ barra lateral colorida (border-left/right > 1px) em cards, citações, blocos
+✗ autoavaliação em escala ("Front-end 9/10", losangos, barras de habilidade)
+✗ trio de valores genéricos em cards iguais ("Precisão / Elegância / Detalhismo")
+✗ escassez artificial ("Agenda limitada", "Últimas vagas")
+✗ setas de texto → ↗ ← (use TriArrow)
+✗ travessões (—) no texto; use vírgula, dois-pontos, ponto ou parênteses
 ```
 
 **Tipografia**
@@ -495,9 +501,9 @@ Este sistema é uma *estrutura*, não uma prisão. Para levar o caráter a outro
 1. **Troque o sinal.** `#FB3640` é a única cor de destaque. Substitua por outro hue **saturado e raro**
    (âmbar, cyan elétrico, magenta…). Mantenha a *regra de raridade* (2–3 por viewport) — é ela, não o
    hue, que cria o impacto.
-2. **Mantenha a temperatura da base e da estrutura.** Se a marca é fria, use uma base azul-quase-preta
-   (`#080B0F`) e um branco levemente azulado — mas **nunca** `#000`/`#fff` puros. A temperatura é o que
-   separa "premium" de "template".
+2. **Troque a paleta inteira por token, não por hex.** `lib/palette.ts` já tem a estrutura (superfícies,
+   cinzas, apoio, marca); uma marca nova é uma paleta nova lá e uma linha em `ACTIVE_PALETTE`. Mantenha
+   a escada de superfícies com degraus visíveis e evite `#000`/`#fff` puros.
 3. **Troque o par tipográfico, mantenha os papéis.** Uma display expressiva + uma grotesk neutra de
    corpo. Nunca misture os papéis.
 4. **Guarde os invariantes estruturais:** `border-radius: 0`, foco visível na cor do sinal, tracking
@@ -506,7 +512,7 @@ Este sistema é uma *estrutura*, não uma prisão. Para levar o caráter a outro
    As cenas WebGL e o wipe são camadas opcionais de ambição.
 
 Checklist mínimo pra "sente-se como a mesma família":
-- [ ] Base escura com temperatura (não `#000`)
+- [ ] Base escura com escada de superfícies (não `#000` achatado)
 - [ ] Off-white quente para texto (não `#fff`)
 - [ ] Um único sinal raro para ação/foco/destaque
 - [ ] `border-radius: 0` na linguagem angular

@@ -2,6 +2,12 @@
 
 # Coded by M — Sistema de Design
 
+> **Paleta atualizada em 2026-11-03: Neutro.** As cores agora vêm de `lib/palette.ts` (variáveis
+> `--cbm-*`), e as seções 3 e 4 abaixo descrevem o sistema atual. **Hex citados nas receitas de
+> componente mais adiante (`#000F08`, `#0E1810`, `#1a2a1e`…) são históricos**: valem os tokens
+> correspondentes (`page`, `card`, `line`…). Botões: ver `FillButton` e `MeshButton` em
+> `DESIGN-LANGUAGE.md` §5.2. A versão portátil e sempre atual é o `DESIGN-LANGUAGE.md`.
+
 ## 1. Objetivo do Design System
 
 Este documento é a fonte única da verdade visual da Coded by M.
@@ -39,9 +45,9 @@ Nenhum outro elemento entra no sistema sem propósito narrativo claro.
 Cada elemento visual — linha, ponto, borda, animação — deve existir como parte
 de uma estrutura em construção. Ornamento sem função é ruído.
 
-**Temperatura, não contraste neutro.**
-As cores da marca têm temperatura (verde no preto, quente no branco). Trocar por
-equivalentes neutros (`#000000`, `#ffffff`) quebra a identidade.
+**O calor mora na estrutura, não no fundo.**
+O fundo é preto neutro (`#0A0A0A`); o off-white `#F5F2ED` e o vermelho carregam a
+temperatura da marca. Evite `#000000` e `#ffffff` puros.
 
 **Raridade cria impacto.**
 O vermelho só funciona porque aparece poucas vezes. A regra de raridade se aplica
@@ -51,127 +57,61 @@ a todos os elementos de destaque: quanto menos frequente, maior o impacto.
 
 ## 3. Sistema de Cores
 
-### Cores Primárias
+Fonte única: `lib/palette.ts`. A paleta ativa (`ACTIVE_PALETTE = "neutro"`) vira variáveis
+`--cbm-<token>` injetadas no layout raiz. As outras paletas (a antiga "atual" esverdeada, "quente"
+e "puro") ficam no arquivo para comparação no `/lab/revisao`.
+
+### Superfícies (do recuado ao destacado)
 
 ```
-Deep Black     #000F08   Fundo base de toda a experiência
-Signal Red     #FB3640   Ação, sinal, corte, destaque máximo
-Off White      #F5F2ED   Texto principal, geometria 3D, elementos de alta hierarquia
-Forest Dark    #0E1810   Fundos secundários, cards, overlays, separadores
+sunken #050505 · page #0A0A0A · base #0A0A0A · surface #0F0F0F · raised #121212
+drawer #141414 · frame-bar #121212 · frame #171717 · card #1A1A1A
+border #1C1C1C · border-active #2A2A2A · line #262626
 ```
 
-### Escala de Neutros Quentes
+### Marca (fixas em toda paleta)
 
 ```
-Gray 100       #E8E4DE   Texto sobre fundos claros
-Gray 200       #C8C4BE   Geometria 3D de camada intermediária
-Gray 400       #8A8780   Texto secundário, labels, geometria distante
-Gray 600       #4A4844   Texto terciário, datas, categorias, captions
-Gray 800       #1E1E1A   Separadores leves, bordas muito discretas
+white #F5F2ED   red #FB3640   red-dark #C42030 (vermelho para texto sobre claro)
 ```
 
-### Cores de Suporte
+### Cinzas neutros
 
 ```
-Red Dark       #C42030   Hover do vermelho, sombra de elemento ativo
-Border         #1a2a1e   Borda padrão (temperatura verde, discreta)
-Border Active  #2a4a32   Borda em hover/estado ativo
-Glow           rgba(251,54,64,0.06)   Ambient vermelho máximo permitido
+gray-50 #F2F2F2 · 100 #E5E5E5 · 200 #C9C9C9 · 300 #ADADAD · 400 #8F8F8F
+gray-500 #737373 · 600 #575757 · 700 #3D3D3D · 800 #262626 · 900 #171717
 ```
 
-### Regra de Temperatura
+Corpo em `gray-200` (12:1), secundário em `gray-400` (6,1:1). `gray-600` (2,7:1) é decorativo,
+nunca texto que precisa ser lido.
 
-Os fundos da Coded by M não são neutros. `#000F08` tem um traço de verde
-que o diferencia de `#000000`. `#F5F2ED` tem um traço de bege que o diferencia
-de `#ffffff`. `#0E1810` é perceptivelmente verde-escuro.
+### Cores de apoio
 
-Esta temperatura é a impressão digital da marca. Nunca substituir por equivalentes
-neutros — a identidade se perde.
+```
+success #4CC38A · warning #F2B33D · info #5B9BF0 · accent-2 #8FB3C9
+```
+
+Só em posts, estados e gráficos; nunca em ação.
 
 ---
 
 ## 4. Tokens de Cor
 
-Tokens para Tailwind (`tailwind.config.ts`) e CSS Custom Properties.
-
-### Tailwind — extensão de cores
-
-```js
-// tailwind.config.ts
-colors: {
-  cbm: {
-    black:          '#000F08',
-    forest:         '#0E1810',
-    white:          '#F5F2ED',
-    red:            '#FB3640',
-    'red-dark':     '#C42030',
-    border:         '#1a2a1e',
-    'border-active':'#2a4a32',
-    gray: {
-      100: '#E8E4DE',
-      200: '#C8C4BE',
-      400: '#8A8780',
-      600: '#4A4844',
-      800: '#1E1E1A',
-    },
-  },
-}
-```
-
-### CSS Custom Properties
-
-```css
-:root {
-  /* Primárias */
-  --cbm-black:          #000F08;
-  --cbm-forest:         #0E1810;
-  --cbm-white:          #F5F2ED;
-  --cbm-red:            #FB3640;
-  --cbm-red-dark:       #C42030;
-
-  /* Neutros */
-  --cbm-gray-100:       #E8E4DE;
-  --cbm-gray-200:       #C8C4BE;
-  --cbm-gray-400:       #8A8780;
-  --cbm-gray-600:       #4A4844;
-  --cbm-gray-800:       #1E1E1A;
-
-  /* Bordas */
-  --cbm-border:         #1a2a1e;
-  --cbm-border-active:  #2a4a32;
-
-  /* Glow */
-  --cbm-glow:           rgba(251, 54, 64, 0.06);
-  --cbm-glow-strong:    rgba(251, 54, 64, 0.08);
-}
-```
+- **CSS:** `rgb(var(--cbm-card))`, com alpha `rgb(var(--cbm-page) / 0.85)`.
+- **Tailwind:** `bg-cbm-page`, `text-cbm-gray-200`, `border-cbm-line/60` (o config lê as variáveis).
+- **React inline:** `cbm("card")`, `cbm("page", 0.85)` de `@/lib/palette`.
+- **three.js:** `paletteHex("page")`, chamado no render (three não lê variável CSS).
+- **Nunca** hex escrito à mão; `node scripts/check-green.mjs` acusa os verdes antigos.
 
 ### Mapeamento semântico
 
 ```
-Fundo de página:          cbm-black
-Fundo de card:            cbm-forest
-Fundo de painel mobile:   cbm-black
-
-Texto título:             cbm-white
-Texto corpo:              cbm-gray-200
-Texto secundário:         cbm-gray-400
-Texto terciário:          cbm-gray-600
-Texto label/caption:      cbm-gray-600
-
-Ação primária (bg):       cbm-red
-Ação primária (text):     cbm-black
-Ação secundária (text):   cbm-white
-Ação secundária (border): cbm-border-active
-
-Borda padrão:             cbm-border
-Borda ativa/hover:        cbm-border-active
-Separador:                cbm-gray-800
-
-Tag/label colorida:       cbm-red (opacity 0.7)
-Destaque inline:          cbm-red
-Underline de CTA:         cbm-red
-Focus ring:               cbm-red
+Fundo de página        page / base        Título              white
+Fundo de card          surface / card     Corpo               gray-200
+Borda padrão / ativa   border / border-active   Secundário    gray-400
+Filete visível         line               Destaque / foco     red
+CTA de conversão       FillButton         Botão da marca      MeshButton
+Seta                   TriArrow (nunca → ↗ ←)
 ```
 
 ---

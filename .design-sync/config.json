@@ -14,6 +14,7 @@
     "LogoMark": "../../components/ui/LogoMark.tsx",
     "MeshButton": "../../components/ui/MeshButton.tsx",
     "FillButton": "../../components/ui/FillButton.tsx",
+    "TriArrow": "../../components/ui/TriArrow.tsx",
     "Reveal": "../../components/ui/Reveal.tsx",
     "TriText": "../../components/ui/TriText.tsx",
     "WhatsAppFab": "../../components/ui/WhatsAppFab.tsx",
