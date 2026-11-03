@@ -4,6 +4,7 @@ import { cases } from "@/data/cases";
 import { SERVICE_PAGES } from "@/data/servicePages";
 import { publishedPosts } from "@/data/blog";
 import { QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
+import { ESCOLHER_PATH } from "@/data/comoEscolherEmpresa";
 import { CALC_PATH } from "@/data/calculadoraPreco";
 
 /**
@@ -34,6 +35,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Artigo de preço na raiz. A URL não leva o ano para poder ser atualizada.
     {
       url: `${SITE_URL}${QUANTO_CUSTA_PATH}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}${ESCOLHER_PATH}`,
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
