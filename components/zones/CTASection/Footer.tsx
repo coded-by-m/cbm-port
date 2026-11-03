@@ -134,23 +134,6 @@ export default function Footer({
                 Coded by M
               </span>
             </div>
-            <div className="mt-7 flex flex-col gap-2.5">
-              {["Aceitando projetos", "Agenda 2026 limitada"].map((s) => (
-                <div key={s} className="flex items-center gap-3">
-                  <span
-                    className="block h-2 w-2 animate-pulse"
-                    style={{ background: ACCENT }}
-                    aria-hidden
-                  />
-                  <span
-                    className="text-[0.7rem] uppercase tracking-[0.25em] text-[#F5F2ED]/70"
-                    style={{ fontFamily: SAT, fontWeight: 500 }}
-                  >
-                    {s}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Coluna 2 — nav */}

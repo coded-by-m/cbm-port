@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     url: "/",
     title: HOME_TITLE,
     description: HOME_DESCRIPTION,
-    images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M — estúdio de web design" }],
+    images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M, estúdio de web design" }],
   },
 };
 

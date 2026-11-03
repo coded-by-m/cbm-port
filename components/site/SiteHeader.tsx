@@ -523,32 +523,6 @@ export function SiteHeader() {
           >
             <span
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 9,
-                fontFamily: SATOSHI,
-                fontWeight: 400,
-                fontSize: 9,
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                color: cbm("gray-300"),
-                whiteSpace: "nowrap",
-              }}
-            >
-              <span
-                style={{
-                  display: "block",
-                  width: 6,
-                  height: 6,
-                  flex: "none",
-                  background: "#FB3640",
-                  transform: "rotate(45deg)",
-                }}
-              />
-              Aceitando projetos
-            </span>
-            <span
-              style={{
                 fontFamily: SATOSHI,
                 fontWeight: 400,
                 fontSize: 9,

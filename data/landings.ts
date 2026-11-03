@@ -45,12 +45,12 @@ export const LANDINGS: LandingConfig[] = [
     slug: "arquitetura",
     eyebrow: "Para escritórios de arquitetura, interiores e engenharia",
     headline: "Sua obra merece um site tão bem resolvido quanto ela.",
-    sub: "Sites e landing pages para escritórios que projetam espaço — feitos do zero, sem template, com a apresentação que o seu trabalho já teria se fosse impresso.",
+    sub: "Sites e landing pages para escritórios que projetam espaço, feitos do zero, sem template, com a apresentação que o seu trabalho já teria se fosse impresso.",
     ctaLabel: "Falar sobre o meu escritório",
 
     pains: [
       "Seu portfólio vive no Instagram, e cada projeto some do feed em dois dias.",
-      "O site que existe foi montado num template — e nivela seu escritório com quem não projeta metade.",
+      "O site que existe foi montado num template. E nivela seu escritório com quem não projeta metade.",
       "Quem pesquisa seu nome encontra foto comprimida e nenhum projeto por inteiro.",
       "A obra vai pro escritório ao lado, que não projeta melhor. Só se apresenta melhor.",
     ],
@@ -64,11 +64,11 @@ export const LANDINGS: LandingConfig[] = [
     faq: [
       {
         q: "Quanto custa?",
-        a: "PREENCHER — a faixa depende do escopo, e a resposta honesta aqui é a que você pratica. Sem um número, esta pergunta trabalha contra: quem não vê preço assume que é caro e não pergunta.",
+        a: "PREENCHER: a faixa depende do escopo, e a resposta honesta aqui é a que você pratica. Sem um número, esta pergunta trabalha contra: quem não vê preço assume que é caro e não pergunta.",
       },
       {
         q: "Quanto tempo leva?",
-        a: "PREENCHER — o prazo real do seu processo de quatro etapas, da estratégia ao deploy.",
+        a: "PREENCHER: o prazo real do seu processo de quatro etapas, da estratégia ao deploy.",
       },
       {
         q: "Meu Instagram já não basta?",
@@ -76,7 +76,7 @@ export const LANDINGS: LandingConfig[] = [
       },
       {
         q: "E os meus textos e as minhas fotos?",
-        a: "As fotos são suas e eu trabalho com elas — inclusive tratando peso e recorte, que é o que costuma estragar site de arquitetura. O texto a gente escreve junto: você conta o projeto e eu estruturo a narrativa.",
+        a: "As fotos são suas e eu trabalho com elas, inclusive tratando peso e recorte, que é o que costuma estragar site de arquitetura. O texto a gente escreve junto: você conta o projeto e eu estruturo a narrativa.",
       },
       {
         q: "Vou conseguir mexer depois?",
@@ -91,7 +91,7 @@ export const LANDINGS: LandingConfig[] = [
       // Sem sufixo: o `template` do layout raiz já acrescenta "· Coded by M".
       title: "Sites para escritórios de arquitetura",
       description:
-        "Sites e landing pages para escritórios de arquitetura, interiores e engenharia. Feitos do zero, sem template — a apresentação que a sua obra merece.",
+        "Sites e landing pages para escritórios de arquitetura, interiores e engenharia. Feitos do zero, sem template, com a apresentação que a sua obra merece.",
       ogImage: "/og/lp/arquitetura.jpg",
     },
   },

@@ -45,7 +45,7 @@ export function CaseResponsive({ project }: { project: CaseProject }) {
             Pensado pra qualquer tela.
           </h2>
           <p className="mt-4 font-body text-[14px] font-light leading-[1.78] text-cbm-gray-400">
-            A mesma precisão no mobile — layout, hierarquia e performance
+            A mesma precisão no mobile: layout, hierarquia e performance
             adaptados, sem perder a identidade.
           </p>
         </Reveal>
@@ -67,7 +67,7 @@ export function CaseResponsive({ project }: { project: CaseProject }) {
                 ) : (
                   <CaseFrameScroll
                     src={mobile}
-                    alt={`${project.title} — site mobile`}
+                    alt={`${project.title}, site mobile`}
                     autoDurationSec={28}
                     lazy
                     fallback={

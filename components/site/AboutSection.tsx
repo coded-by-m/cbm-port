@@ -1,11 +1,10 @@
-import { ABOUT, VALUES } from "@/data/about";
+import { ABOUT } from "@/data/about";
 import {
   Diamond,
   LogoMarkSvg,
   PANCHANG,
   SATOSHI,
   SECTION,
-  SURFACE,
 } from "./shared";
 import { Reveal } from "@/components/ui/Reveal";
 import { cbm } from "@/lib/palette";
@@ -114,8 +113,6 @@ export function AboutSection() {
             <div
               style={{
                 maxWidth: "56ch",
-                borderLeft: "2px solid rgba(251,54,64,0.45)",
-                paddingLeft: 24,
                 display: "flex",
                 flexDirection: "column",
                 gap: 10,
@@ -170,67 +167,6 @@ export function AboutSection() {
         </div>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,220px),1fr))",
-          gap: 1,
-          background: "rgba(245,242,237,0.12)",
-          border: "1px solid rgba(245,242,237,0.12)",
-          marginTop: "clamp(44px,8vh,80px)",
-        }}
-      >
-        {VALUES.map((v, i) => (
-          <Reveal key={v.title} delay={i * 110} variant="side" className="site-cell">
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 8,
-                minWidth: 0,
-                background: SURFACE.base,
-                padding: "clamp(22px,2.4vw,30px)",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: PANCHANG,
-                  fontWeight: 600,
-                  fontSize: 10,
-                  letterSpacing: "0.3em",
-                  color: "#FB3640",
-                }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <p
-                style={{
-                  margin: 0,
-                  fontFamily: PANCHANG,
-                  fontWeight: 500,
-                  fontSize: "clamp(19px,1.9vw,23px)",
-                  letterSpacing: "-0.005em",
-                  color: "#F5F2ED",
-                }}
-              >
-                {v.title}
-              </p>
-              <p
-                style={{
-                  margin: 0,
-                  fontFamily: SATOSHI,
-                  fontWeight: 400,
-                  fontSize: 14,
-                  lineHeight: 1.65,
-                  color: cbm("gray-300"),
-                }}
-              >
-                {v.desc}
-              </p>
-            </div>
-          </Reveal>
-        ))}
-      </div>
     </section>
   );
 }

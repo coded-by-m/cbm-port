@@ -38,7 +38,7 @@ export const POSTS: BlogPost[] = [
     description: "PREENCHER",
     datePublished: "2026-10-10",
     draft: true,
-    lead: "PREENCHER — a resposta direta, no primeiro parágrafo.",
+    lead: "PREENCHER: a resposta direta, no primeiro parágrafo.",
     sections: [
       { heading: "O que define o preço de um site", body: ["PREENCHER"] },
       { heading: "Template, plataforma ou código próprio", body: ["PREENCHER"] },
@@ -56,7 +56,7 @@ export const POSTS: BlogPost[] = [
     description: "PREENCHER",
     datePublished: "2026-10-10",
     draft: true,
-    lead: "PREENCHER — a resposta direta, no primeiro parágrafo.",
+    lead: "PREENCHER: a resposta direta, no primeiro parágrafo.",
     sections: [
       { heading: "O que é uma landing page", body: ["PREENCHER"] },
       { heading: "O que é um site institucional", body: ["PREENCHER"] },
@@ -74,7 +74,7 @@ export const POSTS: BlogPost[] = [
     description: "PREENCHER",
     datePublished: "2026-10-10",
     draft: true,
-    lead: "PREENCHER — a resposta direta, no primeiro parágrafo.",
+    lead: "PREENCHER: a resposta direta, no primeiro parágrafo.",
     sections: [
       { heading: "Portfólio organizado por projeto", body: ["PREENCHER"] },
       { heading: "Fotos que carregam rápido sem perder qualidade", body: ["PREENCHER"] },

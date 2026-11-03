@@ -39,7 +39,7 @@ const BEATS: Beat[] = [
   },
   {
     headline: "Esse é o que você se torna.",
-    sub: "Construído pra ser único — não pra parecer pronto.",
+    sub: "Construído pra ser único, não pra parecer pronto.",
   },
 ];
 

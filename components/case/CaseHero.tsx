@@ -147,7 +147,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
               <CaseFrameScroll
                 src={project.preview?.desktop}
                 poster={project.preview?.top}
-                alt={`${project.title} — site desktop`}
+                alt={`${project.title}, site desktop`}
                 fallback={
                   <div className="flex h-full w-full items-center justify-center bg-cbm-surface opacity-20">
                     <LogoMark size={40} />

@@ -328,7 +328,7 @@ export default function ProcessSection({
                   key={step.num}
                   type="button"
                   onClick={() => goToStep(i)}
-                  aria-label={`Ir pra etapa ${step.num} — ${step.title}`}
+                  aria-label={`Ir pra etapa ${step.num}: ${step.title}`}
                   aria-current={isActive ? "true" : undefined}
                   data-cursor="triangle"
                   className="flex items-center gap-3 bg-transparent"

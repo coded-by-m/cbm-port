@@ -97,7 +97,7 @@ export const CARD_CONTENT = [
     number: "02",
     label: "PRINCÍPIO",
     title: "Precisão",
-    description: "Cada pixel, cada interação, cada decisão — nada é acidental.",
+    description: "Cada pixel, cada interação, cada decisão: nada é acidental.",
   },
   {
     number: "03",

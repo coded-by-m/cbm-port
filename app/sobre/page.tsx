@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ABOUT, SKILLS, VALUES } from "@/data/about";
+import { ABOUT, SKILLS } from "@/data/about";
 import { SOBRE_FAQ, SOBRE_LEAD } from "@/data/sobre";
 import { PROCESS_STEPS } from "@/data/process";
 import { ProseShell, PROSE_H1, PROSE_H2, PROSE_H3, PROSE_LINK, PROSE_P } from "@/components/prose/Prose";
@@ -8,7 +8,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { GOOGLE_MAPS_URL, WHATSAPP_DISPLAY } from "@/lib/contact";
 import { FOUNDER_ID, ORG_ID, breadcrumbSchema, faqPageSchema, graph, webPageSchema } from "@/lib/seo";
 
-const TITLE = "Sobre o estúdio — web design em Florianópolis";
+const TITLE = "Sobre o estúdio: web design em Florianópolis";
 const DESCRIPTION =
   "Quem está por trás da Coded by M: Matheus Mendes, web designer e desenvolvedor em Florianópolis. Como o estúdio trabalha, com que tecnologias e para quem.";
 
@@ -58,13 +58,6 @@ export default function SobrePage() {
             {s.num} · {s.title}.
           </strong>{" "}
           {s.desc}
-        </p>
-      ))}
-
-      <h2 style={PROSE_H2}>O que guia cada projeto</h2>
-      {VALUES.map((v) => (
-        <p key={v.title} style={PROSE_P}>
-          <strong style={STRONG}>{v.title}.</strong> {v.desc}
         </p>
       ))}
 

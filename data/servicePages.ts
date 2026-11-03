@@ -129,7 +129,7 @@ const PRECO_TEXTO =
 
 const LANDING_PRECO = `A partir de ${PUBLIC_PRICE.landing.display}. O valor final depende do projeto (seções, formulários, integrações). Orçamento claro no WhatsApp.`;
 
-const INSTITUCIONAL_PRECO = `A partir de ${PUBLIC_PRICE.institucional.display}. O valor final depende do projeto — páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`;
+const INSTITUCIONAL_PRECO = `A partir de ${PUBLIC_PRICE.institucional.display}. O valor final depende do projeto: páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`;
 
 export const SERVICE_PAGES: ServicePageConfig[] = [
   {
@@ -146,7 +146,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     intro:
       "Crio landing pages com código próprio, pensadas para transformar visitantes em contatos: design exclusivo, carregamento rápido e otimizadas para Google e anúncios. Atendo empresas e profissionais em todo o Brasil, a partir de Florianópolis.",
     summary:
-      "Landing page é uma página única com um objetivo só: pedir orçamento, agendar ou comprar. Faço do zero, sem template, para empresas que anunciam ou precisam transformar visita em contato. Valor e prazo dependem do escopo — você conta o projeto no WhatsApp e recebe a proposta antes de qualquer compromisso.",
+      "Landing page é uma página única com um objetivo só: pedir orçamento, agendar ou comprar. Faço do zero, sem template, para empresas que anunciam ou precisam transformar visita em contato. Valor e prazo dependem do escopo: você conta o projeto no WhatsApp e recebe a proposta antes de qualquer compromisso.",
     includesHeading: "O que está incluso",
     includes: [
       "Estratégia de conversão e copywriting",
@@ -164,8 +164,8 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     projectsHeading: "Landing pages no ar",
     faq: [
       { q: "Quanto custa uma landing page?", a: LANDING_PRECO },
-      { q: "Em quanto tempo fica pronta?", a: "PREENCHER — prazo típico de uma landing page." },
-      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER — o que entra na entrega e o que fica por conta do cliente." },
+      { q: "Em quanto tempo fica pronta?", a: "PREENCHER: prazo típico de uma landing page." },
+      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER: o que entra na entrega e o que fica por conta do cliente." },
       ATENDE_BRASIL,
       {
         q: "Posso editar o conteúdo depois?",
@@ -173,12 +173,12 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       },
       {
         q: "Landing page ou site institucional: qual escolher?",
-        a: "Landing page quando existe uma ação principal — um serviço, uma campanha, um anúncio. Site institucional quando a empresa precisa apresentar serviços, história e projetos em várias páginas.",
+        a: "Landing page quando existe uma ação principal: um serviço, uma campanha, um anúncio. Site institucional quando a empresa precisa apresentar serviços, história e projetos em várias páginas.",
         links: [{ href: "/site-institucional", label: "Site institucional" }],
       },
       {
         q: "Em quanto tempo uma landing page fica pronta?",
-        a: "O prazo depende do escopo (seções, textos, integrações) e é fechado no orçamento no WhatsApp, antes de começar — em geral mais rápido que um site institucional de várias páginas.",
+        a: "O prazo depende do escopo (seções, textos, integrações) e é fechado no orçamento no WhatsApp, antes de começar. Em geral, fica mais rápido que um site institucional de várias páginas.",
       },
     ],
     waMessage: "Olá! Vim pela página de landing page da Coded by M e quero um orçamento.",
@@ -198,7 +198,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     intro:
       "Um site profissional que apresenta sua empresa com clareza, passa confiança e gera contatos. Desenvolvido do zero, com código próprio, foco em velocidade e SEO desde o primeiro dia.",
     summary:
-      "Site institucional é a presença completa da empresa: serviços, história, projetos e contato, em várias páginas. Faço do zero, com código próprio, para empresas que querem ser encontradas no Google e passar confiança. Valor e prazo dependem do escopo — você conta o projeto no WhatsApp e recebe a proposta antes de qualquer compromisso.",
+      "Site institucional é a presença completa da empresa: serviços, história, projetos e contato, em várias páginas. Faço do zero, com código próprio, para empresas que querem ser encontradas no Google e passar confiança. Valor e prazo dependem do escopo: você conta o projeto no WhatsApp e recebe a proposta antes de qualquer compromisso.",
     includesHeading: "O que está incluso",
     includes: [
       "Arquitetura de informação",
@@ -210,19 +210,19 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     ],
     investimento: {
       price: PUBLIC_PRICE.institucional.amount,
-      body: `Site institucional a partir de ${PUBLIC_PRICE.institucional.display}, dependendo do projeto — páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`,
+      body: `Site institucional a partir de ${PUBLIC_PRICE.institucional.display}, dependendo do projeto: páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`,
     },
     caseSlugs: ["machado-plataformas", "estudio-lentz", "forma-viva", "estudio-monteiro"],
     projectsHeading: "Sites institucionais no ar",
     faq: [
       { q: "Quanto custa um site institucional?", a: INSTITUCIONAL_PRECO },
-      { q: "Qual o prazo de entrega?", a: "PREENCHER — prazo típico de um site institucional." },
+      { q: "Qual o prazo de entrega?", a: "PREENCHER: prazo típico de um site institucional." },
       {
         q: "Quantas páginas o site tem?",
         a: "Normalmente entre 5 e 12, definidas na etapa de estratégia a partir do que a empresa precisa apresentar.",
       },
-      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER — o que entra na entrega e o que fica por conta do cliente." },
-      { q: "Como funciona a manutenção depois da entrega?", a: "PREENCHER — suporte, ajustes e evolução após a publicação." },
+      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER: o que entra na entrega e o que fica por conta do cliente." },
+      { q: "Como funciona a manutenção depois da entrega?", a: "PREENCHER: suporte, ajustes e evolução após a publicação." },
       ATENDE_BRASIL,
       {
         q: "Landing page ou site institucional: qual escolher?",
@@ -248,22 +248,22 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     },
     h1: "Sites para escritórios de arquitetura e design de interiores",
     intro:
-      "Sites e landing pages para escritórios que projetam espaço — feitos do zero, sem template, com a apresentação que o seu trabalho teria se fosse impresso.",
+      "Sites e landing pages para escritórios que projetam espaço, feitos do zero, sem template, com a apresentação que o seu trabalho teria se fosse impresso.",
     summary:
-      "Um site de arquitetura organiza a obra por projeto, com fotos tratadas e página própria para cada uma, e faz o escritório ser encontrado no Google pelo nome e pela cidade. Faço do zero, para arquitetos e designers de interiores de todo o Brasil. Valor e prazo dependem do escopo — peça a proposta pelo WhatsApp.",
+      "Um site de arquitetura organiza a obra por projeto, com fotos tratadas e página própria para cada uma, e faz o escritório ser encontrado no Google pelo nome e pela cidade. Faço do zero, para arquitetos e designers de interiores de todo o Brasil. Valor e prazo dependem do escopo. Peça a proposta pelo WhatsApp.",
     extraSections: [
       {
         heading: "Por que um portfólio próprio",
         body: [
           "O Instagram é ótimo pra ser lembrado e péssimo pra ser encontrado. Ele não aparece no Google, não organiza sua obra por projeto e não sobrevive ao feed.",
-          "Um site é o único lugar onde o trabalho fica no seu endereço, na sua ordem, pra sempre — e onde quem pesquisa o seu nome encontra o projeto inteiro, não uma foto comprimida.",
+          "Um site é o único lugar onde o trabalho fica no seu endereço, na sua ordem, pra sempre. E é onde quem pesquisa o seu nome encontra o projeto inteiro, não uma foto comprimida.",
         ],
       },
       {
         heading: "O que um site de arquitetura precisa ter",
         list: [
           "Uma página por projeto, com a obra contada do conceito ao espaço habitado",
-          "Fotos tratadas em peso e recorte — o que mais estraga site de arquitetura",
+          "Fotos tratadas em peso e recorte, o que mais estraga site de arquitetura",
           "Navegação editorial: a imagem conduz, o texto sustenta",
           "Carregamento rápido mesmo com imagem grande",
           "Contato direto pelo WhatsApp",
@@ -284,14 +284,14 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     projectsHeading: "Projetos de arquitetura e interiores",
     faq: [
       { q: "Quanto custa um site para escritório de arquitetura?", a: PRECO_TEXTO },
-      { q: "Em quanto tempo fica pronto?", a: "PREENCHER — prazo típico de um site de arquitetura." },
+      { q: "Em quanto tempo fica pronto?", a: "PREENCHER: prazo típico de um site de arquitetura." },
       {
         q: "Meu Instagram já não basta?",
         a: "O Instagram é ótimo pra ser lembrado e péssimo pra ser encontrado. Ele não aparece no Google, não organiza sua obra por projeto e não sobrevive ao feed. Um site é o único lugar onde o trabalho fica no seu endereço, na sua ordem, pra sempre.",
       },
       {
         q: "E os meus textos e as minhas fotos?",
-        a: "As fotos são suas e eu trabalho com elas — inclusive tratando peso e recorte. O texto a gente escreve junto: você conta o projeto e eu estruturo a narrativa.",
+        a: "As fotos são suas e eu trabalho com elas, inclusive tratando peso e recorte. O texto a gente escreve junto: você conta o projeto e eu estruturo a narrativa.",
       },
       {
         q: "Vou conseguir publicar projetos novos depois?",

@@ -44,8 +44,8 @@ function caseTitle(project: Published) {
   if (project.seoTitle) return project.seoTitle;
   const kind = project.concept ? `${project.meta.tipo} conceitual` : project.meta.tipo;
   return project.niche
-    ? `${project.title} — ${kind} para ${project.niche}`
-    : `${project.title} — ${kind}`;
+    ? `${project.title}: ${kind} para ${project.niche}`
+    : `${project.title}: ${kind}`;
 }
 
 /** A descrição do conceito avisa logo de saída que não houve cliente. */
@@ -75,7 +75,7 @@ export async function generateMetadata({
       title: `${title} · Coded by M`,
       description,
       url,
-      images: [{ url: image, ...OG_SIZE, alt: `${project.title} — case da Coded by M` }],
+      images: [{ url: image, ...OG_SIZE, alt: `${project.title}, case da Coded by M` }],
     },
     twitter: {
       card: "summary_large_image",

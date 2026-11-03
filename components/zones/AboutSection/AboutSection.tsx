@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { ABOUT, VALUES } from "@/data/about";
+import { ABOUT } from "@/data/about";
 import { cbm } from "@/lib/palette";
 
 const AboutTerrain = dynamic(() => import("./AboutTerrain"), { ssr: false });
@@ -286,46 +286,6 @@ export default function AboutSection({
               </div>
             </div>
           </div>
-        </div>
-
-        {/* 3 valores */}
-        <div
-          className="mt-16 grid grid-cols-1 gap-px overflow-hidden border border-[#F5F2ED]/10 bg-[#F5F2ED]/10 sm:grid-cols-3"
-          style={reveal(460, 12)}
-        >
-          {VALUES.map((v, i) => (
-            <div
-              key={v.title}
-              className="group/v relative bg-cbm-page p-7 transition-colors duration-300 hover:bg-cbm-surface"
-            >
-              <span
-                aria-hidden
-                className="absolute right-3 top-3 h-2.5 w-2.5 border-r border-t border-[#FB3640] opacity-0 transition-opacity duration-300 group-hover/v:opacity-100"
-              />
-              <p
-                className="mb-3 text-[0.6rem] tabular-nums tracking-[0.3em] text-[#FB3640]/70"
-                style={{ fontFamily: '"Panchang", sans-serif', fontWeight: 600 }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </p>
-              <p
-                className="text-[clamp(1.15rem,1.8vw,1.5rem)] text-[#F5F2ED] transition-colors duration-300 group-hover/v:text-[#FB3640]"
-                style={{
-                  fontFamily: '"Panchang", sans-serif',
-                  fontWeight: 500,
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                {v.title}
-              </p>
-              <p
-                className="mt-2 text-[0.85rem] leading-relaxed text-[#F5F2ED]/55"
-                style={{ fontFamily: '"Satoshi", sans-serif', fontWeight: 300 }}
-              >
-                {v.desc}
-              </p>
-            </div>
-          ))}
         </div>
       </div>
 

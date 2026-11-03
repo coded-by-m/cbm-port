@@ -5,11 +5,6 @@
  * bloco Sobre da home. Não duplique este copy em componente.
  */
 
-export interface Value {
-  title: string;
-  desc: string;
-}
-
 export const ABOUT = {
   manifesto:
     "A Coded by M une design, tecnologia e pensamento estrutural pra construir uma presença digital à altura da empresa por trás dela.",
@@ -22,40 +17,43 @@ export const ABOUT = {
      * wireframe, que é o estado atual.
      */
     photo: undefined as string | undefined,
-    bio: "Formado em Análise e Desenvolvimento de Sistemas, encontrei no web design o ponto onde técnica e estética se encontram. A Coded by M é onde levo isso a sério — cada projeto, uma busca por uma presença digital tão boa quanto a empresa por trás dela.",
+    bio: "Formado em Análise e Desenvolvimento de Sistemas, encontrei no web design o ponto onde técnica e estética se encontram. A Coded by M é onde levo isso a sério: cada projeto, uma busca por uma presença digital tão boa quanto a empresa por trás dela.",
   },
   location: "Florianópolis, Brasil",
 } as const;
 
-/** Degraus da escala de capacidades. Define quantos losangos cada linha tem. */
-export const SKILL_SCALE = 10;
-
 export interface Skill {
   label: string;
-  /** 1–`SKILL_SCALE`. Convenção de leitura para "isto é meu forte", não medição. */
-  level: number;
+  /** O que o cliente recebe, em uma frase. Fato, não nota. */
+  desc: string;
 }
 
 /**
- * Capacidades do estúdio.
+ * O que entra em cada projeto.
  *
  * Os rótulos são específicos de propósito: "Web Design, Branding,
- * Development" poderia ser de qualquer um. Os números são afirmação do
- * fundador — ajuste aqui.
- *
- * A escala é de 1 a 10, não porcentagem: 87% sugere medição de algo, e não há
- * o que medir. Dez degraus são uma opinião assumida.
+ * Development" poderia ser de qualquer um. Sem escala nem nota: autoavaliação
+ * de 1 a 10 não diz nada a quem contrata. Cada linha diz o que é entregue.
  */
 export const SKILLS: Skill[] = [
-  { label: "Web design & interface", level: 10 },
-  { label: "Front-end · React, Next.js, TypeScript", level: 9 },
-  { label: "Design system", level: 9 },
-  { label: "Motion & WebGL", level: 8 },
-  { label: "Performance & SEO", level: 8 },
-];
-
-export const VALUES: Value[] = [
-  { title: "Precisão", desc: "Cada pixel tem razão de existir." },
-  { title: "Elegância", desc: "Sofisticação que não precisa gritar." },
-  { title: "Detalhismo", desc: "O acabamento é o produto." },
+  {
+    label: "Web design & interface",
+    desc: "Layout desenhado para o seu conteúdo, sem template, pensado do celular ao desktop.",
+  },
+  {
+    label: "Front-end · React, Next.js, TypeScript",
+    desc: "Código próprio, sem construtor de sites. Na entrega, código e acessos ficam com você.",
+  },
+  {
+    label: "Design system",
+    desc: "Cores, tipografia e componentes definidos uma vez, para o site crescer sem perder a cara.",
+  },
+  {
+    label: "Motion & WebGL",
+    desc: "Movimento e 3D quando ajudam a contar a história, nunca no caminho da leitura.",
+  },
+  {
+    label: "Performance & SEO",
+    desc: "Páginas leves, metadados e dados estruturados prontos para o Google desde o primeiro dia.",
+  },
 ];

@@ -5,7 +5,7 @@ export const LANDSCAPE_CARDS: ProjectCard[] = FRAGMENTS.map((frag) => ({
   id: frag.id,
   title: frag.label.replace("PROJECT ", "Project "),
   type: "Web Design",
-  description: "Placeholder — projeto em desenvolvimento.",
+  description: "Placeholder: projeto em desenvolvimento.",
   href: "#",
   x: frag.x,
   z: frag.z,

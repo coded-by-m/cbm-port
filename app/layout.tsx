@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     // página indexável declara o seu.
     title: TITLE,
     description: DESCRIPTION,
-    images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M — estúdio de web design" }],
+    images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M, estúdio de web design" }],
   },
   twitter: {
     card: "summary_large_image",
