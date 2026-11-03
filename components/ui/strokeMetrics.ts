@@ -1,7 +1,7 @@
 /**
- * Métrica vertical do StrokeText, em unidades do próprio corpo.
+ * Métrica vertical do TriText, em unidades do próprio corpo.
  *
- * Mora fora do componente de propósito: o StrokeText é `"use client"`, e uma
+ * Mora fora do componente de propósito: o TriText é `"use client"`, e uma
  * constante exportada de lá chega como referência de cliente (undefined) pra
  * quem importa de um server component. Quem só precisa do número — o Hero,
  * pra acertar o entrelinha — importa daqui.

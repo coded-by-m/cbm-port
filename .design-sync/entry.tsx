@@ -14,7 +14,7 @@ export { LogoMark } from "../components/ui/LogoMark";
 export { MeshButton } from "../components/ui/MeshButton";
 export { FillButton } from "../components/ui/FillButton";
 export { Reveal } from "../components/ui/Reveal";
-export { StrokeText } from "../components/ui/StrokeText";
+export { TriText } from "../components/ui/TriText";
 export { WhatsAppFab } from "../components/ui/WhatsAppFab";
 export { Diamond, TriangleMark, SectionHead, LogoMarkSvg } from "../components/site/shared";
 

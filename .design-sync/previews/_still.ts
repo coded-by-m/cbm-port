@@ -14,7 +14,7 @@
 // `prefers-reduced-motion: reduce`, que e um estado de primeira classe deste
 // design system. O proprio Reveal trata esse caso pulando direto para o estado
 // final ("quem pediu menos movimento recebe o estado final"), e o mesmo vale
-// para StrokeText e TriangleMark. Ou seja, o card mostra uma apresentacao que o
+// para o TriText e o TriangleMark. Ou seja, o card mostra uma apresentacao que o
 // sistema realmente entrega — a que ele entrega a quem pede menos movimento.
 
 // Alguns componentes nao passam por media query nenhuma: nascem com opacity 0 e

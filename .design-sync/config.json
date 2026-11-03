@@ -13,8 +13,9 @@
   "componentSrcMap": {
     "LogoMark": "../../components/ui/LogoMark.tsx",
     "MeshButton": "../../components/ui/MeshButton.tsx",
+    "FillButton": "../../components/ui/FillButton.tsx",
     "Reveal": "../../components/ui/Reveal.tsx",
-    "StrokeText": "../../components/ui/StrokeText.tsx",
+    "TriText": "../../components/ui/TriText.tsx",
     "WhatsAppFab": "../../components/ui/WhatsAppFab.tsx",
     "Diamond": "../../components/site/shared.tsx",
     "TriangleMark": "../../components/site/shared.tsx",
@@ -78,7 +79,8 @@
     "LpProof": "  lp: {\n    /** Vira a rota `/lp/<slug>`. */\n    slug: string;\n    eyebrow: string;\n    headline: string;\n    sub: string;\n    ctaLabel: string;\n    /** 3 ou 4 pontos de dor. Frases curtas, na pele de quem clicou. */\n    pains: string[];\n    /** Uma frase. O que muda depois. Nao e paragrafo. */\n    promise: string;\n    /** Slugs de data/cases.ts, na ordem em que provam. */\n    caseSlugs: string[];\n    /** 4 ou 5 objecoes reais. */\n    faq: { q: string; a: string }[];\n    /** Base da mensagem do WhatsApp; a origem da campanha e anexada em runtime. */\n    waMessage: string;\n    meta: { title: string; description: string; ogImage: string };\n  };",
     "LpFaq": "  lp: {\n    /** Vira a rota `/lp/<slug>`. */\n    slug: string;\n    eyebrow: string;\n    headline: string;\n    sub: string;\n    ctaLabel: string;\n    /** 3 ou 4 pontos de dor. Frases curtas, na pele de quem clicou. */\n    pains: string[];\n    /** Uma frase. O que muda depois. Nao e paragrafo. */\n    promise: string;\n    /** Slugs de data/cases.ts, na ordem em que provam. */\n    caseSlugs: string[];\n    /** 4 ou 5 objecoes reais. */\n    faq: { q: string; a: string }[];\n    /** Base da mensagem do WhatsApp; a origem da campanha e anexada em runtime. */\n    waMessage: string;\n    meta: { title: string; description: string; ogImage: string };\n  };",
     "LpFinal": "  lp: {\n    /** Vira a rota `/lp/<slug>`. */\n    slug: string;\n    eyebrow: string;\n    headline: string;\n    sub: string;\n    ctaLabel: string;\n    /** 3 ou 4 pontos de dor. Frases curtas, na pele de quem clicou. */\n    pains: string[];\n    /** Uma frase. O que muda depois. Nao e paragrafo. */\n    promise: string;\n    /** Slugs de data/cases.ts, na ordem em que provam. */\n    caseSlugs: string[];\n    /** 4 ou 5 objecoes reais. */\n    faq: { q: string; a: string }[];\n    /** Base da mensagem do WhatsApp; a origem da campanha e anexada em runtime. */\n    waMessage: string;\n    meta: { title: string; description: string; ogImage: string };\n  };",
-    "MeshButton": "  /** Texto do botao. E dividido em palavras para a animacao por palavra. */\n  label: string;\n  /** Mostrar a seta vermelha a direita (default true). */\n  showArrow?: boolean;\n  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;\n  type?: \"button\" | \"submit\" | \"reset\";\n  disabled?: boolean;\n  className?: string;\n  id?: string;\n  style?: React.CSSProperties;"
+    "MeshButton": "  /** Texto do botao. */\n  label: string;\n  /** Triangulo vermelho a direita (default true). */\n  showArrow?: boolean;\n  /** lg para CTAs de secao, sm para acoes em contexto (default lg). */\n  size?: \"lg\" | \"sm\";\n  /** Com href o botao vira link de verdade (<a>). */\n  href?: string;\n  target?: string;\n  rel?: string;\n  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;\n  type?: \"button\" | \"submit\" | \"reset\";\n  disabled?: boolean;\n  \"aria-label\"?: string;\n  className?: string;\n  id?: string;\n  style?: React.CSSProperties;",
+    "FillButton": "  /** Sempre link: todos os usos levam ao WhatsApp. */\n  href: string;\n  children: React.ReactNode;\n  /** lg hero e fechamento, md padrao, sm FAQ (default md). */\n  size?: \"lg\" | \"md\" | \"sm\";\n  /** Ocupa a largura toda do container. */\n  full?: boolean;\n  /** Triangulo a direita do rotulo (default false). */\n  showArrow?: boolean;\n  target?: string;\n  rel?: string;\n  \"data-cm-role\"?: string;\n  \"data-cm-id\"?: string;\n  className?: string;\n  style?: React.CSSProperties;"
   },
   "readmeHeader": ".design-sync/conventions.md",
   "overrides": {
@@ -162,7 +164,7 @@
       "cardMode": "single",
       "primaryStory": "SobreOHero"
     },
-    "StrokeText": {
+    "TriText": {
       "cardMode": "column"
     },
     "ProjetoGridCard": {
@@ -175,6 +177,9 @@
       "cardMode": "column"
     },
     "MeshButton": {
+      "cardMode": "column"
+    },
+    "FillButton": {
       "cardMode": "column"
     },
     "WhatsAppFab": {

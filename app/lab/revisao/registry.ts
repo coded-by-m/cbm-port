@@ -15,7 +15,7 @@ import * as LogoMark from "@/.design-sync/previews/LogoMark";
 import * as LogoMarkSvg from "@/.design-sync/previews/LogoMarkSvg";
 import * as TriangleMark from "@/.design-sync/previews/TriangleMark";
 import * as Diamond from "@/.design-sync/previews/Diamond";
-import * as StrokeText from "@/.design-sync/previews/StrokeText";
+import * as TriText from "@/.design-sync/previews/TriText";
 import * as SectionHead from "@/.design-sync/previews/SectionHead";
 import * as Reveal from "@/.design-sync/previews/Reveal";
 import * as SiteHeader from "@/.design-sync/previews/SiteHeader";
@@ -75,7 +75,7 @@ export const PREVIEW_GROUPS: PreviewGroup[] = [
       { name: "LogoMarkSvg", mod: LogoMarkSvg },
       { name: "TriangleMark", mod: TriangleMark },
       { name: "Diamond", mod: Diamond },
-      { name: "StrokeText", mod: StrokeText },
+      { name: "TriText", mod: TriText },
       { name: "SectionHead", mod: SectionHead },
       { name: "Reveal", mod: Reveal },
     ],

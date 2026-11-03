@@ -158,3 +158,32 @@ componente.
   esse é o primeiro lugar para olhar.
 - A versão do playwright está presa ao cache local de chromium desta máquina.
   Em outra máquina, refaça a conta descrita acima.
+
+## Rodada de 2026-11-03: paleta Neutro, botões novos, TriText
+
+O que mudou desde o primeiro envio. **Nenhuma destas mudanças foi enviada ainda**:
+o próximo `/design-sync` precisa levar todas.
+
+- **Paleta:** a base deixou de ser preto esverdeado (`#000F08`) e passou para
+  o **Neutro** (`#0A0A0A`, cinzas neutros). As cores agora vêm de variáveis
+  `--cbm-*` definidas em `lib/palette.ts`. O `build-css.mjs` injeta
+  `paletteCss(ACTIVE_PALETTE)` no topo do CSS do bundle, porque o bundle não
+  passa pelo layout do Next. Os SVGs em data URI dos fixtures usam o hex da
+  paleta ativa, porque não leem variável CSS.
+  **Consequência:** `SURFACE`, `INK`, `BASE_RGB` e `SUNKEN_RGB` exportados pelo
+  `entry.tsx` agora valem `rgb(var(--cbm-…))` ou `var(--cbm-…)`, e não hex.
+  Isso funciona no bundle porque o CSS define as variáveis.
+- **MeshButton:** reescrito como "malha que acorda". Ganhou `size` (lg/sm) e
+  `href`, e o `dtsPropsFor` foi atualizado. As previews `Pequeno` e `ComoLink`
+  são novas.
+- **FillButton:** componente novo (CTA vermelho que se preenche de off-white a
+  partir do cursor). Substitui o `.site-cta` e entrou no `entry.tsx`, no
+  `componentSrcMap`, no `dtsPropsFor` e nos `overrides`.
+- **TriText substitui o StrokeText:** o StrokeText saiu do repo, então o
+  arquivo correspondente no projeto remoto precisa ser **apagado** no envio.
+- **Seções removidas do Sobre e de Capacidades:** os valores
+  Precisão/Elegância/Detalhismo saíram, a escala 1 a 10 virou uma lista de
+  fatos e os selos "Aceitando projetos" saíram. Os cards de `AboutSection`,
+  `CapabilitiesSection` e `Hero` mudam de conteúdo.
+- **Contraste dos botões:** a prova é `node --test scripts/buttons.test.mts`.
+  Os alphas ficam em `components/ui/buttonSpec.ts`.
