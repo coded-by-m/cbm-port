@@ -1,4 +1,17 @@
 import type { Config } from "tailwindcss";
+import { TOKENS } from "./lib/palette";
+
+// Toda cor `cbm-*` lê a variável da paleta ativa (lib/palette.ts), injetada no
+// layout raiz. Canais RGB soltos para o Tailwind aceitar `/<alpha-value>`.
+const v = (t: string) => `rgb(var(--cbm-${t}) / <alpha-value>)`;
+const cbm: Record<string, string | Record<string, string>> = Object.fromEntries(
+  TOKENS.filter((t) => !t.startsWith("gray-")).map((t) => [t, v(t)]),
+);
+cbm.gray = Object.fromEntries(
+  TOKENS.filter((t) => t.startsWith("gray-")).map((t) => [t.slice(5), v(t)]),
+);
+cbm.black = v("page"); // alias legado, sai na troca das cores fixas
+cbm.forest = v("surface"); // alias legado, sai na troca das cores fixas
 
 const config: Config = {
   content: [
@@ -8,22 +21,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cbm: {
-          black: "#000F08",
-          forest: "#070B08",
-          white: "#F5F2ED",
-          red: "#FB3640",
-          "red-dark": "#C42030",
-          border: "#111511",
-          "border-active": "#1A2418",
-          gray: {
-            100: "#E8E4DE",
-            200: "#C8C4BE",
-            400: "#8A8780",
-            600: "#4A4844",
-            800: "#1E1E1A",
-          },
-        },
+        cbm,
       },
       fontFamily: {
         display: ["Panchang", "sans-serif"],

@@ -5,6 +5,7 @@ import { Analytics } from "@/components/analytics/Analytics";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
 import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { ACTIVE_PALETTE, paletteCss } from "@/lib/palette";
 import { AgentationDev } from "@/components/dev/AgentationDev";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
@@ -59,6 +60,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        {/* As cores do site inteiro: variáveis --cbm-* da paleta ativa
+            (lib/palette.ts). Primeiro filho para valer antes de qualquer CSS. */}
+        <style id="cbm-palette" dangerouslySetInnerHTML={{ __html: paletteCss(ACTIVE_PALETTE) }} />
         {/* Só os 3 pesos da primeira dobra. Precarregar os 8 desperdiçaria
             banda justamente no momento crítico. O crossOrigin é obrigatório
             mesmo sendo mesma origem: sem ele o preload não casa com a
