@@ -836,12 +836,13 @@ body:has(.site-home) {
   border-bottom: 0;
 }
 .site-price-table td:first-child {
-  width: 24%;
+  width: 18%;
   font-weight: 600;
   color: #f5f2ed;
 }
-.site-price-table td:nth-child(2) {
-  width: 50%;
+.site-price-table td:nth-child(2),
+.site-price-table td:nth-child(3) {
+  width: 28%;
 }
 .site-price-table td.site-price-value {
   width: 26%;
@@ -883,6 +884,7 @@ body:has(.site-home) {
   .site-price-table tbody td,
   .site-price-table tbody td:first-child,
   .site-price-table tbody td:nth-child(2),
+  .site-price-table tbody td:nth-child(3),
   .site-price-table tbody td.site-price-value {
     display: block;
     width: 100%;
