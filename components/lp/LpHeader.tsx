@@ -1,5 +1,6 @@
 import { LpCta } from "./LpCta";
 import { LogoMarkSvg, PANCHANG } from "@/components/site/shared";
+import { cbm } from "@/lib/palette";
 
 /**
  * Cabeçalho da landing — wordmark e um CTA. Sem âncoras.
@@ -16,10 +17,10 @@ export function LpHeader({ message }: { message: string }) {
         position: "sticky",
         top: 0,
         zIndex: 40,
-        background: "rgba(4,8,6,0.92)",
+        background: cbm("base", 0.92),
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid #111511",
+        borderBottom: `1px solid ${cbm("border")}`,
       }}
     >
       <div

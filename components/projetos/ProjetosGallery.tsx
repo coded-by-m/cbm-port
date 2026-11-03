@@ -9,6 +9,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { PANCHANG, SATOSHI } from "@/components/site/shared";
 import { FilterChips, type ChipValue } from "./FilterChips";
 import { ProjetoGridCard } from "./ProjetoGridCard";
+import { cbm } from "@/lib/palette";
 
 const H2: CSSProperties = {
   margin: 0,
@@ -28,7 +29,7 @@ const INTRO: CSSProperties = {
   fontWeight: 400,
   fontSize: "clamp(14px,1.4vw,16px)",
   lineHeight: 1.7,
-  color: "#B4B0AA",
+  color: cbm("gray-300"),
   textWrap: "pretty",
 };
 
@@ -186,7 +187,7 @@ function ProjectBand({
           ? {
               marginTop: "clamp(48px,7vh,80px)",
               paddingTop: "clamp(28px,4vh,40px)",
-              borderTop: "1px solid #111511",
+              borderTop: `1px solid ${cbm("border")}`,
             }
           : undefined
       }

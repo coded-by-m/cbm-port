@@ -24,6 +24,7 @@ import {
   Chrome,
   frame,
 } from "@/app/posts/_shared/chrome";
+import { cbm } from "@/lib/palette";
 
 export { SLIDE_W, SLIDE_H };
 export const SLIDE_COUNT = 6;
@@ -57,7 +58,7 @@ const PROJECT = {
 // ▲▲▲  FIM DA CONFIGURAÇÃO  ▲▲▲
 // ─────────────────────────────────────────────────────────────────────────────
 
-const SCREEN = "#0b120d";
+const SCREEN = cbm("frame");
 
 /** Frame de navegador angular segurando um print (hero cropado no topo). */
 function BrowserFrame({

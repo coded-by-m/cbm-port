@@ -5,6 +5,7 @@ import { Diamond, PANCHANG, SATOSHI, SURFACE, TriangleMark } from "./shared";
 import { StrokeText } from "@/components/ui/StrokeText";
 import { STROKE_LINE_HEIGHT } from "@/components/ui/strokeMetrics";
 import { HeroLandscape } from "./HeroLandscape";
+import { cbm } from "@/lib/palette";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -68,7 +69,7 @@ export function Hero() {
           height: "38%",
           zIndex: 0,
           pointerEvents: "none",
-          background: `linear-gradient(to bottom, rgba(4,8,6,0) 0%, rgba(4,8,6,0.75) 62%, ${SURFACE.base} 100%)`,
+          background: `linear-gradient(to bottom, ${cbm("base", 0)} 0%, ${cbm("base", 0.75)} 62%, ${SURFACE.base} 100%)`,
         }}
       />
 
@@ -205,7 +206,7 @@ export function Hero() {
                     fontWeight: 700,
                     letterSpacing: "0.01em",
                     lineHeight: 1.2,
-                    color: "#B4B0AA",
+                    color: cbm("gray-300"),
                     textWrap: "balance",
                     animationDelay: "0.72s",
                   }}
@@ -317,7 +318,7 @@ export function Hero() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 10,
-                color: a.filled ? "#B4B0AA" : "#9B9791",
+                color: a.filled ? cbm("gray-300") : "#9B9791",
               }}
             >
               {a.filled && (

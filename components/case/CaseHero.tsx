@@ -9,6 +9,7 @@ import { CaseFrameScroll } from "@/components/case/CaseFrameScroll";
 import { LogoMark } from "@/components/ui/LogoMark";
 import { CaseLiveButton } from "@/components/case/CaseLiveButton";
 import Link from "next/link";
+import { cbm } from "@/lib/palette";
 
 // Mesh triangulado sutil atrás do hero (toque 3D, coesão com a Home).
 const TerrainBackground = dynamic(
@@ -50,7 +51,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
       className="relative flex flex-col lg:grid lg:min-h-screen"
       style={{
         gridTemplateColumns: "1fr 1.1fr",
-        background: "#000F08",
+        background: cbm("page"),
         borderBottom: "1px solid rgba(245,242,237,0.06)",
       }}
     >
@@ -148,7 +149,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
                 poster={project.preview?.top}
                 alt={`${project.title} — site desktop`}
                 fallback={
-                  <div className="flex h-full w-full items-center justify-center bg-[#070B08] opacity-20">
+                  <div className="flex h-full w-full items-center justify-center bg-cbm-surface opacity-20">
                     <LogoMark size={40} />
                   </div>
                 }

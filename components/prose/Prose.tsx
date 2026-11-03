@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { PANCHANG, SATOSHI, SURFACE } from "@/components/site/shared";
 import { GalleryHeader } from "@/components/projetos/GalleryHeader";
 import { GalleryFooter } from "@/components/projetos/GalleryFooter";
+import { cbm } from "@/lib/palette";
 
 /** Casca das páginas de texto (sobre, blog): cabeçalho fino, coluna de leitura, rodapé com serviços. */
 export function ProseShell({
@@ -67,7 +68,7 @@ export const PROSE_P: CSSProperties = {
   fontWeight: 400,
   fontSize: "clamp(15px,1.4vw,17px)",
   lineHeight: 1.75,
-  color: "#B4B0AA",
+  color: cbm("gray-300"),
   textWrap: "pretty",
 };
 

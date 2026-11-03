@@ -8,7 +8,8 @@ import {
   waLink,
 } from "@/lib/contact";
 import { NAV_LINKS } from "@/data/home";
-import { BASE_RGB, SURFACE } from "./shared";
+import { SURFACE } from "./shared";
+import { cbm } from "@/lib/palette";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -172,8 +173,8 @@ export function SiteHeader() {
           display: "flex",
           alignItems: "center",
           transition: "background 300ms ease, border-color 300ms ease",
-          background: scrolled ? `rgba(${BASE_RGB},0.9)` : "transparent",
-          borderBottom: `1px solid ${scrolled ? "#111511" : "transparent"}`,
+          background: scrolled ? cbm("base", 0.9) : "transparent",
+          borderBottom: `1px solid ${scrolled ? cbm("border") : "transparent"}`,
           backdropFilter: scrolled ? "blur(12px)" : "none",
           WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
         }}
@@ -278,7 +279,7 @@ export function SiteHeader() {
           position: "fixed",
           inset: 0,
           zIndex: 55,
-          background: `rgba(${BASE_RGB},0.72)`,
+          background: cbm("base", 0.72),
           backdropFilter: "blur(3px)",
           transition: "opacity 380ms ease, visibility 380ms",
           opacity: open ? 1 : 0,
@@ -530,7 +531,7 @@ export function SiteHeader() {
                 fontSize: 9,
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
-                color: "#B4B0AA",
+                color: cbm("gray-300"),
                 whiteSpace: "nowrap",
               }}
             >

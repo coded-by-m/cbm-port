@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { CaseProject } from "@/types/case";
 import { PROJECT_TYPE_COLOR } from "@/lib/projectTypes";
 import { PANCHANG, SATOSHI } from "@/components/site/shared";
+import { cbm } from "@/lib/palette";
 
 /**
  * Célula de projeto — numeral, thumbnail e texto lado a lado.
@@ -42,7 +43,7 @@ export function ProjetoGridCard({
         gap: "clamp(12px,1.4vw,20px)",
         minWidth: 0,
         border: "1px solid rgba(245,242,237,0.1)",
-        background: "#020504",
+        background: cbm("sunken"),
         padding: "clamp(16px,1.8vw,24px)",
       }}
     >
@@ -179,7 +180,7 @@ export function ProjetoGridCard({
                 fontWeight: 400,
                 fontSize: 10,
                 letterSpacing: "0.18em",
-                color: "#6E6B66",
+                color: cbm("gray-500"),
               }}
             >
               {project.meta.ano}
@@ -194,7 +195,7 @@ export function ProjetoGridCard({
             fontWeight: 400,
             fontSize: 12.5,
             lineHeight: 1.6,
-            color: "#B4B0AA",
+            color: cbm("gray-300"),
             textWrap: "pretty",
             display: "-webkit-box",
             WebkitLineClamp: 3,
@@ -216,7 +217,7 @@ export function ProjetoGridCard({
                   fontSize: 9,
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
-                  color: "#6E6B66",
+                  color: cbm("gray-500"),
                 }}
               >
                 {t}

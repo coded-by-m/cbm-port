@@ -2,6 +2,7 @@ import { PROCESS_STEPS } from "@/data/process";
 import { SECTIONS } from "@/data/home";
 import { PANCHANG, SATOSHI, SECTION, SectionHead } from "./shared";
 import { Reveal } from "@/components/ui/Reveal";
+import { cbm } from "@/lib/palette";
 
 /**
  * As 4 etapas do método como um percurso contínuo.
@@ -70,7 +71,7 @@ export function ProcessSection() {
                   fontSize: "clamp(46px,4.6vw,64px)",
                   lineHeight: 0.85,
                   letterSpacing: "-0.03em",
-                  color: i === last ? "#FB3640" : "#1E2721",
+                  color: i === last ? "#FB3640" : cbm("border-active"),
                 }}
               >
                 {step.num}
@@ -96,7 +97,7 @@ export function ProcessSection() {
                   fontWeight: 400,
                   fontSize: 14,
                   lineHeight: 1.7,
-                  color: "#B4B0AA",
+                  color: cbm("gray-300"),
                   textWrap: "pretty",
                 }}
               >

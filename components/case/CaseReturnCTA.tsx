@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { CaseLiveButton } from "@/components/case/CaseLiveButton";
+import { cbm } from "@/lib/palette";
 
 type Href = { href: string; label: string };
 
@@ -22,7 +23,7 @@ export function CaseReturnCTA({
     <section
       className="flex flex-col items-center justify-center gap-6 px-8 py-32 text-center"
       style={{
-        background: "#000F08",
+        background: cbm("page"),
         borderTop: "1px solid rgba(245,242,237,0.06)",
       }}
     >

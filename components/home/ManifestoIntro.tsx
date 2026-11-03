@@ -30,7 +30,7 @@ export function ManifestoIntro({
   return (
     <div
       data-cursor="triangle"
-      className="relative h-screen w-full overflow-hidden bg-[#000F08]"
+      className="relative h-screen w-full overflow-hidden bg-cbm-page"
     >
       <PhilosophySection onComplete={onForward} onBack={onBack} live={live} />
     </div>

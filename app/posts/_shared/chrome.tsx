@@ -6,17 +6,20 @@
  * todos os carrosséis. Cada post importa daqui e monta suas composições próprias.
  *
  * Formato feed do Instagram: 1080×1350 (4:5). Identidade real do site:
- * fundo #000F08, Panchang/Satoshi, sinal vermelho raro (#FB3640), angular.
+ * fundo cbm("page"), Panchang/Satoshi, sinal vermelho raro (#FB3640), angular.
  */
 
-export const BLACK = "#000F08";
+import { cbm } from "@/lib/palette";
+
+// Cores dos tokens de lib/palette.ts — strings rgb(var(--cbm-*)), seguem a paleta ativa.
+export const BLACK = cbm("page");
 export const WHITE = "#F5F2ED";
 export const RED = "#FB3640";
-export const GRAY_200 = "#C8C4BE";
-export const GRAY_400 = "#8A8780";
-export const GRAY_600 = "#4A4844";
-export const BORDER = "#1a2a1e";
-export const OUTLINE = "#16271b"; // stroke do número de seção
+export const GRAY_200 = cbm("gray-200");
+export const GRAY_400 = cbm("gray-400");
+export const GRAY_600 = cbm("gray-600");
+export const BORDER = cbm("line");
+export const OUTLINE = cbm("line"); // stroke do número de seção
 
 export const SLIDE_W = 1080;
 export const SLIDE_H = 1350;

@@ -1,32 +1,31 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Reveal } from "@/components/ui/Reveal";
+import { cbm } from "@/lib/palette";
 
 export const SATOSHI = '"Satoshi", sans-serif';
 export const PANCHANG = '"Panchang", sans-serif';
 
 /**
- * Escala de superfícies da home — verde quase preto.
+ * Escala de superfícies da home.
  *
- * Fonte única: mexa aqui e a página inteira acompanha. A hierarquia importa
- * mais que os valores absolutos — `sunken` recua, `raised` destaca. Achatar
- * tudo em um só tom faz a página perder a camada.
- *
- * Nenhum é `#000` puro de propósito: o DESIGN-LANGUAGE trata a temperatura
- * como o que separa "premium" de "dark theme genérico".
+ * Os valores vêm da paleta ativa em lib/palette.ts (variáveis `--cbm-*`):
+ * trocar a cor é trocar a paleta, não este arquivo. A hierarquia importa mais
+ * que os valores absolutos — `sunken` recua, `raised` destaca. Achatar tudo
+ * em um só tom faz a página perder a camada.
  */
 export const SURFACE = {
   /** Fundo da página. */
-  base: "#040806",
+  base: cbm("base"),
   /** Cards de projeto e serviço — recuam em relação à página. */
-  sunken: "#020504",
+  sunken: cbm("sunken"),
   /** Faixa da Experiência — destaca como objeto separado. */
-  raised: "#070C09",
+  raised: cbm("raised"),
   /** Painel do menu drawer. */
-  drawer: "#080D0A",
+  drawer: cbm("drawer"),
   /** Barra da moldura de browser no hero. */
-  frameBar: "#070D09",
+  frameBar: cbm("frame-bar"),
   /** Corpo da moldura de browser no hero. */
-  frame: "#0A120C",
+  frame: cbm("frame"),
 } as const;
 
 /**
@@ -40,15 +39,15 @@ export const INK = {
   /** Fundo do bloco claro. */
   base: "#F5F2ED",
   /** Títulos sobre o claro. */
-  ink: "#040806",
+  ink: cbm("base"),
   /** Corpo. */
-  body: "#4A4844",
+  body: cbm("gray-600"),
   /** Secundário e legendas. */
-  muted: "#6E6B66",
+  muted: cbm("gray-500"),
   /** Bordas sobre o claro. */
-  border: "rgba(4,8,6,0.14)",
+  border: cbm("base", 0.14),
   /** Fundo de card sobre o claro. */
-  card: "rgba(4,8,6,0.025)",
+  card: cbm("base", 0.025),
   /**
    * Vermelho para TEXTO sobre o claro.
    *
@@ -60,17 +59,26 @@ export const INK = {
   signal: "#C42030",
 } as const;
 
-/** `base` em rgb, para gradientes e overlays com alpha. */
-export const BASE_RGB = "4,8,6";
-/** `sunken` em rgb, para o fade no rodapé dos cards. */
-export const SUNKEN_RGB = "2,5,4";
+/**
+ * Canais de `base` como variável CSS, para gradientes e overlays com alpha.
+ * Uso correto: `rgb(${BASE_RGB} / a)` — não `rgba(${BASE_RGB},a)`, porque a
+ * variável guarda canais separados por espaço. No código do site prefira
+ * `cbm("base", a)`.
+ */
+export const BASE_RGB = "var(--cbm-base)";
+/**
+ * Canais de `sunken` como variável CSS, para o fade no rodapé dos cards.
+ * Uso correto: `rgb(${SUNKEN_RGB} / a)`. No código do site prefira
+ * `cbm("sunken", a)`.
+ */
+export const SUNKEN_RGB = "var(--cbm-sunken)";
 
 /** Padding e largura de todas as seções da home. */
 export const SECTION: CSSProperties = {
   maxWidth: 1440,
   margin: "0 auto",
   padding: "clamp(72px,10vh,120px) clamp(24px,5vw,80px)",
-  borderTop: "1px solid #111511",
+  borderTop: `1px solid ${cbm("border")}`,
 };
 
 /** Losango de 7px — marcador recorrente da marca. */
@@ -186,7 +194,7 @@ export function SectionHead({
             fontWeight: 400,
             fontSize: dense ? "clamp(14px,1.15vw,15.5px)" : "clamp(15px,1.4vw,17px)",
             lineHeight: dense ? 1.5 : 1.7,
-            color: "#C8C4BE",
+            color: cbm("gray-200"),
             textWrap: "pretty",
           }}
         >

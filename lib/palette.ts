@@ -87,7 +87,7 @@ export const PALETTES: Record<PaletteId, Palette> = {
       page: "#000F08", sunken: "#020504", base: "#040806", surface: "#070B08",
       raised: "#070C09", drawer: "#080D0A", "frame-bar": "#070D09", frame: "#0A120C",
       card: "#0E1810", border: "#111511", "border-active": "#1A2418", line: "#1A2A1E",
-      "gray-50": "#F0EDE8", "gray-100": "#E8E4DE", "gray-200": "#C8C4BE", "gray-300": "#A9A59F",
+      "gray-50": "#F0EDE8", "gray-100": "#E8E4DE", "gray-200": "#C8C4BE", "gray-300": "#B4B0AA",
       "gray-400": "#8A8780", "gray-500": "#6E6B66", "gray-600": "#4A4844", "gray-700": "#34332F",
       "gray-800": "#1E1E1A", "gray-900": "#121210",
       ...SUPPORT, ...FIXED,

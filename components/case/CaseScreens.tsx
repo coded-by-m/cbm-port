@@ -1,5 +1,6 @@
 import type { CaseProject } from "@/types/case";
 import { Reveal } from "@/components/ui/Reveal";
+import { cbm } from "@/lib/palette";
 
 /**
  * Grade de recortes do site (hero-* + gallery-*) em painéis emoldurados com
@@ -17,7 +18,7 @@ export function CaseScreens({ project }: { project: CaseProject }) {
   return (
     <section
       className="border-b px-6 py-16 sm:px-12 sm:py-20 xl:px-16 xl:py-24"
-      style={{ background: "#000F08", borderColor: "rgba(245,242,237,0.06)" }}
+      style={{ background: cbm("page"), borderColor: "rgba(245,242,237,0.06)" }}
     >
       <div className="mb-10 flex items-center gap-3">
         <span
@@ -43,7 +44,7 @@ export function CaseScreens({ project }: { project: CaseProject }) {
               delay={(i % 2) * 90}
               className={wide ? "sm:col-span-2" : ""}
             >
-              <div className="group relative overflow-hidden border border-[#F5F2ED]/15 bg-[#070B08] shadow-[0_14px_34px_-14px_rgba(0,0,0,0.7)] transition-colors duration-300 hover:border-[#F5F2ED]/30">
+              <div className="group relative overflow-hidden border border-[#F5F2ED]/15 bg-cbm-surface shadow-[0_14px_34px_-14px_rgba(0,0,0,0.7)] transition-colors duration-300 hover:border-[#F5F2ED]/30">
                 {/* brackets HUD */}
                 <span className="pointer-events-none absolute left-2 top-2 z-10 h-3 w-3 border-l border-t border-[#F5F2ED]/45" />
                 <span className="pointer-events-none absolute bottom-2 right-2 z-10 h-3 w-3 border-b border-r border-[#FB3640]/75" />

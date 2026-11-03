@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { HOME_CHAPTERS } from "@/lib/homeChapters";
 import { LogoMark } from "@/components/ui/LogoMark";
 import { railSub } from "@/lib/railProgress";
+import { cbm } from "@/lib/palette";
 
 const SIGNAL = "#FB3640";
 const OFF_WHITE = "#F5F2ED";
@@ -146,7 +147,7 @@ export function ChapterRail({
             transform: open ? "translateX(0)" : "translateX(12px)",
             transition: `opacity 0.35s ${EXPO}, transform 0.44s ${EXPO}`,
             background:
-              "linear-gradient(270deg, rgba(0,15,8,0.95) 0%, rgba(0,15,8,0.72) 100%)",
+              `linear-gradient(270deg, ${cbm("page", 0.95)} 0%, ${cbm("page", 0.72)} 100%)`,
             borderColor: "rgba(245,242,237,0.1)",
             backdropFilter: "blur(12px)",
             boxShadow: "0 26px 60px -22px rgba(0,0,0,0.7)",

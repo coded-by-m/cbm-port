@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { HomeExperience } from "@/components/home/HomeExperience";
 import { OG, OG_SIZE } from "@/lib/seo";
+import { cbm } from "@/lib/palette";
 
 export const metadata: Metadata = {
   title: "A Experiência",
@@ -42,7 +43,7 @@ function AboutExperience() {
     <aside
       aria-labelledby="sobre-experiencia"
       style={{
-        background: "#000F08",
+        background: cbm("page"),
         borderTop: "1px solid rgba(245,242,237,0.08)",
         padding: "40px clamp(20px,4vw,48px) 48px",
       }}

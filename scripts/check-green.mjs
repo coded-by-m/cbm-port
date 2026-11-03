@@ -12,7 +12,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const ROOTS = ["app", "components", "lib", "hooks", ".design-sync"];
-const SKIP_DIRS = new Set(["node_modules", ".next", "ds-package", "ui-lab"]);
+const SKIP_DIRS = new Set(["node_modules", ".next", ".cache", "ds-package", "ui-lab"]);
 const SKIP_FILES = new Set([path.join("lib", "palette.ts")]);
 const EXT = /\.(tsx?|css|mjs|glsl)$/;
 const COLOR = /#([0-9a-fA-F]{6})\b|0x([0-9a-fA-F]{6})\b|rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g;

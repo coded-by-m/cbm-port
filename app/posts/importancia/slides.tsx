@@ -22,11 +22,12 @@ import {
   Chrome,
   frame,
 } from "@/app/posts/_shared/chrome";
+import { cbm } from "@/lib/palette";
 
 export { SLIDE_W, SLIDE_H };
 export const SLIDE_COUNT = 5;
 
-const SCREEN = "#0b120d"; // tela do mockup — verde-escuro um tom acima do fundo
+const SCREEN = cbm("frame"); // tela do mockup — um tom acima do fundo
 
 /**
  * Mockup de celular no estilo wireframe da marca — "site carregando".

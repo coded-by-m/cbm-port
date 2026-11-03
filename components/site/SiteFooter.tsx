@@ -1,5 +1,6 @@
 import { INSTAGRAM_URL, waLink } from "@/lib/contact";
 import { PANCHANG, SATOSHI } from "./shared";
+import { cbm } from "@/lib/palette";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -17,14 +18,14 @@ const linkStyle: React.CSSProperties = {
   fontSize: 11,
   letterSpacing: "0.18em",
   textTransform: "uppercase",
-  color: "#B4B0AA",
+  color: cbm("gray-300"),
   textDecoration: "none",
   transition: "color 160ms ease",
 };
 
 export function SiteFooter() {
   return (
-    <footer style={{ borderTop: "1px solid #111511" }}>
+    <footer style={{ borderTop: `1px solid ${cbm("border")}` }}>
       <div
         style={{
           maxWidth: 1440,

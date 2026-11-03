@@ -6,6 +6,7 @@ import {
   waLink,
 } from "@/lib/contact";
 import { PANCHANG, SATOSHI, SECTION, SURFACE } from "./shared";
+import { cbm } from "@/lib/palette";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -37,7 +38,7 @@ export function ContactSection() {
             fontWeight: 400,
             fontSize: "clamp(15px,1.4vw,17px)",
             lineHeight: 1.7,
-            color: "#C8C4BE",
+            color: cbm("gray-200"),
             textWrap: "pretty",
           }}
         >

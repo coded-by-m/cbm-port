@@ -7,10 +7,10 @@ import {
   Diamond,
   PANCHANG,
   SATOSHI,
-  SUNKEN_RGB,
   SURFACE,
 } from "@/components/site/shared";
 import { LpCta } from "./LpCta";
+import { cbm } from "@/lib/palette";
 
 /** Largura útil da landing — mais estreita que a home: um corredor, não uma vitrine. */
 const WRAP: React.CSSProperties = {
@@ -56,7 +56,7 @@ export function LpHero({ lp }: { lp: LandingConfig }) {
             fontWeight: 400,
             fontSize: "clamp(15px,1.5vw,18px)",
             lineHeight: 1.72,
-            color: "#C8C4BE",
+            color: cbm("gray-200"),
             textWrap: "pretty",
           }}
         >
@@ -80,7 +80,7 @@ export function LpHero({ lp }: { lp: LandingConfig }) {
  */
 export function LpPains({ lp }: { lp: LandingConfig }) {
   return (
-    <section data-cm-section="pains" style={{ background: SURFACE.raised, borderTop: "1px solid #111511" }}>
+    <section data-cm-section="pains" style={{ background: SURFACE.raised, borderTop: `1px solid ${cbm("border")}` }}>
       <div style={WRAP}>
         <ul
           style={{
@@ -105,7 +105,7 @@ export function LpPains({ lp }: { lp: LandingConfig }) {
                   fontWeight: 500,
                   fontSize: "clamp(17px,1.9vw,24px)",
                   lineHeight: 1.34,
-                  color: "#E8E4DE",
+                  color: cbm("gray-100"),
                   textWrap: "pretty",
                 }}
               >
@@ -125,7 +125,7 @@ export function LpPains({ lp }: { lp: LandingConfig }) {
 /** Promessa — uma frase. O que muda depois. */
 export function LpPromise({ lp }: { lp: LandingConfig }) {
   return (
-    <section data-cm-section="promise" style={{ borderTop: "1px solid #111511" }}>
+    <section data-cm-section="promise" style={{ borderTop: `1px solid ${cbm("border")}` }}>
       <div style={{ ...WRAP, textAlign: "center" }}>
         <Reveal variant="wipe">
           <p
@@ -151,7 +151,7 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
     .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
   return (
-    <section data-cm-section="social-proof" style={{ borderTop: "1px solid #111511" }}>
+    <section data-cm-section="social-proof" style={{ borderTop: `1px solid ${cbm("border")}` }}>
       <div style={WRAP}>
         <Reveal variant="wipe">
           <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>
@@ -202,7 +202,7 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
                       position: "absolute",
                       inset: "auto 0 0 0",
                       height: 80,
-                      background: `linear-gradient(to bottom,rgba(${SUNKEN_RGB},0),rgba(${SUNKEN_RGB},0.95))`,
+                      background: `linear-gradient(to bottom,${cbm("sunken", 0)},${cbm("sunken", 0.95)})`,
                     }}
                   />
                 </div>
@@ -243,7 +243,7 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
 /** Como funciona — tira o medo de "quanto tempo isso vai tomar de mim". */
 export function LpProcess() {
   return (
-    <section data-cm-section="process" style={{ background: SURFACE.raised, borderTop: "1px solid #111511" }}>
+    <section data-cm-section="process" style={{ background: SURFACE.raised, borderTop: `1px solid ${cbm("border")}` }}>
       <div style={WRAP}>
         <Reveal variant="wipe">
           <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>
@@ -282,7 +282,7 @@ export function LpProcess() {
                     fontWeight: 400,
                     fontSize: 14,
                     lineHeight: 1.7,
-                    color: "#B4B0AA",
+                    color: cbm("gray-300"),
                     textWrap: "pretty",
                   }}
                 >
@@ -303,7 +303,7 @@ export function LpProcess() {
  */
 export function LpFaq({ lp }: { lp: LandingConfig }) {
   return (
-    <section data-cm-section="faq" style={{ borderTop: "1px solid #111511" }}>
+    <section data-cm-section="faq" style={{ borderTop: `1px solid ${cbm("border")}` }}>
       <div style={{ ...WRAP, maxWidth: 860 }}>
         <div style={{ marginTop: 32 }}>
           {lp.faq.map((f, i) => (
@@ -326,7 +326,7 @@ export function LpFaq({ lp }: { lp: LandingConfig }) {
 /** Fechamento — a única porta no fim do corredor. */
 export function LpFinal({ lp }: { lp: LandingConfig }) {
   return (
-    <section data-cm-section="contact" style={{ background: SURFACE.raised, borderTop: "1px solid #111511" }}>
+    <section data-cm-section="contact" style={{ background: SURFACE.raised, borderTop: `1px solid ${cbm("border")}` }}>
       <div style={{ ...WRAP, textAlign: "center", paddingBlock: "clamp(72px,12vh,128px)" }}>
         <Reveal variant="wipe">
           <h2 style={{ ...H2, margin: "0 auto", maxWidth: "16ch" }}>
@@ -342,7 +342,7 @@ export function LpFinal({ lp }: { lp: LandingConfig }) {
               fontWeight: 400,
               fontSize: 16,
               lineHeight: 1.7,
-              color: "#C8C4BE",
+              color: cbm("gray-200"),
             }}
           >
             Você conta o contexto, eu digo o que faria e em quanto tempo entrego.

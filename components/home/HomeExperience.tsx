@@ -293,7 +293,7 @@ export function HomeExperience() {
   }, [introDone, activeChapter, jumpTo]);
 
   return (
-    <main className="bg-[#000F08]">
+    <main className="bg-cbm-page">
       {/* Transição conectiva: dip na cor da marca esconde a emenda entre cenas. */}
       <ChapterTransition />
 
@@ -301,7 +301,7 @@ export function HomeExperience() {
       <div
         ref={wipeRef}
         aria-hidden
-        className="pointer-events-none fixed inset-0 z-[50] bg-[#000F08]"
+        className="pointer-events-none fixed inset-0 z-[50] bg-cbm-page"
         style={{ visibility: "hidden" }}
       />
 

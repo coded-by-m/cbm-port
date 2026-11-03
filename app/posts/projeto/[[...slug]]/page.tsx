@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+import { cbm } from "@/lib/palette";
 import { SLIDES, SLIDE_W, SLIDE_H } from "../slides";
 
 /**
@@ -25,7 +26,7 @@ export default function Page({ params }: { params: { slug?: string[] } }) {
           width: SLIDE_W,
           height: SLIDE_H,
           overflow: "hidden",
-          background: "#000F08",
+          background: cbm("page"),
         }}
       >
         {SLIDES[single - 1]}
@@ -51,7 +52,7 @@ export default function Page({ params }: { params: { slug?: string[] } }) {
           fontSize: 13,
           letterSpacing: "0.3em",
           textTransform: "uppercase",
-          color: "#8A8780",
+          color: cbm("gray-400"),
         }}
       >
         Modelo · Showcase de Projeto · 1080×1350
@@ -59,7 +60,7 @@ export default function Page({ params }: { params: { slug?: string[] } }) {
       {SLIDES.map((slide, i) => (
         <div
           key={i}
-          style={{ width: SLIDE_W, height: SLIDE_H, boxShadow: "0 0 0 1px #1a2a1e" }}
+          style={{ width: SLIDE_W, height: SLIDE_H, boxShadow: `0 0 0 1px ${cbm("line")}` }}
         >
           {slide}
         </div>

@@ -102,7 +102,7 @@ export default function LabPage() {
   })).filter((group) => group.items.length > 0);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#000F08] text-neutral-200">
+    <main className="relative min-h-screen overflow-hidden bg-cbm-page text-neutral-200">
       {/* Camada 3D — experimento ativo (remonta ao trocar de experimento) */}
       {ActiveExperiment && <ActiveExperiment key={activeSlug} />}
 

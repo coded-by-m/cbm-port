@@ -1,6 +1,7 @@
 import { SECTIONS } from "@/data/home";
 import { HOME_CHAPTERS } from "@/lib/homeChapters";
 import { PANCHANG, SATOSHI, SURFACE } from "./shared";
+import { cbm } from "@/lib/palette";
 
 const COPY = SECTIONS.experiencia;
 
@@ -49,8 +50,8 @@ export function ExperienceBridge() {
       id="experiencia"
       style={{
         background: SURFACE.raised,
-        borderTop: "1px solid #111511",
-        borderBottom: "1px solid #111511",
+        borderTop: `1px solid ${cbm("border")}`,
+        borderBottom: `1px solid ${cbm("border")}`,
       }}
     >
       <div
@@ -90,7 +91,7 @@ export function ExperienceBridge() {
               fontWeight: 400,
               fontSize: "clamp(15px,1.4vw,17px)",
               lineHeight: 1.7,
-              color: "#C8C4BE",
+              color: cbm("gray-200"),
               textWrap: "pretty",
             }}
           >
@@ -194,7 +195,7 @@ export function ExperienceBridge() {
                     fontWeight: 400,
                     fontSize: 13,
                     letterSpacing: "0.08em",
-                    color: "#B4B0AA",
+                    color: cbm("gray-300"),
                     overflowWrap: "anywhere",
                   }}
                 >

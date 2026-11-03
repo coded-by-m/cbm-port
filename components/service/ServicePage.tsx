@@ -5,7 +5,7 @@ import { cases } from "@/data/cases";
 import { PROCESS_STEPS } from "@/data/process";
 import type { ServicePageConfig } from "@/data/servicePages";
 import { Reveal } from "@/components/ui/Reveal";
-import { Diamond, PANCHANG, SATOSHI, SUNKEN_RGB, SURFACE } from "@/components/site/shared";
+import { Diamond, PANCHANG, SATOSHI, SURFACE } from "@/components/site/shared";
 import { GalleryHeader } from "@/components/projetos/GalleryHeader";
 import { GalleryFooter } from "@/components/projetos/GalleryFooter";
 import { LpCta } from "@/components/lp/LpCta";
@@ -20,6 +20,7 @@ import {
   serviceSchema,
   webPageSchema,
 } from "@/lib/seo";
+import { cbm } from "@/lib/palette";
 
 /** Metadata de uma página de serviço — canonical próprio, OG redeclarado inteiro. */
 export function serviceMetadata(page: ServicePageConfig): Metadata {
@@ -71,11 +72,11 @@ const BODY: React.CSSProperties = {
   fontWeight: 400,
   fontSize: "clamp(15px,1.4vw,17px)",
   lineHeight: 1.72,
-  color: "#B4B0AA",
+  color: cbm("gray-300"),
   textWrap: "pretty",
 };
 
-const BAND = { borderTop: "1px solid #111511" } as const;
+const BAND = { borderTop: `1px solid ${cbm("border")}` } as const;
 
 function BulletList({ items }: { items: string[] }) {
   return (
@@ -102,7 +103,7 @@ function BulletList({ items }: { items: string[] }) {
             fontWeight: 500,
             fontSize: 16,
             lineHeight: 1.5,
-            color: "#E8E4DE",
+            color: cbm("gray-100"),
           }}
         >
           <span style={{ marginTop: "0.45em", flex: "none" }}>
@@ -173,7 +174,7 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
             </h1>
           </Reveal>
           <Reveal delay={120}>
-            <p style={{ ...BODY, marginTop: 24, color: "#C8C4BE", fontSize: "clamp(15px,1.5vw,18px)" }}>
+            <p style={{ ...BODY, marginTop: 24, color: cbm("gray-200"), fontSize: "clamp(15px,1.5vw,18px)" }}>
               {page.intro}
             </p>
           </Reveal>
@@ -200,7 +201,7 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
                 fontWeight: 500,
                 fontSize: "clamp(17px,1.9vw,23px)",
                 lineHeight: 1.45,
-                color: "#E8E4DE",
+                color: cbm("gray-100"),
                 textWrap: "pretty",
               }}
             >
@@ -331,7 +332,7 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
                           position: "absolute",
                           inset: "auto 0 0 0",
                           height: 70,
-                          background: `linear-gradient(to bottom,rgba(${SUNKEN_RGB},0),rgba(${SUNKEN_RGB},0.95))`,
+                          background: `linear-gradient(to bottom,${cbm("sunken", 0)},${cbm("sunken", 0.95)})`,
                         }}
                       />
                     </div>

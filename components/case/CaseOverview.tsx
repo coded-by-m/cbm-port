@@ -1,5 +1,6 @@
 import type { CaseProject } from "@/types/case";
 import { Reveal } from "@/components/ui/Reveal";
+import { cbm } from "@/lib/palette";
 
 export function CaseOverview({ project }: { project: CaseProject }) {
   const { heading, body, challenge, result } = project.overview;
@@ -11,7 +12,7 @@ export function CaseOverview({ project }: { project: CaseProject }) {
       id="overview"
       className="border-b px-6 py-16 sm:px-12 sm:py-20 xl:px-16 xl:py-24"
       style={{
-        background: "#000F08",
+        background: cbm("page"),
         borderColor: "rgba(245,242,237,0.06)",
       }}
     >

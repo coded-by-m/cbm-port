@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { cbm } from "@/lib/palette";
 
 /** Cor de fundo da marca — o "material conectivo" entre as cenas. */
-const BG = "#000F08";
+const BG = cbm("page");
 /** Opacidade no pico da emenda — quase opaco pra esconder a linha dura. */
 const MAX_OPACITY = 0.92;
 /** Largura da zona de dip, em fração do viewport (ramp suave). */

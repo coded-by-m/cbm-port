@@ -5,6 +5,7 @@ import { SKILLS, SKILL_SCALE } from "@/data/about";
 import { SECTIONS } from "@/data/home";
 import { PANCHANG, SATOSHI, SECTION } from "./shared";
 import { Reveal } from "@/components/ui/Reveal";
+import { cbm } from "@/lib/palette";
 
 /** Intervalo entre uma linha e a seguinte. */
 const ATRASO_LINHA = 110;
@@ -147,7 +148,7 @@ export function CapabilitiesSection() {
               fontSize: 10,
               letterSpacing: "0.28em",
               textTransform: "uppercase",
-              color: "#CFCBC5",
+              color: cbm("gray-200"),
               whiteSpace: "nowrap",
             }}
           >

@@ -8,6 +8,7 @@ import {
   SURFACE,
 } from "./shared";
 import { Reveal } from "@/components/ui/Reveal";
+import { cbm } from "@/lib/palette";
 
 /**
  * Sobre — o símbolo ampliado à esquerda, o manifesto e a assinatura à direita,
@@ -82,7 +83,7 @@ export function AboutSection() {
                 fontSize: 10,
                 letterSpacing: "0.3em",
                 textTransform: "uppercase",
-                color: "#8E8A84",
+                color: cbm("gray-400"),
               }}
             >
               Coded by M
@@ -143,7 +144,7 @@ export function AboutSection() {
                   fontWeight: 400,
                   fontSize: 15,
                   lineHeight: 1.7,
-                  color: "#C8C4BE",
+                  color: cbm("gray-200"),
                   textWrap: "pretty",
                 }}
               >
@@ -158,7 +159,7 @@ export function AboutSection() {
                     fontSize: 11,
                     letterSpacing: "0.25em",
                     textTransform: "uppercase",
-                    color: "#B4B0AA",
+                    color: cbm("gray-300"),
                   }}
                 >
                   {ABOUT.location}
@@ -221,7 +222,7 @@ export function AboutSection() {
                   fontWeight: 400,
                   fontSize: 14,
                   lineHeight: 1.65,
-                  color: "#B4B0AA",
+                  color: cbm("gray-300"),
                 }}
               >
                 {v.desc}

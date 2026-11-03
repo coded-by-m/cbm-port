@@ -12,8 +12,8 @@ export function BrowserFrame({
   children: ReactNode;
 }) {
   return (
-    <div className="relative overflow-hidden border border-[#F5F2ED]/15 bg-[#0E1810] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.85)]">
-      <div className="flex items-center gap-3 border-b border-[#F5F2ED]/10 bg-[#0b130d] px-4 py-2.5">
+    <div className="relative overflow-hidden border border-[#F5F2ED]/15 bg-cbm-card shadow-[0_24px_60px_-12px_rgba(0,0,0,0.85)]">
+      <div className="flex items-center gap-3 border-b border-[#F5F2ED]/10 bg-cbm-frame px-4 py-2.5">
         <span className="flex gap-1.5" aria-hidden>
           <span className="h-2.5 w-2.5 rounded-full bg-[#FB3640]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#F5F2ED]/25" />

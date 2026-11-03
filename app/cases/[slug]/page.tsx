@@ -12,6 +12,7 @@ import { CaseBackButton } from "@/components/case/CaseBackButton";
 import { TrackProjectView } from "@/components/case/TrackProjectView";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { OG, OG_SIZE, breadcrumbSchema, caseSchema, graph, webPageSchema } from "@/lib/seo";
+import { cbm } from "@/lib/palette";
 
 /**
  * Só case publicado vira página. Os "em breve" existem em `data/cases.ts`
@@ -116,7 +117,7 @@ export default function CasePage({
     <main
       className="case-fade-in"
       data-cm-section="case-study"
-      data-cm-id={project.slug} style={{ background: "#000F08", minHeight: "100vh" }}>
+      data-cm-id={project.slug} style={{ background: cbm("page"), minHeight: "100vh" }}>
       <JsonLd data={schema} />
       <TrackProjectView slug={project.slug} />
       <CaseBackButton />

@@ -6,6 +6,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { PhoneFrame } from "@/components/case/PhoneFrame";
 import { CaseFrameScroll } from "@/components/case/CaseFrameScroll";
 import { LogoMark } from "@/components/ui/LogoMark";
+import { cbm } from "@/lib/palette";
 
 /** Seção que mostra a versão mobile no PhoneFrame (scroll interativo do mobile-tall). */
 export function CaseResponsive({ project }: { project: CaseProject }) {
@@ -24,7 +25,7 @@ export function CaseResponsive({ project }: { project: CaseProject }) {
   return (
     <section
       className="border-b px-6 py-16 sm:px-12 sm:py-20 xl:px-16 xl:py-24"
-      style={{ background: "#000F08", borderColor: "rgba(245,242,237,0.06)" }}
+      style={{ background: cbm("page"), borderColor: "rgba(245,242,237,0.06)" }}
     >
       <div className="mx-auto flex max-w-[1100px] flex-col items-center gap-12 lg:flex-row lg:items-center lg:justify-center lg:gap-24">
         <Reveal className="max-w-[360px] text-center lg:text-left">
@@ -70,7 +71,7 @@ export function CaseResponsive({ project }: { project: CaseProject }) {
                     autoDurationSec={28}
                     lazy
                     fallback={
-                      <div className="flex h-full w-full items-center justify-center bg-[#070B08] opacity-20">
+                      <div className="flex h-full w-full items-center justify-center bg-cbm-surface opacity-20">
                         <LogoMark size={32} />
                       </div>
                     }

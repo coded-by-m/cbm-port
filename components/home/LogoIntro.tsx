@@ -46,7 +46,7 @@ export function LogoIntro({
   return (
     <div
       data-cursor="triangle"
-      className="relative h-screen w-full overflow-hidden bg-[#000F08]"
+      className="relative h-screen w-full overflow-hidden bg-cbm-page"
     >
       <TriangleLoader onComplete={handleBuilt} />
 

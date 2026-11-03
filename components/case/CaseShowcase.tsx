@@ -1,5 +1,6 @@
 import type { CaseProject } from "@/types/case";
 import { Reveal } from "@/components/ui/Reveal";
+import { cbm } from "@/lib/palette";
 
 /**
  * Showcase dos mockups 3D — o "momento herói" da página de case.
@@ -18,7 +19,7 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
   return (
     <section
       className="relative overflow-hidden border-b px-6 py-20 sm:px-12 sm:py-24 xl:px-16 xl:py-28"
-      style={{ background: "#000F08", borderColor: "rgba(245,242,237,0.06)" }}
+      style={{ background: cbm("page"), borderColor: "rgba(245,242,237,0.06)" }}
     >
       {/* Gradiente radial sutil derivado da marca */}
       <div
@@ -79,7 +80,7 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
                 controls
                 playsInline
                 preload="metadata"
-                className="w-full bg-[#070B08]"
+                className="w-full bg-cbm-surface"
               />
               <figcaption className="mt-3 font-body text-[11px] uppercase tracking-[0.22em] text-cbm-gray-600">
                 Vitrine

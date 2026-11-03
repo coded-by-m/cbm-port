@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { DriftWall, type DriftTile } from "./DriftWall";
 import { Diamond, PANCHANG, SATOSHI } from "./shared";
+import { cbm } from "@/lib/palette";
 
 export interface StageProject {
   slug: string;
@@ -96,7 +97,7 @@ export function ProjectsStage({
                       fontFamily: SATOSHI,
                       fontSize: 10,
                       letterSpacing: "0.18em",
-                      color: "#6E6B66",
+                      color: cbm("gray-500"),
                       whiteSpace: "nowrap",
                     }}
                   >
