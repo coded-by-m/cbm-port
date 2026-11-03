@@ -3,6 +3,7 @@ import { SITE_URL } from "@/lib/site";
 import { cases } from "@/data/cases";
 import { SERVICE_PAGES } from "@/data/servicePages";
 import { publishedPosts } from "@/data/blog";
+import { QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
 
 /**
  * Rotas públicas e indexáveis. Fora daqui, de propósito: `/lp/*`, `/lab`,
@@ -29,6 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.9,
     })),
+    // Artigo de preço na raiz. A URL não leva o ano para poder ser atualizada.
+    {
+      url: `${SITE_URL}${QUANTO_CUSTA_PATH}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
     { url: `${SITE_URL}/projetos`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/sobre`, changeFrequency: "yearly", priority: 0.5 },
     { url: `${SITE_URL}/contato`, changeFrequency: "yearly", priority: 0.6 },
