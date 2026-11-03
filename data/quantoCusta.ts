@@ -37,20 +37,30 @@ export const QUANTO_CUSTA_ROWS = [
     tipo: "Landing page",
     href: "/landing-page",
     para: "Uma página focada em uma oferta, campanha ou serviço, com um objetivo claro de contato",
+    incluso: "Design e código do zero, hospedagem e domínio",
     preco: "a partir de R$ 600",
   },
   {
     tipo: "Site institucional",
     href: "/site-institucional",
     para: "Empresa que precisa apresentar quem é, o que faz e como ser contratada, em várias páginas",
+    incluso: "Design e código do zero, hospedagem e domínio",
     preco: "a partir de R$ 1.500",
   },
   {
     tipo: "Outros projetos ou escopo maior",
     href: null,
     para: "Projetos que vão além de uma landing page ou de um site institucional padrão",
+    incluso: "Definido no orçamento",
     preco: "sob consulta",
   },
+] as const;
+
+export const QUANTO_CUSTA_INCLUSO_HEADING = "Hospedagem, domínio e mensalidade";
+
+export const QUANTO_CUSTA_INCLUSO = [
+  "A hospedagem fica por minha conta e está incluída no valor final do projeto. Eu registro o domínio, e o custo também está incluído no valor do projeto.",
+  "A mensalidade é um plano opcional de acompanhamento e atualizações recorrentes. Ela depende do serviço.",
 ] as const;
 
 export const QUANTO_CUSTA_FATORES = [
@@ -110,5 +120,13 @@ export const QUANTO_CUSTA_FAQ: FaqItem[] = [
   {
     q: "O site é feito com modelo pronto?",
     a: "Não. Os sites são feitos do zero, com código próprio.",
+  },
+  {
+    q: "A hospedagem e o domínio estão inclusos?",
+    a: "Sim. A hospedagem fica por minha conta e está incluída no valor final do projeto. Eu registro o domínio, e o custo também está incluído no valor do projeto.",
+  },
+  {
+    q: "Tem mensalidade?",
+    a: "Não é obrigatória. Há um plano opcional de acompanhamento e atualizações recorrentes, e ele depende do serviço.",
   },
 ];

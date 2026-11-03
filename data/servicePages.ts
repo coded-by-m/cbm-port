@@ -136,7 +136,7 @@ const PRECO_TEXTO =
 
 const LANDING_PRECO = `A partir de ${PUBLIC_PRICE.landing.display}. O valor final depende do projeto (seções, formulários, integrações). Orçamento claro no WhatsApp.`;
 
-const INSTITUCIONAL_PRECO = `A partir de ${PUBLIC_PRICE.institucional.display}. O valor final depende do projeto — páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`;
+const INSTITUCIONAL_PRECO = `A partir de ${PUBLIC_PRICE.institucional.display}. O valor final depende do projeto: páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`;
 
 export const SERVICE_PAGES: ServicePageConfig[] = [
   {
@@ -186,12 +186,12 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       },
       {
         q: "Landing page ou site institucional: qual escolher?",
-        a: "Landing page quando existe uma ação principal — um serviço, uma campanha, um anúncio. Site institucional quando a empresa precisa apresentar serviços, história e projetos em várias páginas.",
+        a: "Landing page quando existe uma ação principal: um serviço, uma campanha, um anúncio. Site institucional quando a empresa precisa apresentar serviços, história e projetos em várias páginas.",
         links: [{ href: "/site-institucional", label: "Site institucional" }],
       },
       {
         q: "Em quanto tempo uma landing page fica pronta?",
-        a: "O prazo depende do escopo (seções, textos, integrações) e é fechado no orçamento no WhatsApp, antes de começar — em geral mais rápido que um site institucional de várias páginas.",
+        a: "A partir de 5 dias úteis. O prazo final depende do escopo (seções, textos, integrações) e é fechado no orçamento no WhatsApp, antes de começar.",
       },
     ],
     waMessage: "Olá! Vim pela página de landing page da Coded by M e quero um orçamento.",
@@ -223,7 +223,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     ],
     investimento: {
       price: PUBLIC_PRICE.institucional.amount,
-      body: `Site institucional a partir de ${PUBLIC_PRICE.institucional.display}, dependendo do projeto — páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`,
+      body: `Site institucional a partir de ${PUBLIC_PRICE.institucional.display}, dependendo do projeto: páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`,
     },
     guide: {
       href: QUANTO_CUSTA_PATH,
@@ -250,7 +250,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       },
       {
         q: "Em quanto tempo o site fica pronto?",
-        a: "O prazo depende do número de páginas e do conteúdo e entra no orçamento no WhatsApp, antes de começar.",
+        a: "A partir de 15 dias úteis. O prazo final depende do número de páginas e do conteúdo e é fechado no orçamento no WhatsApp, antes de começar.",
       },
     ],
     waMessage: "Olá! Vim pela página de site institucional da Coded by M e quero um orçamento.",

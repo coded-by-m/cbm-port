@@ -10,6 +10,8 @@ import {
   QUANTO_CUSTA_FAQ,
   QUANTO_CUSTA_FATORES,
   QUANTO_CUSTA_H1,
+  QUANTO_CUSTA_INCLUSO,
+  QUANTO_CUSTA_INCLUSO_HEADING,
   QUANTO_CUSTA_LEAD,
   QUANTO_CUSTA_ORCAMENTO,
   QUANTO_CUSTA_PASSOS,
@@ -42,7 +44,7 @@ const LIST: CSSProperties = {
 
 const STRONG = { color: "#F5F2ED", fontWeight: 600 } as const;
 
-const COLS = ["Tipo de site", "Para quem serve", "Investimento"] as const;
+const COLS = ["Tipo de site", "Para quem serve", "O que está incluso", "Investimento"] as const;
 
 export const metadata: Metadata = {
   title: { absolute: QUANTO_CUSTA_TITLE },
@@ -161,7 +163,8 @@ export default function QuantoCustaPage() {
                     )}
                   </td>
                   <td data-label={COLS[1]}>{row.para}</td>
-                  <td data-label={COLS[2]} className="site-price-value">
+                  <td data-label={COLS[2]}>{row.incluso}</td>
+                  <td data-label={COLS[3]} className="site-price-value">
                     {row.preco}
                   </td>
                 </tr>
@@ -179,6 +182,24 @@ export default function QuantoCustaPage() {
             </li>
           ))}
         </ul>
+
+        <h2 style={PROSE_H2}>{QUANTO_CUSTA_INCLUSO_HEADING}</h2>
+        {QUANTO_CUSTA_INCLUSO.map((para) => (
+          <p key={para} style={PROSE_P}>
+            {para}
+          </p>
+        ))}
+        <p style={PROSE_P}>
+          {"O prazo de cada serviço está na página da "}
+          <Link href="/landing-page" style={PROSE_LINK}>
+            landing page
+          </Link>
+          {" e na página do "}
+          <Link href="/site-institucional" style={PROSE_LINK}>
+            site institucional
+          </Link>
+          .
+        </p>
 
         <h2 style={PROSE_H2}>Landing page ou site institucional: qual escolher?</h2>
         <p style={PROSE_P}>

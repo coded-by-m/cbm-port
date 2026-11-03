@@ -91,7 +91,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "Landing page ou site institucional: qual escolher?",
-    a: "Landing page quando há uma ação principal (campanha, serviço, anúncio). Site institucional quando a empresa precisa de várias páginas — serviços, história, projetos. Se for escritório de arquitetura ou interiores, veja também {0}.",
+    a: "Landing page quando há uma ação principal (campanha, serviço, anúncio). Site institucional quando a empresa precisa de várias páginas: serviços, história, projetos. Se for escritório de arquitetura ou interiores, veja também {0}.",
     links: [{ href: "/sites-para-arquitetura", label: "sites para arquitetura" }],
   },
   {
@@ -104,7 +104,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "Como funciona o processo?",
-    a: "Em quatro etapas: estratégia (diagnóstico, escopo e posicionamento), design (arquitetura, identidade e protótipo), código (implementação e performance) e resultado — mensuração, ajustes e evolução depois do deploy.",
+    a: "Em quatro etapas: estratégia (diagnóstico, escopo e posicionamento), design (arquitetura, identidade e protótipo), código (implementação e performance) e resultado: mensuração, ajustes e evolução depois do deploy.",
   },
   {
     // Fora deste PR: sem política publicada. PREENCHER fica fora do HTML e do FAQPage.
