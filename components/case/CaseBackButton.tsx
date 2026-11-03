@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { MeshButton } from "@/components/ui/MeshButton";
 import { TriArrow } from "@/components/ui/TriArrow";
 
 /**
@@ -10,15 +10,15 @@ import { TriArrow } from "@/components/ui/TriArrow";
  */
 export function CaseBackButton() {
   return (
-    <Link
-      href="/#projetos"
-      aria-label="Voltar aos projetos"
-      className="fixed left-5 top-5 z-50 inline-flex items-center gap-2 border border-[#F5F2ED]/15 bg-cbm-page/70 px-3.5 py-2 font-display text-[10px] font-semibold uppercase tracking-[0.2em] text-cbm-gray-200 backdrop-blur-md transition-colors duration-200 hover:border-[#FB3640]/60 hover:text-cbm-white focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[#F5F2ED]"
-    >
-      <span aria-hidden className="text-[#FB3640]">
-        <TriArrow dir="left" />
-      </span>
-      Projetos
-    </Link>
+    <div className="fixed left-5 top-5 z-50">
+      <MeshButton
+        label="Projetos"
+        size="sm"
+        showArrow={false}
+        lead={<TriArrow dir="left" />}
+        href="/#projetos"
+        aria-label="Voltar aos projetos"
+      />
+    </div>
   );
 }

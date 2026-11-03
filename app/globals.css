@@ -53,7 +53,8 @@ body:has(.site-home) {
 
 /* Hovers da home estática — o design entrega estados de hover, que estilo
    inline não expressa. Uma classe por estado, valores idênticos ao aprovado. */
-.site-burger:hover { border-color: rgba(245, 242, 237, 0.75); background: rgba(245, 242, 237, 0.05); }
+.site-burger:hover { border-color: rgb(var(--cbm-white)); background: rgb(var(--cbm-white) / 0.05); }
+.site-burger:focus-visible, .site-drawer-close:focus-visible { outline: 2px solid rgb(var(--cbm-red)); outline-offset: 3px; }
 .site-header-cta:hover { border-color: rgba(245, 242, 237, 0.75); background: rgba(245, 242, 237, 0.05); }
 .site-drawer-close:hover { border-color: #fb3640; background: rgba(251, 54, 64, 0.1); transform: rotate(90deg); }
 .site-drawer-link:hover { color: #fb3640; padding-left: 10px; }
@@ -923,6 +924,15 @@ body:has(.site-home) {
   transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .mesh-btn--sm .mesh-btn__arrow { width: 11px; height: 11px; }
+.mesh-btn__lead {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex: none;
+  color: rgb(var(--cbm-red));
+  transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mesh-btn:hover .mesh-btn__lead .tri-arrow--left { transform: translateX(-3px) rotate(180deg); }
 .mesh-btn:hover .mesh-btn__arrow,
 .mesh-btn:focus-visible .mesh-btn__arrow { transform: translateX(4px); }
 .mesh-btn:disabled { opacity: 0.4; cursor: not-allowed; }

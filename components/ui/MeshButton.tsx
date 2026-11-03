@@ -8,8 +8,10 @@ import {
   type ButtonHTMLAttributes,
   type CSSProperties,
   type PointerEvent,
+  type ReactNode,
   type Ref,
 } from "react";
+import Link from "next/link";
 import { cbm } from "@/lib/palette";
 import { MESH } from "./buttonSpec";
 import { meshTris, triD } from "./triMesh";
@@ -22,8 +24,11 @@ export type MeshButtonProps = {
   showArrow?: boolean;
   /** `lg` para CTAs de seção, `sm` para ações em contexto (default `lg`). */
   size?: "lg" | "sm";
-  /** Com `href` o botão vira um link de verdade (`<a>`). */
+  /** Com `href` o botão vira um link de verdade. Rotas internas (`/…`) usam o
+   *  `Link` do Next (navegação sem recarregar); externas, `<a>`. */
   href?: string;
+  /** Ícone à esquerda do rótulo, em vermelho (WhatsApp, triângulo de voltar). */
+  lead?: ReactNode;
   target?: AnchorHTMLAttributes<HTMLAnchorElement>["target"];
   rel?: string;
 } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children">;
@@ -50,6 +55,7 @@ export const MeshButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Mesh
       href,
       target,
       rel,
+      lead,
       className = "",
       style,
       onPointerMove,
@@ -93,6 +99,11 @@ export const MeshButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Mesh
         <span className="mesh-btn__lit" aria-hidden>
           {lines(MESH.litLines)}
         </span>
+        {lead && (
+          <span className="mesh-btn__lead" aria-hidden>
+            {lead}
+          </span>
+        )}
         <span className="mesh-btn__label">
           <span className="mesh-btn__plate" aria-hidden style={{ background: cbm("page", MESH.plate) }} />
           {label}
@@ -106,6 +117,20 @@ export const MeshButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Mesh
     );
 
     const classes = ["word", "mesh-btn", `mesh-btn--${size}`, className].filter(Boolean).join(" ");
+
+    if (href && href.startsWith("/") && !target)
+      return (
+        <Link
+          ref={setRefs as Ref<HTMLAnchorElement>}
+          href={href}
+          className={classes}
+          style={rootStyle}
+          onPointerMove={handlePointerMove as unknown as AnchorHTMLAttributes<HTMLAnchorElement>["onPointerMove"]}
+          {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)}
+        >
+          {content}
+        </Link>
+      );
 
     if (href)
       return (
