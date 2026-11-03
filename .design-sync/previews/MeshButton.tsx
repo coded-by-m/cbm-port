@@ -1,13 +1,13 @@
 import "./_still";
 import { MeshButton } from "cbm-port";
 
-// O botao principal do sistema. A malha triangulada por tras nao e enfeite: e a
-// mesma gramatica do terreno da experiencia, trazida para o controle. Ela anima
-// em repouso e responde ao ponteiro — num card estatico o que se ve e a malha
-// em repouso, que ja e o essencial.
+// O botao da marca. "Malha que acorda": a malha triangulada (a mesma do
+// terreno e do logo) fica quase apagada em repouso e acende so em volta do
+// cursor. Num card estatico o que se ve e o repouso — que e o estado real do
+// botao na maior parte do tempo. Uma placa escura esfumada fica atras do
+// rotulo: nenhuma linha cruza as letras.
 //
-// O eixo que vale varrer e o rotulo (o botao dimensiona pelo texto, palavra a
-// palavra) e a presenca da seta.
+// Eixos que valem varrer: tamanho (lg/sm), seta, rotulo e link (href).
 
 const linha = {
   padding: "32px 28px",
@@ -25,11 +25,29 @@ export function Canonico() {
   );
 }
 
+/** `sm`: acoes em contexto, como "ver o site no ar" num case. */
+export function Pequeno() {
+  return (
+    <div style={linha}>
+      <MeshButton label="Ver o site no ar" size="sm" />
+    </div>
+  );
+}
+
 /** Sem a seta, para quando o botao nao leva para fora da pagina. */
 export function SemSeta() {
   return (
     <div style={linha}>
       <MeshButton label="Ver projetos" showArrow={false} />
+    </div>
+  );
+}
+
+/** Com `href` vira link de verdade (`<a>`), com o mesmo visual. */
+export function ComoLink() {
+  return (
+    <div style={linha}>
+      <MeshButton label="Começar meu projeto" href="https://wa.me/5548999916638" target="_blank" />
     </div>
   );
 }
@@ -45,7 +63,7 @@ export function Rotulos() {
   );
 }
 
-/** Desabilitado: a malha continua, o botao para de responder. */
+/** Desabilitado: a malha fica, o botao para de responder. */
 export function Desabilitado() {
   return (
     <div style={linha}>

@@ -24,7 +24,8 @@ export function CaseLiveButton({
       aria-label={`Abrir o site ${url} em nova aba`}
       data-cm-role="secondary-cta"
       data-cm-id={cmId}
-      onClick={() => window.open(href, "_blank", "noopener,noreferrer")}
+      href={href}
+      target="_blank"
     />
   );
 }

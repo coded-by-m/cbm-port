@@ -270,7 +270,8 @@ export default function CTASection({
             >
               <MeshButton
                 label="Começar meu projeto"
-                onClick={() => window.open(WHATSAPP, "_blank", "noopener")}
+                href={WHATSAPP}
+                target="_blank"
                 aria-label="Começar meu projeto pelo WhatsApp"
               />
             </div>
