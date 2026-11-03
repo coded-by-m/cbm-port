@@ -25,5 +25,5 @@ export const HOME_CHAPTERS: HomeChapter[] = [
   { id: "processo", label: "Processo", cue: "Role para percorrer", gestures: ["cada etapa é um beat"] },
   { id: "laboratorio", label: "Laboratório", cue: "Entre no laboratório", gestures: ["role para sair"] },
   { id: "sobre", label: "Sobre", cue: null },
-  { id: "convite", label: "Convite", cue: "Role — o convite se forma" },
+  { id: "convite", label: "Convite", cue: "Role: o convite se forma" },
 ];

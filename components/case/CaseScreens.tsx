@@ -54,7 +54,7 @@ export function CaseScreens({ project }: { project: CaseProject }) {
                 {/* As telas SÃO o conteúdo do case — descritas, não decorativas. */}
                 <img
                   src={src}
-                  alt={`${project.title} — tela ${i + 1} do site`}
+                  alt={`${project.title}: tela ${i + 1} do site`}
                   loading="lazy"
                   decoding="async"
                   className={`w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02] ${

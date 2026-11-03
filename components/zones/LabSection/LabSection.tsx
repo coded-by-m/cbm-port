@@ -203,7 +203,7 @@ export default function LabSection({
                 ...reveal(240, 12),
               }}
             >
-              {readyCount} experimentos isolados — cada efeito e interação é
+              {readyCount} experimentos isolados: cada efeito e interação é
               provado aqui antes de entrar num projeto real.
             </p>
 

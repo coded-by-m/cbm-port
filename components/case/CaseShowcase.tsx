@@ -48,7 +48,7 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
             {/* biome-ignore lint/a11y/useAltText: alt repassado */}
             <img
               src={mockups.desktop3d}
-              alt={`${title} — mockup 3D desktop`}
+              alt={`${title}: mockup 3D desktop`}
               width={1600}
               height={1151}
               loading="lazy"
@@ -61,7 +61,7 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
               // biome-ignore lint/a11y/useAltText: alt repassado
               <img
                 src={mockups.mobile3d}
-                alt={`${title} — mockup 3D mobile`}
+                alt={`${title}: mockup 3D mobile`}
                 loading="lazy"
                 decoding="async"
                 className="absolute -bottom-6 right-0 w-[26%] max-w-[200px] select-none drop-shadow-[0_30px_60px_-20px_rgba(0,0,0,0.9)] sm:-bottom-8 sm:right-2"

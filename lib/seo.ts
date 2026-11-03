@@ -31,7 +31,7 @@ type Json = Record<string, unknown>;
 /** Título e descrição da home — também o padrão de quem não declara os seus. */
 export const HOME_TITLE = "Criação de sites e landing pages em Florianópolis · Coded by M";
 export const HOME_DESCRIPTION =
-  "Estúdio de web design em Florianópolis. Landing pages e sites institucionais feitos do zero, com código próprio. Atendemos todo o Brasil — peça um orçamento.";
+  "Estúdio de web design em Florianópolis. Landing pages e sites institucionais feitos do zero, com código próprio. Atendemos todo o Brasil. Peça um orçamento.";
 
 /** Imagem social padrão por rota (geradas por scripts/build-og-images.py). */
 export const OG = {
@@ -184,8 +184,8 @@ export function caseSchema(project: CaseProject): Json {
     "@id": `${pageUrl}#work`,
     name: project.title,
     headline: project.concept
-      ? `${project.title} — ${project.meta.tipo} (projeto conceitual)`
-      : `${project.title} — ${project.meta.tipo}`,
+      ? `${project.title}: ${project.meta.tipo} (projeto conceitual)`
+      : `${project.title}: ${project.meta.tipo}`,
     description: project.description,
     genre: project.meta.tipo,
     dateCreated: project.meta.ano,
