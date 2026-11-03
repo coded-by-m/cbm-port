@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { waLink } from "@/lib/contact";
 import { SURFACE } from "@/components/site/shared";
+import { cbm } from "@/lib/palette";
 
 /**
  * Botão flutuante de WhatsApp — contato sempre a um toque, em todas as páginas.
@@ -30,7 +31,9 @@ export function WhatsAppFab() {
     pathname?.startsWith("/experiencia") ||
     // Landing de campanha tem CTA proprio, repetido: um botao flutuante de
     // contato ao lado dele disputa a mesma acao e dilui as duas.
-    pathname?.startsWith("/lp")
+    pathname?.startsWith("/lp") ||
+    // As rotas /posts são telas de export (carrosséis) — sem chrome do site.
+    pathname?.startsWith("/posts")
   )
     return null;
 
@@ -47,8 +50,8 @@ export function WhatsAppFab() {
       aria-label="Falar no WhatsApp"
       className="group fixed bottom-6 right-6 z-40 flex items-center gap-2.5 border px-5 py-3.5 text-[#F5F2ED] shadow-[0_10px_30px_rgba(0,0,0,0.45)] backdrop-blur-sm transition-[transform,opacity,border-color] duration-300 hover:border-[#FB3640] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FB3640]"
       style={{
-        background: isHome ? "rgba(7,12,9,0.95)" : "rgba(14,24,16,0.95)",
-        borderColor: isHome ? "#111511" : "#1a2a1e",
+        background: isHome ? cbm("raised", 0.95) : cbm("card", 0.95),
+        borderColor: isHome ? cbm("border") : cbm("line"),
         opacity: shown ? 1 : 0,
         transform: shown ? "translateY(0)" : "translateY(12px)",
         pointerEvents: shown ? "auto" : "none",

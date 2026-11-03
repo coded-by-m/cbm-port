@@ -1,22 +1,27 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { getConsent, setConsent } from "@/lib/analytics";
+import { cbm } from "@/lib/palette";
 
 /**
  * Banner de consentimento de cookies (LGPD) — no design system da marca.
  *
  * Aparece só quando não há decisão salva. "Aceitar" libera GA4 + Meta Pixel
  * (via setConsent → Analytics reage e carrega os scripts); "Recusar" bloqueia.
- * Linguagem angular (border-radius 0), fundo #000F08, acento vermelho raro.
+ * Linguagem angular (border-radius 0), fundo escuro da paleta ativa (token `base`), acento vermelho raro.
  */
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (getConsent() === null) setVisible(true);
   }, []);
 
+  // As rotas /posts são telas de export (carrosséis) — sem chrome do site.
+  if (pathname?.startsWith("/posts")) return null;
   if (!visible) return null;
 
   const decide = (value: "granted" | "denied") => {
@@ -36,7 +41,7 @@ export function CookieConsent() {
         zIndex: 200,
         width: "min(calc(100vw - 24px), 380px)",
         boxSizing: "border-box",
-        background: "rgba(4,8,6,0.94)",
+        background: cbm("base", 0.94),
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         border: "1px solid rgba(245,242,237,0.14)",
@@ -55,7 +60,7 @@ export function CookieConsent() {
           fontWeight: 300,
           fontSize: 13,
           lineHeight: 1.6,
-          color: "#B4B0AA",
+          color: cbm("gray-300"),
         }}
       >
         Usamos cookies para medir o desempenho do site e entender como ele é
@@ -70,7 +75,7 @@ export function CookieConsent() {
             flex: 1,
             minHeight: 44,
             background: "rgba(245,242,237,0.94)",
-            color: "#040806",
+            color: cbm("base"),
             border: "1px solid rgba(245,242,237,0.94)",
             borderRadius: 0,
             padding: "0 18px",
