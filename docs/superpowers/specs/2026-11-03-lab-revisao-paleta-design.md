@@ -68,10 +68,10 @@ No fim, uma busca por `000F08`, `070B08`, `111511`, `1A2418` e `0,15,8` em `app`
 - **Barra fixa** no topo para trocar a paleta (Atual com verde / Neutro / Quente / Puro). Ela reescreve as variáveis no `<html>` e guarda a escolha em `localStorage` (é só conveniência, com try/catch).
 - **Seções, todas com os componentes reais, em ordem:**
   1. **Cores**: amostras, a escala de cinzas com contraste calculado contra `base` e `surface` (selo AA/AAA) e as cores de apoio.
-  2. **Botões**: MeshButton, `.site-cta`, LpCta, CaseLiveButton, CaseBackButton e WhatsAppFab lado a lado, nos estados normal, hover, foco e desabilitado (forçados por classe).
-  3. **Componentes**: seções do site, blocos das LPs, cards e galeria de projetos, FilterChips, FAQ, frames de case. Os dados vêm de `data/`, como no site.
+  2. **Botões**: MeshButton, LpCta (que usa o `.site-cta`), CaseLiveButton, CaseBackButton e WhatsAppFab lado a lado. Hover e foco são vistos ao vivo, com o mouse e o Tab. Estados forçados ficam para a spec do sistema de botões.
+  3. **Componentes**: vêm dos **previews do `.design-sync`**, as mesmas variantes e dados de exemplo enviados ao Claude Design, separados em Marca (`M-`) e Componentes (`C-`). As seções inteiras do site, que não têm preview, entram direto, sem props (`H-`).
   4. **Cena 3D**: o terreno e o fundo, carregados sob demanda com `ssr: false`.
-  5. **Posts**: as miniaturas de `app/posts/*` em escala reduzida.
+  5. **Posts**: as miniaturas de `app/posts/*` em escala reduzida. O `machado` entra quando for commitado.
 - Cada item mostra um **identificador visível** (`B-03 LpCta`, `C-07 FilterChips`), para servir de referência na revisão.
 - Os itens que se apoiam em cor escrita direto não mudam ao trocar a paleta. Isso é proposital: o lab vira o detector do que falta corrigir.
 
@@ -95,3 +95,9 @@ No fim, uma busca por `000F08`, `070B08`, `111511`, `1A2418` e `0,15,8` em `app`
 - No lab, trocar a paleta muda **todos** os itens, inclusive a cena 3D.
 - Contraste: texto de corpo e secundário no mínimo AA sobre `base` e `surface` na paleta escolhida.
 - A validação do design-sync passa só com os avisos conhecidos.
+
+## Registro da implementação (2026-11-03)
+
+- Os 25 tons de verde do código foram fundidos em 12 tokens de superfície. Na paleta "atual", três fusões mudam o valor em poucos níveis: `#16271B`→`line`, `#0B120D`→`frame` e `fillLow #0a0a0a`→`page`.
+- Cinzas fora da escala: `#B4B0AA` virou o `gray-300` da "atual", e `#CFCBC5`/`#8E8A84` foram para `gray-200`/`gray-400`. **Continuam escritos direto no código e serão mapeados quando a escala nova for escolhida:** `#9B9791` (10 usos), `#7E7A74` (2) e `text-[#e0e0e0]` no `<body>`.
+- O detector é `node scripts/check-green.mjs`, e os testes da paleta rodam com `node --test scripts/palette.test.mts`.
