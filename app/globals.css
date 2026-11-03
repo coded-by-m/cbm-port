@@ -782,6 +782,17 @@ body:has(.site-home) {
   .site-price-table.site-compare-table td:nth-child(2) {
     width: auto;
   }
+  /* Três colunas: critério, landing page e site institucional. */
+  .site-price-table.site-choice-table td:first-child {
+    width: 24%;
+  }
+  .site-price-table.site-choice-table td:nth-child(2),
+  .site-price-table.site-choice-table td:nth-child(3) {
+    width: 38%;
+  }
+}
+.site-price-table td[data-label=""]::before {
+  content: none;
 }
 @media (max-width: 640px) {
   .site-price-table thead {

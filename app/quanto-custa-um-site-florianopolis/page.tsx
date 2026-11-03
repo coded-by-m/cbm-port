@@ -8,6 +8,7 @@ import {
   ESCOLHER_BACKLINK_LABEL,
   ESCOLHER_PATH,
 } from "@/data/comoEscolherEmpresa";
+import { LP_OU_URL } from "@/data/landingOuInstitucional";
 import {
   QUANTO_CUSTA_CRUMB,
   QUANTO_CUSTA_CTA,
@@ -217,19 +218,13 @@ export default function QuantoCustaPage() {
 
         <h2 style={PROSE_H2}>Landing page ou site institucional: qual escolher?</h2>
         <p style={PROSE_P}>
-          {"Escolha a "}
-          <Link href="/landing-page" style={PROSE_LINK}>
-            landing page
-          </Link>
           {
-            " quando o objetivo é um só, como divulgar um serviço ou uma campanha e levar a pessoa a chamar no WhatsApp. Escolha o "
+            "Landing page para um objetivo só; site institucional para apresentar a empresa inteira. Veja a "
           }
-          <Link href="/site-institucional" style={PROSE_LINK}>
-            site institucional
-          </Link>
-          {
-            " quando a empresa precisa de presença completa, com páginas para cada serviço e para contar a própria história. Se ficar em dúvida, descreva o objetivo no orçamento e eu indico o formato."
-          }
+          <a href={LP_OU_URL} style={PROSE_LINK}>
+            comparação completa entre landing page e site institucional
+          </a>
+          .
         </p>
 
         <h2 style={PROSE_H2}>Como pedir orçamento</h2>
