@@ -98,7 +98,7 @@ export function ProjectsStage({
                       fontFamily: SATOSHI,
                       fontSize: 10,
                       letterSpacing: "0.18em",
-                      color: cbm("gray-500"),
+                      color: cbm("gray-400"),
                       whiteSpace: "nowrap",
                     }}
                   >

@@ -34,7 +34,7 @@ export function CaseResponsive({ project }: { project: CaseProject }) {
               className="block h-px w-5 flex-shrink-0"
               style={{ background: "rgba(251,54,64,0.4)" }}
             />
-            <p className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red/70">
+            <p className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red">
               Responsivo
             </p>
           </div>

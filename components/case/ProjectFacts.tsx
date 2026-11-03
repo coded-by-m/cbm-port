@@ -28,7 +28,7 @@ export function ProjectFacts({
       <div className="grid grid-cols-2 gap-x-8 gap-y-6 max-w-[440px]">
         {fields.map(({ label, value }) => (
           <div key={label}>
-            <p className="font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-600">
+            <p className="font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-400">
               {label}
             </p>
             <p className="mt-1.5 font-body text-[15px] font-medium text-cbm-gray-100">
@@ -40,7 +40,7 @@ export function ProjectFacts({
 
       {stack && stack.length > 0 && (
         <div className="mt-7">
-          <p className="mb-3 font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-600">
+          <p className="mb-3 font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-400">
             Stack
           </p>
           <div className="flex flex-wrap gap-2 max-w-[440px]">

@@ -16,7 +16,7 @@ export function GalleryHeader({ label = "Projetos" }: { label?: string }) {
         >
           ·CbM
         </Link>
-        <span className="text-[0.65rem] uppercase tracking-[0.4em] text-[#F5F2ED]/45">
+        <span className="text-[0.65rem] uppercase tracking-[0.4em] text-cbm-gray-400">
           {label}
         </span>
         <Link

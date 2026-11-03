@@ -181,7 +181,7 @@ export function ProjetoGridCard({
                 fontWeight: 400,
                 fontSize: 10,
                 letterSpacing: "0.18em",
-                color: cbm("gray-500"),
+                color: cbm("gray-400"),
               }}
             >
               {project.meta.ano}
@@ -218,7 +218,7 @@ export function ProjetoGridCard({
                   fontSize: 9,
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
-                  color: cbm("gray-500"),
+                  color: cbm("gray-400"),
                 }}
               >
                 {t}

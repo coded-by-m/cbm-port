@@ -25,7 +25,7 @@ export function CaseOverview({ project }: { project: CaseProject }) {
               className="block h-px w-5 flex-shrink-0"
               style={{ background: "rgba(251,54,64,0.4)" }}
             />
-            <p className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red/70">
+            <p className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red">
               Visão Geral
             </p>
           </div>
@@ -54,7 +54,7 @@ export function CaseOverview({ project }: { project: CaseProject }) {
           {/* h2 com cara de rótulo: na estrutura da página o desafio e o
               resultado são seções, mesmo pequenos no desenho. */}
           <div className="border border-cbm-gray-800 p-6">
-            <h2 className="mb-3 font-body text-[8px] font-normal uppercase tracking-[0.35em] text-cbm-gray-600">
+            <h2 className="mb-3 font-body text-[8px] font-normal uppercase tracking-[0.35em] text-cbm-gray-400">
               Desafio
             </h2>
             <p className="font-body text-[13px] font-light leading-[1.75] text-cbm-gray-400">
@@ -63,7 +63,7 @@ export function CaseOverview({ project }: { project: CaseProject }) {
           </div>
           {result && (
             <div className="mt-4 border border-cbm-gray-800 p-6">
-              <h2 className="mb-3 font-body text-[8px] font-normal uppercase tracking-[0.35em] text-cbm-gray-600">
+              <h2 className="mb-3 font-body text-[8px] font-normal uppercase tracking-[0.35em] text-cbm-gray-400">
                 Resultado
               </h2>
               <p className="font-body text-[13px] font-light leading-[1.75] text-cbm-gray-400">

@@ -29,7 +29,7 @@ export function CaseReturnCTA({
       }}
     >
       <Reveal className="flex flex-col items-center gap-6">
-        <p className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red/60">
+        <p className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red">
           {siteUrl ? "Veja ao vivo" : "Continuar Explorando"}
         </p>
 

@@ -45,7 +45,6 @@ export function CookieConsent() {
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         border: "1px solid rgba(245,242,237,0.14)",
-        borderLeft: "2px solid rgba(251,54,64,0.55)",
         padding: "16px 18px",
         display: "flex",
         flexDirection: "column",

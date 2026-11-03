@@ -66,7 +66,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
         <div>
           {/* Onde se está. Espelha o BreadcrumbList do JSON-LD da página. */}
           <nav aria-label="Trilha" className="mb-5" style={step(0)}>
-            <ol className="flex flex-wrap items-center gap-2 font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-600">
+            <ol className="flex flex-wrap items-center gap-2 font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-400">
               <li>
                 <Link href="/" className="transition-colors hover:text-cbm-gray-200">
                   Início
@@ -90,7 +90,7 @@ export function CaseHero({ project }: { project: CaseProject }) {
               className="block h-px w-5 flex-shrink-0"
               style={{ background: "rgba(251,54,64,0.4)" }}
             />
-            <p className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red/75">
+            <p className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red">
               {project.eyebrow}
             </p>
           </div>

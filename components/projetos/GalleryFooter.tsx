@@ -50,7 +50,7 @@ export function GalleryFooter({ current }: { current?: string }) {
         aria-label="Serviços"
         className="mx-auto flex max-w-6xl flex-col gap-3 border-t border-[#F5F2ED]/10 px-5 py-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8"
       >
-        <span className="text-[0.62rem] uppercase tracking-[0.3em] text-[#F5F2ED]/40">
+        <span className="text-[0.62rem] uppercase tracking-[0.3em] text-cbm-gray-400">
           Serviços
         </span>
         {LINKS.filter((l) => l.href !== current).map((l) => (
@@ -62,7 +62,7 @@ export function GalleryFooter({ current }: { current?: string }) {
             {l.label}
           </Link>
         ))}
-        <span className="text-[0.62rem] uppercase tracking-[0.2em] text-[#F5F2ED]/35 sm:ml-auto">
+        <span className="text-[0.62rem] uppercase tracking-[0.2em] text-cbm-gray-400 sm:ml-auto">
           Coded by M · Florianópolis - SC
         </span>
       </nav>

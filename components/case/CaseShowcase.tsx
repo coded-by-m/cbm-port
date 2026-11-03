@@ -37,7 +37,7 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
               className="block h-px w-5 flex-shrink-0"
               style={{ background: "rgba(251,54,64,0.4)" }}
             />
-            <h2 className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red/70">
+            <h2 className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red">
               Mockups
             </h2>
           </div>
@@ -82,7 +82,7 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
                 preload="metadata"
                 className="w-full bg-cbm-surface"
               />
-              <figcaption className="mt-3 font-body text-[11px] uppercase tracking-[0.22em] text-cbm-gray-600">
+              <figcaption className="mt-3 font-body text-[11px] uppercase tracking-[0.22em] text-cbm-gray-400">
                 Vitrine
               </figcaption>
             </figure>
