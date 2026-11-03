@@ -18,8 +18,8 @@ const SIZE: Record<Size, { padX: number; padY: number; font: number; gap: number
 };
 
 /** Janela total da onda e duração de cada triângulo, em ms. */
-const SPAN = 420;
-const STEP = 200;
+const SPAN = 1000;
+const STEP = 380;
 
 export type Tone = "red" | "white";
 const FILL: Record<Tone, string> = { red: cbm("red"), white: cbm("white") };
@@ -31,7 +31,7 @@ const LABEL: CSSProperties = {
   textTransform: "uppercase",
   letterSpacing: "0.3em",
   whiteSpace: "nowrap",
-  transition: `color 260ms ease ${SPAN * 0.35}ms`,
+  transition: `color 300ms ease ${SPAN * 0.45}ms`,
 };
 
 function base(size: Size, tone: Tone): CSSProperties {
@@ -58,10 +58,10 @@ const CSS = `
 .fbx .cell{fill-opacity:0;stroke-opacity:0;transition:fill-opacity ${STEP}ms ease, stroke-opacity ${STEP}ms ease}
 .fbx.on .cell{fill-opacity:1;stroke-opacity:1}
 .fbx.on .lbl{color:rgb(var(--cbm-page))}
-.fbx .arrow{transition:transform .35s cubic-bezier(.22,1,.36,1), fill 260ms ease ${SPAN * 0.5}ms}
+.fbx .arrow{transition:transform .35s cubic-bezier(.22,1,.36,1), fill 300ms ease ${SPAN * 0.8}ms}
 .fbx.on .arrow{transform:translateX(4px)}
 .fbx.red.on .arrow{fill:rgb(var(--cbm-page))}
-.fbx .wedge{clip-path:polygon(0 100%,0 100%,0 100%);transition:clip-path 520ms cubic-bezier(.65,0,.35,1)}
+.fbx .wedge{clip-path:polygon(0 100%,0 100%,0 100%);transition:clip-path ${SPAN}ms cubic-bezier(.65,0,.35,1)}
 .fbx.on .wedge{clip-path:polygon(0 100%,0 -250%,250% 100%)}
 @media (prefers-reduced-motion: reduce){.fbx,.fbx *{transition-duration:1ms!important;transition-delay:0ms!important}}
 `;
