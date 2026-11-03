@@ -39,6 +39,7 @@ export function usePalette(): [PaletteId, (id: PaletteId) => void] {
 }
 
 const SECTIONS = [
+  ["prototipos", "Protótipos"],
   ["cores", "Cores"],
   ["botoes", "Botões"],
   ["marca", "Marca"],
