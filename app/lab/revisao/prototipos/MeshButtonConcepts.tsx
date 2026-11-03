@@ -103,9 +103,11 @@ export function ConceptStyles() {
 /* A. Malha que acorda                                                       */
 /* ------------------------------------------------------------------------ */
 
-/** Malha em pixels reais: células ~22px, bordas retas, miolo com jitter. */
-function meshPath(w: number, h: number, cell = 22) {
-  if (!w || !h) return "";
+export type Tri = [number, number][];
+
+/** Malha em pixels reais: células ~`cell`px, bordas retas, miolo com jitter. */
+export function meshTris(w: number, h: number, cell = 22): Tri[] {
+  if (!w || !h) return [];
   const cols = Math.max(2, Math.round(w / cell));
   const rows = Math.max(2, Math.round(h / cell));
   const rand = mulberry32(137);
@@ -117,7 +119,7 @@ function meshPath(w: number, h: number, cell = 22) {
       const jy = edge ? 0 : (rand() * 2 - 1) * 0.32 * (h / rows);
       pts.push([(c / cols) * w + jx, (r / rows) * h + jy]);
     }
-  let d = "";
+  const out: Tri[] = [];
   for (let r = 0; r < rows; r++)
     for (let c = 0; c < cols; c++) {
       const a = r * (cols + 1) + c;
@@ -125,11 +127,16 @@ function meshPath(w: number, h: number, cell = 22) {
       const e = a + cols + 1;
       const f = e + 1;
       // Alterna a diagonal para o padrão não ler como grade.
-      const tris = (r + c) % 2 ? [[a, e, b], [b, e, f]] : [[a, e, f], [a, f, b]];
-      for (const t of tris)
-        d += `M${t.map((i) => pts[i].map((v) => v.toFixed(1)).join(",")).join("L")}Z`;
+      const idx = (r + c) % 2 ? [[a, e, b], [b, e, f]] : [[a, e, f], [a, f, b]];
+      for (const t of idx) out.push(t.map((i) => pts[i]));
     }
-  return d;
+  return out;
+}
+
+const triD = (t: Tri) => `M${t.map((p) => p.map((v) => v.toFixed(1)).join(",")).join("L")}Z`;
+
+function meshPath(w: number, h: number, cell = 22) {
+  return meshTris(w, h, cell).map(triD).join("");
 }
 
 export function ConceptA({ label, size = "lg" }: { label: string; size?: Size }) {
