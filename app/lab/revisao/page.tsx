@@ -9,11 +9,10 @@ import { Previews } from "./sections/Previews";
 import { SiteSections } from "./sections/SiteSections";
 import { Scene } from "./sections/Scene";
 import { Posts } from "./sections/Posts";
-import { MeshButtonLab } from "./sections/MeshButtonLab";
 
 const NOTES: Record<string, string> = {
   botoes:
-    "Todos os botões do sistema, como vão ao Claude Design. Passe o mouse e use o Tab para ver hover e foco reais.",
+    "MeshButton (malha que acorda) e FillButton (preenchimento a partir do cursor), como vão ao Claude Design. Passe o mouse e use o Tab para ver hover e foco reais.",
   marca: "Primitivos de marca: logo, triângulo, losango, títulos com contorno.",
   componentes: "Componentes do site, das landings, da vitrine e dos cases, com os dados de exemplo do design-sync.",
 };
@@ -31,13 +30,6 @@ export default function RevisaoPage() {
     <div style={{ minHeight: "100vh", background: cbm("page"), color: cbm("white") }}>
       <PaletteBar id={palette} onChange={setPalette} />
       <main>
-        <LabSection
-          id="prototipos"
-          title="Protótipos: MeshButton"
-          note="Quatro direções para o botão principal, ao lado do atual (X-00). Malha na proporção real, nada anima em repouso, foco visível. Itens X-."
-        >
-          <MeshButtonLab />
-        </LabSection>
         <LabSection
           id="cores"
           title="Cores"

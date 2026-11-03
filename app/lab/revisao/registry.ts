@@ -6,6 +6,7 @@
 // recarregamentos, para o ID (B-03, C-12…) continuar apontando para a mesma peça.
 import type { ComponentType } from "react";
 import * as MeshButton from "@/.design-sync/previews/MeshButton";
+import * as FillButton from "@/.design-sync/previews/FillButton";
 import * as LpCta from "@/.design-sync/previews/LpCta";
 import * as CaseLiveButton from "@/.design-sync/previews/CaseLiveButton";
 import * as CaseBackButton from "@/.design-sync/previews/CaseBackButton";
@@ -58,6 +59,7 @@ export const PREVIEW_GROUPS: PreviewGroup[] = [
     title: "Botões",
     entries: [
       { name: "MeshButton", mod: MeshButton },
+      { name: "FillButton", mod: FillButton },
       { name: "LpCta", mod: LpCta },
       { name: "CaseLiveButton", mod: CaseLiveButton },
       { name: "CaseBackButton", mod: CaseBackButton },

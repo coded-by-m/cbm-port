@@ -863,7 +863,9 @@ body:has(.site-home) {
 .mesh-btn:hover .mesh-btn__lit,
 .mesh-btn:focus-visible .mesh-btn__lit { opacity: 1; }
 /* O rótulo cria a própria camada: a placa (z -1) fica sob o texto e SOBRE a malha. */
-.mesh-btn__label { position: relative; z-index: 1; white-space: nowrap; }
+.mesh-btn { max-width: 100%; }
+/* Rótulo longo em espaço curto quebra linha em vez de vazar e esconder a seta. */
+.mesh-btn__label { position: relative; z-index: 1; min-width: 0; text-align: left; overflow-wrap: anywhere; }
 .mesh-btn__plate {
   position: absolute;
   inset: -8px -18px;
