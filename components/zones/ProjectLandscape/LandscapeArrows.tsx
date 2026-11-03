@@ -22,7 +22,7 @@ export default function LandscapeArrows({
   onTogglePause: () => void;
 }) {
   const baseBtn =
-    "group pointer-events-auto border border-[#F5F2ED]/20 bg-[#000F08]/40 p-3 backdrop-blur-sm transition-colors hover:border-[#F5F2ED]/70 hover:bg-[#000F08]/70 focus-visible:border-[#F5F2ED] focus-visible:outline-none";
+    "group pointer-events-auto border border-[#F5F2ED]/20 bg-cbm-page/40 p-3 backdrop-blur-sm transition-colors hover:border-[#F5F2ED]/70 hover:bg-cbm-page/70 focus-visible:border-[#F5F2ED] focus-visible:outline-none";
 
   return (
     <div className="pointer-events-none fixed bottom-10 left-1/2 z-30 flex -translate-x-1/2 items-center gap-3">

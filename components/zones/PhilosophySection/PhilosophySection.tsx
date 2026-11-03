@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { MeshButton } from "@/components/ui/MeshButton";
 import { railSub } from "@/lib/railProgress";
+import { cbm } from "@/lib/palette";
 
 const TerrainBackground = dynamic(
   () => import("./TerrainBackground"),
@@ -379,7 +380,7 @@ export default function PhilosophySection({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 50%, #000F08 90%)",
+            `radial-gradient(ellipse at center, transparent 50%, ${cbm("page")} 90%)`,
         }}
       />
 

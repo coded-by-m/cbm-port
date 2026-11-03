@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { railSub } from "@/lib/railProgress";
+import { cbm } from "@/lib/palette";
 
 const GenericGrid = dynamic(() => import("./GenericGrid"), { ssr: false });
 
@@ -217,7 +218,7 @@ export default function ProblemSection({
   return (
     <section
       data-cursor="default"
-      className={`bg-[#000F08] ${inPage ? "relative" : "absolute inset-0"}`}
+      className={`bg-cbm-page ${inPage ? "relative" : "absolute inset-0"}`}
       aria-labelledby="problem-headline"
     >
       <div
@@ -242,7 +243,7 @@ export default function ProblemSection({
           className="pointer-events-none absolute inset-0 z-[1]"
           style={{
             background:
-              "linear-gradient(180deg, rgba(0,15,8,0.55) 0%, rgba(0,15,8,0) 22%, rgba(0,15,8,0) 78%, rgba(0,15,8,0.7) 100%)",
+              `linear-gradient(180deg, ${cbm("page", 0.55)} 0%, ${cbm("page", 0)} 22%, ${cbm("page", 0)} 78%, ${cbm("page", 0.7)} 100%)`,
           }}
           aria-hidden
         />

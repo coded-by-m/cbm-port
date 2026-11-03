@@ -593,7 +593,7 @@ export default function ProjectLandscape({
               href="/projetos"
               data-cursor="triangle"
               aria-label="Ver todos os projetos em galeria"
-              className="gallery-cta pointer-events-auto group/gal inline-flex items-center gap-2.5 border border-[#F5F2ED]/25 bg-[#000F08]/85 px-3.5 py-2.5 backdrop-blur-sm transition-colors duration-300 hover:border-[#FB3640]/60 hover:bg-[#000F08]/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FB3640]/70"
+              className="gallery-cta pointer-events-auto group/gal inline-flex items-center gap-2.5 border border-[#F5F2ED]/25 bg-cbm-page/85 px-3.5 py-2.5 backdrop-blur-sm transition-colors duration-300 hover:border-[#FB3640]/60 hover:bg-cbm-page/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FB3640]/70"
             >
               <svg
                 aria-hidden

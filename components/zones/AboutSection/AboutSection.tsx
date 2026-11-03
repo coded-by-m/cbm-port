@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { ABOUT, VALUES } from "@/data/about";
+import { cbm } from "@/lib/palette";
 
 const AboutTerrain = dynamic(() => import("./AboutTerrain"), { ssr: false });
 const AboutMark = dynamic(() => import("./AboutMark"), { ssr: false });
@@ -166,7 +167,7 @@ export default function AboutSection({
     <section
       ref={sectionRef}
       data-cursor="default"
-      className={`bg-[#000F08] ${
+      className={`bg-cbm-page ${
         inPage ? "relative min-h-screen" : "absolute inset-0 overflow-y-auto"
       }`}
       aria-labelledby="about-headline"
@@ -186,7 +187,7 @@ export default function AboutSection({
         } inset-0 z-[1]`}
         style={{
           background:
-            "linear-gradient(180deg, rgba(0,15,8,0.7) 0%, rgba(0,15,8,0) 26%, rgba(0,15,8,0) 74%, rgba(0,15,8,0.85) 100%)",
+            `linear-gradient(180deg, ${cbm("page", 0.7)} 0%, ${cbm("page", 0)} 26%, ${cbm("page", 0)} 74%, ${cbm("page", 0.85)} 100%)`,
         }}
         aria-hidden
       />
@@ -295,7 +296,7 @@ export default function AboutSection({
           {VALUES.map((v, i) => (
             <div
               key={v.title}
-              className="group/v relative bg-[#000F08] p-7 transition-colors duration-300 hover:bg-[#070B08]"
+              className="group/v relative bg-cbm-page p-7 transition-colors duration-300 hover:bg-cbm-surface"
             >
               <span
                 aria-hidden

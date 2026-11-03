@@ -7,6 +7,7 @@ import { buildTerrainGeometry, updateTerrain } from "./geometry";
 import { useTerrainBuild } from "./useTerrainBuild";
 import type { LayerConfig } from "./config";
 import type { CursorHover } from "./useCursorHover";
+import { paletteHex } from "@/lib/palette";
 
 /**
  * Uma camada de profundidade do terreno.
@@ -30,6 +31,9 @@ export default function TerrainLayer({
   const { geometry } = useMemo(() => buildTerrainGeometry(layer), [layer]);
   const low = useMemo(() => new Color(layer.fillLow), [layer.fillLow]);
   const high = useMemo(() => new Color(layer.fillHigh), [layer.fillHigh]);
+  // Fundo para onde as cores desbotam. Lido uma vez na montagem (paletteHex
+  // consulta o CSS — caro demais para fazer a cada frame em updateTerrain).
+  const bg = useMemo(() => new Color(paletteHex("page")), []);
 
   const fillRef = useRef<MeshBasicMaterial>(null);
   const wireRef = useRef<MeshBasicMaterial>(null);
@@ -49,7 +53,7 @@ export default function TerrainLayer({
     const time = elapsed.current + Math.sin(phase) * layer.driftAmp;
 
     const hover = hoverRef?.current ?? undefined;
-    updateTerrain(geometry, layer, time, r, low, high, undefined, hover);
+    updateTerrain(geometry, layer, time, r, low, high, bg, hover);
 
     if (fillRef.current) fillRef.current.opacity = layer.fillOpacity * r;
     if (wireRef.current) wireRef.current.opacity = layer.edgeOpacity * r;

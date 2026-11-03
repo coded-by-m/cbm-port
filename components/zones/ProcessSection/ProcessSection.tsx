@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { railSub } from "@/lib/railProgress";
 import { PROCESS_STEPS } from "@/data/process";
+import { cbm } from "@/lib/palette";
 
 const ProcessJourney = dynamic(() => import("./ProcessJourney"), {
   ssr: false,
@@ -178,7 +179,7 @@ export default function ProcessSection({
   return (
     <section
       data-cursor="default"
-      className={`bg-[#000F08] ${inPage ? "relative" : "absolute inset-0"}`}
+      className={`bg-cbm-page ${inPage ? "relative" : "absolute inset-0"}`}
       aria-labelledby="process-headline"
     >
       <div
@@ -199,7 +200,7 @@ export default function ProcessSection({
           className="pointer-events-none absolute inset-0 z-[1]"
           style={{
             background:
-              "linear-gradient(180deg, rgba(0,15,8,0.8) 0%, rgba(0,15,8,0) 28%, rgba(0,15,8,0) 60%, rgba(0,15,8,0.92) 100%)",
+              `linear-gradient(180deg, ${cbm("page", 0.8)} 0%, ${cbm("page", 0)} 28%, ${cbm("page", 0)} 60%, ${cbm("page", 0.92)} 100%)`,
           }}
           aria-hidden
         />

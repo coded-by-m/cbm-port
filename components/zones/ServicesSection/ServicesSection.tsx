@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { SERVICES } from "@/data/services";
 import ServiceCard from "./ServiceCard";
+import { cbm } from "@/lib/palette";
 
 const TerrainBackground = dynamic(
   () => import("./TerrainBackground"),
@@ -217,7 +218,7 @@ export default function ServicesSection({
     <section
       ref={sectionRef}
       data-cursor="triangle"
-      className={`bg-[#000F08] py-24 sm:py-32 ${
+      className={`bg-cbm-page py-24 sm:py-32 ${
         inPage ? "relative min-h-screen" : "absolute inset-0 overflow-y-auto"
       }`}
       aria-labelledby="services-headline"
@@ -238,7 +239,7 @@ export default function ServicesSection({
         } inset-0 z-[1]`}
         style={{
           background:
-            "linear-gradient(180deg, rgba(0,15,8,0.85) 0%, rgba(0,15,8,0) 22%, rgba(0,15,8,0) 78%, rgba(0,15,8,0.9) 100%)",
+            `linear-gradient(180deg, ${cbm("page", 0.85)} 0%, ${cbm("page", 0)} 22%, ${cbm("page", 0)} 78%, ${cbm("page", 0.9)} 100%)`,
         }}
         aria-hidden
       />

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { MeshButton } from "@/components/ui/MeshButton";
 import { EXPERIMENTS } from "@/lib/experiments";
+import { cbm } from "@/lib/palette";
 
 const LabResidualField = dynamic(() => import("./LabResidualField"), {
   ssr: false,
@@ -150,7 +151,7 @@ export default function LabSection({
     <section
       ref={sectionRef}
       data-cursor="triangle"
-      className="absolute inset-0 overflow-hidden bg-[#000F08]"
+      className="absolute inset-0 overflow-hidden bg-cbm-page"
       aria-labelledby="lab-headline"
     >
       {/* Campo residual de fragmentos — congela fora do capítulo ativo. */}
@@ -163,7 +164,7 @@ export default function LabSection({
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "linear-gradient(180deg, rgba(0,15,8,0.78) 0%, rgba(0,15,8,0.25) 30%, rgba(0,15,8,0.25) 60%, rgba(0,15,8,0.92) 100%)",
+            `linear-gradient(180deg, ${cbm("page", 0.78)} 0%, ${cbm("page", 0.25)} 30%, ${cbm("page", 0.25)} 60%, ${cbm("page", 0.92)} 100%)`,
         }}
         aria-hidden
       />

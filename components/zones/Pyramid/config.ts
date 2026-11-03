@@ -5,10 +5,12 @@
  * câmera cinematográfica e cards HTML no painel direito.
  */
 
+import { cbm } from "@/lib/palette";
+
 type Vec3 = [number, number, number];
 
 export const COLORS = {
-  background: "#000F08",
+  background: cbm("page"),
   node: "#F5F2ED",
   edge: "#F5F2ED",
   apex: "#FB3640",

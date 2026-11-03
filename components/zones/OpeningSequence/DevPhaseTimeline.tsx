@@ -33,7 +33,7 @@ export function DevPhaseTimeline({
       style={{ cursor: "auto" }}
     >
       <div
-        className="pointer-events-auto flex items-center gap-1 border border-[#F5F2ED]/15 bg-[#000F08]/85 px-2 py-1.5 backdrop-blur-md"
+        className="pointer-events-auto flex items-center gap-1 border border-[#F5F2ED]/15 bg-cbm-page/85 px-2 py-1.5 backdrop-blur-md"
         style={{ cursor: "auto" }}
       >
         <p className="px-2 font-mono text-[0.55rem] uppercase tracking-[0.3em] text-[#F5F2ED]/35">

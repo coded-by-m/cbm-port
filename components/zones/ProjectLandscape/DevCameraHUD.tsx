@@ -59,7 +59,7 @@ initialAngle: ${((state.angleDeg * Math.PI) / 180).toFixed(3)}, // ${state.angle
   };
 
   return (
-    <div className="pointer-events-auto fixed left-6 top-6 z-40 border border-[#F5F2ED]/30 bg-[#000F08]/90 px-4 py-3 backdrop-blur-md">
+    <div className="pointer-events-auto fixed left-6 top-6 z-40 border border-[#F5F2ED]/30 bg-cbm-page/90 px-4 py-3 backdrop-blur-md">
       <div className="mb-2 flex items-center justify-between gap-6">
         <p className="text-[0.55rem] uppercase tracking-[0.4em] text-[#FB3640]">
           Dev Camera

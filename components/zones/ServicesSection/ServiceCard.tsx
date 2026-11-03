@@ -67,12 +67,12 @@ export default function ServiceCard({
       data-service-card
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`relative flex min-h-[540px] flex-col border bg-[#0E1810] transition-all duration-[600ms] ease-[cubic-bezier(0.33,1,0.68,1)] ${
+      className={`relative flex min-h-[540px] flex-col border bg-cbm-card transition-all duration-[600ms] ease-[cubic-bezier(0.33,1,0.68,1)] ${
         expanded
           ? "border-[#F5F2ED]/80 opacity-100"
           : isDimmed
-            ? "scale-[0.95] border-[#1a2a1e] opacity-40 blur-[2px]"
-            : "scale-100 border-[#1a2a1e] opacity-100 hover:-translate-y-1 hover:border-[#F5F2ED]/40"
+            ? "scale-[0.95] border-cbm-line opacity-40 blur-[2px]"
+            : "scale-100 border-cbm-line opacity-100 hover:-translate-y-1 hover:border-[#F5F2ED]/40"
       }`}
       style={{
         transformOrigin: "center center",

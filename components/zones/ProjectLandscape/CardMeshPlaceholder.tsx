@@ -89,7 +89,7 @@ export function CardMeshPlaceholder({ variant, seed, label }: Props) {
 
   return (
     <div
-      className={`relative w-full overflow-hidden border border-[#F5F2ED]/20 bg-[#000F08] ${aspectClass}`}
+      className={`relative w-full overflow-hidden border border-[#F5F2ED]/20 bg-cbm-page ${aspectClass}`}
     >
       <svg
         aria-hidden
@@ -114,7 +114,7 @@ export function CardMeshPlaceholder({ variant, seed, label }: Props) {
       </svg>
       {label && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <p className="bg-[#000F08]/55 px-3 py-1 text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/70 backdrop-blur-sm">
+          <p className="bg-cbm-page/55 px-3 py-1 text-[0.55rem] uppercase tracking-[0.4em] text-[#F5F2ED]/70 backdrop-blur-sm">
             {label}
           </p>
         </div>

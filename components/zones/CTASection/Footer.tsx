@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoMark } from "@/components/ui/LogoMark";
 import { waLink, INSTAGRAM_URL, INSTAGRAM_HANDLE, WHATSAPP_DISPLAY } from "@/lib/contact";
+import { cbm } from "@/lib/palette";
 
 const FooterLandscape = dynamic(() => import("./FooterLandscape"), {
   ssr: false,
@@ -46,7 +47,7 @@ const SERVICE_LINKS = [
  */
 export default function Footer({
   /** Fundo do rodapé. Default = o da experiência; a home passa o seu. */
-  background = "#000F08",
+  background = cbm("page"),
 }: {
   background?: string;
 } = {}) {

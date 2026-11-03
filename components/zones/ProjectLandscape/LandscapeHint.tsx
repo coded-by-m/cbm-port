@@ -32,7 +32,7 @@ export default function LandscapeHint({ show }: { show: boolean }) {
       style={{ opacity: 0 }}
       aria-hidden
     >
-      <div className="flex items-center gap-3 border border-[#F5F2ED]/25 bg-[#000F08]/85 px-4 py-2 backdrop-blur-md">
+      <div className="flex items-center gap-3 border border-[#F5F2ED]/25 bg-cbm-page/85 px-4 py-2 backdrop-blur-md">
         <span aria-hidden className="text-[#F5F2ED]/60">
           ←
         </span>

@@ -11,14 +11,19 @@
  * digital", não "estou olhando um grid".
  */
 
+import { cbm, paletteHex } from "@/lib/palette";
+
 /** Paleta de estúdio escuro. Sem neon, sem sci-fi. */
 export const COLORS = {
-  background: "#000F08",
+  background: cbm("page"),
 } as const;
 
 /** Névoa de profundidade (perspectiva atmosférica). Funde o fundo no preto. */
 export const FOG = {
-  color: "#000F08",
+  /** Lido na renderização: three.js precisa de hex e a paleta pode trocar. */
+  get color() {
+    return paletteHex("page");
+  },
   near: 12,
   far: 40,
 } as const;
@@ -93,7 +98,9 @@ export const LAYERS: LayerConfig[] = [
     calmMin: 0.78,
     edgeColor: "#7a7a7a",
     edgeOpacity: 0.28,
-    fillLow: "#0a0a0a",
+    get fillLow() {
+      return paletteHex("page");
+    },
     fillHigh: "#2a2a2a",
     fillOpacity: 0.65,
     driftAmp: 0.1,

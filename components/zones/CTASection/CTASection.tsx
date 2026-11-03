@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { MeshButton } from "@/components/ui/MeshButton";
 import { waLink } from "@/lib/contact";
 import Footer from "./Footer";
+import { cbm } from "@/lib/palette";
 
 const CTAFormation = dynamic(() => import("./CTAFormation"), { ssr: false });
 
@@ -188,7 +189,7 @@ export default function CTASection({
     <section
       ref={scrollerRef}
       data-cursor="triangle"
-      className={`bg-[#000F08] ${
+      className={`bg-cbm-page ${
         inPage ? "relative" : "absolute inset-0 overflow-y-auto"
       }`}
       aria-labelledby="cta-headline"
@@ -205,7 +206,7 @@ export default function CTASection({
             className="pointer-events-none absolute inset-0 z-[1]"
             style={{
               background:
-                "radial-gradient(ellipse at center, rgba(0,15,8,0.35) 0%, rgba(0,15,8,0.78) 60%, rgba(0,15,8,0.94) 100%)",
+                `radial-gradient(ellipse at center, ${cbm("page", 0.35)} 0%, ${cbm("page", 0.78)} 60%, ${cbm("page", 0.94)} 100%)`,
             }}
             aria-hidden
           />

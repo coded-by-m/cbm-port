@@ -9,13 +9,15 @@
  * triangulada — uma treliça/malha que parece um sistema sendo montado.
  */
 
+import { cbm } from "@/lib/palette";
+
 /**
  * Paleta de estúdio escuro. Tons de cinza, sem neon, sem cyberpunk.
  * As arestas escurecem com a profundidade (perspectiva atmosférica): o
  * background some no preto, o foreground é o mais legível.
  */
 export const COLORS = {
-  background: "#000F08",
+  background: cbm("page"),
   node: "#e6e6e6",
 } as const;
 

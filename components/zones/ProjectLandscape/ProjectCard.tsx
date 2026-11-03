@@ -367,7 +367,7 @@ export function ProjectCard({
     return (
       <div
         ref={wrapperRef}
-        className="pointer-events-auto fixed bottom-0 left-0 right-0 z-30 border-t border-[#F5F2ED]/25 bg-[#000F08]/90 px-4 pb-4 pt-3 backdrop-blur-md"
+        className="pointer-events-auto fixed bottom-0 left-0 right-0 z-30 border-t border-[#F5F2ED]/25 bg-cbm-page/90 px-4 pb-4 pt-3 backdrop-blur-md"
       >
         {scrollStyle}
         <div className="mb-3 flex items-center justify-between">
@@ -410,7 +410,7 @@ export function ProjectCard({
   const isComingSoon = displayed.status === "coming-soon";
   const ghostNum = String(orderedIdx(displayed.slug) + 1).padStart(2, "0");
   const wrapperClassName =
-    "pointer-events-auto fixed bottom-6 right-6 z-30 overflow-hidden border border-[#F5F2ED]/30 bg-[#000F08]/85 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.85)] backdrop-blur-md transition-colors duration-300 hover:border-[#F5F2ED]/60";
+    "pointer-events-auto fixed bottom-6 right-6 z-30 overflow-hidden border border-[#F5F2ED]/30 bg-cbm-page/85 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.85)] backdrop-blur-md transition-colors duration-300 hover:border-[#F5F2ED]/60";
 
   const contentBlock = (
     <div ref={contentRef} className="px-5 pb-3 pt-5">

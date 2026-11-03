@@ -8,11 +8,13 @@
  * centradas na origem e com Y invertido para espaço 3D.
  */
 
+import { cbm } from "@/lib/palette";
+
 /**
  * Paleta de estúdio escuro. Off-white quente, Signal Red quando importa.
  */
 export const COLORS = {
-  background: "#000F08",
+  background: cbm("page"),
   point: "#F5F2ED",
   line: "#F5F2ED",
   signal: "#FB3640",
@@ -127,7 +129,7 @@ export const MOTION = {
 
 /**
  * Profundidade cinematográfica: três camadas de partículas discretas.
- * Tons quentes alinhados com a temperatura do fundo #000F08.
+ * Tons quentes alinhados com a temperatura do fundo (token `page`).
  */
 export const PARTICLE_LAYERS = [
   {

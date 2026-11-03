@@ -16,6 +16,7 @@ import { CURSOR_HOVER, LAYERS, NOISE } from "./config";
 import type { CursorHover } from "./useCursorHover";
 const { colorGain: COLOR_GAIN, colorFloor: COLOR_FLOOR } = NOISE;
 import { fbm2D } from "./noise";
+import { paletteHex } from "@/lib/palette";
 
 /** PRNG determinístico (mulberry32): jitter estável entre renders. */
 function mulberry32(seed: number): () => number {
@@ -198,7 +199,7 @@ export function updateTerrain(
   const col = color.array as Float32Array;
 
   const range = HEIGHT_RANGE * layer.heightAmp;
-  const bgColor = bg ?? new Color(0x000f08);
+  const bgColor = bg ?? new Color(paletteHex("page"));
 
   // Lift localizado sob o cursor: pré-calcula raio ao quadrado pra evitar
   // `Math.sqrt` em vértices fora da área de hover.
