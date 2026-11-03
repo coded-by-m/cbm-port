@@ -9,12 +9,14 @@ const LINKS = [
   { href: "/sites-para-arquitetura", label: "Sites para arquitetura" },
   { href: "/projetos", label: "Projetos" },
   { href: "/sobre", label: "Sobre" },
+  { href: "/contato", label: "Contato" },
   ...(publishedPosts().length ? [{ href: "/blog", label: "Blog" }] : []),
 ];
 
 /**
- * Rodapé CTA da vitrine e das páginas de serviço. WhatsApp como único canal
- * de contato, e os serviços linkados — `current` omite a página em que se está.
+ * Rodapé CTA da vitrine e das páginas de serviço. WhatsApp no botão,
+ * /contato na navegação, e os serviços linkados. `current` omite a página
+ * em que se está.
  */
 export function GalleryFooter({ current }: { current?: string }) {
   const waHref = waLink(

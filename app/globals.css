@@ -715,6 +715,124 @@ body:has(.site-home) {
   .pj-row .pj-title { transition: opacity 200ms ease; }
 }
 
+/* Tabela de preço do artigo. No mobile vira ficha: o thead some da tela
+   e cada célula anuncia a coluna por data-label. Cantos retos, como o resto. */
+.site-price-scroll {
+  margin-top: 28px;
+  overflow-x: auto;
+  background: rgb(var(--cbm-raised));
+  border-top: 2px solid #fb3640;
+  border-right: 1px solid rgba(245, 242, 237, 0.1);
+  border-bottom: 1px solid rgba(245, 242, 237, 0.1);
+  border-left: 1px solid rgba(245, 242, 237, 0.1);
+}
+.site-price-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.site-price-table th {
+  padding: 14px 16px;
+  font-family: "Satoshi", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: left;
+  color: rgb(var(--cbm-gray-400));
+  border-bottom: 1px solid rgba(245, 242, 237, 0.12);
+}
+.site-price-table td {
+  padding: 18px 16px;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(245, 242, 237, 0.08);
+  font-family: "Satoshi", sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgb(var(--cbm-gray-300));
+}
+.site-price-table tr:last-child td {
+  border-bottom: 0;
+}
+.site-price-table td:first-child {
+  width: 18%;
+  font-weight: 600;
+  color: #f5f2ed;
+}
+.site-price-table td:nth-child(2),
+.site-price-table td:nth-child(3) {
+  width: 28%;
+}
+.site-price-table td.site-price-value {
+  width: 26%;
+  font-family: "Panchang", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: #f5f2ed;
+  white-space: nowrap;
+}
+/* Duas colunas: o critério nomeia a linha e a resposta ocupa o resto.
+   Só no desktop. No mobile a ficha empilha e a largura fixa atrapalharia. */
+@media (min-width: 641px) {
+  .site-price-table.site-compare-table td:first-child {
+    width: 34%;
+  }
+  .site-price-table.site-compare-table td:nth-child(2) {
+    width: auto;
+  }
+}
+@media (max-width: 640px) {
+  .site-price-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .site-price-table,
+  .site-price-table tbody,
+  .site-price-table tr,
+  .site-price-table td {
+    display: block;
+    width: 100%;
+  }
+  .site-price-table tr {
+    padding: 6px 0 12px;
+    border-bottom: 1px solid rgba(245, 242, 237, 0.08);
+  }
+  .site-price-table tr:last-child {
+    border-bottom: 0;
+  }
+  /* Especificidade acima de td:first-child e td:nth-child, que fixam largura no desktop. */
+  .site-price-table tbody td,
+  .site-price-table tbody td:first-child,
+  .site-price-table tbody td:nth-child(2),
+  .site-price-table tbody td:nth-child(3),
+  .site-price-table tbody td.site-price-value {
+    display: block;
+    width: 100%;
+    border: 0;
+    padding: 8px 16px;
+    white-space: normal;
+  }
+  .site-price-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 4px;
+    font-family: "Satoshi", sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgb(var(--cbm-gray-400));
+  }
+}
+
 /* Mobile: empilha. Título, o muro como faixa e o índice embaixo — sem hover
    no toque, o índice é quem navega e não pode ficar sob imagem andando. */
 @media (max-width: 700px) {
@@ -880,4 +998,87 @@ body:has(.site-home) {
 @media (prefers-reduced-motion: reduce) {
   .tri-text__cell { transition: none !important; }
   .tri-text.is-on .tri-text__lines path { animation: none; }
+}
+
+/* Calculadora de preço. Cantos retos, como o resto do site. */
+.calc-fieldset {
+  margin: 22px 0 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.calc-choices {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+@media (min-width: 640px) {
+  .calc-choices { grid-template-columns: 1fr 1fr; }
+}
+.calc-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+  padding: 16px 18px;
+  min-height: 44px;
+  border: 1px solid rgba(245, 242, 237, 0.14);
+  border-radius: 0;
+  background: rgb(var(--cbm-sunken));
+  color: #f5f2ed;
+  cursor: pointer;
+  font-family: "Panchang", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.calc-choice:hover { border-color: rgba(251, 54, 64, 0.7); }
+.calc-choice:has(input:focus-visible) {
+  outline: 2px solid #fb3640;
+  outline-offset: 3px;
+}
+.calc-choice:has(input:checked) {
+  border-color: #fb3640;
+  background: rgba(251, 54, 64, 0.08);
+}
+.calc-choice input {
+  accent-color: #fb3640;
+  width: 16px;
+  height: 16px;
+  margin-top: 0.15em;
+  flex: none;
+}
+.calc-field {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px 16px;
+  border: 1px solid rgba(245, 242, 237, 0.16);
+  border-radius: 0;
+  background: rgb(var(--cbm-sunken));
+  color: #f5f2ed;
+  font-family: "Satoshi", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.calc-field:focus-visible {
+  outline: 2px solid #fb3640;
+  outline-offset: 2px;
+}
+.calc-field::placeholder { color: rgb(var(--cbm-gray-400)); }
+.calc-result {
+  margin-top: 22px;
+  padding: 18px 18px 20px;
+  border: 1px solid rgba(245, 242, 237, 0.14);
+  border-radius: 0;
+  background: rgb(var(--cbm-raised));
+}
+.calc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  margin-top: 22px;
 }

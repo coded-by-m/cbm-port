@@ -4,6 +4,7 @@ import Link from "next/link";
 import { cases } from "@/data/cases";
 import { PROCESS_STEPS } from "@/data/process";
 import type { ServicePageConfig } from "@/data/servicePages";
+import { CALC_PATH } from "@/data/calculadoraPreco";
 import { Reveal } from "@/components/ui/Reveal";
 import { Diamond, PANCHANG, SATOSHI, SURFACE } from "@/components/site/shared";
 import { GalleryHeader } from "@/components/projetos/GalleryHeader";
@@ -37,7 +38,7 @@ export function serviceMetadata(page: ServicePageConfig): Metadata {
       url: path,
       title: `${title} · Coded by M`,
       description,
-      images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M, estúdio de web design" }],
+      images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M: estúdio de web design" }],
     },
     twitter: {
       card: "summary_large_image",
@@ -243,6 +244,30 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
                 ? page.investimento.body
                 : "Orçamento sob medida e sem compromisso: você conta o projeto pelo WhatsApp e recebe valor e prazo antes de decidir qualquer coisa."}
             </p>
+            {page.guide ? (
+              <p style={{ ...BODY, marginTop: 18 }}>
+                {page.guide.before}
+                <Link
+                  href={page.guide.href}
+                  className="site-link-underline"
+                  style={{ color: "#F5F2ED" }}
+                >
+                  {page.guide.label}
+                </Link>
+                {page.guide.after}
+              </p>
+            ) : null}
+            <p style={{ ...BODY, marginTop: 18 }}>
+              {"Para ver a faixa de uma landing page ou de um site institucional, use a "}
+              <Link
+                href={CALC_PATH}
+                className="site-link-underline"
+                style={{ color: "#F5F2ED" }}
+              >
+                calculadora de preço de site
+              </Link>
+              .
+            </p>
           </div>
         </section>
 
@@ -318,7 +343,7 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
                       {c.preview?.card && (
                         <Image
                           src={c.preview.card}
-                          alt={`${c.title}, ${c.meta.tipo}`}
+                          alt={`${c.title}: ${c.meta.tipo}`}
                           width={760}
                           height={874}
                           sizes="(max-width: 640px) 92vw, (max-width: 1100px) 46vw, 25vw"

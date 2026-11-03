@@ -67,7 +67,7 @@ export function CaseResponsive({ project }: { project: CaseProject }) {
                 ) : (
                   <CaseFrameScroll
                     src={mobile}
-                    alt={`${project.title}, site mobile`}
+                    alt={`${project.title}: site mobile`}
                     autoDurationSec={28}
                     lazy
                     fallback={

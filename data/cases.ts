@@ -6,9 +6,9 @@ export const cases: CaseProject[] = [
     eyebrow: "Landing Page / Case Study",
     title: "MJ Engenharia",
     niche: "engenharia de prevenção contra incêndio",
-    seoTitle: "MJ Engenharia: landing page para prevenção de incêndio",
+    seoTitle: "MJ Engenharia: Landing Page para prevenção de incêndio",
     description:
-      "Landing page de alta conversão para uma engenharia de prevenção contra incêndio em Santa Catarina, do dimensionamento ao carimbo de aprovação do CBMSC, numa narrativa técnica que gera contato qualificado.",
+      "Landing page de alta conversão para uma engenharia de prevenção contra incêndio em Santa Catarina: do dimensionamento ao carimbo de aprovação do CBMSC, numa narrativa técnica que gera contato qualificado.",
     meta: {
       cliente: "MJ Engenharia",
       setor: "Engenharia / Prevenção contra Incêndio",
@@ -38,11 +38,11 @@ export const cases: CaseProject[] = [
       heading: "Do dimensionamento ao carimbo de aprovação",
       body: [
         "A MJ Engenharia projeta sistemas preventivos contra incêndio (PPCI) para empreendimentos que precisam aprovar de verdade, não no papel. O desafio era transformar um serviço técnico e regulatório denso numa página que comunica autoridade e conduz o cliente certo até o contato.",
-        "A landing foi construída como uma narrativa de confiança: um hero com a promessa direta de projetos que passam na primeira análise, o escopo técnico por inteiro, o método ponta a ponta (do diagnóstico ao carimbo do CBMSC) e os segmentos atendidos (edifício comercial, galpão industrial, condomínio residencial, centro logístico), fechando na prova de especialização e num convite para falar com um engenheiro.",
+        "A landing foi construída como uma narrativa de confiança: um hero com a promessa direta de projetos que passam na primeira análise, o escopo técnico por inteiro, o método ponta a ponta, do diagnóstico ao carimbo do CBMSC, e os segmentos atendidos (edifício comercial, galpão industrial, condomínio residencial, centro logístico), fechando na prova de especialização e num convite para falar com um engenheiro.",
         "A paleta petróleo sobre off-white transmite a seriedade de quem responde por aprovação; Montserrat e Barlow Condensed dão o tom técnico de engenharia, e o ritmo conduz do problema regulatório à solução sem que o jargão afaste quem decide.",
       ],
       challenge:
-        "Transformar um serviço de engenharia técnico e regulatório (projeto preventivo e aprovação no CBMSC) numa landing que comunica autoridade e conduz o cliente certo ao contato, sem que o jargão afaste quem decide.",
+        "Transformar um serviço de engenharia técnico e regulatório, projeto preventivo e aprovação no CBMSC, numa landing que comunica autoridade e conduz o cliente certo ao contato, sem que o jargão afaste quem decide.",
     },
     gallery: [],
     mockups: {
@@ -67,7 +67,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Estúdio Lentz",
     niche: "escritório de arquitetura",
-    seoTitle: "Estúdio Lentz: site institucional para arquitetura",
+    seoTitle: "Estúdio Lentz: Site Institucional para arquitetura",
     description:
       "Site institucional imersivo para um escritório de arquitetura em Florianópolis: um canvas 3D fixo onde o scroll ergue a obra camada a camada, da planta ao espaço habitado.",
     meta: {
@@ -103,11 +103,11 @@ export const cases: CaseProject[] = [
       heading: "Construir é pensar: o scroll vira obra",
       body: [
         "O Estúdio Lentz projeta arquitetura em Florianópolis de dentro para fora: estrutura, luz e material em linguagem direta. O desafio era traduzir esse método numa presença digital que não apenas mostrasse projetos, mas fizesse o visitante sentir como uma obra ganha forma.",
-        "A resposta foi uma camada de conteúdo HTML rolável sobre um canvas 3D fixo: um único valor de progresso (0→1), alimentado pelo scroll, dirige a construção da cena, da planta baixa à estrutura, das paredes ao material, da luz ao espaço habitado. Rolar a página é, literalmente, erguer o edifício.",
+        "A resposta foi uma camada de conteúdo HTML rolável sobre um canvas 3D fixo: um único valor de progresso (0→1), alimentado pelo scroll, dirige a construção da cena: da planta baixa à estrutura, das paredes ao material, da luz ao espaço habitado. Rolar a página é, literalmente, erguer o edifício.",
         "O sistema é escuro e técnico: off-white sobre verde-petróleo com um acento vermelho que marca o ritmo. Archivo dá o peso de manchete às headlines, Schibsted Grotesk sustenta a leitura e Spline Sans Mono assina os rótulos com precisão de planta. O resultado é um institucional que se comporta como uma maquete viva, sem perder a sobriedade de um escritório de arquitetura.",
       ],
       challenge:
-        "Traduzir o método de um escritório de arquitetura (projetar de dentro para fora) numa experiência web onde o scroll constrói a obra em 3D, mantendo performance e a sobriedade do institucional.",
+        "Traduzir o método de um escritório de arquitetura, projetar de dentro para fora, numa experiência web onde o scroll constrói a obra em 3D, mantendo performance e a sobriedade do institucional.",
     },
     gallery: [],
     mockups: {
@@ -191,7 +191,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Stige",
     niche: "empresa de escadas planejadas",
-    seoTitle: "Stige: site institucional para escadas planejadas",
+    seoTitle: "Stige: Site Institucional para escadas planejadas",
     description:
       "Site institucional para uma empresa de escadas planejadas em Palhoça: geometria, material e processo numa página escura e técnica, pronta para receber a obra real.",
     meta: {
@@ -222,9 +222,9 @@ export const cases: CaseProject[] = [
     overview: {
       heading: "A escada como peça",
       body: [
-        "A Stige projeta escadas sob medida em Palhoça e atende a Grande Florianópolis. O site conceitual trata a escada como arquitetura: o caminho entre dois pavimentos que pode definir o ambiente. A estrutura já está desenhada para o acervo real (obra, material e etapa) entrar no lugar certo.",
+        "A Stige projeta escadas sob medida em Palhoça e atende a Grande Florianópolis. O site conceitual trata a escada como arquitetura: o caminho entre dois pavimentos que pode definir o ambiente. A estrutura já está desenhada para o acervo real, obra, material e etapa, entrar no lugar certo.",
         "O sistema é escuro e medido. O hero enuncia o ofício e a região; um manifesto curto muda o tom; a seleção mostra as geometrias (reta, helicoidal, espelho fechado); o processo vai da conversa inicial à finalização; concreto, metal, madeira e pedra entram como matéria. O fechamento pede o espaço.",
-        "Hanken Grotesk faz o papel inteiro (título, texto e rótulo) com o peso de um desenho técnico. Pouca cor, muita estrutura. Um institucional que já se comporta como o escritório, à espera das obras que vão ocupar os lugares marcados.",
+        "Hanken Grotesk faz o papel inteiro, título, texto e rótulo, com o peso de um desenho técnico. Pouca cor, muita estrutura. Um institucional que já se comporta como o escritório, à espera das obras que vão ocupar os lugares marcados.",
       ],
       challenge:
         "Dar forma à presença de uma empresa real de escadas planejadas enquanto o acervo ainda se fecha: uma página que comunique precisão e segurança, pronta para receber projeto, material e cidade de verdade.",
@@ -252,7 +252,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Nord Arch",
     niche: "escritório de arquitetura",
-    seoTitle: "Nord Arch: site institucional para arquitetura",
+    seoTitle: "Nord Arch: Site Institucional para arquitetura",
     description:
       "Estudo conceitual para um escritório de arquitetura em Santa Catarina: obras em tela cheia, tipografia técnica e um arquivo de projetos numerado (NA-01…), do litoral à serra.",
     meta: {
@@ -282,12 +282,12 @@ export const cases: CaseProject[] = [
     overview: {
       heading: "Do litoral à serra",
       body: [
-        "A Nord Arch é um estudo de presença para um escritório de arquitetura em Santa Catarina, do litoral à serra, sem cliente contratante. O site trata cada obra como peça em tela cheia e guarda o conjunto num arquivo numerado (NA-01…), pronto para a obra real entrar no lugar marcado.",
+        "A Nord Arch é um estudo de presença para um escritório de arquitetura em Santa Catarina: do litoral à serra, sem cliente contratante. O site trata cada obra como peça em tela cheia e guarda o conjunto num arquivo numerado (NA-01…), pronto para a obra real entrar no lugar marcado.",
         "A descida é técnica e curta. O hero enuncia o ofício e o território; os projetos abrem em tela cheia; o arquivo numera as obras; o estúdio e o contato fecham o caminho. A mesma estrutura serve o desktop e o celular: a obra continua inteira, só muda o enquadramento.",
         "Michroma, Aktiv Grotesk e Eurostile fazem o papel de desenho técnico: título, texto e rótulo. Pouca cor, muita estrutura. Um institucional que já se comporta como o escritório, à espera das obras que vão ocupar os números.",
       ],
       challenge:
-        "Dar forma à presença de um escritório de arquitetura entre o litoral e a serra, com obras em tela cheia e um arquivo numerado, sem apresentar o estudo como entrega de cliente.",
+        "Dar forma à presença de um escritório de arquitetura entre o litoral e a serra, obras em tela cheia e um arquivo numerado, sem apresentar o estudo como entrega de cliente.",
     },
     gallery: [],
     mockups: {
@@ -313,9 +313,9 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Café Aroma",
     niche: "café especial",
-    seoTitle: "Café Aroma: landing page para café especial",
+    seoTitle: "Café Aroma: Landing Page para café especial",
     description:
-      "Landing page para um café especial em São Paulo, do grão à assinatura, com cardápio, origem e clube numa página só, no tom de quem trata o café como ofício.",
+      "Landing page para um café especial em São Paulo: do grão à assinatura, com cardápio, origem e clube numa página só, no tom de quem trata o café como ofício.",
     meta: {
       cliente: "Café Aroma",
       setor: "Café especial",
@@ -346,7 +346,7 @@ export const cases: CaseProject[] = [
       body: [
         "O Café Aroma é um estudo de presença para um café especial: origem, torra e xícara no mesmo endereço, com o pedido e a assinatura ao alcance. A página condensa o que uma casa assim precisa mostrar antes da escolha: o que se bebe, de onde vem e como chega todo mês.",
         "A descida é em capítulos. O hero fixa a promessa; os favoritos colocam espresso, cappuccino, cold brew e filtrado lado a lado; a história e o processo (fazenda, torra, controle, xícara) sustentam a origem; os planos do clube fecham a conversão no mesmo tom editorial.",
-        "Playfair Display dá o serifado de rótulo aos títulos; Inter segura o miúdo. A paleta quente (creme, café e o dourado da torra) mantém a página perto da xícara, e cada bloco termina num passo claro: ver o cardápio, assinar, pedir.",
+        "Playfair Display dá o serifado de rótulo aos títulos; Inter segura o miúdo. A paleta quente, creme, café e o dourado da torra, mantém a página perto da xícara, e cada bloco termina num passo claro: ver o cardápio, assinar, pedir.",
       ],
       challenge:
         "Reunir cardápio, origem e assinatura numa landing só, com a calma de um café especial e a clareza de quem precisa escolher um plano ou um pedido.",
@@ -373,7 +373,7 @@ export const cases: CaseProject[] = [
     eyebrow: "Web Design Premium / Case Study",
     title: "Machado Plataformas",
     niche: "implementos rodoviários",
-    seoTitle: "Machado Plataformas: site institucional",
+    seoTitle: "Machado Plataformas: Site Institucional",
     description:
       "Site institucional premium para uma empresa técnica de implementos rodoviários, com foco em percepção de valor, clareza comercial e presença digital mais profissional.",
     meta: {
@@ -422,7 +422,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Maison Étoile Interiors",
     niche: "estúdio de interiores",
-    seoTitle: "Maison Étoile: landing page para interiores",
+    seoTitle: "Maison Étoile: Landing Page para interiores",
     description:
       "Landing page de alta conversão para um estúdio boutique de interiores de luxo em São Paulo: manifesto, portfólio e proposta numa única página cinematográfica.",
     meta: {
@@ -470,7 +470,7 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Atelier Forma Viva",
     niche: "atelier de arquitetura",
-    seoTitle: "Atelier Forma Viva: site institucional de arquitetura",
+    seoTitle: "Atelier Forma Viva: Site Institucional de arquitetura",
     description:
       "Site institucional multi-página para um atelier de arquitetura residencial em Santa Catarina: projetos, atelier e processo com navegação editorial e foco em luz e matéria.",
     meta: {
@@ -517,9 +517,9 @@ export const cases: CaseProject[] = [
     concept: true,
     title: "Estúdio Monteiro",
     niche: "escritório de arquitetura",
-    seoTitle: "Estúdio Monteiro: site institucional para arquitetura",
+    seoTitle: "Estúdio Monteiro: Site Institucional para arquitetura",
     description:
-      "Site institucional para um escritório de arquitetura autoral em São Paulo, com design editorial escuro, tipografia serifada e obras selecionadas com páginas de projeto dedicadas.",
+      "Site institucional para um escritório de arquitetura autoral em São Paulo: design editorial escuro, tipografia serifada e obras selecionadas com páginas de projeto dedicadas.",
     meta: {
       cliente: "Estúdio Monteiro",
       setor: "Arquitetura",

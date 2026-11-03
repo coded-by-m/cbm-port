@@ -75,7 +75,7 @@ export async function generateMetadata({
       title: `${title} · Coded by M`,
       description,
       url,
-      images: [{ url: image, ...OG_SIZE, alt: `${project.title}, case da Coded by M` }],
+      images: [{ url: image, ...OG_SIZE, alt: `${project.title}: case da Coded by M` }],
     },
     twitter: {
       card: "summary_large_image",

@@ -16,7 +16,7 @@ export const GITHUB_URL = "https://github.com/coded-by-m";
 
 /**
  * Perfil do estúdio no Google Maps. O cid é o NAP aprovado (2026-10-28).
- * O mesmo href aparece no HTML de /sobre e no `sameAs` do ProfessionalService.
+ * O mesmo href aparece no HTML de /sobre, /contato e no `sameAs` do ProfessionalService.
  */
 export const GOOGLE_MAPS_URL = "https://maps.google.com/?cid=1362888323480500884";
 

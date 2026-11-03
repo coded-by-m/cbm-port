@@ -75,7 +75,7 @@ export default function BlogPostPage({ params }: Params) {
             {post.datePublished.split("-").reverse().join("/")}
           </time>
         </p>
-        <p style={{ ...PROSE_P, color: "#E8E4DE" }}>{post.lead}</p>
+        <p style={{ ...PROSE_P, color: cbm("gray-100") }}>{post.lead}</p>
         {post.sections.map((s) => (
           <section key={s.heading}>
             <h2 style={PROSE_H2}>{s.heading}</h2>

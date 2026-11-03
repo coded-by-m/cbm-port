@@ -31,7 +31,7 @@ type Json = Record<string, unknown>;
 /** Título e descrição da home — também o padrão de quem não declara os seus. */
 export const HOME_TITLE = "Criação de sites e landing pages em Florianópolis · Coded by M";
 export const HOME_DESCRIPTION =
-  "Estúdio de web design em Florianópolis. Landing pages e sites institucionais feitos do zero, com código próprio. Atendemos todo o Brasil — peça um orçamento.";
+  "Estúdio de web design em Florianópolis. Landing pages e sites institucionais feitos do zero, com código próprio. Atendemos todo o Brasil. Peça um orçamento.";
 
 /** Imagem social padrão por rota (geradas por scripts/build-og-images.py). */
 export const OG = {
@@ -137,7 +137,7 @@ export function webPageSchema(opts: {
   path: string;
   name: string;
   description: string;
-  type?: "WebPage" | "CollectionPage" | "AboutPage";
+  type?: "WebPage" | "CollectionPage" | "AboutPage" | "ContactPage";
   image?: string;
 }): Json {
   const url = `${SITE_URL}${opts.path === "/" ? "" : opts.path}`;
@@ -153,6 +153,35 @@ export function webPageSchema(opts: {
     ...(opts.image
       ? { primaryImageOfPage: { "@type": "ImageObject", url: `${SITE_URL}${opts.image}` } }
       : {}),
+  };
+}
+
+/**
+ * A calculadora de preço. `name`, `description` e o autor são o que a
+ * página mostra. Sem `offers`: a ferramenta não publica um preço próprio,
+ * e os pisos ficam nas páginas de serviço.
+ */
+export function webApplicationSchema(opts: {
+  path: string;
+  name: string;
+  description: string;
+}): Json {
+  const url = `${SITE_URL}${opts.path}`;
+  return {
+    "@type": "WebApplication",
+    "@id": `${url}#app`,
+    name: opts.name,
+    description: opts.description,
+    url,
+    inLanguage: "pt-BR",
+    isPartOf: { "@id": WEBSITE_ID },
+    author: {
+      "@type": "Person",
+      "@id": FOUNDER_ID,
+      name: ABOUT.founder.name,
+    },
+    provider: { "@id": ORG_ID },
+    mainEntityOfPage: { "@id": `${url}#webpage` },
   };
 }
 
@@ -184,8 +213,8 @@ export function caseSchema(project: CaseProject): Json {
     "@id": `${pageUrl}#work`,
     name: project.title,
     headline: project.concept
-      ? `${project.title} — ${project.meta.tipo} (projeto conceitual)`
-      : `${project.title} — ${project.meta.tipo}`,
+      ? `${project.title}: ${project.meta.tipo} (projeto conceitual)`
+      : `${project.title}: ${project.meta.tipo}`,
     description: project.description,
     genre: project.meta.tipo,
     dateCreated: project.meta.ano,
@@ -261,7 +290,7 @@ export function faqPageSchema(path: string, items: FaqItem[]): Json {
   };
 }
 
-/** Um artigo do blog, assinado pelo fundador. */
+/** Um artigo assinado pelo fundador. O nome fica no nó, junto do @id #founder. */
 export function articleSchema(opts: {
   path: string;
   title: string;
@@ -278,8 +307,17 @@ export function articleSchema(opts: {
     datePublished: opts.datePublished,
     dateModified: opts.dateModified ?? opts.datePublished,
     inLanguage: "pt-BR",
-    author: { "@id": FOUNDER_ID },
-    publisher: { "@id": ORG_ID },
+    author: {
+      "@type": "Person",
+      "@id": FOUNDER_ID,
+      name: ABOUT.founder.name,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": ORG_ID,
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
     mainEntityOfPage: { "@id": `${url}#webpage` },
   };
 }

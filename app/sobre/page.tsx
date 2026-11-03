@@ -7,6 +7,7 @@ import { ProseShell, PROSE_H1, PROSE_H2, PROSE_H3, PROSE_LINK, PROSE_P } from "@
 import { JsonLd } from "@/components/seo/JsonLd";
 import { GOOGLE_MAPS_URL, WHATSAPP_DISPLAY } from "@/lib/contact";
 import { FOUNDER_ID, ORG_ID, breadcrumbSchema, faqPageSchema, graph, webPageSchema } from "@/lib/seo";
+import { cbm } from "@/lib/palette";
 
 const TITLE = "Sobre o estúdio: web design em Florianópolis";
 const DESCRIPTION =
@@ -41,7 +42,7 @@ export default function SobrePage() {
         )}
       />
       <h1 style={PROSE_H1}>Sobre a Coded by M</h1>
-      <p style={{ ...PROSE_P, color: "#E8E4DE" }}>{SOBRE_LEAD}</p>
+      <p style={{ ...PROSE_P, color: cbm("gray-100") }}>{SOBRE_LEAD}</p>
 
       <h2 style={PROSE_H2}>Quem faz</h2>
       <p style={PROSE_P}>
@@ -90,6 +91,10 @@ export default function SobrePage() {
         . Ou veja os{" "}
         <Link href="/projetos" style={PROSE_LINK}>
           projetos
+        </Link>
+        {" e a "}
+        <Link href="/contato" style={PROSE_LINK}>
+          página de contato
         </Link>
         .
       </p>

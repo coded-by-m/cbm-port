@@ -3,7 +3,8 @@
  *
  * A bio, o manifesto, o processo e os pilares continuam em `data/about.ts` e
  * `data/process.ts` — a home e a experiência não mudam. O lead, o FAQ visível
- * e o `FAQPage` saem daqui, do mesmo array, sem preço e sem link para /contato.
+ * e o `FAQPage` saem daqui, do mesmo array, sem preço. O link para /contato
+ * fica na página, fora deste FAQ.
  */
 
 import type { FaqItem } from "@/data/servicePages";

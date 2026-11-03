@@ -189,7 +189,7 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
                 >
                   <Image
                     src={c.preview?.card ?? ""}
-                    alt={`${c.title}, ${c.meta.tipo}`}
+                    alt={`${c.title}: ${c.meta.tipo}`}
                     width={760}
                     height={874}
                     sizes="(max-width: 640px) 92vw, (max-width: 1100px) 46vw, 30vw"

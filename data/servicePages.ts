@@ -1,3 +1,5 @@
+import { QUANTO_CUSTA_CRUMB, QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
+
 /**
  * Páginas de serviço indexáveis — `/landing-page`, `/site-institucional` e
  * `/sites-para-arquitetura`.
@@ -109,6 +111,11 @@ export interface ServicePageConfig {
    * o JSON-LD repete esse texto. Sem isto, a página não publica preço.
    */
   investimento?: { price: string; body: string };
+  /**
+   * Link contextual para o artigo de preço, logo abaixo do piso.
+   * Só nas páginas que publicam valor.
+   */
+  guide?: { href: string; before: string; label: string; after: string };
   /** Slugs de `data/cases.ts`, na ordem em que provam. */
   caseSlugs: string[];
   projectsHeading: string;
@@ -160,6 +167,12 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       price: PUBLIC_PRICE.landing.amount,
       body: `Landing page sob medida a partir de ${PUBLIC_PRICE.landing.display}. O valor final depende do projeto (seções, formulários, integrações). Orçamento claro no WhatsApp.`,
     },
+    guide: {
+      href: QUANTO_CUSTA_PATH,
+      before: "Para comparar com o site institucional e ver o que muda o preço, leia ",
+      label: QUANTO_CUSTA_CRUMB,
+      after: ".",
+    },
     caseSlugs: ["mj-engenharia", "maison-etoile"],
     projectsHeading: "Landing pages no ar",
     faq: [
@@ -178,7 +191,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       },
       {
         q: "Em quanto tempo uma landing page fica pronta?",
-        a: "O prazo depende do escopo (seções, textos, integrações) e é fechado no orçamento no WhatsApp, antes de começar. Em geral, fica mais rápido que um site institucional de várias páginas.",
+        a: "A partir de 5 dias úteis. O prazo final depende do escopo (seções, textos, integrações) e é fechado no orçamento no WhatsApp, antes de começar.",
       },
     ],
     waMessage: "Olá! Vim pela página de landing page da Coded by M e quero um orçamento.",
@@ -212,6 +225,12 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       price: PUBLIC_PRICE.institucional.amount,
       body: `Site institucional a partir de ${PUBLIC_PRICE.institucional.display}, dependendo do projeto: páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`,
     },
+    guide: {
+      href: QUANTO_CUSTA_PATH,
+      before: "Para comparar com a landing page e ver o que muda o preço, leia ",
+      label: QUANTO_CUSTA_CRUMB,
+      after: ".",
+    },
     caseSlugs: ["machado-plataformas", "estudio-lentz", "forma-viva", "estudio-monteiro"],
     projectsHeading: "Sites institucionais no ar",
     faq: [
@@ -231,7 +250,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       },
       {
         q: "Em quanto tempo o site fica pronto?",
-        a: "O prazo depende do número de páginas e do conteúdo e entra no orçamento no WhatsApp, antes de começar.",
+        a: "A partir de 15 dias úteis. O prazo final depende do número de páginas e do conteúdo e é fechado no orçamento no WhatsApp, antes de começar.",
       },
     ],
     waMessage: "Olá! Vim pela página de site institucional da Coded by M e quero um orçamento.",
@@ -248,7 +267,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     },
     h1: "Sites para escritórios de arquitetura e design de interiores",
     intro:
-      "Sites e landing pages para escritórios que projetam espaço, feitos do zero, sem template, com a apresentação que o seu trabalho teria se fosse impresso.",
+      "Sites e landing pages para escritórios que projetam espaço: feitos do zero, sem template, com a apresentação que o seu trabalho teria se fosse impresso.",
     summary:
       "Um site de arquitetura organiza a obra por projeto, com fotos tratadas e página própria para cada uma, e faz o escritório ser encontrado no Google pelo nome e pela cidade. Faço do zero, para arquitetos e designers de interiores de todo o Brasil. Valor e prazo dependem do escopo. Peça a proposta pelo WhatsApp.",
     extraSections: [
@@ -256,14 +275,14 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
         heading: "Por que um portfólio próprio",
         body: [
           "O Instagram é ótimo pra ser lembrado e péssimo pra ser encontrado. Ele não aparece no Google, não organiza sua obra por projeto e não sobrevive ao feed.",
-          "Um site é o único lugar onde o trabalho fica no seu endereço, na sua ordem, pra sempre. E é onde quem pesquisa o seu nome encontra o projeto inteiro, não uma foto comprimida.",
+          "Um site é o único lugar onde o trabalho fica no seu endereço, na sua ordem, pra sempre, e onde quem pesquisa o seu nome encontra o projeto inteiro, não uma foto comprimida.",
         ],
       },
       {
         heading: "O que um site de arquitetura precisa ter",
         list: [
           "Uma página por projeto, com a obra contada do conceito ao espaço habitado",
-          "Fotos tratadas em peso e recorte, o que mais estraga site de arquitetura",
+          "Fotos tratadas em peso e recorte: o que mais estraga site de arquitetura",
           "Navegação editorial: a imagem conduz, o texto sustenta",
           "Carregamento rápido mesmo com imagem grande",
           "Contato direto pelo WhatsApp",

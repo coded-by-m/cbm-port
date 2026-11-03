@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PANCHANG, SATOSHI, SURFACE } from "@/components/site/shared";
 import { waLink } from "@/lib/contact";
 import { FillButton } from "@/components/ui/FillButton";
+import { cbm } from "@/lib/palette";
 
 /**
  * 404 — responde com status 404 (o Next garante) e devolve a pessoa a um
@@ -67,7 +68,7 @@ export default function NotFound() {
             fontFamily: SATOSHI,
             fontSize: "clamp(15px,1.4vw,17px)",
             lineHeight: 1.7,
-            color: "#C8C4BE",
+            color: cbm("gray-200"),
           }}
         >
           O endereço pode ter mudado ou o link estava errado. Os projetos e o

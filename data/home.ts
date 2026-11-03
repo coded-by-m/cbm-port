@@ -20,7 +20,7 @@ export const HERO = {
    */
   lead: "Criação de sites e landing pages sob medida em Florianópolis",
   headline: "Projetamos a forma como sua empresa é percebida digitalmente.",
-  sub: "Landing pages, sites institucionais e aplicações web, da estratégia ao deploy, no mesmo lugar.",
+  sub: "Landing pages, sites institucionais e aplicações web: da estratégia ao deploy, no mesmo lugar.",
   ctaPrimary: "Começar meu projeto",
   /** Linha de apoio do canto superior direito, como o "BASED IN" da referência. */
   meta: "Design + Development",
@@ -46,7 +46,7 @@ export const SECTIONS = {
   experiencia: {
     label: "Laboratório",
     heading: "Tem uma versão desta página que se constrói na sua frente.",
-    sub: "Nove capítulos em WebGL, navegáveis um a um. O mesmo conteúdo deste site, montado camada por camada em vez de exibido. É o que a gente faz quando não tem cliente pra agradar.",
+    sub: "Nove capítulos em WebGL, navegáveis um a um: o mesmo conteúdo deste site, montado camada por camada em vez de exibido. É o que a gente faz quando não tem cliente pra agradar.",
     cta: "Entrar na experiência",
     note: "WebGL · melhor no desktop",
   },
@@ -56,6 +56,8 @@ export const SECTIONS = {
   capacidades: {
     label: "Capacidades",
     heading: "O que entra em cada projeto.",
+    /** Marcador da escala, alinhado à direita do cabeçalho. */
+    aside: "Escala 1: 10",
   },
   faq: {
     label: "Dúvidas",
@@ -83,7 +85,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "Landing page ou site institucional: qual escolher?",
-    a: "Landing page quando há uma ação principal (campanha, serviço, anúncio). Site institucional quando a empresa precisa de várias páginas (serviços, história, projetos). Se for escritório de arquitetura ou interiores, veja também {0}.",
+    a: "Landing page quando há uma ação principal (campanha, serviço, anúncio). Site institucional quando a empresa precisa de várias páginas: serviços, história, projetos. Se for escritório de arquitetura ou interiores, veja também {0}.",
     links: [{ href: "/sites-para-arquitetura", label: "sites para arquitetura" }],
   },
   {
@@ -96,7 +98,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "Como funciona o processo?",
-    a: "Em quatro etapas: estratégia (diagnóstico, escopo e posicionamento), design (arquitetura, identidade e protótipo), código (implementação e performance) e resultado (mensuração, ajustes e evolução depois do deploy).",
+    a: "Em quatro etapas: estratégia (diagnóstico, escopo e posicionamento), design (arquitetura, identidade e protótipo), código (implementação e performance) e resultado: mensuração, ajustes e evolução depois do deploy.",
   },
   {
     // Fora deste PR: sem política publicada. PREENCHER fica fora do HTML e do FAQPage.

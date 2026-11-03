@@ -45,12 +45,12 @@ export const LANDINGS: LandingConfig[] = [
     slug: "arquitetura",
     eyebrow: "Para escritórios de arquitetura, interiores e engenharia",
     headline: "Sua obra merece um site tão bem resolvido quanto ela.",
-    sub: "Sites e landing pages para escritórios que projetam espaço, feitos do zero, sem template, com a apresentação que o seu trabalho já teria se fosse impresso.",
+    sub: "Sites e landing pages para escritórios que projetam espaço: feitos do zero, sem template, com a apresentação que o seu trabalho já teria se fosse impresso.",
     ctaLabel: "Falar sobre o meu escritório",
 
     pains: [
       "Seu portfólio vive no Instagram, e cada projeto some do feed em dois dias.",
-      "O site que existe foi montado num template. E nivela seu escritório com quem não projeta metade.",
+      "O site que existe foi montado num template, e nivela seu escritório com quem não projeta metade.",
       "Quem pesquisa seu nome encontra foto comprimida e nenhum projeto por inteiro.",
       "A obra vai pro escritório ao lado, que não projeta melhor. Só se apresenta melhor.",
     ],
@@ -91,7 +91,7 @@ export const LANDINGS: LandingConfig[] = [
       // Sem sufixo: o `template` do layout raiz já acrescenta "· Coded by M".
       title: "Sites para escritórios de arquitetura",
       description:
-        "Sites e landing pages para escritórios de arquitetura, interiores e engenharia. Feitos do zero, sem template, com a apresentação que a sua obra merece.",
+        "Sites e landing pages para escritórios de arquitetura, interiores e engenharia. Feitos do zero, sem template: a apresentação que a sua obra merece.",
       ogImage: "/og/lp/arquitetura.jpg",
     },
   },
