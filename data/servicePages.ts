@@ -1,3 +1,4 @@
+import { LP_OU_URL } from "@/data/landingOuInstitucional";
 import { QUANTO_CUSTA_CRUMB, QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
 
 /**
@@ -186,8 +187,8 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       },
       {
         q: "Landing page ou site institucional: qual escolher?",
-        a: "Landing page quando existe uma ação principal: um serviço, uma campanha, um anúncio. Site institucional quando a empresa precisa apresentar serviços, história e projetos em várias páginas.",
-        links: [{ href: "/site-institucional", label: "Site institucional" }],
+        a: "Landing page quando existe uma ação principal, como um serviço ou uma campanha. Site institucional quando a empresa precisa de várias páginas. {0}.",
+        links: [{ href: LP_OU_URL, label: "Veja a comparação completa" }],
       },
       {
         q: "Em quanto tempo uma landing page fica pronta?",
@@ -245,8 +246,8 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       ATENDE_BRASIL,
       {
         q: "Landing page ou site institucional: qual escolher?",
-        a: "Site institucional quando você precisa apresentar a empresa em profundidade (serviços, história, projetos). Landing page quando o foco é uma única ação ou campanha. Veja também: {0}.",
-        links: [{ href: "/landing-page", label: "Landing page" }],
+        a: "Site institucional quando você precisa apresentar a empresa em várias páginas. Landing page quando o foco é uma única ação ou campanha. {0}.",
+        links: [{ href: LP_OU_URL, label: "Veja a comparação completa" }],
       },
       {
         q: "Em quanto tempo o site fica pronto?",

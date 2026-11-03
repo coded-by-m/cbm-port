@@ -5,6 +5,7 @@ import { SERVICE_PAGES } from "@/data/servicePages";
 import { publishedPosts } from "@/data/blog";
 import { QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
 import { ESCOLHER_PATH } from "@/data/comoEscolherEmpresa";
+import { LP_OU_PATH } from "@/data/landingOuInstitucional";
 import { CALC_PATH } from "@/data/calculadoraPreco";
 
 /**
@@ -40,6 +41,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${SITE_URL}${ESCOLHER_PATH}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}${LP_OU_PATH}`,
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
