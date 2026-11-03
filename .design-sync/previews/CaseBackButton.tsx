@@ -1,5 +1,6 @@
 import "./_still";
 import { CaseBackButton } from "cbm-port";
+import { cbm } from "@/lib/palette";
 
 // CaseBackButton é `fixed left-5 top-5` — flutua sobre QUALQUER ponto do case,
 // por isso o eixo de variação aqui é o conteúdo por trás dele, não o próprio
@@ -12,7 +13,7 @@ function Stage({ children }: { children: React.ReactNode }) {
         position: "relative",
         height: 280,
         overflow: "hidden",
-        background: "#000F08",
+        background: cbm("page"),
       }}
     >
       {children}
@@ -73,14 +74,14 @@ export function SobreAGradeDeTelas() {
           style={{
             aspectRatio: "16/10",
             border: "1px solid rgba(245,242,237,0.15)",
-            background: "#070B08",
+            background: cbm("surface"),
           }}
         />
         <div
           style={{
             aspectRatio: "16/10",
             border: "1px solid rgba(245,242,237,0.15)",
-            background: "#070B08",
+            background: cbm("surface"),
           }}
         />
       </div>

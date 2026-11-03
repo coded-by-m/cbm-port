@@ -1,10 +1,11 @@
 import "./_still";
 import { ProjectFacts } from "cbm-port";
 import { CASE, CASE_B } from "./_fixtures";
+import { cbm } from "@/lib/palette";
 
 // Largura próxima da coluna de texto do hero real (max-w-[460px]).
 function Cell({ children }: { children: React.ReactNode }) {
-  return <div style={{ padding: 28, maxWidth: 460, background: "#000F08" }}>{children}</div>;
+  return <div style={{ padding: 28, maxWidth: 460, background: cbm("page") }}>{children}</div>;
 }
 
 /** Uso canônico: meta completa + stack técnica. */

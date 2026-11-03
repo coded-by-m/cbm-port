@@ -1,6 +1,7 @@
 import "./_still";
 import { CaseFrameScroll, BrowserFrame, PhoneFrame, LogoMark } from "cbm-port";
 import { SHOT_DESKTOP, SHOT_MOBILE } from "./_fixtures";
+import { cbm } from "@/lib/palette";
 
 /** Estado real de fallback quando o site ainda não tem preview capturado. */
 function FallbackPlaceholder() {
@@ -12,7 +13,7 @@ function FallbackPlaceholder() {
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
-        background: "#070B08",
+        background: cbm("surface"),
         opacity: 0.2,
       }}
     >

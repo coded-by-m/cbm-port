@@ -12,6 +12,8 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+// Node 24 importa .ts direto (type stripping): a mesma fonte das cores do site.
+import { ACTIVE_PALETTE, paletteCss } from "../lib/palette.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "..");
@@ -65,15 +67,19 @@ let css = readFileSync(out, "utf8").replace(/url\((['"]?)\/(fonts|cases)\//g, "u
 //
 //    O sistema inteiro pressupoe fundo profundo: os componentes escrevem em
 //    #F5F2ED e quase nenhum pinta o proprio fundo. app/globals.css ja diz isso
-//    em `body { background: #000F08 }`, mas o template do card de preview emite
+//    em `body { background: rgb(var(--cbm-page)) }`, mas o template do card de preview emite
 //    `body{background:#fff}` num <style> depois do stylesheet — e vence por
 //    ordem. `html body` vence por especificidade, sem precisar de !important.
 //
 //    Isto nao e maquiagem de preview: e a superficie real do design system, e
 //    vale igual para qualquer design que o agente montar com ele.
+//
+//    As variaveis --cbm-* vem antes de tudo: o bundle nao passa pelo
+//    app/layout.tsx, que e quem as injeta no site.
+css = `${paletteCss(ACTIVE_PALETTE)}\n${css}`;
 css += `
-html body { background: #000F08; color: #F5F2ED; font-family: "Satoshi", system-ui, -apple-system, sans-serif; }
-html body:has(.site-home) { background: #040806; }
+html body { background: rgb(var(--cbm-page)); color: #F5F2ED; font-family: "Satoshi", system-ui, -apple-system, sans-serif; }
+html body:has(.site-home) { background: rgb(var(--cbm-base)); }
 `;
 writeFileSync(out, css);
 

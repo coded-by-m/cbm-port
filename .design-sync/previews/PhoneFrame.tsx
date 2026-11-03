@@ -1,6 +1,7 @@
 import "./_still";
 import { PhoneFrame } from "cbm-port";
 import { SHOT_MOBILE } from "./_fixtures";
+import { cbm } from "@/lib/palette";
 
 // Bezel + notch. Como a BrowserFrame, so faz sentido com a captura dentro.
 
@@ -27,7 +28,7 @@ export function AoLadoDoDesktop() {
           <img src={SHOT_MOBILE} alt="Captura mobile" style={{ display: "block", width: "100%", height: "auto" }} />
         </PhoneFrame>
       </div>
-      <p style={{ color: "#8A8780", fontSize: 13, lineHeight: 1.6, margin: 0, maxWidth: 320 }}>
+      <p style={{ color: cbm("gray-400"), fontSize: 13, lineHeight: 1.6, margin: 0, maxWidth: 320 }}>
         A moldura de celular entra na seção responsiva das páginas de case, ao
         lado da captura de desktop, para mostrar a mesma página nas duas larguras.
       </p>

@@ -1,6 +1,7 @@
 import "./_still";
 import { useEffect } from "react";
 import { SiteHeader } from "cbm-port";
+import { cbm } from "@/lib/palette";
 
 // Não recebe props. É `position: fixed` de largura inteira — a história
 // canônica é o componente sozinho num wrapper com altura suficiente pra ele
@@ -8,7 +9,7 @@ import { SiteHeader } from "cbm-port";
 
 export function Padrao() {
   return (
-    <div style={{ position: "relative", minHeight: 220, background: "#000F08" }}>
+    <div style={{ position: "relative", minHeight: 220, background: cbm("page") }}>
       <SiteHeader />
     </div>
   );
@@ -30,7 +31,7 @@ function AbreOMenu() {
 
 export function MenuAberto() {
   return (
-    <div style={{ position: "relative", minHeight: 520, background: "#000F08" }}>
+    <div style={{ position: "relative", minHeight: 520, background: cbm("page") }}>
       <AbreOMenu />
     </div>
   );

@@ -5,8 +5,13 @@
 // mundos diferentes (um entra no bundle, o outro so nos previews) e manter a
 // duplicacao e mais barato que acoplar os dois.
 
+import { ACTIVE_PALETTE, PALETTES } from "@/lib/palette";
+
+// SVG em data-URI e documento isolado: nao le var(--cbm-*), entao leva o hex da paleta ativa.
+const COLORS = PALETTES[ACTIVE_PALETTE].colors;
 const INK = "#F5F2ED";
-const BASE = "#000F08";
+const BASE = COLORS.page;
+const SURFACE = COLORS.surface;
 const SIGNAL = "#FB3640";
 
 export function shot(w: number, h: number, accent: string = SIGNAL): string {
@@ -21,7 +26,7 @@ export function shot(w: number, h: number, accent: string = SIGNAL): string {
   }).join("");
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">` +
-    `<rect width="${w}" height="${h}" fill="#070B08"/>` +
+    `<rect width="${w}" height="${h}" fill="${SURFACE}"/>` +
     `<rect width="${w}" height="${bar}" fill="${BASE}"/>` +
     `<circle cx="${Math.round(w * 0.06)}" cy="${Math.round(bar / 2)}" r="${Math.max(
       2,

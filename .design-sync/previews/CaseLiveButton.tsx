@@ -1,6 +1,7 @@
 import "./_still";
 import { CaseLiveButton } from "cbm-port";
 import { CASE, CASE_B } from "./_fixtures";
+import { cbm } from "@/lib/palette";
 
 function Cell({ children }: { children: React.ReactNode }) {
   return <div style={{ padding: 32 }}>{children}</div>;
@@ -27,7 +28,7 @@ export function RotuloCustom() {
 /** Composição real: como aparece no CTA de retorno, ao fim da página de case. */
 export function NoContextoDoRetorno() {
   return (
-    <div style={{ padding: 48, textAlign: "center", background: "#000F08" }}>
+    <div style={{ padding: 48, textAlign: "center", background: cbm("page") }}>
       <p
         className="font-display"
         style={{
