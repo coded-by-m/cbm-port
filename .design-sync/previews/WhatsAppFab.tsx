@@ -32,7 +32,7 @@ export function SobreConteudo() {
         }}
       >
         Presente em todas as páginas, exceto na home, na experiência e nas
-        landings de campanha — que já têm o próprio caminho de contato.
+        landings de campanha, que já têm o próprio caminho de contato.
       </p>
       <WhatsAppFab />
     </div>

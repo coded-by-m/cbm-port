@@ -37,7 +37,7 @@ export function NoPhoneFrame() {
         <div style={{ aspectRatio: "9/16", width: "100%" }}>
           <LiveScreenshot
             src={SHOT_MOBILE}
-            alt="MJ Engenharia — site mobile"
+            alt="MJ Engenharia, site mobile"
             durationSec={28}
           />
         </div>
@@ -54,7 +54,7 @@ export function NoBrowserFrame() {
         <div style={{ aspectRatio: "16/10", width: "100%" }}>
           <LiveScreenshot
             src={SHOT_DESKTOP}
-            alt="MJ Engenharia — site desktop"
+            alt="MJ Engenharia, site desktop"
             durationSec={32}
           />
         </div>
@@ -70,7 +70,7 @@ export function SemPreview() {
       <BrowserFrame url="rota-clinica.com.br">
         <div style={{ aspectRatio: "16/10", width: "100%" }}>
           <LiveScreenshot
-            alt="Rota Clínica — site desktop"
+            alt="Rota Clínica, site desktop"
             fallback={<FallbackPlaceholder />}
           />
         </div>

@@ -11,7 +11,7 @@ export function PromessaLonga() {
   const lp = {
     ...LANDING,
     promise:
-      "Um site que faz sua obra ser encontrada, entendida e lembrada — não só vista.",
+      "Um site que faz sua obra ser encontrada, entendida e lembrada, não só vista.",
   };
   return <LpPromise lp={lp} />;
 }

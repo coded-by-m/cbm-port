@@ -57,6 +57,7 @@ export function TriText({
   const rootRef = useRef<SVGSVGElement>(null);
   const [box, setBox] = useState<{ x: number; width: number } | null>(null);
   const [on, setOn] = useState(false);
+  const [still, setStill] = useState(false);
   const id = `tri${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   const height = STROKE_LINE_HEIGHT * fontSize;
@@ -109,7 +110,10 @@ export function TriText({
 
   useEffect(() => {
     if (!box) return;
+    // Menos movimento: estado final direto, sem a onda (a classe desliga as
+    // transições — o atraso por triângulo ainda rodaria sem ela).
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      setStill(true);
       setOn(true);
       return;
     }
@@ -132,7 +136,7 @@ export function TriText({
   return (
     <svg
       ref={rootRef}
-      className={`tri-text ${on ? "is-on" : ""} ${className}`.trim()}
+      className={`tri-text ${on ? "is-on" : ""} ${still ? "is-still" : ""} ${className}`.trim()}
       viewBox={viewBox}
       preserveAspectRatio="xMinYMid meet"
       aria-hidden

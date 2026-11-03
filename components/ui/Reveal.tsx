@@ -55,12 +55,15 @@ export function Reveal({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
+  /** Menos movimento: aparece já no estado final, sem transição nenhuma. */
+  const [still, setStill] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
+      setStill(true);
       setShown(true);
       return;
     }
@@ -99,7 +102,7 @@ export function Reveal({
         style={{
           ...(shown ? TO[variant] : FROM[variant]),
           transformOrigin: variant === "draw" ? "left center" : undefined,
-          transition: [
+          transition: still ? "none" : [
             `opacity ${d}ms ease-out ${delay}ms`,
             `transform ${d}ms ${EASE} ${delay}ms`,
             `filter ${d}ms ease-out ${delay}ms`,

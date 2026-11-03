@@ -30,7 +30,7 @@ export function Canonico() {
         <div style={{ aspectRatio: "16/10", width: "100%" }}>
           <CaseFrameScroll
             src={SHOT_DESKTOP}
-            alt="MJ Engenharia — site desktop"
+            alt="MJ Engenharia, site desktop"
           />
         </div>
       </BrowserFrame>
@@ -46,7 +46,7 @@ export function NoPhoneFrame() {
         <div style={{ aspectRatio: "9/16", width: "100%" }}>
           <CaseFrameScroll
             src={SHOT_MOBILE}
-            alt="MJ Engenharia — site mobile"
+            alt="MJ Engenharia, site mobile"
             autoDurationSec={28}
           />
         </div>
@@ -62,7 +62,7 @@ export function SemPreview() {
       <BrowserFrame url="rota-clinica.com.br">
         <div style={{ aspectRatio: "16/10", width: "100%" }}>
           <CaseFrameScroll
-            alt="Rota Clínica — site desktop"
+            alt="Rota Clínica, site desktop"
             fallback={<FallbackPlaceholder />}
           />
         </div>

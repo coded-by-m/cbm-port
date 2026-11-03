@@ -12,7 +12,7 @@ export function HeadlineLonga() {
     ...LANDING,
     headline:
       "Sua clínica merece um site tão bem cuidado quanto o atendimento que você oferece.",
-    sub: "Sites e landing pages para clínicas e consultórios que querem parecer tão sérios quanto são — feitos do zero, sem template, com a apresentação que o seu trabalho já teria se fosse impresso.",
+    sub: "Sites e landing pages para clínicas e consultórios que querem parecer tão sérios quanto são, feitos do zero, sem template, com a apresentação que o seu trabalho já teria se fosse impresso.",
   };
   return <LpHero lp={lp} />;
 }

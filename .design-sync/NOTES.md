@@ -161,8 +161,8 @@ componente.
 
 ## Rodada de 2026-11-03: paleta Neutro, botões novos, TriText
 
-O que mudou desde o primeiro envio. **Nenhuma destas mudanças foi enviada ainda**:
-o próximo `/design-sync` precisa levar todas.
+O que mudou desde o primeiro envio. **Enviado em 2026-11-03** (re-sync atômico,
+47 componentes, render check limpo, só os 3 `[RENDER_THIN]` conhecidos).
 
 - **Paleta:** a base deixou de ser preto esverdeado (`#000F08`) e passou para
   o **Neutro** (`#0A0A0A`, cinzas neutros). As cores agora vêm de variáveis
@@ -187,3 +187,31 @@ o próximo `/design-sync` precisa levar todas.
   `CapabilitiesSection` e `Hero` mudam de conteúdo.
 - **Contraste dos botões:** a prova é `node --test scripts/buttons.test.mts`.
   Os alphas ficam em `components/ui/buttonSpec.ts`.
+
+### Achados do envio de 2026-11-03
+
+- **Modo de menos movimento só pelo JS não basta.** O `_still.ts` responde
+  `prefers-reduced-motion` no `matchMedia`, mas a media query CSS continua
+  falsa no chromium da captura. Componente que vai ao estado final com
+  transição CSS e atraso é fotografado no meio do caminho. Foi assim que o
+  `LpHero` saiu desfocado (pelo `Reveal`) e o `TriText` saiu pela metade.
+  Os dois agora pulam a transição quando detectam o modo (`still` no
+  `Reveal`, classe `is-still` no `TriText`). **Componente novo com entrada
+  animada precisa fazer o mesmo.**
+- **Os fixtures e previews carregam texto que imita o site.** Os travessões
+  foram removidos para seguir a regra anti-slop do site. Se o texto do site
+  mudar, os previews não acompanham sozinhos.
+- **`conventions.md` foi reescrito para a paleta Neutro** (variáveis `--cbm-*`,
+  FillButton e MeshButton, regras anti-slop). Ele cita classes `bg-cbm-*`,
+  `text-cbm-*` e `border-cbm-*` que existem porque algum arquivo do app as usa.
+  Se alguma sumir do código, o Tailwind deixa de compilá-la. Revalide as
+  classes do cabeçalho contra `_ds_bundle.css` a cada envio.
+
+### Re-sync risks (adições)
+
+- `guidelines/DESIGN-LANGUAGE.md` e `guidelines/10-design-system.md` (copiados
+  de `DESIGN-LANGUAGE.md` e `docs/`) **ainda descrevem o preto esverdeado e a
+  "temperatura verde"**. Foram enviados assim. Atualize as fontes no repo e
+  reenvie.
+- `ProjectFacts` e outros rótulos pequenos usam `gray-600` (cerca de 2,7:1
+  sobre o fundo). Não é defeito de render, mas o agente pode copiar o padrão.

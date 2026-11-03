@@ -62,7 +62,7 @@ export const CASE = {
   eyebrow: "Landing Page Premium / Case Study",
   title: "MJ Engenharia",
   description:
-    "Landing page de alta conversão para uma engenharia de prevenção contra incêndio em Santa Catarina — do dimensionamento ao carimbo de aprovação do CBMSC.",
+    "Landing page de alta conversão para uma engenharia de prevenção contra incêndio em Santa Catarina, do dimensionamento ao carimbo de aprovação do CBMSC.",
   meta: {
     cliente: "MJ Engenharia",
     setor: "Engenharia / Prevenção contra Incêndio",
@@ -79,8 +79,8 @@ export const CASE = {
   overview: {
     heading: "Do dimensionamento ao carimbo de aprovação",
     body: [
-      "A MJ Engenharia projeta sistemas preventivos contra incêndio (PPCI) para empreendimentos que precisam aprovar de verdade — não no papel. O desafio era transformar um serviço técnico e regulatório denso numa página que comunica autoridade e conduz o cliente certo até o contato.",
-      "A landing foi construída como uma narrativa de confiança: um hero com a promessa direta de projetos que passam na primeira análise, o escopo técnico por inteiro e o método ponta a ponta — do diagnóstico ao carimbo do CBMSC.",
+      "A MJ Engenharia projeta sistemas preventivos contra incêndio (PPCI) para empreendimentos que precisam aprovar de verdade, não no papel. O desafio era transformar um serviço técnico e regulatório denso numa página que comunica autoridade e conduz o cliente certo até o contato.",
+      "A landing foi construída como uma narrativa de confiança: um hero com a promessa direta de projetos que passam na primeira análise, o escopo técnico por inteiro e o método ponta a ponta, do diagnóstico ao carimbo do CBMSC.",
     ],
     challenge:
       "Transformar um serviço de engenharia técnico e regulatório numa landing que comunica autoridade e conduz o cliente certo ao contato, sem que o jargão afaste quem decide.",
@@ -103,7 +103,7 @@ export const CASE_B = {
   eyebrow: "Site Institucional / Case Study",
   type: "institucional" as const,
   description:
-    "Site institucional para um escritório de arquitetura — a obra apresentada com o mesmo cuidado com que foi projetada.",
+    "Site institucional para um escritório de arquitetura: a obra apresentada com o mesmo cuidado com que foi projetada.",
   meta: {
     cliente: "Estúdio Lentz",
     setor: "Arquitetura e Interiores",
@@ -122,7 +122,7 @@ export const CASE_SOON = {
   type: "webapp" as const,
   status: "coming-soon" as const,
   description:
-    "Aplicação de agendamento e prontuário para uma rede de clínicas — em produção, case em preparação.",
+    "Aplicação de agendamento e prontuário para uma rede de clínicas. Em produção, case em preparação.",
   meta: {
     cliente: "Rota Clínica",
     setor: "Saúde",
@@ -137,11 +137,11 @@ export const LANDING = {
   slug: "arquitetura",
   eyebrow: "Para escritórios de arquitetura, interiores e engenharia",
   headline: "Sua obra merece um site tão bem resolvido quanto ela.",
-  sub: "Sites e landing pages para escritórios que projetam espaço — feitos do zero, sem template, com a apresentação que o seu trabalho já teria se fosse impresso.",
+  sub: "Sites e landing pages para escritórios que projetam espaço, feitos do zero, sem template, com a apresentação que o seu trabalho já teria se fosse impresso.",
   ctaLabel: "Falar sobre o meu escritório",
   pains: [
     "Seu portfólio vive no Instagram, e cada projeto some do feed em dois dias.",
-    "O site que existe foi montado num template — e nivela seu escritório com quem não projeta metade.",
+    "O site que existe foi montado num template, e nivela seu escritório com quem não projeta metade.",
     "Quem pesquisa seu nome encontra foto comprimida e nenhum projeto por inteiro.",
     "A obra vai pro escritório ao lado, que não projeta melhor. Só se apresenta melhor.",
   ],
@@ -155,16 +155,16 @@ export const LANDING = {
     },
     {
       q: "E os meus textos e as minhas fotos?",
-      a: "As fotos são suas e eu trabalho com elas — inclusive tratando peso e recorte, que é o que costuma estragar site de arquitetura. O texto a gente escreve junto: você conta o projeto e eu estruturo a narrativa.",
+      a: "As fotos são suas e eu trabalho com elas, inclusive tratando peso e recorte, que é o que costuma estragar site de arquitetura. O texto a gente escreve junto: você conta o projeto e eu estruturo a narrativa.",
     },
     {
       q: "Quanto tempo leva?",
-      a: "Quatro etapas — estratégia, design, código e entrega — com data combinada em cada uma. Você sabe onde o projeto está em qualquer dia.",
+      a: "Quatro etapas (estratégia, design, código e entrega), com data combinada em cada uma. Você sabe onde o projeto está em qualquer dia.",
     },
   ],
   waMessage: "Oi Matheus, vim pela página de arquitetura",
   meta: {
-    title: "Sites para escritórios de arquitetura — Coded by M",
+    title: "Sites para escritórios de arquitetura · Coded by M",
     description:
       "Sites e landing pages para escritórios que projetam espaço, feitos do zero.",
     ogImage: SHOT_DESKTOP,

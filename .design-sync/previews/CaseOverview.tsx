@@ -27,7 +27,7 @@ export function TextoLongo() {
       ...CASE.overview,
       body: [
         ...CASE.overview.body,
-        "O resultado: uma página que fala a língua técnica de quem aprova e a língua clara de quem contrata — sem escolher entre as duas.",
+        "O resultado: uma página que fala a língua técnica de quem aprova e a língua clara de quem contrata, sem escolher entre as duas.",
       ],
     },
   };
