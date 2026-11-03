@@ -156,6 +156,35 @@ export function webPageSchema(opts: {
   };
 }
 
+/**
+ * A calculadora de preço. `name`, `description` e o autor são o que a
+ * página mostra. Sem `offers`: a ferramenta não publica um preço próprio,
+ * e os pisos ficam nas páginas de serviço.
+ */
+export function webApplicationSchema(opts: {
+  path: string;
+  name: string;
+  description: string;
+}): Json {
+  const url = `${SITE_URL}${opts.path}`;
+  return {
+    "@type": "WebApplication",
+    "@id": `${url}#app`,
+    name: opts.name,
+    description: opts.description,
+    url,
+    inLanguage: "pt-BR",
+    isPartOf: { "@id": WEBSITE_ID },
+    author: {
+      "@type": "Person",
+      "@id": FOUNDER_ID,
+      name: ABOUT.founder.name,
+    },
+    provider: { "@id": ORG_ID },
+    mainEntityOfPage: { "@id": `${url}#webpage` },
+  };
+}
+
 export function breadcrumbSchema(items: { name: string; path: string }[]): Json {
   return {
     "@type": "BreadcrumbList",

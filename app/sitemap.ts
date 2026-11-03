@@ -4,6 +4,7 @@ import { cases } from "@/data/cases";
 import { SERVICE_PAGES } from "@/data/servicePages";
 import { publishedPosts } from "@/data/blog";
 import { QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
+import { CALC_PATH } from "@/data/calculadoraPreco";
 
 /**
  * Rotas públicas e indexáveis. Fora daqui, de propósito: `/lp/*`, `/lab`,
@@ -35,6 +36,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${SITE_URL}${QUANTO_CUSTA_PATH}`,
       changeFrequency: "monthly" as const,
       priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}${CALC_PATH}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
     },
     { url: `${SITE_URL}/projetos`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/sobre`, changeFrequency: "yearly", priority: 0.5 },
