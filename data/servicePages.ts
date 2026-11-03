@@ -1,3 +1,5 @@
+import { QUANTO_CUSTA_CRUMB, QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
+
 /**
  * Páginas de serviço indexáveis — `/landing-page`, `/site-institucional` e
  * `/sites-para-arquitetura`.
@@ -109,6 +111,11 @@ export interface ServicePageConfig {
    * o JSON-LD repete esse texto. Sem isto, a página não publica preço.
    */
   investimento?: { price: string; body: string };
+  /**
+   * Link contextual para o artigo de preço, logo abaixo do piso.
+   * Só nas páginas que publicam valor.
+   */
+  guide?: { href: string; before: string; label: string; after: string };
   /** Slugs de `data/cases.ts`, na ordem em que provam. */
   caseSlugs: string[];
   projectsHeading: string;
@@ -159,6 +166,12 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     investimento: {
       price: PUBLIC_PRICE.landing.amount,
       body: `Landing page sob medida a partir de ${PUBLIC_PRICE.landing.display}. O valor final depende do projeto (seções, formulários, integrações). Orçamento claro no WhatsApp.`,
+    },
+    guide: {
+      href: QUANTO_CUSTA_PATH,
+      before: "Para comparar com o site institucional e ver o que muda o preço, leia ",
+      label: QUANTO_CUSTA_CRUMB,
+      after: ".",
     },
     caseSlugs: ["mj-engenharia", "maison-etoile"],
     projectsHeading: "Landing pages no ar",
@@ -211,6 +224,12 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     investimento: {
       price: PUBLIC_PRICE.institucional.amount,
       body: `Site institucional a partir de ${PUBLIC_PRICE.institucional.display}, dependendo do projeto — páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`,
+    },
+    guide: {
+      href: QUANTO_CUSTA_PATH,
+      before: "Para comparar com a landing page e ver o que muda o preço, leia ",
+      label: QUANTO_CUSTA_CRUMB,
+      after: ".",
     },
     caseSlugs: ["machado-plataformas", "estudio-lentz", "forma-viva", "estudio-monteiro"],
     projectsHeading: "Sites institucionais no ar",

@@ -242,6 +242,19 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
                 ? page.investimento.body
                 : "Orçamento sob medida e sem compromisso: você conta o projeto pelo WhatsApp e recebe valor e prazo antes de decidir qualquer coisa."}
             </p>
+            {page.guide ? (
+              <p style={{ ...BODY, marginTop: 18 }}>
+                {page.guide.before}
+                <Link
+                  href={page.guide.href}
+                  className="site-link-underline"
+                  style={{ color: "#F5F2ED" }}
+                >
+                  {page.guide.label}
+                </Link>
+                {page.guide.after}
+              </p>
+            ) : null}
           </div>
         </section>
 
