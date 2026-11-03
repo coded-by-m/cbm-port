@@ -24,7 +24,7 @@ const META: React.CSSProperties = {
   fontSize: 10,
   letterSpacing: "0.26em",
   textTransform: "uppercase",
-  color: "#9B9791",
+  color: cbm("gray-400"),
   whiteSpace: "nowrap",
 };
 
@@ -318,7 +318,7 @@ export function Hero() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 10,
-                color: a.filled ? cbm("gray-300") : "#9B9791",
+                color: a.filled ? cbm("gray-300") : cbm("gray-400"),
               }}
             >
               {a.filled && (

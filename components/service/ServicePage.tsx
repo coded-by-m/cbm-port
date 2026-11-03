@@ -155,7 +155,7 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
       <main data-cm-section="service" data-cm-id={page.slug}>
         {/* Hero */}
         <section style={{ ...WRAP, paddingTop: "clamp(44px,7vh,80px)" }}>
-          <nav aria-label="Trilha" style={{ ...BODY, fontSize: 12, letterSpacing: "0.18em", textTransform: "uppercase", color: "#7E7A74" }}>
+          <nav aria-label="Trilha" style={{ ...BODY, fontSize: 12, letterSpacing: "0.18em", textTransform: "uppercase", color: cbm("gray-400") }}>
             <Link href="/" style={{ color: "inherit" }}>Início</Link>
             <span aria-hidden style={{ margin: "0 10px", color: "#FB3640" }}>/</span>
             <span>{page.label}</span>
@@ -346,7 +346,7 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
                           fontSize: 10,
                           letterSpacing: "0.2em",
                           textTransform: "uppercase",
-                          color: "#9B9791",
+                          color: cbm("gray-400"),
                         }}
                       >
                         {c.meta.setor} · {c.concept ? "Projeto conceitual" : c.meta.ano}

@@ -137,7 +137,7 @@ export function ExperienceBridge() {
                 fontSize: 10,
                 letterSpacing: "0.3em",
                 textTransform: "uppercase",
-                color: "#9B9791",
+                color: cbm("gray-400"),
               }}
             >
               {COPY.note}

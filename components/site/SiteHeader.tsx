@@ -442,7 +442,7 @@ export function SiteHeader() {
                 fontSize: 11,
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
-                color: "#9B9791",
+                color: cbm("gray-400"),
               }}
             >
               (Whatsapp)
@@ -476,7 +476,7 @@ export function SiteHeader() {
                 fontSize: 11,
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
-                color: "#9B9791",
+                color: cbm("gray-400"),
               }}
             >
               (Social)
@@ -554,7 +554,7 @@ export function SiteHeader() {
                 fontSize: 9,
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
-                color: "#9B9791",
+                color: cbm("gray-400"),
                 whiteSpace: "nowrap",
               }}
             >

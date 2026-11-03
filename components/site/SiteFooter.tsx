@@ -71,7 +71,7 @@ export function SiteFooter() {
             fontSize: 10,
             letterSpacing: "0.2em",
             textTransform: "uppercase",
-            color: "#9B9791",
+            color: cbm("gray-400"),
             whiteSpace: "nowrap",
           }}
         >

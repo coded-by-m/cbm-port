@@ -96,7 +96,7 @@ export default function RootLayout({
           <style>{`[data-reveal]{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}`}</style>
         </noscript>
       </head>
-      <body className="min-h-screen bg-cbm-page text-[#e0e0e0]">
+      <body className="min-h-screen bg-cbm-page text-cbm-gray-100">
         {/* Quem é o estúdio — o mesmo grafo em toda página, que as páginas
             referenciam por @id. */}
         <JsonLd data={graph(organizationSchema(), founderSchema(), websiteSchema())} />

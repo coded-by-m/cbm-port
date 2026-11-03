@@ -5,6 +5,7 @@ import { getPublishedPost, publishedPosts } from "@/data/blog";
 import { ProseShell, PROSE_H1, PROSE_H2, PROSE_LINK, PROSE_P } from "@/components/prose/Prose";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { articleSchema, breadcrumbSchema, graph, webPageSchema } from "@/lib/seo";
+import { cbm } from "@/lib/palette";
 
 /** Só artigo publicado vira página; rascunho responde 404. */
 export const dynamicParams = false;
@@ -66,7 +67,7 @@ export default function BlogPostPage({ params }: Params) {
             fontSize: 12,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "#7E7A74",
+            color: cbm("gray-400"),
           }}
         >
           Matheus Mendes ·{" "}

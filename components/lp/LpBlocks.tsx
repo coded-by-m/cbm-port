@@ -225,7 +225,7 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
                       fontSize: 10,
                       letterSpacing: "0.2em",
                       textTransform: "uppercase",
-                      color: "#9B9791",
+                      color: cbm("gray-400"),
                     }}
                   >
                     {c.meta.setor} · {c.concept ? "Conceito · " : ""}{c.meta.ano}

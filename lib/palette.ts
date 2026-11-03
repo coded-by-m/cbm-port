@@ -131,7 +131,7 @@ export const PALETTES: Record<PaletteId, Palette> = {
   },
 };
 
-export const ACTIVE_PALETTE: PaletteId = "atual";
+export const ACTIVE_PALETTE: PaletteId = "neutro";
 /** Disparado em `window` quando o lab troca a paleta. `detail` é o PaletteId. */
 export const PALETTE_EVENT = "cbm:palette";
 
