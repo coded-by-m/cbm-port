@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { HINT } from "./config";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 /**
  * Hint inicial "Arraste pra explorar" — descoberta dos controles.
@@ -34,13 +35,13 @@ export default function LandscapeHint({ show }: { show: boolean }) {
     >
       <div className="flex items-center gap-3 border border-[#F5F2ED]/25 bg-cbm-page/85 px-4 py-2 backdrop-blur-md">
         <span aria-hidden className="text-[#F5F2ED]/60">
-          ←
+          <TriArrow dir="left" />
         </span>
         <p className="text-[0.6rem] uppercase tracking-[0.35em] text-[#F5F2ED]/85">
           Arraste pra explorar
         </p>
         <span aria-hidden className="text-[#F5F2ED]/60">
-          →
+          <TriArrow dir="right" />
         </span>
       </div>
     </div>

@@ -4,6 +4,7 @@ import type { CaseProject } from "@/types/case";
 import { PROJECT_TYPE_COLOR } from "@/lib/projectTypes";
 import { PANCHANG, SATOSHI } from "@/components/site/shared";
 import { cbm } from "@/lib/palette";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 /**
  * Célula de projeto — numeral, thumbnail e texto lado a lado.
@@ -242,7 +243,7 @@ export function ProjetoGridCard({
               color: "#F5F2ED",
             }}
           >
-            Case <span style={{ color: typeColor }}>↗</span>
+            Case <span style={{ color: typeColor }}><TriArrow dir="up-right" /></span>
           </span>
 
           {project.siteUrl && (
@@ -269,7 +270,7 @@ export function ProjetoGridCard({
                 textDecoration: "none",
               }}
             >
-              No ar <span style={{ color: "#FB3640" }}>↗</span>
+              No ar <span style={{ color: "#FB3640" }}><TriArrow dir="up-right" /></span>
             </a>
           )}
         </div>

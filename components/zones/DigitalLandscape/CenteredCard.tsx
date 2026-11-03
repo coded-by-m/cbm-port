@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import type { ProjectCard } from "@/components/zones/HtmlOverlay/config";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 export default function CenteredCard({
   activeIndex,
@@ -57,7 +58,7 @@ export default function CenteredCard({
           >
             Ver estudo de caso
             <span className="transition-transform duration-200 group-hover:translate-x-0.5">
-              →
+              <TriArrow dir="right" />
             </span>
           </a>
         </article>

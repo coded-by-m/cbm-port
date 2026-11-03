@@ -1084,3 +1084,21 @@ body:has(.site-home) {
   gap: 18px;
   margin-top: 22px;
 }
+
+/* ── TriArrow: o triângulo da marca no lugar de →, ↗, ← (components/ui/TriArrow.tsx) */
+.tri-arrow {
+  display: inline-block;
+  width: 0.62em;
+  height: 0.62em;
+  flex: none;
+  vertical-align: -0.02em;
+  fill: currentColor;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tri-arrow--left { transform: rotate(180deg); }
+a:hover .tri-arrow--right, button:hover .tri-arrow--right { transform: translateX(3px); }
+a:hover .tri-arrow--up-right, button:hover .tri-arrow--up-right { transform: translate(2px, -2px); }
+a:hover .tri-arrow--left, button:hover .tri-arrow--left { transform: translateX(-3px) rotate(180deg); }
+@media (prefers-reduced-motion: reduce) {
+  .tri-arrow { transition: none; }
+}

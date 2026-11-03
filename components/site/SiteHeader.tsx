@@ -10,6 +10,7 @@ import {
 import { NAV_LINKS } from "@/data/home";
 import { SURFACE } from "./shared";
 import { cbm } from "@/lib/palette";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -504,7 +505,7 @@ export function SiteHeader() {
                   }}
                 >
                   {s.label}
-                  <span style={{ fontSize: 12, color: "#FB3640" }}>↗</span>
+                  <span style={{ fontSize: 12, color: "#FB3640" }}><TriArrow dir="up-right" /></span>
                 </a>
               ))}
             </div>

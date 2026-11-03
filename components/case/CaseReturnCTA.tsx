@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { CaseLiveButton } from "@/components/case/CaseLiveButton";
 import { cbm } from "@/lib/palette";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 type Href = { href: string; label: string };
 
@@ -73,7 +74,7 @@ export function CaseReturnCTA({
           data-cm-id="case-more-projects"
           className="mt-2 font-display text-[11px] font-semibold uppercase tracking-[0.15em] text-cbm-gray-400 transition-colors duration-200 hover:text-cbm-white focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-white/20 focus-visible:outline-offset-[5px]"
         >
-          ← Todos os projetos
+          <TriArrow dir="left" /> Todos os projetos
         </Link>
 
         {next && (
@@ -83,7 +84,7 @@ export function CaseReturnCTA({
             data-cm-id="case-next-project"
             className="font-display text-[11px] font-semibold uppercase tracking-[0.15em] text-cbm-gray-400 transition-colors duration-200 hover:text-cbm-white focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-white/20 focus-visible:outline-offset-[5px]"
           >
-            Próximo: {next.title} <span className="text-[#FB3640]">→</span>
+            Próximo: {next.title} <span className="text-[#FB3640]"><TriArrow dir="right" /></span>
           </Link>
         )}
 

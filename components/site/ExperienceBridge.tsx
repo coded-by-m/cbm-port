@@ -2,6 +2,7 @@ import { SECTIONS } from "@/data/home";
 import { HOME_CHAPTERS } from "@/lib/homeChapters";
 import { PANCHANG, SATOSHI, SURFACE } from "./shared";
 import { cbm } from "@/lib/palette";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 const COPY = SECTIONS.experiencia;
 
@@ -128,7 +129,7 @@ export function ExperienceBridge() {
               }}
             >
               {COPY.cta}
-              <span style={{ color: "#FB3640" }}>↗</span>
+              <span style={{ color: "#FB3640" }}><TriArrow dir="up-right" /></span>
             </a>
             <span
               style={{

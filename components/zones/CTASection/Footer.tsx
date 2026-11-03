@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { LogoMark } from "@/components/ui/LogoMark";
 import { waLink, INSTAGRAM_URL, INSTAGRAM_HANDLE, WHATSAPP_DISPLAY } from "@/lib/contact";
 import { cbm } from "@/lib/palette";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 const FooterLandscape = dynamic(() => import("./FooterLandscape"), {
   ssr: false,
@@ -156,7 +157,7 @@ export default function Footer({
                   style={{ color: ACCENT }}
                   aria-hidden
                 >
-                  →
+                  <TriArrow dir="right" />
                 </span>
               </Link>
             ))}

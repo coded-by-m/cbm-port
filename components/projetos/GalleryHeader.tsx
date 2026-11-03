@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 /**
  * Topo fino e sticky da vitrine e das páginas de serviço. Link pra
@@ -22,7 +23,7 @@ export function GalleryHeader({ label = "Projetos" }: { label?: string }) {
           href="/experiencia"
           className="inline-flex items-center gap-1.5 text-[0.62rem] uppercase tracking-[0.24em] text-[#F5F2ED]/60 transition-colors hover:text-[#F5F2ED] focus-visible:text-[#F5F2ED] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#F5F2ED]/60"
         >
-          experiência <span aria-hidden style={{ color: "#FB3640" }}>↗</span>
+          experiência <span aria-hidden style={{ color: "#FB3640" }}><TriArrow dir="up-right" /></span>
         </Link>
       </div>
     </header>

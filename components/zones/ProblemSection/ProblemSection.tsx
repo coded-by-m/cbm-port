@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { railSub } from "@/lib/railProgress";
 import { cbm } from "@/lib/palette";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 const GenericGrid = dynamic(() => import("./GenericGrid"), { ssr: false });
 
@@ -369,7 +370,7 @@ export default function ProblemSection({
                   pointerEvents: atLast ? "auto" : "none",
                 }}
               >
-                Role para seguir →
+                Role para seguir <TriArrow dir="right" />
               </span>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { waLink } from "@/lib/contact";
 import { publishedPosts } from "@/data/blog";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 /** Links internos do rodapé: serviços, vitrine, sobre e blog (se houver artigo). */
 const LINKS = [
@@ -41,7 +42,7 @@ export function GalleryFooter({ current }: { current?: string }) {
             className="inline-flex min-h-[44px] items-center gap-2 border border-[#FB3640]/60 bg-[#FB3640]/10 px-6 text-[0.7rem] font-medium uppercase tracking-[0.28em] text-[#F5F2ED] transition-colors duration-300 hover:border-[#FB3640] hover:bg-[#FB3640] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FB3640]"
           >
             Falar no WhatsApp
-            <span aria-hidden>↗</span>
+            <span aria-hidden><TriArrow dir="up-right" /></span>
           </a>
         </div>
       </div>

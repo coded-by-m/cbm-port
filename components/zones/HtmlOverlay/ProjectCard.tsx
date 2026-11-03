@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { PROJECT_CARDS, type ProjectCard as ProjectCardData } from "./config";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 /**
  * Card HTML do projeto — Camada de Overlay (fora do canvas).
@@ -103,7 +104,7 @@ export default function ProjectCard({
               aria-hidden="true"
               className="transition-transform duration-200 group-hover:translate-x-0.5"
             >
-              →
+              <TriArrow dir="right" />
             </span>
           </a>
         </article>

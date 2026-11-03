@@ -5,6 +5,7 @@ import { useState, type ReactNode } from "react";
 import { DriftWall, type DriftTile } from "./DriftWall";
 import { Diamond, PANCHANG, SATOSHI } from "./shared";
 import { cbm } from "@/lib/palette";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 export interface StageProject {
   slug: string;
@@ -104,7 +105,7 @@ export function ProjectsStage({
                     {p.meta}
                   </span>
                   <span aria-hidden className="pj-arrow">
-                    ↗
+                    <TriArrow dir="up-right" />
                   </span>
                 </Link>
               </li>
@@ -133,7 +134,7 @@ export function ProjectsStage({
             <Diamond />
             Ver todos os projetos
             <span aria-hidden style={{ color: "#FB3640" }}>
-              →
+              <TriArrow dir="right" />
             </span>
           </Link>
         </div>

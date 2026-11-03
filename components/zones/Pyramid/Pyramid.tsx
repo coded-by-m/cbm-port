@@ -5,6 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import PyramidScene from "./PyramidScene";
 import { CARD_CONTENT, COLORS } from "./config";
 import { usePyramidTimeline } from "./usePyramidTimeline";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 export default function Pyramid() {
   const [activeCard, setActiveCard] = useState(-1);
@@ -92,7 +93,7 @@ export default function Pyramid() {
                   className="mt-6 text-sm uppercase tracking-[0.2em] text-[#FB3640]/90 transition-colors hover:text-[#FB3640]"
                 >
                   Ver projetos{" "}
-                  <span className="ml-1 inline-block animate-pulse">→</span>
+                  <span className="ml-1 inline-block animate-pulse"><TriArrow dir="right" /></span>
                 </button>
               )}
             </div>

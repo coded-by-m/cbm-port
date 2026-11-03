@@ -5,6 +5,7 @@ import { SERVICES } from "@/data/services";
 import { SECTIONS } from "@/data/home";
 import { Diamond, INK, PANCHANG, SATOSHI } from "./shared";
 import { Reveal } from "@/components/ui/Reveal";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 const CARD_CTA: CSSProperties = {
   alignSelf: "flex-start",
@@ -220,7 +221,7 @@ export function ServicesSection() {
                       className="site-link-underline"
                       style={CARD_CTA}
                     >
-                      {s.page.label} <span aria-hidden style={{ color: INK.signal }}>→</span>
+                      {s.page.label} <span aria-hidden style={{ color: INK.signal }}><TriArrow dir="right" /></span>
                     </Link>
                   ) : s.cta ? (
                     <a
@@ -232,7 +233,7 @@ export function ServicesSection() {
                       className="site-link-underline"
                       style={CARD_CTA}
                     >
-                      {s.cta.label} <span aria-hidden style={{ color: INK.signal }}>→</span>
+                      {s.cta.label} <span aria-hidden style={{ color: INK.signal }}><TriArrow dir="right" /></span>
                     </a>
                   ) : null}
                 </div>

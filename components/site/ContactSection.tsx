@@ -8,6 +8,7 @@ import {
 import { PANCHANG, SATOSHI, SECTION } from "./shared";
 import { cbm } from "@/lib/palette";
 import { FillButton } from "@/components/ui/FillButton";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -75,7 +76,7 @@ export function ContactSection() {
             }}
           >
             {INSTAGRAM_HANDLE}
-            <span style={{ color: "#FB3640" }}>↗</span>
+            <span style={{ color: "#FB3640" }}><TriArrow dir="up-right" /></span>
           </a>
         </div>
       </div>

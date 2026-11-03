@@ -8,6 +8,7 @@ import { waLink } from "@/lib/contact";
 import { CARD, FRAGMENT_SLOTS, PROJECT_TYPE_COLOR, SLIDESHOW } from "./config";
 import { CardMeshPlaceholder } from "./CardMeshPlaceholder";
 import SlideshowDots from "./SlideshowDots";
+import { TriArrow } from "@/components/ui/TriArrow";
 
 type Direction = "left" | "right" | null;
 
@@ -383,7 +384,7 @@ export function ProjectCard({
             >
               Ver projeto
               <span aria-hidden style={{ color: "#FB3640" }}>
-                →
+                <TriArrow dir="right" />
               </span>
             </Link>
           )}
