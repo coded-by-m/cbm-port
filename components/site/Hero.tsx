@@ -6,6 +6,7 @@ import { StrokeText } from "@/components/ui/StrokeText";
 import { STROKE_LINE_HEIGHT } from "@/components/ui/strokeMetrics";
 import { HeroLandscape } from "./HeroLandscape";
 import { cbm } from "@/lib/palette";
+import { FillButton } from "@/components/ui/FillButton";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -266,33 +267,16 @@ export function Hero() {
                 {HERO.ctaSecondary}
               </a>
 
-              <a
+              <FillButton
                 href={WA}
                 target="_blank"
-                rel="noopener noreferrer"
+                full
                 data-cm-role="whatsapp"
                 data-cm-id="hero-whatsapp"
-                className="site-cta"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: "clamp(14px,2vh,20px)",
-                  background: "#FB3640",
-                  color: SURFACE.base,
-                  padding: "16px 26px",
-                  fontFamily: PANCHANG,
-                  fontWeight: 700,
-                  fontSize: 12,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  textAlign: "center",
-                  textDecoration: "none",
-                  transition: "background 150ms ease",
-                }}
+                style={{ marginTop: "clamp(14px,2vh,20px)", padding: "16px 26px", fontSize: 12, letterSpacing: "0.14em" }}
               >
                 {HERO.ctaPrimary}
-              </a>
+              </FillButton>
             </div>
           </div>
         </div>

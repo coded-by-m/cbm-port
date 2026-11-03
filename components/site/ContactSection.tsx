@@ -5,8 +5,9 @@ import {
   WHATSAPP_DISPLAY,
   waLink,
 } from "@/lib/contact";
-import { PANCHANG, SATOSHI, SECTION, SURFACE } from "./shared";
+import { PANCHANG, SATOSHI, SECTION } from "./shared";
 import { cbm } from "@/lib/palette";
+import { FillButton } from "@/components/ui/FillButton";
 
 const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
 
@@ -45,30 +46,15 @@ export function ContactSection() {
           {SECTIONS.contato.sub}
         </p>
         <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 20 }}>
-          <a
+          <FillButton
             href={WA}
             target="_blank"
-            rel="noopener noreferrer"
             data-cm-role="whatsapp"
             data-cm-id="contact-whatsapp"
-            className="site-cta"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              background: "#FB3640",
-              color: SURFACE.base,
-              padding: "18px 34px",
-              fontFamily: PANCHANG,
-              fontWeight: 700,
-              fontSize: 14,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              transition: "background 150ms ease",
-            }}
+            style={{ padding: "18px 34px", fontSize: 14, letterSpacing: "0.1em" }}
           >
             {WHATSAPP_DISPLAY}
-          </a>
+          </FillButton>
           <a
             href={INSTAGRAM_URL}
             target="_blank"

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PANCHANG, SATOSHI, SURFACE } from "@/components/site/shared";
 import { waLink } from "@/lib/contact";
+import { FillButton } from "@/components/ui/FillButton";
 
 /**
  * 404 — responde com status 404 (o Next garante) e devolve a pessoa a um
@@ -95,27 +96,16 @@ export default function NotFound() {
               {l.label}
             </Link>
           ))}
-          <a
+          <FillButton
             href={waLink()}
             target="_blank"
-            rel="noopener noreferrer"
+            size="sm"
             data-cm-role="whatsapp"
             data-cm-id="404-whatsapp"
-            className="site-cta"
-            style={{
-              background: "#FB3640",
-              color: SURFACE.base,
-              padding: "14px 24px",
-              fontFamily: PANCHANG,
-              fontWeight: 700,
-              fontSize: 11,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              textDecoration: "none",
-            }}
+            style={{ padding: "14px 24px", letterSpacing: "0.14em" }}
           >
             Falar no WhatsApp
-          </a>
+          </FillButton>
         </nav>
       </div>
     </main>

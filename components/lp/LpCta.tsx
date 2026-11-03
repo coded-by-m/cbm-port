@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { waLink } from "@/lib/contact";
 import { messageWithCampaign, readCampaign } from "@/lib/campaign";
-import { PANCHANG, SURFACE } from "@/components/site/shared";
+import { FillButton } from "@/components/ui/FillButton";
 
 /**
  * O único CTA da landing, em três tamanhos.
@@ -33,36 +33,15 @@ export function LpCta({
     setHref(waLink(messageWithCampaign(message, campaign)));
   }, [message]);
 
-  const pad =
-    size === "lg" ? "22px 44px" : size === "sm" ? "13px 22px" : "18px 32px";
-  const font = size === "lg" ? 15 : size === "sm" ? 11 : 13;
-
   return (
-    <a
+    <FillButton
       href={href}
       target="_blank"
-      rel="noopener noreferrer"
-      className="site-cta"
+      size={size}
       data-cm-role="whatsapp"
       data-cm-id={source}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#FB3640",
-        color: SURFACE.base,
-        padding: pad,
-        fontFamily: PANCHANG,
-        fontWeight: 700,
-        fontSize: font,
-        letterSpacing: "0.12em",
-        textTransform: "uppercase",
-        textAlign: "center",
-        textDecoration: "none",
-        transition: "background 150ms ease",
-      }}
     >
       {label}
-    </a>
+    </FillButton>
   );
 }
