@@ -36,7 +36,7 @@ export function serviceMetadata(page: ServicePageConfig): Metadata {
       url: path,
       title: `${title} · Coded by M`,
       description,
-      images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M — estúdio de web design" }],
+      images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M: estúdio de web design" }],
     },
     twitter: {
       card: "summary_large_image",
@@ -330,7 +330,7 @@ export function ServicePage({ page }: { page: ServicePageConfig }) {
                       {c.preview?.card && (
                         <Image
                           src={c.preview.card}
-                          alt={`${c.title} — ${c.meta.tipo}`}
+                          alt={`${c.title}: ${c.meta.tipo}`}
                           width={760}
                           height={874}
                           sizes="(max-width: 640px) 92vw, (max-width: 1100px) 46vw, 25vw"

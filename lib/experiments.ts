@@ -48,7 +48,7 @@ export const EXPERIMENTS: Experiment[] = [
     title: "Triangle Lines",
     stage: "intro",
     description:
-      "Nós surgem, linhas conectam e os triângulos emergem como consequência. Uma malha triangulada cresce em profundidade e permanece viva — um sistema sendo construído.",
+      "Nós surgem, linhas conectam e os triângulos emergem como consequência. Uma malha triangulada cresce em profundidade e permanece viva: um sistema sendo construído.",
     status: "ready",
   },
   {
@@ -64,7 +64,7 @@ export const EXPERIMENTS: Experiment[] = [
     title: "Opening Sequence",
     stage: "hero",
     description:
-      "Logo CbM se constrói, marca se revela e dissolve na pirâmide triangulada com pontos de conteúdo — abertura cinematográfica do site. Composição de loading + intro + hero.",
+      "Logo CbM se constrói, marca se revela e dissolve na pirâmide triangulada com pontos de conteúdo: abertura cinematográfica do site. Composição de loading + intro + hero.",
     status: "ready",
   },
   {
@@ -72,7 +72,7 @@ export const EXPERIMENTS: Experiment[] = [
     title: "Terrain Mesh",
     stage: "paisagem",
     description:
-      "Malha triangulada procedural com profundidade real, respiração sutil e câmera de observação. Base da Paisagem Digital — apenas o terreno.",
+      "Malha triangulada procedural com profundidade real, respiração sutil e câmera de observação. Base da Paisagem Digital: apenas o terreno.",
     status: "ready",
   },
   {
@@ -80,7 +80,7 @@ export const EXPERIMENTS: Experiment[] = [
     title: "Project Fragments",
     stage: "paisagem",
     description:
-      "Projetos como fragmentos triangulados descobertos sobre o terreno. Hover/toque destaca o fragmento e revela um marcador simples — sem cards, sem grade.",
+      "Projetos como fragmentos triangulados descobertos sobre o terreno. Hover/toque destaca o fragmento e revela um marcador simples, sem cards, sem grade.",
     status: "ready",
   },
   {
@@ -104,7 +104,7 @@ export const EXPERIMENTS: Experiment[] = [
     title: "Problem Section",
     stage: "problema",
     description:
-      "Field de cubos genéricos idênticos — argumento visual do diagnóstico. Conforme o scroll avança, o cubo central perde opacidade e uma torre triangulada com apex vermelho emerge no mesmo lugar.",
+      "Field de cubos genéricos idênticos: argumento visual do diagnóstico. Conforme o scroll avança, o cubo central perde opacidade e uma torre triangulada com apex vermelho emerge no mesmo lugar.",
     status: "ready",
   },
   {
@@ -120,7 +120,7 @@ export const EXPERIMENTS: Experiment[] = [
     title: "About Section",
     stage: "sobre",
     description:
-      "Seção Sobre da Home — humaniza a marca. Símbolo CbM wireframe + manifesto + fundador (Matheus Mendes, Florianópolis) + 3 valores (Precisão · Elegância · Detalhismo). Terrain residual estático, entry-animated.",
+      "Seção Sobre da Home: humaniza a marca. Símbolo CbM wireframe + manifesto + fundador (Matheus Mendes, Florianópolis) + 3 valores (Precisão · Elegância · Detalhismo). Terrain residual estático, entry-animated.",
     status: "ready",
   },
   {
@@ -144,7 +144,7 @@ export const EXPERIMENTS: Experiment[] = [
     title: "Services Section",
     stage: "servicos",
     description:
-      "3 cards expandíveis (acordeon) — Landing Pages, Sites Institucionais, Aplicações Web. Cada um com mini-scene 3D específica + border-draw animation + CTA mailto.",
+      "3 cards expandíveis (acordeon): Landing Pages, Sites Institucionais, Aplicações Web. Cada um com mini-scene 3D específica + border-draw animation + CTA mailto.",
     status: "ready",
   },
 ];

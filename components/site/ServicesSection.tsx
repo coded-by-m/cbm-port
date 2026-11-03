@@ -260,7 +260,7 @@ export function ServicesSection() {
           <Link href="/site-institucional" className="site-inline-link">
             site institucional
           </Link>{" "}
-          a partir de {PUBLIC_PRICE.institucional.display} — o valor final depende do projeto.
+          a partir de {PUBLIC_PRICE.institucional.display}. O valor final depende do projeto.
         </p>
       </div>
     </section>

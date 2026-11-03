@@ -232,7 +232,7 @@ export function ProjectCard({
               <div className="relative aspect-[16/10] w-full overflow-hidden border border-[#F5F2ED]/20">
                 <ImageWithFallback
                   src={project.preview.desktop}
-                  alt={`${project.title} — preview desktop`}
+                  alt={`${project.title}: preview desktop`}
                   fallback={
                     <CardMeshPlaceholder variant="desktop" seed={seed} />
                   }
@@ -256,7 +256,7 @@ export function ProjectCard({
               <div className="relative aspect-[9/16] w-full overflow-hidden border border-[#F5F2ED]/20">
                 <ImageWithFallback
                   src={project.preview.mobile}
-                  alt={`${project.title} — preview mobile`}
+                  alt={`${project.title}: preview mobile`}
                   fallback={
                     <CardMeshPlaceholder variant="mobile" seed={seed + 1} />
                   }

@@ -153,7 +153,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     intro:
       "Crio landing pages com código próprio, pensadas para transformar visitantes em contatos: design exclusivo, carregamento rápido e otimizadas para Google e anúncios. Atendo empresas e profissionais em todo o Brasil, a partir de Florianópolis.",
     summary:
-      "Landing page é uma página única com um objetivo só: pedir orçamento, agendar ou comprar. Faço do zero, sem template, para empresas que anunciam ou precisam transformar visita em contato. Valor e prazo dependem do escopo — você conta o projeto no WhatsApp e recebe a proposta antes de qualquer compromisso.",
+      "Landing page é uma página única com um objetivo só: pedir orçamento, agendar ou comprar. Faço do zero, sem template, para empresas que anunciam ou precisam transformar visita em contato. Valor e prazo dependem do escopo: você conta o projeto no WhatsApp e recebe a proposta antes de qualquer compromisso.",
     includesHeading: "O que está incluso",
     includes: [
       "Estratégia de conversão e copywriting",
@@ -211,7 +211,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     intro:
       "Um site profissional que apresenta sua empresa com clareza, passa confiança e gera contatos. Desenvolvido do zero, com código próprio, foco em velocidade e SEO desde o primeiro dia.",
     summary:
-      "Site institucional é a presença completa da empresa: serviços, história, projetos e contato, em várias páginas. Faço do zero, com código próprio, para empresas que querem ser encontradas no Google e passar confiança. Valor e prazo dependem do escopo — você conta o projeto no WhatsApp e recebe a proposta antes de qualquer compromisso.",
+      "Site institucional é a presença completa da empresa: serviços, história, projetos e contato, em várias páginas. Faço do zero, com código próprio, para empresas que querem ser encontradas no Google e passar confiança. Valor e prazo dependem do escopo: você conta o projeto no WhatsApp e recebe a proposta antes de qualquer compromisso.",
     includesHeading: "O que está incluso",
     includes: [
       "Arquitetura de informação",
@@ -267,22 +267,22 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     },
     h1: "Sites para escritórios de arquitetura e design de interiores",
     intro:
-      "Sites e landing pages para escritórios que projetam espaço — feitos do zero, sem template, com a apresentação que o seu trabalho teria se fosse impresso.",
+      "Sites e landing pages para escritórios que projetam espaço: feitos do zero, sem template, com a apresentação que o seu trabalho teria se fosse impresso.",
     summary:
-      "Um site de arquitetura organiza a obra por projeto, com fotos tratadas e página própria para cada uma, e faz o escritório ser encontrado no Google pelo nome e pela cidade. Faço do zero, para arquitetos e designers de interiores de todo o Brasil. Valor e prazo dependem do escopo — peça a proposta pelo WhatsApp.",
+      "Um site de arquitetura organiza a obra por projeto, com fotos tratadas e página própria para cada uma, e faz o escritório ser encontrado no Google pelo nome e pela cidade. Faço do zero, para arquitetos e designers de interiores de todo o Brasil. Valor e prazo dependem do escopo. Peça a proposta pelo WhatsApp.",
     extraSections: [
       {
         heading: "Por que um portfólio próprio",
         body: [
           "O Instagram é ótimo pra ser lembrado e péssimo pra ser encontrado. Ele não aparece no Google, não organiza sua obra por projeto e não sobrevive ao feed.",
-          "Um site é o único lugar onde o trabalho fica no seu endereço, na sua ordem, pra sempre — e onde quem pesquisa o seu nome encontra o projeto inteiro, não uma foto comprimida.",
+          "Um site é o único lugar onde o trabalho fica no seu endereço, na sua ordem, pra sempre, e onde quem pesquisa o seu nome encontra o projeto inteiro, não uma foto comprimida.",
         ],
       },
       {
         heading: "O que um site de arquitetura precisa ter",
         list: [
           "Uma página por projeto, com a obra contada do conceito ao espaço habitado",
-          "Fotos tratadas em peso e recorte — o que mais estraga site de arquitetura",
+          "Fotos tratadas em peso e recorte: o que mais estraga site de arquitetura",
           "Navegação editorial: a imagem conduz, o texto sustenta",
           "Carregamento rápido mesmo com imagem grande",
           "Contato direto pelo WhatsApp",
@@ -310,7 +310,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       },
       {
         q: "E os meus textos e as minhas fotos?",
-        a: "As fotos são suas e eu trabalho com elas — inclusive tratando peso e recorte. O texto a gente escreve junto: você conta o projeto e eu estruturo a narrativa.",
+        a: "As fotos são suas e eu trabalho com elas, inclusive tratando peso e recorte. O texto a gente escreve junto: você conta o projeto e eu estruturo a narrativa.",
       },
       {
         q: "Vou conseguir publicar projetos novos depois?",

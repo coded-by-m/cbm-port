@@ -6,7 +6,7 @@ import { ProseShell, PROSE_H1, PROSE_H2, PROSE_P } from "@/components/prose/Pros
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, graph, webPageSchema } from "@/lib/seo";
 
-const TITLE = "Blog — sites, landing pages e presença digital";
+const TITLE = "Blog: sites, landing pages e presença digital";
 const DESCRIPTION =
   "Artigos da Coded by M sobre criação de sites e landing pages: preço, escolha do formato e o que cada projeto precisa ter.";
 

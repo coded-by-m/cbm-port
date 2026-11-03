@@ -1158,7 +1158,7 @@ function LabPageHeader() {
               key={label}
               className={`border px-3 py-1 font-body text-[8px] uppercase tracking-[0.25em] ${STATUS_STYLE[status]}`}
             >
-              {label} — {STATUS_TEXT[status]}
+              {label}: {STATUS_TEXT[status]}
             </span>
           ))}
         </div>
@@ -1217,7 +1217,7 @@ export default function UILabPage() {
       <LabPageHeader />
 
       {/* ── 01 BRAND TOKENS ────────────────────────────────────────────────── */}
-      <SectionBlock id="brand-tokens" label="01 — Brand Tokens" title="Tokens de Marca">
+      <SectionBlock id="brand-tokens" label="01: Brand Tokens" title="Tokens de Marca">
 
         {/* Color palette */}
         <div className="mb-16">
@@ -1240,7 +1240,7 @@ export default function UILabPage() {
 
         {/* Typography scale */}
         <div className="mb-16">
-          <CLabel>Escala Tipográfica — V1</CLabel>
+          <CLabel>Escala Tipográfica: V1</CLabel>
           <PreviewBox>
             <div className="flex flex-col gap-6">
               {TYPE_SCALE.map((entry) => (
@@ -1276,18 +1276,18 @@ export default function UILabPage() {
 
         {/* Typography comparison V1 × V2 */}
         <div>
-          <CLabel>Tipografia — V1 × V2</CLabel>
+          <CLabel>Tipografia: V1 × V2</CLabel>
           <div className="overflow-hidden border border-cbm-gray-800">
             <div className="grid grid-cols-[72px_1fr_1fr] border-b border-cbm-gray-800">
               <div className="border-r border-cbm-gray-800 px-4 py-3" />
               <div className="border-r border-cbm-gray-800 px-6 py-3">
                 <p className="font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-600">
-                  V1 — Panchang Display · H1 · H2 · H3 · UI
+                  V1: Panchang Display · H1 · H2 · H3 · UI
                 </p>
               </div>
               <div className="px-6 py-3">
                 <p className="font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-400">
-                  V2 — Panchang Display · H1 · H2 · UI · Satoshi H3
+                  V2: Panchang Display · H1 · H2 · UI · Satoshi H3
                 </p>
               </div>
             </div>
@@ -1324,19 +1324,19 @@ export default function UILabPage() {
       </SectionBlock>
 
       {/* ── 02 NAVBAR SYSTEM ───────────────────────────────────────────────── */}
-      <SectionBlock id="navbar" label="02 — Navbar System" title="Navbar">
+      <SectionBlock id="navbar" label="02: Navbar System" title="Navbar">
         <p className="mb-10 max-w-[480px] font-body text-[13px] font-light leading-[1.75] text-cbm-gray-600">
           Transição de 96px (default) para 72px (scrolled). Logo, links centralizados e CTA Primary no extremo direito.
         </p>
         <div className="flex flex-col gap-8">
           <div>
-            <CLabel>Default — 96px · logo 40px</CLabel>
+            <CLabel>Default: 96px · logo 40px</CLabel>
             <div className="px-12 py-16" style={{ background: "#030403" }}>
               <NavbarPreview scrolled={false} />
             </div>
           </div>
           <div>
-            <CLabel>Scrolled — 72px · logo 30px</CLabel>
+            <CLabel>Scrolled: 72px · logo 30px</CLabel>
             <div className="px-12 py-16" style={{ background: "#030403" }}>
               <NavbarPreview scrolled={true} />
             </div>
@@ -1345,7 +1345,7 @@ export default function UILabPage() {
       </SectionBlock>
 
       {/* ── 03 BUTTON SYSTEM V1 ────────────────────────────────────────────── */}
-      <SectionBlock id="buttons" label="03 — Button System" title="Sistema de Botões — V1">
+      <SectionBlock id="buttons" label="03: Button System" title="Sistema de Botões: V1">
 
         {/* System info bar */}
         <div className="mb-12 flex items-start justify-between gap-8">
@@ -1363,7 +1363,7 @@ export default function UILabPage() {
           {/* ── Primary */}
           <div>
             <div className="mb-4">
-              <CLabel>Primary — Ação principal · Panchang 600 · bg-cbm-red</CLabel>
+              <CLabel>Primary: Ação principal · Panchang 600 · bg-cbm-red</CLabel>
               <p className="font-body text-[11px] font-light leading-[1.7] text-cbm-gray-600 max-w-[520px]">
                 Único elemento vermelho por viewport. A seta desloca +2px no hover.
                 O tracking abre de 0.15em para 0.18em. Pressed comprime 2%.
@@ -1390,7 +1390,7 @@ export default function UILabPage() {
           {/* ── Secondary */}
           <div>
             <div className="mb-4">
-              <CLabel>Secondary — Navegação secundária · Panchang 600 · border-only</CLabel>
+              <CLabel>Secondary: Navegação secundária · Panchang 600 · border-only</CLabel>
               <p className="font-body text-[11px] font-light leading-[1.7] text-cbm-gray-600 max-w-[520px]">
                 Borda como estrutura, não decoração. Default recua em opacidade. Hover sobe para presença total.
               </p>
@@ -1416,7 +1416,7 @@ export default function UILabPage() {
           {/* ── Text Link CTA */}
           <div>
             <div className="mb-4">
-              <CLabel>Text Link CTA — O mais elegante do sistema · tipografia + linha</CLabel>
+              <CLabel>Text Link CTA: O mais elegante do sistema · tipografia + linha</CLabel>
               <p className="font-body text-[11px] font-light leading-[1.7] text-cbm-gray-600 max-w-[520px]">
                 Sem caixa, sem borda. Linha vermelha desliza da esquerda em 350ms ease-out. Seta avança 2px.
               </p>
@@ -1436,7 +1436,7 @@ export default function UILabPage() {
           {/* ── Ghost */}
           <div>
             <div className="mb-4">
-              <CLabel>Ghost — Ações discretas · tipografia apenas · opacidade como hierarquia</CLabel>
+              <CLabel>Ghost: Ações discretas · tipografia apenas · opacidade como hierarquia</CLabel>
               <p className="font-body text-[11px] font-light leading-[1.7] text-cbm-gray-600 max-w-[520px]">
                 Mínimo absoluto. Default quase invisível. Hover revela completamente. Para exploração, não conversão.
               </p>
@@ -1461,7 +1461,7 @@ export default function UILabPage() {
 
           {/* ── Usage table */}
           <div>
-            <CLabel>Hierarquia de Uso — onde cada botão pertence</CLabel>
+            <CLabel>Hierarquia de Uso: onde cada botão pertence</CLabel>
             <div className="overflow-hidden border border-cbm-gray-800">
               <div className="grid grid-cols-[160px_1fr_1fr_1fr_1fr] border-b border-cbm-gray-800">
                 <div className="border-r border-cbm-gray-800 px-5 py-3">
@@ -1474,12 +1474,12 @@ export default function UILabPage() {
                 ))}
               </div>
               {[
-                { surface: "Hero",             p: "✦ Principal", s: "Secundário", l: "—",        g: "—"        },
-                { surface: "CTA Final",        p: "✦ Único",     s: "—",          l: "—",        g: "—"        },
-                { surface: "Paisagem Digital", p: "—",           s: "—",          l: "—",        g: "✦ Hint"   },
-                { surface: "Cards",            p: "—",           s: "—",          l: "✦ CTA",    g: "—"        },
-                { surface: "Cases",            p: "—",           s: "—",          l: "✦ Estudo", g: "Explorar" },
-                { surface: "Navbar",           p: "✦ Iniciar",   s: "—",          l: "—",        g: "✦ Links"  },
+                { surface: "Hero",             p: "✦ Principal", s: "Secundário", l: ".",        g: "."        },
+                { surface: "CTA Final",        p: "✦ Único",     s: ".",          l: ".",        g: "."        },
+                { surface: "Paisagem Digital", p: ".",           s: ".",          l: ".",        g: "✦ Hint"   },
+                { surface: "Cards",            p: ".",           s: ".",          l: "✦ CTA",    g: "."        },
+                { surface: "Cases",            p: ".",           s: ".",          l: "✦ Estudo", g: "Explorar" },
+                { surface: "Navbar",           p: "✦ Iniciar",   s: ".",          l: ".",        g: "✦ Links"  },
               ].map(({ surface, p, s, l, g }) => (
                 <div key={surface} className="grid grid-cols-[160px_1fr_1fr_1fr_1fr] border-b border-cbm-gray-800 last:border-0">
                   <div className="border-r border-cbm-gray-800 px-5 py-4">
@@ -1487,7 +1487,7 @@ export default function UILabPage() {
                   </div>
                   {[p, s, l, g].map((v, i) => (
                     <div key={i} className="border-r border-cbm-gray-800 last:border-0 px-5 py-4">
-                      <p className={`font-body text-[10px] ${v.startsWith("✦") ? "font-medium text-cbm-red/80" : v === "—" ? "text-cbm-gray-800" : "text-cbm-gray-400"}`}>
+                      <p className={`font-body text-[10px] ${v.startsWith("✦") ? "font-medium text-cbm-red/80" : v === "." ? "text-cbm-gray-800" : "text-cbm-gray-400"}`}>
                         {v}
                       </p>
                     </div>
@@ -1505,7 +1505,7 @@ export default function UILabPage() {
       </SectionBlock>
 
       {/* ── 04 PROJECT OVERLAY V1 ──────────────────────────────────────────── */}
-      <SectionBlock id="overlay-v1" label="04 — Project Overlay" title="Project Overlay System — V1">
+      <SectionBlock id="overlay-v1" label="04: Project Overlay" title="Project Overlay System: V1">
 
         {/* ── Hero: 2 colunas — info esquerda + preview direita */}
         <div className="mb-0 overflow-hidden border border-cbm-gray-800">
@@ -1526,7 +1526,7 @@ export default function UILabPage() {
                   {[
                     "Um overlay ativo por vez",
                     "Não é card de grade",
-                    "CTA: Text Link — nunca Primary",
+                    "CTA: Text Link, nunca Primary",
                     "Descrição máxima 2 linhas",
                     "Mobile: bottom sheet",
                   ].map((r) => (
@@ -1590,7 +1590,7 @@ export default function UILabPage() {
         <div className="mt-0 border border-t-0 border-cbm-gray-800">
           <div className="border-b border-cbm-gray-800 px-6 py-3">
             <p className="font-body text-[8px] uppercase tracking-[0.3em] text-cbm-gray-600">
-              Variações — Left · Right · Compact · Mobile
+              Variações: Left · Right · Compact · Mobile
             </p>
           </div>
           <div className="grid grid-cols-4">
@@ -1598,7 +1598,7 @@ export default function UILabPage() {
               { v: "left"    as OverlayVariant, label: "Left",    note: "Projeto ativo à direita",        justify: "justify-start" },
               { v: "right"   as OverlayVariant, label: "Right",   note: "Projeto ativo à esquerda",       justify: "justify-end"   },
               { v: "compact" as OverlayVariant, label: "Compact", note: "Cena com pouco espaço",          justify: "justify-start" },
-              { v: "mobile"  as OverlayVariant, label: "Mobile",  note: "Bottom sheet — telas pequenas",  justify: "justify-start" },
+              { v: "mobile"  as OverlayVariant, label: "Mobile",  note: "Bottom sheet: telas pequenas",  justify: "justify-start" },
             ]).map(({ v, label, note, justify }, i) => (
               <div
                 key={v}
@@ -1713,7 +1713,7 @@ export default function UILabPage() {
                   {[
                     { path: "components/project/ProjectOverlay.tsx",       note: "Left, Right, Compact via prop variant"     },
                     { path: "components/project/ProjectOverlayMobile.tsx", note: "Bottom sheet com swipe gesture"             },
-                    { path: "components/project/ProjectMeta.tsx",          note: "Grade de meta — reutilizável"               },
+                    { path: "components/project/ProjectMeta.tsx",          note: "Grade de meta: reutilizável"               },
                     { path: "hooks/useOverlayProjection.ts",               note: "3D→2D via useFrame sem re-render a 60fps"   },
                   ].map(({ path, note }) => (
                     <div key={path}>
@@ -1731,7 +1731,7 @@ export default function UILabPage() {
       </SectionBlock>
 
       {/* ── 05 PLAYGROUND ──────────────────────────────────────────────────── */}
-      <SectionBlock id="playground" label="05 — Playground" title="Components">
+      <SectionBlock id="playground" label="05: Playground" title="Components">
         <p className="mb-12 max-w-[480px] font-body text-[13px] font-light leading-[1.75] text-cbm-gray-600">
           Componentes em desenvolvimento. Estrutura definida, testada em contexto. Prontos para exportação individual.
         </p>
@@ -1745,7 +1745,7 @@ export default function UILabPage() {
             </div>
             <div className="flex flex-col gap-12">
               <div>
-                <CLabel>Project Card — bg-cbm-forest · w-52</CLabel>
+                <CLabel>Project Card: bg-cbm-forest · w-52</CLabel>
                 <PreviewBox>
                   <div className="flex flex-wrap gap-10">
                     <div><StateLabel>Default</StateLabel><ProjectCard /></div>
@@ -1754,7 +1754,7 @@ export default function UILabPage() {
                 </PreviewBox>
               </div>
               <div>
-                <CLabel>Service Card — transparent · border-cbm-border · hover: border-active</CLabel>
+                <CLabel>Service Card: transparent · border-cbm-border · hover: border-active</CLabel>
                 <PreviewBox>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     <div><StateLabel>Default</StateLabel><ServiceCard /></div>
@@ -1764,7 +1764,7 @@ export default function UILabPage() {
                 </PreviewBox>
               </div>
               <div>
-                <CLabel>Process Card — número decorativo · Panchang · Satoshi body-sm</CLabel>
+                <CLabel>Process Card: número decorativo · Panchang · Satoshi body-sm</CLabel>
                 <PreviewBox>
                   <div className="flex flex-wrap gap-12">
                     {PROCESS_STEPS.map((s) => (
@@ -1774,7 +1774,7 @@ export default function UILabPage() {
                 </PreviewBox>
               </div>
               <div>
-                <CLabel>Lab Card — thumbnail · hover: scale-[1.02] + border-active</CLabel>
+                <CLabel>Lab Card: thumbnail · hover: scale-[1.02] + border-active</CLabel>
                 <PreviewBox>
                   <div className="flex flex-wrap gap-8">
                     <div><StateLabel>Default</StateLabel><LabCard /></div>
@@ -1793,7 +1793,7 @@ export default function UILabPage() {
             </div>
             <div className="flex flex-col gap-10">
               <div>
-                <CLabel>Mobile Panel — fixed bottom · slide-up (translateY)</CLabel>
+                <CLabel>Mobile Panel: fixed bottom · slide-up (translateY)</CLabel>
                 <PreviewBox bg="bg-cbm-black" className="relative min-h-[200px]">
                   <div className="flex items-end justify-start pt-20">
                     <ProjectOverlay />
@@ -1801,7 +1801,7 @@ export default function UILabPage() {
                 </PreviewBox>
               </div>
               <div>
-                <CLabel>Connector — SVG · stroke rgba(251,54,64,0.5) · dot cbm-red · desktop only</CLabel>
+                <CLabel>Connector: SVG · stroke rgba(251,54,64,0.5) · dot cbm-red · desktop only</CLabel>
                 <ConnectorPreview />
               </div>
             </div>
@@ -1815,8 +1815,8 @@ export default function UILabPage() {
             <PreviewBox>
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
                 <InputField label="Nome" placeholder="Seu nome completo" state="default" />
-                <InputField label="Email — Focus" placeholder="seu@email.com" state="focus" />
-                <InputField label="Empresa — Error" placeholder="Nome da empresa" state="error" />
+                <InputField label="Email: Focus" placeholder="seu@email.com" state="focus" />
+                <InputField label="Empresa: Error" placeholder="Nome da empresa" state="error" />
               </div>
               <div className="mt-8 max-w-sm">
                 <TextareaField />
@@ -1872,7 +1872,7 @@ export default function UILabPage() {
       </SectionBlock>
 
       {/* ── 06 CASE SYSTEM ───────────────────────────────────────────────────── */}
-      <SectionBlock id="case-system" label="06 — Case System" title="Case System — V1">
+      <SectionBlock id="case-system" label="06: Case System" title="Case System: V1">
 
         <p className="mb-12 max-w-[480px] font-body text-[13px] font-light leading-[1.75] text-cbm-gray-600">
           Destino final dos projetos da Paisagem Digital. Rota{" "}
@@ -1884,7 +1884,7 @@ export default function UILabPage() {
 
           {/* ── Case Hero */}
           <div>
-            <CLabel>Case Hero V1 — Split 50/50 · collage 5 painéis · Project Facts</CLabel>
+            <CLabel>Case Hero V1: Split 50/50 · collage 5 painéis · Project Facts</CLabel>
             <div style={{ border: "1px solid rgba(245,242,237,0.07)" }}>
               {(() => {
                 const project = getCaseBySlug("machado-plataformas");
@@ -1896,7 +1896,7 @@ export default function UILabPage() {
 
           {/* ── Overview */}
           <div>
-            <CLabel>Case Overview — texto editorial + bloco de desafio</CLabel>
+            <CLabel>Case Overview: texto editorial + bloco de desafio</CLabel>
             <div style={{ border: "1px solid rgba(245,242,237,0.07)" }}>
               {(() => {
                 const project = getCaseBySlug("machado-plataformas");
@@ -1908,7 +1908,7 @@ export default function UILabPage() {
 
           {/* ── Gallery */}
           <div>
-            <CLabel>Case Screens — grade de telas</CLabel>
+            <CLabel>Case Screens: grade de telas</CLabel>
             <div style={{ border: "1px solid rgba(245,242,237,0.07)" }}>
               {(() => {
                 const project = getCaseBySlug("machado-plataformas");
@@ -1920,7 +1920,7 @@ export default function UILabPage() {
 
           {/* ── Return CTA */}
           <div>
-            <CLabel>Case Return CTA — volta à Paisagem Digital</CLabel>
+            <CLabel>Case Return CTA: volta à Paisagem Digital</CLabel>
             <div style={{ border: "1px solid rgba(245,242,237,0.07)" }}>
               <CaseReturnCTA />
             </div>
@@ -1933,7 +1933,7 @@ export default function UILabPage() {
       <footer className="border-t border-cbm-gray-800 py-8">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between px-6 sm:px-10">
           <p className="font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-600">
-            Coded by M — UI Lab
+            Coded by M: UI Lab
           </p>
           <p className="font-body text-[9px] uppercase tracking-[0.3em] text-cbm-gray-600">
             Button System V1 · 2026

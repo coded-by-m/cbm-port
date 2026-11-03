@@ -22,7 +22,7 @@ export const ABOUT = {
      * wireframe, que é o estado atual.
      */
     photo: undefined as string | undefined,
-    bio: "Formado em Análise e Desenvolvimento de Sistemas, encontrei no web design o ponto onde técnica e estética se encontram. A Coded by M é onde levo isso a sério — cada projeto, uma busca por uma presença digital tão boa quanto a empresa por trás dela.",
+    bio: "Formado em Análise e Desenvolvimento de Sistemas, encontrei no web design o ponto onde técnica e estética se encontram. A Coded by M é onde levo isso a sério: cada projeto, uma busca por uma presença digital tão boa quanto a empresa por trás dela.",
   },
   location: "Florianópolis, Brasil",
 } as const;
