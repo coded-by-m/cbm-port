@@ -24,6 +24,9 @@ const INSTITUCIONAL_PRAZO = "a partir de 15 dias úteis";
 
 export const CALC_ESCOPO = "O valor final depende do escopo.";
 
+/** O artigo já publica hospedagem e domínio no valor, para os dois tipos. */
+export const CALC_INCLUSO = "Hospedagem e domínio inclusos";
+
 export const CALC_DESCRIPTION = `Landing page ${LANDING_PRECO} e ${LANDING_PRAZO}. Site institucional ${INSTITUCIONAL_PRECO} e ${INSTITUCIONAL_PRAZO}. ${CALC_ESCOPO}`;
 
 export const CALC_TIPOS = [
@@ -43,10 +46,13 @@ export const CALC_TIPOS = [
 
 export type CalculadoraTipo = (typeof CALC_TIPOS)[number]["id"];
 
-/** Único extra. Sem valor publicado. */
-export const CALC_PLANO_LABEL = "Plano mensal de manutenção e hospedagem";
+/**
+ * Único extra, sem preço. A frase corrida fica em minúscula.
+ * O rótulo do campo usa a mesma frase com inicial maiúscula.
+ */
+export const CALC_PLANO_FRASE = "plano mensal de suporte e atualizações (opcional, sem preço)";
 
-export const CALC_PLANO_NOTA = "Sem preço nesta página. Opcional.";
+export const CALC_PLANO_LABEL = `P${CALC_PLANO_FRASE.slice(1)}`;
 
 export const CALC_FAQ: FaqItem[] = [
   {
@@ -63,7 +69,7 @@ export const CALC_FAQ: FaqItem[] = [
   },
   {
     q: "O plano mensal tem preço?",
-    a: `Não. O ${CALC_PLANO_LABEL.toLowerCase()} entra na calculadora sem preço. Ele é opcional e o valor depende do serviço.`,
+    a: `Não. O ${CALC_PLANO_FRASE} não muda a faixa. O valor desse plano depende do serviço.`,
   },
   {
     q: "As escolhas ficam salvas?",
@@ -81,11 +87,9 @@ export function calculatorMessage(input: {
   const linhas = [
     "Olá! Vim pela calculadora de preço de site da Coded by M.",
     tipo
-      ? `Tipo: ${tipo.label}. Faixa: ${tipo.preco} e ${tipo.prazo}.`
+      ? `Tipo: ${tipo.label}. Faixa: ${tipo.preco} e ${tipo.prazo}. ${CALC_INCLUSO}.`
       : "Tipo: ainda não escolhi entre landing page e site institucional.",
-    input.plano
-      ? `${CALC_PLANO_LABEL}: quero incluir. Sem preço na calculadora.`
-      : `${CALC_PLANO_LABEL}: não.`,
+    input.plano ? `${CALC_PLANO_LABEL}: quero incluir.` : `${CALC_PLANO_LABEL}: não.`,
   ];
   const detalhes = input.detalhes.trim();
   if (detalhes) linhas.push(`Detalhes: ${detalhes}`);

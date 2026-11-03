@@ -1001,6 +1001,7 @@ body:has(.site-home) {
   outline: 2px solid #fb3640;
   outline-offset: 2px;
 }
+.calc-field::placeholder { color: #7e7a74; }
 .calc-result {
   margin-top: 22px;
   padding: 18px 18px 20px;

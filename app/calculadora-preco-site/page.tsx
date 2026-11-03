@@ -7,8 +7,9 @@ import {
   CALC_ESCOPO,
   CALC_FAQ,
   CALC_H1,
+  CALC_INCLUSO,
   CALC_PATH,
-  CALC_PLANO_LABEL,
+  CALC_PLANO_FRASE,
   CALC_TIPOS,
   CALC_TITLE,
 } from "@/data/calculadoraPreco";
@@ -118,13 +119,13 @@ export default function CalculadoraPrecoPage() {
           {CALC_TIPOS.map((tipo) => (
             <li key={tipo.id} style={{ marginTop: 8 }}>
               <strong style={{ color: "#F5F2ED", fontWeight: 600 }}>{tipo.label}:</strong>{" "}
-              {tipo.preco} e {tipo.prazo}.
+              {tipo.preco} e {tipo.prazo}. {CALC_INCLUSO}.
             </li>
           ))}
         </ul>
         <p style={PROSE_P}>{CALC_ESCOPO}</p>
         <p style={PROSE_P}>
-          {`O único extra é um ${CALC_PLANO_LABEL.toLowerCase()}, sem preço. Marque se quiser incluí-lo na mensagem.`}
+          {`O único extra é um ${CALC_PLANO_FRASE}. Marque se quiser incluí-lo na mensagem.`}
         </p>
         <p style={PROSE_P}>
           {"A tabela completa, com o que muda o preço, está no artigo "}

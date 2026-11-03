@@ -177,8 +177,8 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     projectsHeading: "Landing pages no ar",
     faq: [
       { q: "Quanto custa uma landing page?", a: LANDING_PRECO },
-      { q: "Em quanto tempo fica pronta?", a: "PREENCHER — prazo típico de uma landing page." },
-      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER — o que entra na entrega e o que fica por conta do cliente." },
+      { q: "Em quanto tempo fica pronta?", a: "PREENCHER: prazo típico de uma landing page." },
+      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER: o que entra na entrega e o que fica por conta do cliente." },
       ATENDE_BRASIL,
       {
         q: "Posso editar o conteúdo depois?",
@@ -235,13 +235,13 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     projectsHeading: "Sites institucionais no ar",
     faq: [
       { q: "Quanto custa um site institucional?", a: INSTITUCIONAL_PRECO },
-      { q: "Qual o prazo de entrega?", a: "PREENCHER — prazo típico de um site institucional." },
+      { q: "Qual o prazo de entrega?", a: "PREENCHER: prazo típico de um site institucional." },
       {
         q: "Quantas páginas o site tem?",
         a: "Normalmente entre 5 e 12, definidas na etapa de estratégia a partir do que a empresa precisa apresentar.",
       },
-      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER — o que entra na entrega e o que fica por conta do cliente." },
-      { q: "Como funciona a manutenção depois da entrega?", a: "PREENCHER — suporte, ajustes e evolução após a publicação." },
+      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER: o que entra na entrega e o que fica por conta do cliente." },
+      { q: "Como funciona a manutenção depois da entrega?", a: "PREENCHER: suporte, ajustes e evolução após a publicação." },
       ATENDE_BRASIL,
       {
         q: "Landing page ou site institucional: qual escolher?",

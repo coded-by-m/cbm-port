@@ -4,8 +4,8 @@ import { useId, useState } from "react";
 import Link from "next/link";
 import {
   CALC_ESCOPO,
+  CALC_INCLUSO,
   CALC_PLANO_LABEL,
-  CALC_PLANO_NOTA,
   CALC_TIPOS,
   calculatorMessage,
   type CalculadoraTipo,
@@ -41,7 +41,6 @@ const HELP: React.CSSProperties = {
 export function CalculadoraForm() {
   const baseId = useId();
   const detalhesId = `${baseId}-detalhes`;
-  const planoNotaId = `${baseId}-plano-nota`;
   const [tipo, setTipo] = useState<CalculadoraTipo | null>(null);
   const [plano, setPlano] = useState(false);
   const [detalhes, setDetalhes] = useState("");
@@ -75,15 +74,9 @@ export function CalculadoraForm() {
           <input
             type="checkbox"
             checked={plano}
-            aria-describedby={planoNotaId}
             onChange={(event) => setPlano(event.target.checked)}
           />
-          <span>
-            {CALC_PLANO_LABEL}
-            <span id={planoNotaId} style={{ ...HELP, display: "block" }}>
-              {CALC_PLANO_NOTA}
-            </span>
-          </span>
+          <span>{CALC_PLANO_LABEL}</span>
         </label>
       </div>
 
@@ -97,6 +90,7 @@ export function CalculadoraForm() {
           rows={4}
           maxLength={1000}
           autoComplete="off"
+          placeholder="Ex.: conte o que mais o seu site precisa"
           value={detalhes}
           onChange={(event) => setDetalhes(event.target.value)}
         />
@@ -129,6 +123,17 @@ export function CalculadoraForm() {
               }}
             >
               {escolhido.prazo}
+            </p>
+            <p
+              style={{
+                margin: "8px 0 0",
+                fontFamily: SATOSHI,
+                fontWeight: 500,
+                fontSize: 16,
+                color: "#E8E4DE",
+              }}
+            >
+              {CALC_INCLUSO}
             </p>
             <p style={{ ...HELP, color: "#E8E4DE" }}>{CALC_ESCOPO}</p>
           </>
