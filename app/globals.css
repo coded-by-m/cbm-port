@@ -323,24 +323,22 @@ body:has(.site-home) {
   .site-header-word { display: none; }
 }
 
-/* ===== Escala de capacidades =====
-   Linha: rotulo | losangos | numero. A coluna do rotulo tem teto (420px) pra
-   os losangos de todas as linhas comecarem no mesmo x — e e esse alinhamento
-   que faz a escala ser comparavel de uma linha pra outra.
+/* ===== O que entra em cada projeto =====
+   Linha: rotulo | o que o cliente recebe. Sem nota nem escala: um fato por
+   linha. A coluna do rotulo tem teto (420px) pra as descricoes comecarem no
+   mesmo x.
 
-   Aqui as classes carregam SO transform/opacity/transicao; tipografia e cor de
-   texto continuam inline no componente, como no resto do site. A divisao nao e
-   estetica: transform inline e regra de :hover brigariam pelo mesmo valor, e o
-   inline sempre ganharia. */
+   As classes carregam SO transform/opacity/transicao; tipografia e cor de
+   texto ficam inline no componente, como no resto do site. */
 .site-scale { margin: 0; padding: 0; list-style: none; }
 
 .site-scale-row {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(180px, 420px) 1fr 64px;
-  align-items: center;
+  grid-template-columns: minmax(180px, 420px) 1fr;
+  align-items: baseline;
   gap: clamp(20px, 3vw, 48px);
-  padding: clamp(18px, 2.4vh, 26px) 0;
+  padding: clamp(20px, 2.8vh, 30px) 0;
 }
 
 /* A regua se desenha da esquerda, o mesmo gesto das outras reguas do site.
@@ -364,108 +362,29 @@ body:has(.site-home) {
 }
 .is-shown .site-scale-rule { transform: scaleX(1); }
 
-/* O rotulo entra atras da propria regua. */
-.site-scale-label {
+/* Rotulo e descricao entram atras da propria regua. */
+.site-scale-label,
+.site-scale-desc {
   display: block;
   opacity: 0;
   transform: translateX(-16px);
   transition: opacity 600ms ease-out var(--row-d, 0ms),
     transform 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--row-d, 0ms);
 }
-.is-shown .site-scale-label { opacity: 1; transform: translateX(0); }
+.site-scale-desc { transition-delay: calc(var(--row-d, 0ms) + 90ms); }
+.is-shown .site-scale-label,
+.is-shown .site-scale-desc { opacity: 1; transform: translateX(0); }
 
-.site-scale-marks {
-  display: flex;
-  align-items: center;
-  gap: clamp(8px, 1.2vw, 14px);
-}
-
-/* Camada de fora: giro e escala da entrada, escalonados por --d. */
-.site-scale-mark {
-  display: block;
-  width: 9px;
-  height: 9px;
-  flex: none;
-  transform: rotate(45deg) scale(0.3);
-  opacity: 0;
-  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms),
-    opacity 280ms ease-out var(--d, 0ms);
-}
-.site-scale-mark[data-on="false"] { transform: rotate(45deg) scale(1); opacity: 1; }
-.is-shown .site-scale-mark { transform: rotate(45deg) scale(1); opacity: 1; }
-
-/* Camada de dentro: o desenho e a reacao ao cursor. */
-.site-scale-mark-in {
-  display: block;
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 300ms ease;
-}
-.site-scale-mark[data-on="true"] > .site-scale-mark-in { background: #fb3640; }
-.site-scale-mark[data-on="false"] > .site-scale-mark-in {
-  border: 1px solid rgba(245, 242, 237, 0.3);
-}
-
-/* A cor mora aqui, nao inline: o :hover precisa troca-la, e estilo inline
-   ganha de regra de folha sempre. */
-.site-scale-value {
-  display: block;
-  text-align: right;
-  color: #f5f2ed;
-  opacity: 0;
-  transition: opacity 500ms ease-out
-    calc(var(--row-d, 0ms) + 120ms), color 260ms ease;
-}
-.is-shown .site-scale-value { opacity: 1; }
-
-/* Assentado: os atrasos da entrada zeram. Sem isso o hover herdaria ate meio
-   segundo de espera e a linha responderia ao cursor depois do fato. */
-.is-settled .site-scale-rule,
-.is-settled .site-scale-label,
-.is-settled .site-scale-mark,
-.is-settled .site-scale-value { transition-delay: 0ms; }
-
-/* Hover da linha: a regua acende, o rotulo avanca e os losangos cheios incham
-   em onda, da esquerda pra direita. A onda so existe na ida — na volta todos
-   assentam juntos, que e o que faz o gesto ler como resposta e nao como loop. */
 .site-scale-row:hover .site-scale-rule { background: rgba(245, 242, 237, 0.34); }
-.site-scale-row:hover .site-scale-label { transform: translateX(5px); }
-.site-scale-row:hover .site-scale-value { color: #fb3640; }
-.site-scale-row:hover .site-scale-mark[data-on="true"] > .site-scale-mark-in {
-  transform: scale(1.28);
-  transition-delay: calc(var(--i, 0) * 26ms);
-}
-.site-scale-row:hover .site-scale-mark[data-on="false"] > .site-scale-mark-in {
-  border-color: rgba(245, 242, 237, 0.5);
-}
 
-/* Estreito demais pras tres colunas: os losangos descem pra propria fileira e
-   ocupam a largura toda, com o rotulo e o numero dividindo a de cima. */
 @media (max-width: 760px) {
-  .site-scale-row {
-    grid-template-columns: 1fr auto;
-    gap: 12px 16px;
-  }
-  /* Posicao explicita, senao os losangos (que ocupam as duas colunas) empurram
-     o numero pra uma terceira fileira em vez de dividir a primeira com o
-     rotulo. */
-  .site-scale-label { grid-area: 1 / 1; }
-  .site-scale-value { grid-area: 1 / 2; }
-  .site-scale-marks { grid-area: 2 / 1 / 3 / -1; }
+  .site-scale-row { grid-template-columns: 1fr; gap: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .site-scale-rule,
   .site-scale-label,
-  .site-scale-mark,
-  .site-scale-mark-in,
-  .site-scale-value { transition: none; }
-  .site-scale-row:hover .site-scale-label { transform: none; }
-  .site-scale-row:hover .site-scale-mark[data-on="true"] > .site-scale-mark-in {
-    transform: none;
-  }
+  .site-scale-desc { transition: none; }
 }
 
 /* A palavra do hero se monta letra a letra. Só transform e opacity, e o
@@ -946,4 +865,19 @@ body:has(.site-home) {
 }
 @media (prefers-reduced-motion: reduce) {
   .fill-btn, .fill-btn * { transition-duration: 1ms !important; transition-delay: 0ms !important; }
+}
+
+/* ── TriText: o título se revela pela malha (components/ui/TriText.tsx) ── */
+.tri-text__cell { opacity: 0; transition: opacity 280ms cubic-bezier(0.22, 1, 0.36, 1); }
+.tri-text.is-on .tri-text__cell { opacity: 1; }
+.tri-text__lines path { opacity: 0; }
+.tri-text.is-on .tri-text__lines path { animation: tri-flash 760ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes tri-flash {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tri-text__cell { transition: none !important; }
+  .tri-text.is-on .tri-text__lines path { animation: none; }
 }

@@ -1,8 +1,8 @@
 import { Fragment } from "react";
-import { AVAILABILITY, HERO } from "@/data/home";
+import { HERO } from "@/data/home";
 import { waLink } from "@/lib/contact";
-import { Diamond, PANCHANG, SATOSHI, SURFACE, TriangleMark } from "./shared";
-import { StrokeText } from "@/components/ui/StrokeText";
+import { PANCHANG, SATOSHI, SURFACE, TriangleMark } from "./shared";
+import { TriText } from "@/components/ui/TriText";
 import { STROKE_LINE_HEIGHT } from "@/components/ui/strokeMetrics";
 import { HeroLandscape } from "./HeroLandscape";
 import { cbm } from "@/lib/palette";
@@ -138,13 +138,10 @@ export function Hero() {
                   ...enter(0.16),
                 }}
               >
-                {/* A marca se desenha. Uma instância por linha, encadeadas
-                    pelo `delay`, com a caixa vertical fixa do StrokeText pra
-                    as duas saírem no mesmo corpo.
-
-                    O contorno entra no vermelho do sinal e o osso inunda
-                    depois — o vermelho aqui é gesto, não elemento fixo, então
-                    não gasta a cota de raridade da dobra. */}
+                {/* A marca se revela pela malha: uma instância por linha,
+                    encadeadas pelo `delay`, na caixa vertical fixa da métrica
+                    para as duas saírem no mesmo corpo. Os filetes vermelhos
+                    atravessam as letras junto com a onda e somem. */}
                 {/* A marca é o logo: leitor de tela lê "Coded by M" uma vez,
                     não letra por letra. O título da página é o h1 abaixo. */}
                 <span role="img" aria-label="Coded by M" style={{ display: "block" }}>
@@ -156,34 +153,25 @@ export function Hero() {
                         display: "flex",
                         alignItems: "flex-start",
                         gap: "0.06em",
-                        /* Reencosta as linhas: a caixa do StrokeText tem a
+                        /* Reencosta as linhas: a caixa do TriText tem a
                            altura da métrica, o desenho pede o entrelinha
                            apertado que a marca sempre teve. */
                         marginTop: i === 0 ? 0 : `${0.84 - STROKE_LINE_HEIGHT}em`,
                       }}
                     >
-                      <StrokeText
+                      <TriText
                         text={word}
                         fontFamily={PANCHANG}
                         fontWeight={800}
                         letterSpacing={-0.04 * 128}
-                        strokeColor="#FB3640"
-                        fillColor="#F5F2ED"
-                        strokeWidth={1.8}
-                        drawDuration={1.05}
-                        stagger={0.06}
-                        fillDelay={0.1}
-                        delay={0.2 + i * 0.34}
-                        /* O contorno some quando a cor fecha a palavra: o
-                           vermelho aqui e passagem, nao moldura. */
-                        fadeStrokeOut
+                        delay={0.2 + i * 0.3}
                       />
 
                       {i === 0 && (
                         <TriangleMark
                           strokeWidth={6}
-                          /* Entra junto com a última letra de "Coded". */
-                          drawDelay={0.2 + 5 * 0.06}
+                          /* Entra quando a onda chega ao fim de "Coded". */
+                          drawDelay={0.2 + 0.8}
                           style={{ width: "0.3em", marginTop: "0.06em" }}
                         />
                       )}
@@ -279,40 +267,6 @@ export function Hero() {
               </FillButton>
             </div>
           </div>
-        </div>
-
-        {/* Régua de rodapé */}
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 16,
-            paddingTop: "clamp(14px,2vh,20px)",
-            borderTop: RULE,
-            ...enter(0.5),
-          }}
-        >
-          {AVAILABILITY.map((a) => (
-            <span
-              key={a.label}
-              style={{
-                ...META,
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-                color: a.filled ? cbm("gray-300") : cbm("gray-400"),
-              }}
-            >
-              {a.filled && (
-                <span className="site-pulse" style={{ display: "flex" }}>
-                  <Diamond />
-                </span>
-              )}
-              {a.label}
-            </span>
-          ))}
         </div>
       </div>
     </section>
