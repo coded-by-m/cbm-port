@@ -4,6 +4,11 @@ import Link from "next/link";
 import { ABOUT } from "@/data/about";
 import { CALC_PATH } from "@/data/calculadoraPreco";
 import {
+  ESCOLHER_BACKLINK_BEFORE,
+  ESCOLHER_BACKLINK_LABEL,
+  ESCOLHER_PATH,
+} from "@/data/comoEscolherEmpresa";
+import {
   QUANTO_CUSTA_CRUMB,
   QUANTO_CUSTA_CTA,
   QUANTO_CUSTA_DATE,
@@ -304,6 +309,13 @@ export default function QuantoCustaPage() {
           <Link href="/contato" style={PROSE_LINK}>
             Contato
           </Link>
+        </p>
+        <p style={PROSE_P}>
+          {ESCOLHER_BACKLINK_BEFORE}
+          <Link href={ESCOLHER_PATH} style={PROSE_LINK}>
+            {ESCOLHER_BACKLINK_LABEL}
+          </Link>
+          .
         </p>
       </article>
     </ProseShell>

@@ -290,7 +290,7 @@ export function faqPageSchema(path: string, items: FaqItem[]): Json {
   };
 }
 
-/** Um artigo do blog, assinado pelo fundador. */
+/** Um artigo assinado pelo fundador. O nome fica no nó, junto do @id #founder. */
 export function articleSchema(opts: {
   path: string;
   title: string;
@@ -307,8 +307,17 @@ export function articleSchema(opts: {
     datePublished: opts.datePublished,
     dateModified: opts.dateModified ?? opts.datePublished,
     inLanguage: "pt-BR",
-    author: { "@id": FOUNDER_ID },
-    publisher: { "@id": ORG_ID },
+    author: {
+      "@type": "Person",
+      "@id": FOUNDER_ID,
+      name: ABOUT.founder.name,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": ORG_ID,
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
     mainEntityOfPage: { "@id": `${url}#webpage` },
   };
 }

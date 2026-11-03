@@ -854,6 +854,16 @@ body:has(.site-home) {
   color: #f5f2ed;
   white-space: nowrap;
 }
+/* Duas colunas: o critério nomeia a linha e a resposta ocupa o resto.
+   Só no desktop. No mobile a ficha empilha e a largura fixa atrapalharia. */
+@media (min-width: 641px) {
+  .site-price-table.site-compare-table td:first-child {
+    width: 34%;
+  }
+  .site-price-table.site-compare-table td:nth-child(2) {
+    width: auto;
+  }
+}
 @media (max-width: 640px) {
   .site-price-table thead {
     position: absolute;
