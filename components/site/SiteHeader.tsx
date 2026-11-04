@@ -465,6 +465,7 @@ export function SiteHeader() {
                   className="site-social"
                   style={{
                     display: "inline-flex",
+                    justifySelf: "start",
                     alignItems: "center",
                     gap: 7,
                     fontFamily: SATOSHI,
