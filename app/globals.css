@@ -623,11 +623,20 @@ body:has(.site-home) {
   position: absolute;
   top: 50%;
   left: var(--dw-cx);
+  height: var(--dw-span);
   display: flex;
   transform-style: preserve-3d;
   transform-origin: 50% 50%;
   will-change: transform;
 }
+/* Plano, colunas e trilhas são coplanares com os tiles no contexto 3D, e o
+   hit-test do Chrome desempata coplanares no chute: `elementFromPoint` às
+   vezes devolvia a trilha em vez do tile, o tile apagava e reacendia a cada
+   movimento do mouse. Só o tile é alvo; os eventos sobem pro `.dw`. */
+.dw-plane,
+.dw-col,
+.dw-track { pointer-events: none; }
+.dw-tile { pointer-events: auto; }
 .dw-col {
   position: relative;
   width: calc(var(--dw-tile-w) + var(--dw-gap));

@@ -40,6 +40,14 @@ const columnFactor = (index: number, variance: number) => {
 /** Abaixo disso o muro vira bloco empilhado: menos colunas, sem parallax. */
 const COMPACT_MQ = "(max-width: 700px)";
 
+/**
+ * Faixa vertical que toda coluna precisa cobrir, em múltiplos da altura do
+ * muro — folga pra inclinação e o scale do plano. O plano tem essa altura e
+ * as trilhas partem do topo dele: assim colunas com menos tiles (trilha mais
+ * curta) não acabam antes do fim da tela.
+ */
+const SPAN = 1.6;
+
 export function DriftWall({
   tiles,
   highlight = null,
@@ -147,7 +155,7 @@ export function DriftWall({
     const unit = tileH + gap;
     return columnItems.map((col) => {
       const copyHeight = Math.max(unit, col.length * unit);
-      const copies = Math.max(2, Math.ceil((size.h * 1.6) / copyHeight) + 1);
+      const copies = Math.max(2, Math.ceil((size.h * SPAN) / copyHeight) + 1);
       return { copyHeight, copies };
     });
   }, [columnItems, tileH, gap, size.h]);
@@ -279,6 +287,7 @@ export function DriftWall({
     "--dw-tile-h": `${tileH}px`,
     "--dw-gap": `${gap}px`,
     "--dw-lift": `${lift}px`,
+    "--dw-span": `${Math.round(size.h * SPAN)}px`,
   } as CSSProperties;
 
   return (
