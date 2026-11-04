@@ -6,15 +6,17 @@ import { publishedPosts } from "@/data/blog";
 import { QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
 import { ESCOLHER_PATH } from "@/data/comoEscolherEmpresa";
 import { LP_OU_PATH } from "@/data/landingOuInstitucional";
+import { SITE_PROPRIO_MODIFIED, SITE_PROPRIO_PATH } from "@/data/siteProprioWix";
 import { CALC_PATH } from "@/data/calculadoraPreco";
 
 /**
  * Rotas públicas e indexáveis. Fora daqui, de propósito: `/lp/*`, `/lab`,
  * `/ui-lab` e `/posts/*` (todas noindex) e os cases "em breve" (404).
  *
- * Sem `lastModified`: a data do build não é a data da última mudança da
- * página, e um lastmod que muda a cada deploy ensina o Google a ignorar o
- * campo. Melhor ausente que falso.
+ * Sem `lastModified` na maior parte das rotas: a data do build não é a
+ * data da última mudança da página, e um lastmod que muda a cada deploy
+ * ensina o Google a ignorar o campo. Melhor ausente que falso. O artigo
+ * de plataforma declara a data de publicação, que é a mudança real.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const caseRoutes = cases
@@ -46,6 +48,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${SITE_URL}${LP_OU_PATH}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}${SITE_PROPRIO_PATH}`,
+      lastModified: SITE_PROPRIO_MODIFIED,
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
