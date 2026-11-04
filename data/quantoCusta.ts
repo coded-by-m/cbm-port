@@ -10,8 +10,38 @@ import type { FaqItem } from "@/data/servicePages";
 
 export const QUANTO_CUSTA_PATH = "/quanto-custa-um-site-florianopolis";
 
-/** datePublished e dateModified do Article. */
+/** datePublished do Article. O dateModified é QUANTO_CUSTA_MODIFIED. */
 export const QUANTO_CUSTA_DATE = "2026-11-03";
+
+/** dateModified do Article. */
+export const QUANTO_CUSTA_MODIFIED = "2026-11-04";
+
+export type InlinePart =
+  | { type: "text"; text: string }
+  | { type: "external"; href: string; label: string };
+
+/** Parágrafo depois do lead: PNAD 2024 e TIC Empresas 2025. */
+export const QUANTO_CUSTA_CONTEXTO: readonly InlinePart[] = [
+  { type: "text", text: "Segundo a " },
+  {
+    type: "external",
+    href: "https://biblioteca.ibge.gov.br/visualizacao/livros/liv102193_informativo.pdf",
+    label: "PNAD Contínua TIC 2024",
+  },
+  {
+    type: "text",
+    text: " do IBGE, a internet já era usada em 93,6% dos domicílios do país. Mesmo assim, a pesquisa ",
+  },
+  {
+    type: "external",
+    href: "https://cetic.br/pt/tics/pesquisa/2025/empresas/B6/",
+    label: "TIC Empresas 2025",
+  },
+  {
+    type: "text",
+    text: " do Cetic.br mostra que só 53% das pequenas empresas (de 10 a 49 pessoas) com acesso à internet têm site; no Sul, considerando todas as empresas, são 59%. Ou seja: ter um site bem feito ainda é um diferencial.",
+  },
+];
 
 export const QUANTO_CUSTA_TITLE =
   "Quanto custa um site em Florianópolis (2026) · Coded by M";
@@ -30,7 +60,7 @@ export const QUANTO_CUSTA_LEAD = [
 ] as const;
 
 export const QUANTO_CUSTA_TABLE_NOTE =
-  'Os valores "a partir de" são o ponto de partida. O preço de cada projeto sai do escopo, explicado abaixo.';
+  "O preço de cada projeto sai do escopo, explicado abaixo.";
 
 export const QUANTO_CUSTA_ROWS = [
   {
@@ -63,28 +93,65 @@ export const QUANTO_CUSTA_INCLUSO = [
   "A mensalidade é um plano opcional de acompanhamento e atualizações recorrentes. Ela depende do serviço.",
 ] as const;
 
-export const QUANTO_CUSTA_FATORES = [
+export const QUANTO_CUSTA_FATORES: readonly {
+  label: string;
+  parts: readonly InlinePart[];
+}[] = [
   {
     label: "Escopo",
-    text: "uma landing page resolve um objetivo só. Um site institucional apresenta a empresa inteira. Quanto mais coisas o site precisa fazer, maior o trabalho.",
+    parts: [
+      {
+        type: "text",
+        text: "uma landing page resolve um objetivo só. Um site institucional apresenta a empresa inteira. Quanto mais coisas o site precisa fazer, maior o trabalho.",
+      },
+    ],
   },
   {
     label: "Número de páginas",
-    text: "cada página nova (serviços, sobre, projetos, contato) é desenhada e programada à parte.",
+    parts: [
+      {
+        type: "text",
+        text: "cada página nova (serviços, sobre, projetos, contato) é desenhada e programada à parte.",
+      },
+    ],
   },
   {
     label: "Conteúdo",
-    text: "faz diferença se você já tem textos e fotos prontos ou se eles precisam ser organizados junto com o site.",
+    parts: [
+      {
+        type: "text",
+        text: "faz diferença se você já tem textos e fotos prontos ou se eles precisam ser organizados junto com o site.",
+      },
+    ],
   },
   {
     label: "Integrações",
-    text: "formulários, WhatsApp, mapas, agenda ou outras ferramentas conectadas ao site entram no escopo e no valor.",
+    parts: [
+      {
+        type: "text",
+        text: "formulários, WhatsApp, mapas, agenda ou outras ferramentas conectadas ao site entram no escopo e no valor. O WhatsApp quase sempre entra: segundo a ",
+      },
+      {
+        type: "external",
+        href: "https://ce.agenciasebrae.com.br/dados/81-dos-pequenos-negocios-cearenses-utilizam-canais-digitais-para-vendas/",
+        label: "Pesquisa Pulso dos Pequenos Negócios do Sebrae",
+      },
+      {
+        type: "text",
+        text: " (coleta no fim de 2024), 81% dos pequenos negócios que vendem por canais digitais usam o WhatsApp.",
+      },
+    ],
   },
   {
     label: "Design sob medida",
-    text: "como o site é feito do zero, o layout acompanha a sua marca, sem adaptar um modelo pronto.",
+    parts: [
+      {
+        type: "text",
+        text: "eu faço cada site do zero, sem recursos de tema que você não usa, e o layout acompanha a sua marca.",
+      },
+    ],
   },
-] as const;
+];
 
 export const QUANTO_CUSTA_PASSOS = [
   "Conte o que a empresa faz, o objetivo do site e se você já tem textos e fotos.",

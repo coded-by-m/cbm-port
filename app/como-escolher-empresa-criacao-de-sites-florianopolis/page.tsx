@@ -1,7 +1,11 @@
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ABOUT } from "@/data/about";
 import {
+  ESCOLHER_BUSCA,
+  ESCOLHER_CASOS,
+  ESCOLHER_CASOS_HEADING,
   ESCOLHER_CHECKLIST_HEADING,
   ESCOLHER_CRUMB,
   ESCOLHER_CRITERIOS,
@@ -12,6 +16,7 @@ import {
   ESCOLHER_FAQ,
   ESCOLHER_H1,
   ESCOLHER_LEAD,
+  ESCOLHER_MODIFIED,
   ESCOLHER_PATH,
   ESCOLHER_PROXIMO,
   ESCOLHER_PROXIMO_HEADING,
@@ -37,6 +42,11 @@ import { cbm } from "@/lib/palette";
 
 const STRONG = { color: "#F5F2ED", fontWeight: 600 } as const;
 
+const LIST: CSSProperties = {
+  ...PROSE_P,
+  paddingLeft: "1.25em",
+};
+
 export const metadata: Metadata = {
   title: { absolute: ESCOLHER_TITLE },
   description: ESCOLHER_DESCRIPTION,
@@ -49,7 +59,7 @@ export const metadata: Metadata = {
     title: ESCOLHER_TITLE,
     description: ESCOLHER_DESCRIPTION,
     publishedTime: ESCOLHER_DATE,
-    modifiedTime: ESCOLHER_DATE,
+    modifiedTime: ESCOLHER_MODIFIED,
     images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M, estúdio de web design" }],
   },
   twitter: {
@@ -114,7 +124,7 @@ export default function ComoEscolherEmpresaPage() {
             title: ESCOLHER_H1,
             description: ESCOLHER_DESCRIPTION,
             datePublished: ESCOLHER_DATE,
-            dateModified: ESCOLHER_DATE,
+            dateModified: ESCOLHER_MODIFIED,
           }),
           faqPageSchema(ESCOLHER_PATH, ESCOLHER_FAQ),
           breadcrumbSchema([
@@ -159,6 +169,9 @@ export default function ComoEscolherEmpresaPage() {
           <time dateTime={ESCOLHER_DATE}>{published}</time>
         </p>
         <p style={{ ...PROSE_P, color: cbm("gray-100") }}>{ESCOLHER_LEAD}</p>
+        <p style={PROSE_P}>
+          <Copy parts={ESCOLHER_BUSCA} />
+        </p>
 
         <h2 style={PROSE_H2}>{ESCOLHER_CHECKLIST_HEADING}</h2>
         {ESCOLHER_CRITERIOS.map((item) => (
@@ -166,8 +179,7 @@ export default function ComoEscolherEmpresaPage() {
             <h3 style={PROSE_H3}>{item.title}</h3>
             <p style={PROSE_P}>{item.body}</p>
             <p style={PROSE_P}>
-              <strong style={STRONG}>Como verificar:</strong>
-              {` ${item.verificar}`}
+              <strong style={STRONG}>Como verificar:</strong> <Copy parts={item.verificar} />
             </p>
           </section>
         ))}
@@ -197,6 +209,15 @@ export default function ComoEscolherEmpresaPage() {
             </tbody>
           </table>
         </div>
+
+        <h2 style={PROSE_H2}>{ESCOLHER_CASOS_HEADING}</h2>
+        <ul style={{ ...LIST, listStyle: "disc" }}>
+          {ESCOLHER_CASOS.map((caso) => (
+            <li key={caso.title} style={{ marginTop: 8 }}>
+              <strong style={STRONG}>{caso.title}</strong> {caso.text}
+            </li>
+          ))}
+        </ul>
 
         <h2 style={PROSE_H2}>{ESCOLHER_PROXIMO_HEADING}</h2>
         <p style={PROSE_P}>

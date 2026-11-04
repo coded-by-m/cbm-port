@@ -20,8 +20,11 @@ export const LP_OU_PATH = "/landing-page-ou-site-institucional";
 /** URL absoluta com www, a mesma origem do canonical. */
 export const LP_OU_URL = `${SITE_URL}${LP_OU_PATH}`;
 
-/** datePublished e dateModified do Article. */
+/** datePublished do Article. O dateModified é LP_OU_MODIFIED. */
 export const LP_OU_DATE = "2026-11-03";
+
+/** dateModified do Article. */
+export const LP_OU_MODIFIED = "2026-11-04";
 
 export const LP_OU_TITLE = "Landing page ou site institucional: qual escolher?";
 
@@ -51,7 +54,7 @@ const PRECO_URL = `${SITE_URL}${QUANTO_CUSTA_PATH}`;
 const CALC_URL = `${SITE_URL}/calculadora-preco-site`;
 
 const EM_COMUM =
-  "Código próprio feito do zero, com a identidade do cliente; hospedagem e domínio inclusos, com domínio no nome do cliente";
+  "Eu faço os dois do zero, com código próprio e a identidade do cliente; hospedagem e domínio inclusos, com domínio no nome do cliente";
 
 export const LP_OU_ROWS: {
   criterio: string;
@@ -130,13 +133,51 @@ export const LP_OU_TABLE_NOTE: readonly CopyPart[] = [
   { type: "text", text: "." },
 ];
 
+/** Frase logo abaixo da tabela: estudo de caso da Vodafone no web.dev. */
+export const LP_OU_VELOCIDADE: readonly CopyPart[] = [
+  { type: "text", text: "Código enxuto também pesa na conversão: no " },
+  {
+    type: "external",
+    href: "https://web.dev/case-studies/vodafone",
+    label: "estudo de caso da Vodafone publicado no web.dev",
+  },
+  {
+    type: "text",
+    text: " (Google, 2021), uma melhora de 31% no LCP, métrica de velocidade de carregamento, resultou em 8% mais vendas.",
+  },
+];
+
 export const LP_OU_LP_HEADING = "Quando a landing page é a melhor escolha";
 
-export const LP_OU_LP_ITEMS = [
-  "Você quer divulgar um serviço ou uma campanha específica.",
-  "Vai investir em anúncios e precisa de uma página que leve a uma ação só.",
-  "Precisa testar uma oferta antes de investir em mais páginas.",
-] as const;
+export const LP_OU_LP_ITEMS: readonly (readonly CopyPart[])[] = [
+  [
+    {
+      type: "text",
+      text: "Você quer divulgar um serviço ou uma campanha específica.",
+    },
+  ],
+  [
+    {
+      type: "text",
+      text: "Vai investir em anúncios e precisa de uma página que leve a uma ação só. Segundo o ",
+    },
+    {
+      type: "external",
+      href: "https://agenciasebrae.com.br/dados/quase-metade-dos-pequenos-negocios-investe-em-propaganda-paga-na-internet/",
+      label: "Sebrae",
+    },
+    {
+      type: "text",
+      text: " (Pulso dos Pequenos Negócios, 2024), 48% dos pequenos negócios já pagaram propaganda na internet.",
+    },
+  ],
+  [
+    {
+      type: "text",
+      text: "Precisa testar uma oferta antes de investir em mais páginas.",
+    },
+  ],
+];
 
 export const LP_OU_LP_MORE: readonly CopyPart[] = [
   { type: "text", text: "Saiba mais na página de " },
@@ -148,7 +189,7 @@ export const LP_OU_INST_HEADING = "Quando o site institucional é a melhor escol
 
 export const LP_OU_INST_ITEMS = [
   "A empresa tem vários serviços e cada um merece explicação própria.",
-  "Quem pesquisa a empresa quer ver história, projetos e formas de contato.",
+  "Quem pesquisa a empresa quer ver história, projetos e formas de contato. E 89,1% das pessoas com 10 anos ou mais usaram a internet nos últimos três meses (IBGE, PNAD Contínua TIC 2024).",
   "O site vai ser a referência principal da marca na internet.",
 ] as const;
 
@@ -166,7 +207,7 @@ export const LP_OU_MIGRAR =
 export const LP_OU_COMO_HEADING = "Como funciona na Coded by M";
 
 export const LP_OU_COMO =
-  "O estúdio fica em Florianópolis e atende empresas de todo o Brasil, com reuniões online. O orçamento é grátis e a resposta vem no mesmo dia pelo WhatsApp. Depois da entrega, existe um plano mensal opcional de suporte e atualizações, com valor que depende do serviço.";
+  "Trabalho de Florianópolis e atendo empresas de todo o Brasil, com reuniões online. O orçamento é grátis e eu respondo no mesmo dia pelo WhatsApp. Depois da entrega, existe um plano mensal opcional de suporte e atualizações, com valor que depende do serviço.";
 
 export const LP_OU_CTA = "Pedir orçamento no WhatsApp";
 
@@ -179,7 +220,7 @@ export const LP_OU_FAQ: FaqItem[] = [
   },
   {
     q: "Landing page serve para anúncios?",
-    a: "Sim. Como tem um objetivo só, a landing page é indicada para receber o tráfego de uma campanha e levar a pessoa direto para a ação principal.",
+    a: "Sim. Como tem um objetivo só, a landing page é indicada para receber o tráfego de uma campanha e levar a pessoa direto para a ação principal. Segundo o Sebrae, 48% dos pequenos negócios já pagaram propaganda na internet (Pulso dos Pequenos Negócios, 2024).",
   },
   {
     q: "Uma landing page pode substituir o site da empresa?",
