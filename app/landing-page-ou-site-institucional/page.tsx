@@ -10,6 +10,7 @@ import {
   LP_OU_CTA_HREF,
   LP_OU_DATE,
   LP_OU_DESCRIPTION,
+  LP_OU_MODIFIED,
   LP_OU_FAQ,
   LP_OU_H1,
   LP_OU_INST_HEADING,
@@ -27,6 +28,7 @@ import {
   LP_OU_TABLE_HEADING,
   LP_OU_TABLE_NOTE,
   LP_OU_TITLE,
+  LP_OU_VELOCIDADE,
   type CopyPart,
 } from "@/data/landingOuInstitucional";
 import { ProseShell, PROSE_H1, PROSE_H2, PROSE_H3, PROSE_LINK, PROSE_P } from "@/components/prose/Prose";
@@ -60,7 +62,7 @@ export const metadata: Metadata = {
     title: LP_OU_TITLE,
     description: LP_OU_DESCRIPTION,
     publishedTime: LP_OU_DATE,
-    modifiedTime: LP_OU_DATE,
+    modifiedTime: LP_OU_MODIFIED,
     images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M, estúdio de web design" }],
   },
   twitter: {
@@ -77,17 +79,22 @@ function Copy({ parts, waId }: { parts: readonly CopyPart[]; waId?: string }) {
       {parts.map((part, i) => {
         if (part.type === "text") return <span key={i}>{part.text}</span>;
         const wa = part.href.startsWith("https://wa.me/");
+        const offsite = part.type === "external";
         return (
           <a
             key={i}
             href={part.href}
             style={PROSE_LINK}
-            {...(wa
+            {...(wa || offsite
               ? {
-                  target: "_blank",
+                  target: "_blank" as const,
                   rel: "noopener noreferrer",
-                  "data-cm-role": "whatsapp",
-                  "data-cm-id": waId ?? "lp-ou-institucional-whatsapp",
+                  ...(wa
+                    ? {
+                        "data-cm-role": "whatsapp",
+                        "data-cm-id": waId ?? "lp-ou-institucional-whatsapp",
+                      }
+                    : {}),
                 }
               : {})}
           >
@@ -121,7 +128,7 @@ export default function LandingOuInstitucionalPage() {
             title: LP_OU_H1,
             description: LP_OU_DESCRIPTION,
             datePublished: LP_OU_DATE,
-            dateModified: LP_OU_DATE,
+            dateModified: LP_OU_MODIFIED,
           }),
           faqPageSchema(LP_OU_PATH, LP_OU_FAQ),
           breadcrumbSchema([
@@ -199,14 +206,17 @@ export default function LandingOuInstitucionalPage() {
           </table>
         </div>
         <p style={PROSE_P}>
+          <Copy parts={LP_OU_VELOCIDADE} />
+        </p>
+        <p style={PROSE_P}>
           <Copy parts={LP_OU_TABLE_NOTE} />
         </p>
 
         <h2 style={PROSE_H2}>{LP_OU_LP_HEADING}</h2>
         <ul style={{ ...LIST, listStyle: "disc" }}>
           {LP_OU_LP_ITEMS.map((item) => (
-            <li key={item} style={{ marginTop: 8 }}>
-              {item}
+            <li key={item[0].type === "text" ? item[0].text : item[0].label} style={{ marginTop: 8 }}>
+              <Copy parts={item} />
             </li>
           ))}
         </ul>

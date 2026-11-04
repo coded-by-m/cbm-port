@@ -14,8 +14,11 @@ import { WHATSAPP_DISPLAY, WHATSAPP_NUMBER } from "@/lib/contact";
 
 export const ESCOLHER_PATH = "/como-escolher-empresa-criacao-de-sites-florianopolis";
 
-/** datePublished e dateModified do Article. */
+/** datePublished do Article. O dateModified é ESCOLHER_MODIFIED. */
 export const ESCOLHER_DATE = "2026-11-03";
+
+/** dateModified do Article. */
+export const ESCOLHER_MODIFIED = "2026-11-04";
 
 export const ESCOLHER_TITLE = "Como escolher empresa de criação de sites em Floripa";
 
@@ -31,47 +34,99 @@ export const ESCOLHER_CRUMB = ESCOLHER_H1;
 export const ESCOLHER_LEAD =
   "Para escolher uma empresa de criação de sites em Florianópolis, compare seis pontos que dá para conferir antes de assinar: se o site é feito com código próprio ou com template, em nome de quem ficam o domínio e a hospedagem, qual é o prazo por escrito, se o preço é público, se o portfólio tem sites reais no ar e como funciona o atendimento. Uma boa empresa responde a todos eles com clareza, antes de você pagar qualquer coisa.";
 
+/** Parágrafo depois do lead: estudo do Google, EUA, 2016. */
+export const ESCOLHER_BUSCA: readonly CopyPart[] = [
+  {
+    type: "text",
+    text: "Escolher bem importa porque a busca leva à visita: em um estudo do Google feito nos Estados Unidos em 2016, ",
+  },
+  {
+    type: "external",
+    href: "https://www.thinkwithgoogle.com/_qs/documents/620/mobile-search-trends-consumers-to-stores.pdf",
+    label:
+      "76% das pessoas que buscaram algo por perto no celular visitaram um negócio em até um dia, e 28% dessas buscas terminaram em compra",
+  },
+  { type: "text", text: "." },
+];
+
 export const ESCOLHER_CHECKLIST_HEADING =
   "Checklist: 6 critérios para comparar empresas de sites";
 
-export const ESCOLHER_CRITERIOS = [
+export const ESCOLHER_CRITERIOS: readonly {
+  title: string;
+  body: string;
+  verificar: readonly CopyPart[];
+}[] = [
   {
     title: "1. Código próprio ou template",
-    body: "Template é um modelo pronto adaptado com a sua marca. Código próprio é um site desenhado e programado do zero para o seu projeto. Os dois podem funcionar, mas mudam o quanto o site se adapta à sua empresa e o quanto ele depende de uma plataforma.",
-    verificar:
-      'pergunte diretamente "o site é feito do zero ou a partir de um tema?" e peça para ver um projeto parecido com o seu já no ar.',
+    body: "Template é um modelo pronto adaptado com a sua marca. Código próprio é um site desenhado e programado do zero para o seu projeto. A diferença aparece quando você precisa mudar algo que o modelo não previu ou sair da plataforma.",
+    verificar: [
+      {
+        type: "text",
+        text: 'pergunte diretamente "o site é feito do zero ou a partir de um tema?" e peça para ver um projeto parecido com o seu já no ar.',
+      },
+    ],
   },
   {
     title: "2. Quem é dono do domínio e da hospedagem",
     body: "O domínio é o endereço do site (por exemplo, suaempresa.com.br) e a hospedagem é onde ele fica no ar. Saber quem controla cada um evita surpresas se um dia você quiser mudar de fornecedor.",
-    verificar:
-      "pergunte em nome de quem o domínio será registrado e se ele continua seu caso você mude de fornecedor. Para domínios .br, a titularidade pode ser consultada no Registro.br.",
+    verificar: [
+      {
+        type: "text",
+        text: "pergunte em nome de quem o domínio será registrado e se ele continua seu caso você mude de fornecedor. Para domínios .br, a titularidade pode ser consultada no Registro.br.",
+      },
+    ],
   },
   {
     title: "3. Prazo de entrega por escrito",
     body: "Prazo vago dificulta planejar lançamento, campanha ou mudança de marca.",
-    verificar:
-      "peça o prazo no orçamento, contado em dias úteis, e pergunte o que depende de você (textos, fotos, aprovações) para ele ser cumprido.",
+    verificar: [
+      {
+        type: "text",
+        text: "peça o prazo no orçamento, contado em dias úteis, e pergunte o que depende de você (textos, fotos, aprovações) para ele ser cumprido.",
+      },
+    ],
   },
   {
     title: "4. Preço público ou, pelo menos, um ponto de partida",
     body: "Um valor de partida publicado ajuda a saber se a empresa cabe no seu orçamento antes da primeira conversa.",
-    verificar:
-      'procure no site da empresa um "a partir de" e pergunte o que entra no valor e o que é cobrado à parte, como hospedagem, domínio ou mensalidade.',
+    verificar: [
+      {
+        type: "text",
+        text: 'procure no site da empresa um "a partir de" e pergunte o que entra no valor e o que é cobrado à parte, como hospedagem, domínio ou mensalidade.',
+      },
+    ],
   },
   {
     title: "5. Portfólio real",
-    body: "Imagens bonitas não mostram se o site funciona. Um site no ar mostra.",
-    verificar:
-      "abra os projetos do portfólio no navegador, teste no celular e confira se a empresa separa clientes reais de estudos conceituais.",
+    body: "A aparência conta: em um estudo de Stanford de 2002, 46,1% dos comentários sobre credibilidade de sites citaram o design. Mas imagem bonita não mostra se o site funciona. Um site no ar mostra.",
+    verificar: [
+      {
+        type: "text",
+        text: "abra os projetos do portfólio no navegador e teste no celular, que segundo a ",
+      },
+      {
+        type: "external",
+        href: "https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/44033-pela-primeira-vez-mais-da-metade-da-populacao-acessa-a-internet-pela-tv",
+        label: "PNAD Contínua TIC 2024 do IBGE",
+      },
+      {
+        type: "text",
+        text: " é o meio de acesso à internet de 98,8% das pessoas que a usam. Confira também se a empresa separa clientes reais de estudos conceituais.",
+      },
+    ],
   },
   {
     title: "6. Atendimento",
     body: "Você vai precisar tirar dúvidas durante e depois do projeto.",
-    verificar:
-      "mande uma mensagem pelo canal que a empresa divulga e observe em quanto tempo e com que clareza ela responde. Pergunte também quem vai cuidar do seu projeto e se existe suporte depois da entrega.",
+    verificar: [
+      {
+        type: "text",
+        text: "mande uma mensagem pelo canal que a empresa divulga e observe em quanto tempo e com que clareza ela responde. Pergunte também quem vai cuidar do seu projeto e se existe suporte depois da entrega.",
+      },
+    ],
   },
-] as const;
+];
 
 export const ESCOLHER_TABLE_HEADING = "Como a Coded by M responde a cada critério";
 
@@ -153,6 +208,19 @@ export const ESCOLHER_ROWS: { criterio: string; parts: readonly CopyPart[] }[] =
     ],
   },
 ];
+
+export const ESCOLHER_CASOS_HEADING = "Dois casos que acompanhei";
+
+export const ESCOLHER_CASOS = [
+  {
+    title: "Uma costureira da Grande Florianópolis",
+    text: "tinha pouco trabalho e precisava ser encontrada por quem procura costura na região. Fiz o site dela do zero, com SEO. Hoje ela recebe pedidos também pelo site.",
+  },
+  {
+    title: "Um cliente com site no Wix",
+    text: "tinha um site desatualizado, lento e feio. Refiz o site do zero, com foco em transformar visita em contato no WhatsApp. No painel de 6/08 a 3/11/2026, foram 181 cliques no WhatsApp. A maior parte do tráfego vem de anúncio pago. Na busca do Google, com dados até 2/11, foram 120 cliques, 3.006 impressões e posição média 5,6. O site carrega rápido: LCP de 1,59 s e nota 94 no PageSpeed desktop. Fonte: Coded Insights.",
+  },
+] as const;
 
 export const ESCOLHER_PROXIMO_HEADING = "Próximo passo";
 

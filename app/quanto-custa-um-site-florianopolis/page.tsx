@@ -10,6 +10,7 @@ import {
 } from "@/data/comoEscolherEmpresa";
 import { LP_OU_URL } from "@/data/landingOuInstitucional";
 import {
+  QUANTO_CUSTA_CONTEXTO,
   QUANTO_CUSTA_CRUMB,
   QUANTO_CUSTA_CTA,
   QUANTO_CUSTA_DATE,
@@ -20,12 +21,14 @@ import {
   QUANTO_CUSTA_INCLUSO,
   QUANTO_CUSTA_INCLUSO_HEADING,
   QUANTO_CUSTA_LEAD,
+  QUANTO_CUSTA_MODIFIED,
   QUANTO_CUSTA_ORCAMENTO,
   QUANTO_CUSTA_PASSOS,
   QUANTO_CUSTA_PATH,
   QUANTO_CUSTA_ROWS,
   QUANTO_CUSTA_TABLE_NOTE,
   QUANTO_CUSTA_TITLE,
+  type InlinePart,
 } from "@/data/quantoCusta";
 import { ProseShell, PROSE_H1, PROSE_H2, PROSE_H3, PROSE_LINK, PROSE_P } from "@/components/prose/Prose";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -54,6 +57,27 @@ const STRONG = { color: "#F5F2ED", fontWeight: 600 } as const;
 
 const COLS = ["Tipo de site", "Para quem serve", "O que está incluso", "Investimento"] as const;
 
+function Inline({ parts }: { parts: readonly InlinePart[] }) {
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (part.type === "text") return <span key={i}>{part.text}</span>;
+        return (
+          <a
+            key={i}
+            href={part.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={PROSE_LINK}
+          >
+            {part.label}
+          </a>
+        );
+      })}
+    </>
+  );
+}
+
 export const metadata: Metadata = {
   title: { absolute: QUANTO_CUSTA_TITLE },
   description: QUANTO_CUSTA_DESCRIPTION,
@@ -66,7 +90,7 @@ export const metadata: Metadata = {
     title: QUANTO_CUSTA_TITLE,
     description: QUANTO_CUSTA_DESCRIPTION,
     publishedTime: QUANTO_CUSTA_DATE,
-    modifiedTime: QUANTO_CUSTA_DATE,
+    modifiedTime: QUANTO_CUSTA_MODIFIED,
     images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M, estúdio de web design" }],
   },
   twitter: {
@@ -98,7 +122,7 @@ export default function QuantoCustaPage() {
             title: QUANTO_CUSTA_H1,
             description: QUANTO_CUSTA_DESCRIPTION,
             datePublished: QUANTO_CUSTA_DATE,
-            dateModified: QUANTO_CUSTA_DATE,
+            dateModified: QUANTO_CUSTA_MODIFIED,
           }),
           faqPageSchema(QUANTO_CUSTA_PATH, QUANTO_CUSTA_FAQ),
           breadcrumbSchema([
@@ -144,6 +168,9 @@ export default function QuantoCustaPage() {
         </p>
         <p style={{ ...PROSE_P, color: cbm("gray-100") }}>{QUANTO_CUSTA_LEAD[0]}</p>
         <p style={PROSE_P}>{QUANTO_CUSTA_LEAD[1]}</p>
+        <p style={PROSE_P}>
+          <Inline parts={QUANTO_CUSTA_CONTEXTO} />
+        </p>
 
         <h2 style={PROSE_H2}>Tabela de preços 2026</h2>
         <div className="site-price-scroll">
@@ -193,7 +220,7 @@ export default function QuantoCustaPage() {
         <ul style={{ ...LIST, listStyle: "disc" }}>
           {QUANTO_CUSTA_FATORES.map((item) => (
             <li key={item.label} style={{ marginTop: 8 }}>
-              <strong style={STRONG}>{item.label}:</strong> {item.text}
+              <strong style={STRONG}>{item.label}:</strong> <Inline parts={item.parts} />
             </li>
           ))}
         </ul>
