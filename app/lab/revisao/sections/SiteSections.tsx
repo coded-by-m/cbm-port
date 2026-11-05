@@ -15,6 +15,7 @@ import { LpProcess } from "@/components/lp/LpBlocks";
 import { GalleryHeader } from "@/components/projetos/GalleryHeader";
 import { GalleryFooter } from "@/components/projetos/GalleryFooter";
 import { SURFACE } from "@/components/site/shared";
+import { LANDINGS } from "@/data/landings";
 import { cbm } from "@/lib/palette";
 import { Item } from "../Item";
 
@@ -34,7 +35,7 @@ const SECTIONS: [string, ComponentType][] = [
   ["ContactSection", ContactSection],
   ["SiteFooter", SiteFooter],
   ["LpHeader", () => <LpHeader message="Oi Matheus, vim pela landing" />],
-  ["LpProcess", LpProcess],
+  ["LpProcess", () => <LpProcess lp={LANDINGS[0]} />],
   ["GalleryHeader", () => <GalleryHeader />],
   ["GalleryFooter", () => <GalleryFooter />],
 ];

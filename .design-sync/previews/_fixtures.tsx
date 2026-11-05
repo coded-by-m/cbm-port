@@ -9,6 +9,7 @@
 // design system. Um src quebrado renderiza icone de imagem faltando no card. As
 // data-URIs abaixo sao fixtures — conteudo de exemplo, na paleta da marca, para
 // que o card mostre o componente de verdade em vez de um buraco.
+import type { LandingConfig } from "../../data/landings";
 
 import { ACTIVE_PALETTE, PALETTES } from "@/lib/palette";
 
@@ -133,9 +134,15 @@ export const CASE_SOON = {
 };
 
 /** Landing page real do repo (segmento arquitetura), encurtada. */
-export const LANDING = {
+export const LANDING: LandingConfig = {
   slug: "arquitetura",
-  eyebrow: "Para escritórios de arquitetura, interiores e engenharia",
+  blocks: ["hero", "pains", "promise", "proof", "process", "faq", "final"],
+  proofHeading: "Sites de arquitetura e interiores, no ar pra conferir.",
+  processHeading: "Quatro etapas, e você sabe onde está em cada uma.",
+  final: {
+    heading: "Vamos conversar sobre o seu escritório.",
+    text: "Você conta o contexto, eu digo o que faria e em quanto tempo entrego. Sem formulário e sem proposta automática.",
+  },
   headline: "Sua obra merece um site tão bem resolvido quanto ela.",
   sub: "Sites e landing pages para escritórios que projetam espaço, feitos do zero, sem template, com a apresentação que o seu trabalho já teria se fosse impresso.",
   ctaLabel: "Falar sobre o meu escritório",

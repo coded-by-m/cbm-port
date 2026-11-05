@@ -9,6 +9,6 @@ export function Canonico() {
 
 /** Piso do contrato — três dores, pra ver a lista mais curta. */
 export function TresDores() {
-  const lp = { ...LANDING, pains: LANDING.pains.slice(0, 3) };
+  const lp = { ...LANDING, pains: LANDING.pains?.slice(0, 3) };
   return <LpPains lp={lp} />;
 }

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { LANDINGS, getLanding } from "@/data/landings";
+import { LANDINGS, getLanding, type LandingBlock, type LandingConfig } from "@/data/landings";
 import { SURFACE } from "@/components/site/shared";
+import { LpFooter } from "@/components/lp/LpFooter";
 import { LpHeader } from "@/components/lp/LpHeader";
 import {
   LpFaq,
@@ -12,6 +13,16 @@ import {
   LpPromise,
   LpProof,
 } from "@/components/lp/LpBlocks";
+
+const BLOCKS: Partial<Record<LandingBlock, (props: { lp: LandingConfig }) => JSX.Element | null>> = {
+  hero: LpHero,
+  pains: LpPains,
+  promise: LpPromise,
+  proof: LpProof,
+  process: LpProcess,
+  faq: LpFaq,
+  final: LpFinal,
+};
 
 type Params = { params: { segmento: string } };
 
@@ -74,14 +85,12 @@ export default function LandingPage({ params }: Params) {
     >
       <LpHeader message={lp.waMessage} />
       <main>
-        <LpHero lp={lp} />
-        <LpPains lp={lp} />
-        <LpPromise lp={lp} />
-        <LpProof lp={lp} />
-        <LpProcess />
-        <LpFaq lp={lp} />
-        <LpFinal lp={lp} />
+        {lp.blocks.map((key) => {
+          const Block = BLOCKS[key];
+          return Block ? <Block key={key} lp={lp} /> : null;
+        })}
       </main>
+      <LpFooter message={lp.waMessage} />
     </div>
   );
 }

@@ -2,6 +2,8 @@ import Image from "next/image";
 import { cases } from "@/data/cases";
 import { PROCESS_STEPS } from "@/data/process";
 import type { LandingConfig } from "@/data/landings";
+import { isFilled } from "@/data/servicePages";
+import type { CaseProject } from "@/types/case";
 import { Reveal } from "@/components/ui/Reveal";
 import {
   Diamond,
@@ -79,6 +81,8 @@ export function LpHero({ lp }: { lp: LandingConfig }) {
  * se a página é sobre ele. Se não se reconhecer, sai.
  */
 export function LpPains({ lp }: { lp: LandingConfig }) {
+  if (!lp.pains?.length) return null;
+
   return (
     <section data-cm-section="pains" style={{ background: SURFACE.raised, borderTop: `1px solid ${cbm("border")}` }}>
       <div style={WRAP}>
@@ -124,6 +128,8 @@ export function LpPains({ lp }: { lp: LandingConfig }) {
 
 /** Promessa — uma frase. O que muda depois. */
 export function LpPromise({ lp }: { lp: LandingConfig }) {
+  if (!lp.promise) return null;
+
   return (
     <section data-cm-section="promise" style={{ borderTop: `1px solid ${cbm("border")}` }}>
       <div style={{ ...WRAP, textAlign: "center" }}>
@@ -144,111 +150,141 @@ export function LpPromise({ lp }: { lp: LandingConfig }) {
   );
 }
 
-/** Prova — só os cases do segmento. Sem link pra fora: a prova acontece aqui. */
+/** Grade de cards de case. */
+function ProofGrid({ list }: { list: CaseProject[] }) {
+  return (
+    <div
+      style={{
+        marginTop: "clamp(34px,5vh,52px)",
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,280px),1fr))",
+        gap: "clamp(18px,2.4vw,28px)",
+      }}
+    >
+      {list.map((c, i) => (
+        <Reveal key={c.slug} delay={i * 100} variant="scale" className="site-cell">
+          <article
+            className="site-card"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              minWidth: 0,
+              border: "1px solid rgba(245,242,237,0.12)",
+              background: SURFACE.sunken,
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                height: "clamp(180px,22vh,230px)",
+                overflow: "hidden",
+                borderBottom: "1px solid rgba(245,242,237,0.1)",
+              }}
+            >
+              <Image
+                src={c.preview?.card ?? ""}
+                alt={`${c.title}: ${c.meta.tipo}`}
+                width={760}
+                height={874}
+                sizes="(max-width: 640px) 92vw, (max-width: 1100px) 46vw, 30vw"
+                className="site-shot"
+                style={{ display: "block", width: "100%", height: "auto" }}
+              />
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  inset: "auto 0 0 0",
+                  height: 80,
+                  background: `linear-gradient(to bottom,${cbm("sunken", 0)},${cbm("sunken", 0.95)})`,
+                }}
+              />
+            </div>
+            <div style={{ padding: "18px 20px 22px", display: "flex", flexDirection: "column", gap: 8 }}>
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: PANCHANG,
+                  fontWeight: 700,
+                  fontSize: 19,
+                  color: "#F5F2ED",
+                }}
+              >
+                {c.title}
+              </h3>
+              <span
+                style={{
+                  fontFamily: SATOSHI,
+                  fontWeight: 400,
+                  fontSize: 10,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: cbm("gray-400"),
+                }}
+              >
+                {c.meta.setor} · {c.concept ? "Projeto conceitual · " : ""}{c.meta.ano}
+              </span>
+            </div>
+          </article>
+        </Reveal>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Prova: clientes reais primeiro e conceitos em grupo próprio, com rótulo
+ * visível, para não sugerir que conceito foi cliente. Sem link pra fora: a
+ * prova acontece aqui.
+ */
 export function LpProof({ lp }: { lp: LandingConfig }) {
   const list = lp.caseSlugs
     .map((s) => cases.find((c) => c.slug === s))
     .filter((c): c is NonNullable<typeof c> => Boolean(c));
+  const real = list.filter((c) => !c.concept);
+  const concept = list.filter((c) => c.concept);
 
   return (
     <section data-cm-section="social-proof" style={{ borderTop: `1px solid ${cbm("border")}` }}>
       <div style={WRAP}>
         <Reveal variant="wipe">
-          <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>
-            Sites de arquitetura e interiores, no ar pra conferir.
-          </h2>
+          <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>{lp.proofHeading}</h2>
         </Reveal>
 
-        <div
-          style={{
-            marginTop: "clamp(34px,5vh,52px)",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,280px),1fr))",
-            gap: "clamp(18px,2.4vw,28px)",
-          }}
-        >
-          {list.map((c, i) => (
-            <Reveal key={c.slug} delay={i * 100} variant="scale" className="site-cell">
-              <article
-                className="site-card"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  minWidth: 0,
-                  border: "1px solid rgba(245,242,237,0.12)",
-                  background: SURFACE.sunken,
-                }}
-              >
-                <div
-                  style={{
-                    position: "relative",
-                    height: "clamp(180px,22vh,230px)",
-                    overflow: "hidden",
-                    borderBottom: "1px solid rgba(245,242,237,0.1)",
-                  }}
-                >
-                  <Image
-                    src={c.preview?.card ?? ""}
-                    alt={`${c.title}: ${c.meta.tipo}`}
-                    width={760}
-                    height={874}
-                    sizes="(max-width: 640px) 92vw, (max-width: 1100px) 46vw, 30vw"
-                    className="site-shot"
-                    style={{ display: "block", width: "100%", height: "auto" }}
-                  />
-                  <div
-                    aria-hidden
-                    style={{
-                      position: "absolute",
-                      inset: "auto 0 0 0",
-                      height: 80,
-                      background: `linear-gradient(to bottom,${cbm("sunken", 0)},${cbm("sunken", 0.95)})`,
-                    }}
-                  />
-                </div>
-                <div style={{ padding: "18px 20px 22px", display: "flex", flexDirection: "column", gap: 8 }}>
-                  <h3
-                    style={{
-                      margin: 0,
-                      fontFamily: PANCHANG,
-                      fontWeight: 700,
-                      fontSize: 19,
-                      color: "#F5F2ED",
-                    }}
-                  >
-                    {c.title}
-                  </h3>
-                  <span
-                    style={{
-                      fontFamily: SATOSHI,
-                      fontWeight: 400,
-                      fontSize: 10,
-                      letterSpacing: "0.2em",
-                      textTransform: "uppercase",
-                      color: cbm("gray-400"),
-                    }}
-                  >
-                    {c.meta.setor} · {c.concept ? "Conceito · " : ""}{c.meta.ano}
-                  </span>
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+        {real.length > 0 && <ProofGrid list={real} />}
+
+        {real.length > 0 && concept.length > 0 && lp.conceptHeading && (
+          <Reveal variant="wipe">
+            <p
+              style={{
+                margin: "clamp(48px,7vh,72px) 0 0",
+                maxWidth: "34ch",
+                fontFamily: PANCHANG,
+                fontWeight: 600,
+                fontSize: "clamp(18px,2vw,24px)",
+                lineHeight: 1.25,
+                color: cbm("gray-100"),
+                textWrap: "balance",
+              }}
+            >
+              {lp.conceptHeading}
+            </p>
+          </Reveal>
+        )}
+
+        {concept.length > 0 && <ProofGrid list={concept} />}
       </div>
     </section>
   );
 }
 
 /** Como funciona — tira o medo de "quanto tempo isso vai tomar de mim". */
-export function LpProcess() {
+export function LpProcess({ lp }: { lp: LandingConfig }) {
   return (
     <section data-cm-section="process" style={{ background: SURFACE.raised, borderTop: `1px solid ${cbm("border")}` }}>
       <div style={WRAP}>
         <Reveal variant="wipe">
-          <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>
-            Quatro etapas, e você sabe onde está em cada uma.
-          </h2>
+          <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>{lp.processHeading}</h2>
         </Reveal>
         <div
           style={{
@@ -300,13 +336,14 @@ export function LpProcess() {
 /**
  * Objeções em `<details>` nativo: acordeão acessível por teclado, anunciado
  * por leitor de tela e com zero JavaScript. O marcador padrão sai pelo CSS.
+ * Rascunhos com PREENCHER ficam de fora: melhor uma pergunta a menos.
  */
 export function LpFaq({ lp }: { lp: LandingConfig }) {
   return (
     <section data-cm-section="faq" style={{ borderTop: `1px solid ${cbm("border")}` }}>
       <div style={{ ...WRAP, maxWidth: 860 }}>
         <div style={{ marginTop: 32 }}>
-          {lp.faq.map((f, i) => (
+          {lp.faq.filter(isFilled).map((f, i) => (
             <Reveal key={f.q} delay={i * 70}>
               <details className="lp-faq">
                 <summary>
@@ -329,9 +366,7 @@ export function LpFinal({ lp }: { lp: LandingConfig }) {
     <section data-cm-section="contact" style={{ background: SURFACE.raised, borderTop: `1px solid ${cbm("border")}` }}>
       <div style={{ ...WRAP, textAlign: "center", paddingBlock: "clamp(72px,12vh,128px)" }}>
         <Reveal variant="wipe">
-          <h2 style={{ ...H2, margin: "0 auto", maxWidth: "16ch" }}>
-            Vamos conversar sobre o seu escritório.
-          </h2>
+          <h2 style={{ ...H2, margin: "0 auto", maxWidth: "16ch" }}>{lp.final.heading}</h2>
         </Reveal>
         <Reveal delay={120}>
           <p
@@ -345,8 +380,7 @@ export function LpFinal({ lp }: { lp: LandingConfig }) {
               color: cbm("gray-200"),
             }}
           >
-            Você conta o contexto, eu digo o que faria e em quanto tempo entrego.
-            Sem formulário e sem proposta automática.
+            {lp.final.text}
           </p>
         </Reveal>
         <Reveal delay={240}>

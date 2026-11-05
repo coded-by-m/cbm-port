@@ -1,16 +1,14 @@
 /**
- * Landings de campanha — o motor de `/lp/[segmento]`.
+ * Landings de campanha: o motor de `/lp/[segmento]`.
  *
- * Abrir um ângulo novo é acrescentar um objeto aqui; nenhuma linha de
- * componente muda. Cada rota nasce `noindex` de propósito: ela existe pra
- * receber clique pago, e se o Google indexasse, competiria com a `/` pelas
- * mesmas buscas e entregaria a quem vem da busca uma página sem navegação.
+ * Abrir um ângulo novo é acrescentar um objeto aqui. Cada rota nasce `noindex`
+ * de propósito: ela existe pra receber clique pago, e se o Google indexasse,
+ * competiria com a `/` pelas mesmas buscas e entregaria a quem vem da busca uma
+ * página sem navegação.
  *
- * ATENÇÃO — o copy daqui é RASCUNHO e precisa da sua revisão. É o texto que
- * carrega a campanha: cada frase é uma afirmação sua para quem nunca ouviu
- * falar do estúdio. Os pontos marcados com PREENCHER dependem de números que
- * só você tem (preço e prazo) e estão sem resposta de propósito — inventar
- * seria pior que deixar em branco.
+ * ATENÇÃO: o copy daqui é rascunho e precisa de revisão. Respostas marcadas com
+ * PREENCHER dependem de números que só o Matheus tem e NÃO aparecem na página
+ * enquanto tiverem o marcador (ver `isFilled`).
  */
 
 export interface LandingFaq {
@@ -18,22 +16,53 @@ export interface LandingFaq {
   a: string;
 }
 
+/** Blocos disponíveis. A ordem da página é a ordem de `LandingConfig.blocks`. */
+export type LandingBlock =
+  | "hero"
+  | "pains"
+  | "promise"
+  | "proof"
+  | "differentials"
+  | "offer"
+  | "process"
+  | "faq"
+  | "final";
+
 export interface LandingConfig {
   /** Vira a rota: `/lp/<slug>`. */
   slug: string;
+  /** Blocos da página, na ordem em que aparecem. */
+  blocks: LandingBlock[];
   /** Hero. */
-  eyebrow: string;
   headline: string;
   sub: string;
   ctaLabel: string;
-  /** 3 ou 4 pontos de dor. Frases curtas, na pele de quem clicou. */
-  pains: string[];
-  /** Uma frase. O que muda depois. Não é parágrafo. */
-  promise: string;
+  /** Slug de `data/cases.ts` cuja captura aparece no hero. Sem isto, só texto. */
+  heroCaseSlug?: string;
+  /** 3 ou 4 pontos de dor, se a página listar o bloco `pains`. */
+  pains?: string[];
+  /** Uma frase, se a página listar o bloco `promise`. */
+  promise?: string;
+  /** Título da prova. */
+  proofHeading: string;
+  /** Título do grupo de conceitos, quando também há clientes reais. */
+  conceptHeading?: string;
   /** Slugs de `data/cases.ts`, na ordem em que provam. */
   caseSlugs: string[];
-  /** 4 ou 5 objeções reais. */
+  differentials?: { heading: string; items: { title: string; text: string }[] };
+  offer?: {
+    heading: string;
+    includes: string[];
+    price: string;
+    deadline: string;
+    note: string;
+    /** Uma linha com a opção menor. */
+    alternative?: string;
+  };
+  processHeading: string;
+  /** 4 a 6 objeções reais. */
   faq: LandingFaq[];
+  final: { heading: string; text: string };
   /** Base da mensagem do WhatsApp; a origem da campanha é anexada em runtime. */
   waMessage: string;
   /** A rota é noindex, mas o preview do link em WhatsApp e LinkedIn importa. */
@@ -43,7 +72,13 @@ export interface LandingConfig {
 export const LANDINGS: LandingConfig[] = [
   {
     slug: "arquitetura",
-    eyebrow: "Para escritórios de arquitetura, interiores e engenharia",
+    blocks: ["hero", "pains", "promise", "proof", "process", "faq", "final"],
+    proofHeading: "Sites de arquitetura e interiores, no ar pra conferir.",
+    processHeading: "Quatro etapas, e você sabe onde está em cada uma.",
+    final: {
+      heading: "Vamos conversar sobre o seu escritório.",
+      text: "Você conta o contexto, eu digo o que faria e em quanto tempo entrego. Sem formulário e sem proposta automática.",
+    },
     headline: "Sua obra merece um site tão bem resolvido quanto ela.",
     sub: "Sites e landing pages para escritórios que projetam espaço: feitos do zero, sem template, com a apresentação que o seu trabalho já teria se fosse impresso.",
     ctaLabel: "Falar sobre o meu escritório",
