@@ -10,8 +10,13 @@
  * nenhum.
  */
 
-/** Parâmetros lidos da URL, na ordem de preferência para o rótulo. */
-const KEYS = ["utm_content", "utm_campaign", "utm_source", "gclid", "fbclid"];
+/**
+ * Parâmetros lidos da URL, na ordem de preferência para o rótulo.
+ *
+ * `gclid` e `fbclid` ficam de fora: são códigos de atribuição das plataformas,
+ * sem sentido para quem lê a conversa. A plataforma os lê direto da URL.
+ */
+const KEYS = ["utm_content", "utm_campaign", "utm_source"];
 
 /** Rótulo curto da origem, ou `null` se a pessoa não veio de campanha. */
 export function readCampaign(search: string): string | null {
