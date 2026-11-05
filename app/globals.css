@@ -443,6 +443,11 @@ body:has(.site-home) {
 
 /* Objeções da landing. `<details>` nativo: teclado e leitor de tela vêm de
    graça, zero JavaScript. O marcador padrão sai e entra o nosso, angular. */
+.lp-hero-shot { display: none; }
+@media (min-width: 900px) {
+  .lp-hero-shot { display: block; }
+}
+
 .lp-faq {
   border-bottom: 1px solid rgba(245, 242, 237, 0.12);
 }

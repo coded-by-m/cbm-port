@@ -33,8 +33,9 @@ const H2: React.CSSProperties = {
 };
 
 /**
- * Hero: headline dirigida a quem clicou. A captura fica fora do `Reveal` para
- * não atrasar o LCP esperando JavaScript.
+ * Hero: headline dirigida a quem clicou. Nada aqui usa `Reveal`: ele esconde o
+ * conteúdo até o JavaScript rodar, e título, preço e CTA são o que a pessoa veio
+ * ver. Medido em /lp/arquitetura, com o título no `Reveal`: LCP de 4,7 s.
  */
 export function LpHero({ lp }: { lp: LandingConfig }) {
   const shot = lp.heroCaseSlug ? cases.find((c) => c.slug === lp.heroCaseSlug) : undefined;
@@ -45,59 +46,56 @@ export function LpHero({ lp }: { lp: LandingConfig }) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: src ? "repeat(auto-fit,minmax(min(100%,400px),1fr))" : "1fr",
+          gridTemplateColumns: src ? "repeat(auto-fit,minmax(min(100%,360px),1fr))" : "1fr",
           gap: "clamp(36px,5vw,64px)",
           alignItems: "center",
         }}
       >
         <div style={{ minWidth: 0 }}>
-          <Reveal variant="wipe">
-            <h1
-              style={{
-                ...H2,
-                marginTop: 24,
-                maxWidth: "17ch",
-                /* Com a captura ao lado, a coluna é menos da metade da página. */
-                fontSize: src ? "clamp(30px,3.8vw,52px)" : "clamp(34px,5.4vw,66px)",
-                lineHeight: 1.02,
-              }}
-            >
-              {lp.headline}
-            </h1>
-          </Reveal>
-          <Reveal delay={120}>
-            <p
-              style={{
-                margin: "26px 0 0",
-                maxWidth: "58ch",
-                fontFamily: SATOSHI,
-                fontWeight: 400,
-                fontSize: "clamp(15px,1.5vw,18px)",
-                lineHeight: 1.72,
-                color: cbm("gray-200"),
-                textWrap: "pretty",
-              }}
-            >
-              {lp.sub}
-            </p>
-          </Reveal>
-          <Reveal delay={240}>
-            <div style={{ marginTop: 38 }}>
-              <LpCta label={lp.ctaLabel} message={lp.waMessage} size="lg" source="lp-hero" />
-            </div>
-          </Reveal>
+          <h1
+            style={{
+              ...H2,
+              marginTop: 24,
+              maxWidth: "17ch",
+              /* Com a captura ao lado, a coluna é menos da metade da página. */
+              fontSize: src ? "clamp(30px,3.8vw,52px)" : "clamp(34px,5.4vw,66px)",
+              lineHeight: 1.02,
+            }}
+          >
+            {lp.headline}
+          </h1>
+          <p
+            style={{
+              margin: "26px 0 0",
+              maxWidth: "58ch",
+              fontFamily: SATOSHI,
+              fontWeight: 400,
+              fontSize: "clamp(15px,1.5vw,18px)",
+              lineHeight: 1.72,
+              color: cbm("gray-200"),
+              textWrap: "pretty",
+            }}
+          >
+            {lp.sub}
+          </p>
+          <div style={{ marginTop: 38 }}>
+            <LpCta label={lp.ctaLabel} message={lp.waMessage} size="lg" source="lp-hero" />
+          </div>
         </div>
 
+        {/* Só a partir de 900px (ver `.lp-hero-shot`). No celular ela repetiria o
+            primeiro card do portfólio e seria o LCP: medido, 3 s contra 0,8 s na
+            simulação do Lighthouse. Sem `priority` de propósito: lazy em
+            `display: none` não baixa o arquivo. */}
         {src && shot && (
           <Image
             src={src}
             alt={`Site da ${shot.title}`}
             width={1440}
             height={900}
-            priority
-            sizes="(max-width: 900px) 92vw, 46vw"
+            sizes="46vw"
+            className="lp-hero-shot"
             style={{
-              display: "block",
               width: "100%",
               height: "auto",
               border: "1px solid rgba(245,242,237,0.12)",
@@ -282,9 +280,9 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
   return (
     <section data-cm-section="social-proof" style={{ borderTop: `1px solid ${cbm("border")}` }}>
       <div style={WRAP}>
-        <Reveal variant="wipe">
-          <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>{lp.proofHeading}</h2>
-        </Reveal>
+        {/* Sem `Reveal`: com o hero só de texto, este título já aparece na
+            primeira tela do celular, e escondê-lo adia o LCP (medido: 5 s). */}
+        <h2 style={{ ...H2, marginTop: 22, maxWidth: "18ch" }}>{lp.proofHeading}</h2>
 
         {real.length > 0 && <ProofGrid list={real} />}
 

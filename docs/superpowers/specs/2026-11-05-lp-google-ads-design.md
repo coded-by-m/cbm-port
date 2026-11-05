@@ -51,7 +51,7 @@ reescrever a copy de `/lp/arquitetura`.
 | # | Bloco | Conteúdo |
 |---|---|---|
 | 1 | Cabeçalho | `LpHeader` atual: logo e "Falar agora" |
-| 2 | Hero | Título, preço, prazo, CTA, imagem do site da Machado Plataformas |
+| 2 | Hero | Título, preço, prazo, CTA; imagem do site da Machado Plataformas a partir de 900 px |
 | 3 | Portfólio | Clientes reais; depois, grupo "Projeto conceitual" |
 | 4 | Problema | 3 frases curtas |
 | 5 | Diferenciais | A resposta ao problema |
@@ -170,8 +170,8 @@ lista e aparecem em toda landing.
 
 | Peça | Mudança |
 |---|---|
-| `LpHero` | Imagem opcional (`preview.top` do case de `heroCaseSlug`), abaixo do CTA no celular, com `next/image` e `priority` |
-| `LpProof` | Título por configuração; separa os grupos pelo campo `concept`; rótulo "Projeto conceitual"; sem conceitos ou sem reais, renderiza só o grupo que existe |
+| `LpHero` | Imagem opcional (`preview.top` do case de `heroCaseSlug`), só a partir de 900 px e sem `priority`; texto do hero sem `Reveal` (ver "Decisão de performance") |
+| `LpProof` | Título por configuração e sem `Reveal`; separa os grupos pelo campo `concept`; rótulo "Projeto conceitual"; sem conceitos ou sem reais, renderiza só o grupo que existe |
 | `LpProcess`, `LpFinal` | Títulos e textos por configuração |
 | `LpFaq` | Filtra com `isFilled` de `data/servicePages.ts` |
 | `LpDifferentials` | Novo |
@@ -180,6 +180,23 @@ lista e aparecem em toda landing.
 
 Em `/lp/arquitetura`, "Quanto custa?" e "Quanto tempo leva?" deixam de aparecer até ganharem
 resposta. O hero e os títulos dessa página continuam iguais.
+
+### Decisão de performance (medida na implementação)
+
+O `Reveal` deixa o conteúdo invisível até o JavaScript rodar. No hero isso adiava o que a pessoa veio
+ver. E, no celular, a imagem do hero repetia o primeiro card do portfólio e virava o LCP.
+
+Lighthouse mobile na build de produção local (localhost, sem CDN):
+
+| Versão de `/lp/site-para-empresa` | LCP simulado | LCP com throttling real |
+|---|---|---|
+| Imagem no celular, texto no `Reveal` | 3,1 s | 2,0 a 2,3 s |
+| Sem imagem no celular, título do portfólio no `Reveal` | 0,9 s | 5,0 s |
+| **Sem imagem no celular, sem `Reveal` no hero e no título do portfólio** | **0,9 s** | **2,0 a 2,1 s** |
+
+Trade-off aceito: o celular não vê imagem na primeira dobra. Ela aparece logo abaixo, no primeiro
+card. O texto do hero também perde a animação de entrada, inclusive em `/lp/arquitetura`, cujo LCP
+foi de 3,2 s para 0,8 s na simulação e de 4,7 s para 2,0 s com throttling real.
 
 ## Privacidade
 
@@ -247,7 +264,7 @@ conferida nas conversas.
 - Preço e prazo aparecem na primeira dobra em 390 px.
 - Stige e Estúdio Lentz exibem "Projeto conceitual"; os 3 clientes reais, não.
 - Nenhum "PREENCHER" aparece em `/lp/site-para-empresa` nem em `/lp/arquitetura`.
-- `/lp/arquitetura` mantém ordem e títulos; muda só o esperado (FAQ, rodapé, rótulo).
+- `/lp/arquitetura` mantém ordem e títulos; muda só o esperado (FAQ, rodapé, rótulo, hero sem animação).
 - Com `?utm_campaign=site-empresa`, a mensagem do WhatsApp termina em `(origem: site-empresa)`.
 - Com `?gclid=abc`, a mensagem não traz origem nenhuma.
 - `/privacidade` responde 200, está no sitemap e é alcançável pelos quatro pontos de link.
