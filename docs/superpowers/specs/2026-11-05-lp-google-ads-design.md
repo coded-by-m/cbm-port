@@ -188,7 +188,8 @@ Nova página `/privacidade`, indexável e no `sitemap.ts`, em linguagem simples:
 - Quem é o responsável: Coded by M, Matheus Mendes, Florianópolis/SC, contato pelo WhatsApp.
 - O que é coletado e para quê: GA4, Meta Pixel e Google Ads, só após consentimento; Coded Insights,
   first-party e sem cookie; dados que a pessoa envia na conversa do WhatsApp.
-- Como o consentimento funciona e como mudar de ideia.
+- Como o consentimento funciona e como mudar de ideia. Hoje o site não oferece como mudar a escolha
+  já feita, então a página ganha botões de aceitar e recusar (`ConsentChoice`).
 - Direitos da pessoa na LGPD e como exercê-los.
 - Data da última atualização.
 
