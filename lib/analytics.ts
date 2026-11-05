@@ -1,5 +1,5 @@
 /**
- * Configuração de métricas — GA4 + Meta Pixel.
+ * Configuração de métricas: GA4, Meta Pixel e Google Ads.
  *
  * IDs de pixel são públicos (ficam visíveis no HTML renderizado), então podem
  * viver no código. Env vars (NEXT_PUBLIC_*) permitem sobrescrever por ambiente
@@ -11,6 +11,13 @@
 export const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-Q83X8CQL3X";
 export const META_PIXEL_ID =
   process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1776271733361459";
+
+/**
+ * Google Ads. Sem valor padrão: enquanto a conta não fornecer o ID e o rótulo
+ * da conversão, nada é enviado e o site funciona igual.
+ */
+export const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || undefined;
+export const GOOGLE_ADS_WA_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_WA_LABEL || undefined;
 
 /** Chave do consentimento no localStorage e evento de mudança. */
 export const CONSENT_KEY = "cbm-cookie-consent";
@@ -184,6 +191,12 @@ export function trackEvent(name: TrackName, params: TrackParams = {}) {
         transport_type: "beacon",
       });
       window.fbq?.("track", "Lead", { content_name: location });
+      if (GOOGLE_ADS_ID && GOOGLE_ADS_WA_LABEL) {
+        window.gtag?.("event", "conversion", {
+          send_to: `${GOOGLE_ADS_ID}/${GOOGLE_ADS_WA_LABEL}`,
+          transport_type: "beacon",
+        });
+      }
     }
     return;
   }

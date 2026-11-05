@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   GA_ID,
+  GOOGLE_ADS_ID,
   META_PIXEL_ID,
   CONSENT_EVENT,
   getConsent,
@@ -15,7 +16,7 @@ import {
 } from "@/lib/analytics";
 
 /**
- * Carrega GA4 + Meta Pixel APENAS após consentimento (LGPD).
+ * Carrega GA4, Google Ads e Meta Pixel APENAS após consentimento (LGPD).
  *
  * Os <Script> só entram no DOM quando o consentimento é "granted" — antes disso
  * nenhum request de rastreamento sai. Reage à mudança de consentimento sem
@@ -128,6 +129,7 @@ export function Analytics() {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', '${GA_ID}');
+          ${GOOGLE_ADS_ID ? `gtag('config', '${GOOGLE_ADS_ID}');` : ""}
         `}
       </Script>
 
