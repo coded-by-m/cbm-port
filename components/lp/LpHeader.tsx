@@ -36,6 +36,7 @@ export function LpHeader({ message }: { message: string }) {
       >
         <a
           href="/"
+          className="focus-signal"
           style={{
             display: "inline-flex",
             alignItems: "center",

@@ -72,6 +72,7 @@ export function CookieConsent() {
         usado. Você decide.{" "}
         <Link
           href={PRIVACY_PATH}
+          className="focus-signal"
           style={{
             color: "#F5F2ED",
             textDecoration: "underline",

@@ -50,10 +50,10 @@ export function ConsentChoice() {
         {STATUS[consent ?? "none"]}
       </p>
       <div style={{ marginTop: 14, display: "flex", flexWrap: "wrap", gap: 10 }}>
-        <button type="button" onClick={() => decide("granted")} style={BUTTON}>
+        <button type="button" className="focus-signal" onClick={() => decide("granted")} style={BUTTON}>
           Aceitar cookies
         </button>
-        <button type="button" onClick={() => decide("denied")} style={BUTTON}>
+        <button type="button" className="focus-signal" onClick={() => decide("denied")} style={BUTTON}>
           Recusar cookies
         </button>
       </div>
