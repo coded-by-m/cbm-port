@@ -126,7 +126,7 @@ export interface ServicePageConfig {
   ctaSource: string;
 }
 
-const ATENDE_BRASIL: FaqItem = {
+export const ATENDE_BRASIL: FaqItem = {
   q: "Vocês atendem fora de Santa Catarina?",
   a: "Sim, atendo todo o Brasil de forma remota.",
 };
@@ -137,7 +137,7 @@ const PRECO_TEXTO =
 
 const LANDING_PRECO = `A partir de ${PUBLIC_PRICE.landing.display}. O valor final depende do projeto (seções, formulários, integrações). Orçamento claro no WhatsApp.`;
 
-const INSTITUCIONAL_PRECO = `A partir de ${PUBLIC_PRICE.institucional.display}. O valor final depende do projeto: páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`;
+export const INSTITUCIONAL_PRECO = `A partir de ${PUBLIC_PRICE.institucional.display}. O valor final depende do projeto: páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`;
 
 export const SERVICE_PAGES: ServicePageConfig[] = [
   {

@@ -32,44 +32,79 @@ const H2: React.CSSProperties = {
   textWrap: "balance",
 };
 
-/** Hero — headline dirigida ao segmento, não à marca. */
+/**
+ * Hero: headline dirigida a quem clicou. A captura fica fora do `Reveal` para
+ * não atrasar o LCP esperando JavaScript.
+ */
 export function LpHero({ lp }: { lp: LandingConfig }) {
+  const shot = lp.heroCaseSlug ? cases.find((c) => c.slug === lp.heroCaseSlug) : undefined;
+  const src = shot?.preview?.top;
+
   return (
     <section data-cm-section="hero" style={{ ...WRAP, paddingTop: "clamp(48px,7vh,84px)" }}>
-      <Reveal variant="wipe">
-        <h1
-          style={{
-            ...H2,
-            marginTop: 24,
-            maxWidth: "17ch",
-            fontSize: "clamp(34px,5.4vw,66px)",
-            lineHeight: 1.02,
-          }}
-        >
-          {lp.headline}
-        </h1>
-      </Reveal>
-      <Reveal delay={120}>
-        <p
-          style={{
-            margin: "26px 0 0",
-            maxWidth: "58ch",
-            fontFamily: SATOSHI,
-            fontWeight: 400,
-            fontSize: "clamp(15px,1.5vw,18px)",
-            lineHeight: 1.72,
-            color: cbm("gray-200"),
-            textWrap: "pretty",
-          }}
-        >
-          {lp.sub}
-        </p>
-      </Reveal>
-      <Reveal delay={240}>
-        <div style={{ marginTop: 38 }}>
-          <LpCta label={lp.ctaLabel} message={lp.waMessage} size="lg" source="lp-hero" />
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: src ? "repeat(auto-fit,minmax(min(100%,400px),1fr))" : "1fr",
+          gap: "clamp(36px,5vw,64px)",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ minWidth: 0 }}>
+          <Reveal variant="wipe">
+            <h1
+              style={{
+                ...H2,
+                marginTop: 24,
+                maxWidth: "17ch",
+                /* Com a captura ao lado, a coluna é menos da metade da página. */
+                fontSize: src ? "clamp(30px,3.8vw,52px)" : "clamp(34px,5.4vw,66px)",
+                lineHeight: 1.02,
+              }}
+            >
+              {lp.headline}
+            </h1>
+          </Reveal>
+          <Reveal delay={120}>
+            <p
+              style={{
+                margin: "26px 0 0",
+                maxWidth: "58ch",
+                fontFamily: SATOSHI,
+                fontWeight: 400,
+                fontSize: "clamp(15px,1.5vw,18px)",
+                lineHeight: 1.72,
+                color: cbm("gray-200"),
+                textWrap: "pretty",
+              }}
+            >
+              {lp.sub}
+            </p>
+          </Reveal>
+          <Reveal delay={240}>
+            <div style={{ marginTop: 38 }}>
+              <LpCta label={lp.ctaLabel} message={lp.waMessage} size="lg" source="lp-hero" />
+            </div>
+          </Reveal>
         </div>
-      </Reveal>
+
+        {src && shot && (
+          <Image
+            src={src}
+            alt={`Site da ${shot.title}`}
+            width={1440}
+            height={900}
+            priority
+            sizes="(max-width: 900px) 92vw, 46vw"
+            style={{
+              display: "block",
+              width: "100%",
+              height: "auto",
+              border: "1px solid rgba(245,242,237,0.12)",
+            }}
+          />
+        )}
+      </div>
     </section>
   );
 }
@@ -273,6 +308,188 @@ export function LpProof({ lp }: { lp: LandingConfig }) {
         )}
 
         {concept.length > 0 && <ProofGrid list={concept} />}
+      </div>
+    </section>
+  );
+}
+
+/** Diferenciais: a resposta ao problema, e o que justifica o preço. */
+export function LpDifferentials({ lp }: { lp: LandingConfig }) {
+  if (!lp.differentials) return null;
+
+  return (
+    <section data-cm-section="differentials" style={{ borderTop: `1px solid ${cbm("border")}` }}>
+      <div style={WRAP}>
+        <Reveal variant="wipe">
+          <h2 style={{ ...H2, maxWidth: "18ch" }}>{lp.differentials.heading}</h2>
+        </Reveal>
+        <div
+          style={{
+            marginTop: "clamp(30px,4vh,46px)",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,260px),1fr))",
+            gap: "clamp(24px,3vw,36px)",
+          }}
+        >
+          {lp.differentials.items.map((item, i) => (
+            <Reveal key={item.title} delay={i * 80} variant="side">
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <h3
+                  style={{
+                    margin: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    fontFamily: PANCHANG,
+                    fontWeight: 700,
+                    fontSize: 18,
+                    color: "#F5F2ED",
+                  }}
+                >
+                  <Diamond />
+                  {item.title}
+                </h3>
+                <p
+                  style={{
+                    margin: 0,
+                    fontFamily: SATOSHI,
+                    fontWeight: 400,
+                    fontSize: 15,
+                    lineHeight: 1.7,
+                    color: cbm("gray-300"),
+                    textWrap: "pretty",
+                  }}
+                >
+                  {item.text}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Oferta: o que está incluso, preço e prazo, sem ninguém precisar perguntar. */
+export function LpOffer({ lp }: { lp: LandingConfig }) {
+  if (!lp.offer) return null;
+  const { heading, includes, price, deadline, note, alternative } = lp.offer;
+
+  return (
+    <section data-cm-section="offer" style={{ borderTop: `1px solid ${cbm("border")}` }}>
+      <div
+        style={{
+          ...WRAP,
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,360px),1fr))",
+          gap: "clamp(36px,5vw,64px)",
+          alignItems: "start",
+        }}
+      >
+        <div style={{ minWidth: 0 }}>
+          <Reveal variant="wipe">
+            <h2 style={{ ...H2, maxWidth: "16ch" }}>{heading}</h2>
+          </Reveal>
+          <ul
+            style={{
+              margin: "clamp(26px,4vh,38px) 0 0",
+              padding: 0,
+              listStyle: "none",
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+            }}
+          >
+            {includes.map((item, i) => (
+              <Reveal key={item} delay={i * 70} variant="side">
+                <li
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 14,
+                    fontFamily: SATOSHI,
+                    fontWeight: 400,
+                    fontSize: 16,
+                    lineHeight: 1.5,
+                    color: cbm("gray-100"),
+                  }}
+                >
+                  <span style={{ marginTop: "0.4em", flex: "none" }}>
+                    <Diamond />
+                  </span>
+                  {item}
+                </li>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
+
+        <Reveal variant="scale">
+          <div
+            style={{
+              padding: "clamp(24px,3vw,36px)",
+              background: SURFACE.raised,
+              border: "1px solid rgba(245,242,237,0.12)",
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                fontFamily: PANCHANG,
+                fontWeight: 700,
+                fontSize: "clamp(26px,3.2vw,40px)",
+                lineHeight: 1.1,
+                color: "#F5F2ED",
+              }}
+            >
+              {/* O valor nunca quebra entre "R$" e o número. */}
+              {price.replace("R$ ", "R$ ")}
+            </p>
+            <p
+              style={{
+                margin: "12px 0 0",
+                fontFamily: SATOSHI,
+                fontWeight: 500,
+                fontSize: 17,
+                color: cbm("gray-100"),
+              }}
+            >
+              {deadline}
+            </p>
+            <p
+              style={{
+                margin: "16px 0 0",
+                fontFamily: SATOSHI,
+                fontWeight: 400,
+                fontSize: 15,
+                lineHeight: 1.65,
+                color: cbm("gray-300"),
+              }}
+            >
+              {note}
+            </p>
+            <div style={{ marginTop: 26 }}>
+              <LpCta label={lp.ctaLabel} message={lp.waMessage} size="lg" source="lp-offer" />
+            </div>
+            {alternative && (
+              <p
+                style={{
+                  margin: "22px 0 0",
+                  paddingTop: 18,
+                  borderTop: "1px solid rgba(245,242,237,0.12)",
+                  fontFamily: SATOSHI,
+                  fontWeight: 400,
+                  fontSize: 14,
+                  lineHeight: 1.6,
+                  color: cbm("gray-300"),
+                }}
+              >
+                {alternative}
+              </p>
+            )}
+          </div>
+        </Reveal>
       </div>
     </section>
   );

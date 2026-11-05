@@ -5,20 +5,24 @@ import { SURFACE } from "@/components/site/shared";
 import { LpFooter } from "@/components/lp/LpFooter";
 import { LpHeader } from "@/components/lp/LpHeader";
 import {
+  LpDifferentials,
   LpFaq,
   LpFinal,
   LpHero,
+  LpOffer,
   LpPains,
   LpProcess,
   LpPromise,
   LpProof,
 } from "@/components/lp/LpBlocks";
 
-const BLOCKS: Partial<Record<LandingBlock, (props: { lp: LandingConfig }) => JSX.Element | null>> = {
+const BLOCKS: Record<LandingBlock, (props: { lp: LandingConfig }) => JSX.Element | null> = {
   hero: LpHero,
   pains: LpPains,
   promise: LpPromise,
   proof: LpProof,
+  differentials: LpDifferentials,
+  offer: LpOffer,
   process: LpProcess,
   faq: LpFaq,
   final: LpFinal,
@@ -87,7 +91,7 @@ export default function LandingPage({ params }: Params) {
       <main>
         {lp.blocks.map((key) => {
           const Block = BLOCKS[key];
-          return Block ? <Block key={key} lp={lp} /> : null;
+          return <Block key={key} lp={lp} />;
         })}
       </main>
       <LpFooter message={lp.waMessage} />
