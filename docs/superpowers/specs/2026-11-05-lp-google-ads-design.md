@@ -170,7 +170,7 @@ lista e aparecem em toda landing.
 
 | Peça | Mudança |
 |---|---|
-| `LpHero` | Imagem opcional, abaixo do CTA no celular, com `next/image` e `priority` |
+| `LpHero` | Imagem opcional (`preview.top` do case de `heroCaseSlug`), abaixo do CTA no celular, com `next/image` e `priority` |
 | `LpProof` | Título por configuração; separa os grupos pelo campo `concept`; rótulo "Projeto conceitual"; sem conceitos ou sem reais, renderiza só o grupo que existe |
 | `LpProcess`, `LpFinal` | Títulos e textos por configuração |
 | `LpFaq` | Filtra com `isFilled` de `data/servicePages.ts` |
@@ -241,7 +241,7 @@ conferida nas conversas.
 ## Critérios de sucesso
 
 - `/lp/site-para-empresa` responde 200, com `noindex`, fora do `sitemap.xml`.
-- Os blocos aparecem na ordem da spec, e cada texto vem de `data/`.
+- Os blocos aparecem na ordem da spec, e a copy da landing vem de `data/` (o rodapé compartilhado é a exceção, com o WhatsApp vindo de `lib/contact.ts`).
 - Preço e prazo aparecem na primeira dobra em 390 px.
 - Stige e Estúdio Lentz exibem "Projeto conceitual"; os 3 clientes reais, não.
 - Nenhum "PREENCHER" aparece em `/lp/site-para-empresa` nem em `/lp/arquitetura`.
