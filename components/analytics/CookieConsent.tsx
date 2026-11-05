@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { getConsent, setConsent } from "@/lib/analytics";
+import { CONSENT_EVENT, getConsent, setConsent } from "@/lib/analytics";
+import { PRIVACY_PATH } from "@/data/privacidade";
 import { cbm } from "@/lib/palette";
 
 /**
@@ -18,6 +20,10 @@ export function CookieConsent() {
 
   useEffect(() => {
     if (getConsent() === null) setVisible(true);
+    // A escolha também pode ser feita em /privacidade.
+    const hide = () => setVisible(false);
+    window.addEventListener(CONSENT_EVENT, hide);
+    return () => window.removeEventListener(CONSENT_EVENT, hide);
   }, []);
 
   // As rotas /posts são telas de export (carrosséis) — sem chrome do site.
@@ -63,7 +69,18 @@ export function CookieConsent() {
         }}
       >
         Usamos cookies para medir o desempenho do site e entender como ele é
-        usado. Você decide.
+        usado. Você decide.{" "}
+        <Link
+          href={PRIVACY_PATH}
+          style={{
+            color: "#F5F2ED",
+            textDecoration: "underline",
+            textDecorationColor: "#FB3640",
+            textUnderlineOffset: 3,
+          }}
+        >
+          Política de privacidade
+        </Link>
       </p>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>

@@ -197,7 +197,8 @@ O texto é um rascunho do que o código faz hoje. Precisa da revisão do Matheus
 revisão jurídica. Nenhum prazo de retenção será inventado: o que não estiver definido fica como
 pendência da revisão.
 
-Links para a página: `LpFooter`, `SiteFooter`, `GalleryFooter` e `CookieConsent`.
+Links para a página: `LpFooter`, `Footer` (`components/zones/CTASection`, o rodapé da home e da
+experiência), `GalleryFooter` e `CookieConsent`.
 
 ## Medição
 

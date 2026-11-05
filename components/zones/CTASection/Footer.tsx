@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoMark } from "@/components/ui/LogoMark";
 import { waLink, INSTAGRAM_URL, INSTAGRAM_HANDLE, WHATSAPP_DISPLAY } from "@/lib/contact";
+import { PRIVACY_PATH } from "@/data/privacidade";
 import { cbm } from "@/lib/palette";
 import { TriArrow } from "@/components/ui/TriArrow";
 
@@ -29,6 +30,7 @@ const NAV_BASE = [
     href: INSTAGRAM_URL,
     external: true,
   },
+  { label: "Privacidade", href: PRIVACY_PATH, external: false },
 ];
 
 /** Páginas de serviço — links de texto pra busca e pra quem rola até o fim. */

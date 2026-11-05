@@ -8,6 +8,7 @@ import { ESCOLHER_PATH } from "@/data/comoEscolherEmpresa";
 import { LP_OU_PATH } from "@/data/landingOuInstitucional";
 import { SITE_PROPRIO_MODIFIED, SITE_PROPRIO_PATH } from "@/data/siteProprioWix";
 import { CALC_PATH } from "@/data/calculadoraPreco";
+import { PRIVACY_PATH } from "@/data/privacidade";
 
 /**
  * Rotas públicas e indexáveis. Fora daqui, de propósito: `/lp/*`, `/lab`,
@@ -65,6 +66,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/projetos`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/sobre`, changeFrequency: "yearly", priority: 0.5 },
     { url: `${SITE_URL}/contato`, changeFrequency: "yearly", priority: 0.6 },
+    { url: `${SITE_URL}${PRIVACY_PATH}`, changeFrequency: "yearly", priority: 0.2 },
     // Blog só entra com artigo publicado: rascunho não existe pro público.
     ...(publishedPosts().length
       ? [

@@ -34,7 +34,7 @@
 | `app/privacidade/page.tsx` (novo) | Página da política |
 | `components/analytics/ConsentChoice.tsx` (novo) | Mudar a escolha de cookies depois de decidir |
 | `components/analytics/CookieConsent.tsx` (alterar) | Link da política e fecha quando a escolha muda |
-| `components/site/SiteFooter.tsx`, `components/projetos/GalleryFooter.tsx`, `app/sitemap.ts`, `app/globals.css` (alterar) | Link da política, sitemap e foco visível |
+| `components/zones/CTASection/Footer.tsx`, `components/projetos/GalleryFooter.tsx`, `app/sitemap.ts`, `app/globals.css` (alterar) | Link da política, sitemap e foco visível |
 | `data/landings.ts` (alterar) | Configuração das landings |
 | `data/servicePages.ts` (alterar) | Exporta `ATENDE_BRASIL` e `INSTITUCIONAL_PRECO` |
 | `app/lp/[segmento]/page.tsx` (alterar) | Renderiza os blocos na ordem da configuração |
@@ -273,7 +273,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 
 **Files:**
 - Create: `data/privacidade.ts`, `app/privacidade/page.tsx`, `components/analytics/ConsentChoice.tsx`
-- Modify: `components/analytics/CookieConsent.tsx`, `components/site/SiteFooter.tsx`, `components/projetos/GalleryFooter.tsx`, `app/sitemap.ts`, `app/globals.css`
+- Modify: `components/analytics/CookieConsent.tsx`, `components/zones/CTASection/Footer.tsx`, `components/projetos/GalleryFooter.tsx`, `app/sitemap.ts`, `app/globals.css`
 
 **Interfaces:**
 - Consumes: `getConsent`, `setConsent`, `CONSENT_EVENT`, `ConsentValue` de `lib/analytics.ts`.
@@ -536,7 +536,7 @@ Trocar o texto do parágrafo por:
 
 - [ ] **Step 5: acrescentar os links, o sitemap e o foco**
 
-Em `components/site/SiteFooter.tsx`, importar `import { PRIVACY_PATH } from "@/data/privacidade";` e acrescentar ao fim de `LINKS`:
+Em `components/zones/CTASection/Footer.tsx`, importar `import { PRIVACY_PATH } from "@/data/privacidade";` e acrescentar ao fim de `NAV_BASE`:
 
 ```ts
   { label: "Privacidade", href: PRIVACY_PATH, external: false },
@@ -568,14 +568,14 @@ Expected: sem erro.
 Run em segundo plano: `npm run dev`. No navegador, com as requisições para `insights.codedbym.com`, `googletagmanager.com`, `google-analytics.com` e `connect.facebook.net` bloqueadas, para não contaminar as métricas de produção:
 - `/privacidade` abre em 390 px sem rolagem horizontal, e o título, o WhatsApp e a data aparecem.
 - Com o banner aberto, clicar em "Recusar cookies" na página fecha o banner, recarrega e mostra "cookies recusados".
-- O link do banner, o do `SiteFooter` em `/` e o do `GalleryFooter` em `/sobre` levam a `/privacidade`.
+- O link do banner, o do `Footer` em `/` e o do `GalleryFooter` em `/sobre` levam a `/privacidade`.
 - Em `/privacidade`, o link "Privacidade" do `GalleryFooter` não aparece, porque é a página atual.
 - `curl -s localhost:3000/sitemap.xml | grep privacidade` retorna a URL.
 
 - [ ] **Step 7: commit**
 
 ```bash
-git add data/privacidade.ts app/privacidade components/analytics/ConsentChoice.tsx components/analytics/CookieConsent.tsx components/site/SiteFooter.tsx components/projetos/GalleryFooter.tsx app/sitemap.ts app/globals.css
+git add data/privacidade.ts app/privacidade components/analytics/ConsentChoice.tsx components/analytics/CookieConsent.tsx components/zones/CTASection/Footer.tsx components/projetos/GalleryFooter.tsx app/sitemap.ts app/globals.css
 git commit -m "feat(privacidade): política de privacidade e mudança da escolha de cookies
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"

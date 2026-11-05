@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { waLink } from "@/lib/contact";
 import { publishedPosts } from "@/data/blog";
+import { PRIVACY_PATH } from "@/data/privacidade";
 import { TriArrow } from "@/components/ui/TriArrow";
 
 /** Links internos do rodapé: serviços, vitrine, sobre e blog (se houver artigo). */
@@ -12,6 +13,7 @@ const LINKS = [
   { href: "/sobre", label: "Sobre" },
   { href: "/contato", label: "Contato" },
   ...(publishedPosts().length ? [{ href: "/blog", label: "Blog" }] : []),
+  { href: PRIVACY_PATH, label: "Privacidade" },
 ];
 
 /**
