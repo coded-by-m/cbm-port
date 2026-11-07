@@ -35,9 +35,8 @@ const INTRO: CSSProperties = {
 
 const GRID: CSSProperties = {
   display: "grid",
-  // 420px, não menos: a célula é horizontal (numeral + miniatura de
-  // até 178px + texto). Com 330px cabiam 3 colunas e o texto ficava
-  // com ~20px, vazando do card.
+  // 420px, não menos: a capa ocupa a célula inteira. Com 330px cabiam 3
+  // colunas e a capa encolhia até o site perder a leitura.
   gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,420px),1fr))",
   gap: "clamp(14px,1.6vw,20px)",
 };

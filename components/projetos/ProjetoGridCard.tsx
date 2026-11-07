@@ -7,7 +7,7 @@ import { cbm } from "@/lib/palette";
 import { TriArrow } from "@/components/ui/TriArrow";
 
 /**
- * Célula de projeto — numeral, thumbnail e texto lado a lado.
+ * Célula de projeto — capa de ponta a ponta com o numeral, texto embaixo.
  *
  * Usada na grade de `/projetos` E na seção Projetos da home: uma só definição
  * pros dois lugares, senão eles divergem na primeira mexida.
@@ -15,9 +15,9 @@ import { TriArrow } from "@/components/ui/TriArrow";
  * Todas as células têm o mesmo peso. É catálogo, não vitrine com destaque —
  * quem decide o que importa é quem lê.
  *
- * A thumbnail usa `preview.card` (760×874): `preview.desktop` chega a
- * 2880×24972, e decodificar a página inteira do cliente pra mostrar 200px é
- * o que travava celular.
+ * A capa usa `preview.card` (760×874): `preview.desktop` chega a 2880×24972,
+ * e decodificar a página inteira do cliente pra uma capa é o que travava
+ * celular.
  */
 export function ProjetoGridCard({
   project,
@@ -39,13 +39,11 @@ export function ProjetoGridCard({
       style={{
         position: "relative",
         display: "flex",
-        flexWrap: "wrap",
-        alignItems: "flex-start",
-        gap: "clamp(12px,1.4vw,20px)",
+        flexDirection: "column",
+        width: "100%",
         minWidth: 0,
         border: "1px solid rgba(245,242,237,0.1)",
         background: cbm("sunken"),
-        padding: "clamp(16px,1.8vw,24px)",
       }}
     >
       {/* Clique da célula inteira leva ao case. */}
@@ -57,36 +55,21 @@ export function ProjetoGridCard({
         style={{ position: "absolute", inset: 0, zIndex: 1 }}
       />
 
-      <span
-        aria-hidden
-        style={{
-          flex: "none",
-          fontFamily: PANCHANG,
-          fontWeight: 700,
-          fontSize: "clamp(22px,2.4vw,38px)",
-          lineHeight: 0.9,
-          letterSpacing: "-0.04em",
-          color: "rgba(245,242,237,0.2)",
-        }}
-      >
-        {num}
-      </span>
-
-      {/* Thumbnail — largura fixa, pra as células ficarem alinhadas entre si.
+      {/* Capa — de ponta a ponta, na mesma proporção em todas as células.
           É uma JANELA sobre um recorte mais alto que ela: em repouso mostra o
           topo do site, no hover desliza e revela a continuação da página.
 
           Por isso a imagem não usa `fill`: com ela o elemento teria a altura
           exata da janela, sem sobra nenhuma pra revelar — e o deslize levava a
-          miniatura inteira pra fora, deixando o card preto. */}
+          capa inteira pra fora, deixando o card preto. */}
       <div
         style={{
           position: "relative",
           flex: "none",
-          width: "clamp(96px,13vw,178px)",
-          aspectRatio: "16 / 11",
+          width: "100%",
+          aspectRatio: "16 / 10",
           overflow: "hidden",
-          border: "1px solid rgba(245,242,237,0.12)",
+          borderBottom: "1px solid rgba(245,242,237,0.1)",
         }}
       >
         {thumb && (
@@ -95,12 +78,37 @@ export function ProjetoGridCard({
             alt={`Topo da página inicial do site ${project.title}`}
             width={760}
             height={874}
-            sizes="(max-width: 700px) 30vw, 178px"
+            sizes="(max-width: 960px) 92vw, 562px"
             priority={priority}
             className="site-shot-window"
             style={{ display: "block", width: "100%", height: "auto" }}
           />
         )}
+        {/* Escurece só a base da capa, pra o numeral ler sobre qualquer site. */}
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: "50% 0 0",
+            background: "linear-gradient(transparent, rgba(5,5,5,0.8))",
+          }}
+        />
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: "clamp(12px,1.4vw,18px)",
+            bottom: "clamp(10px,1.2vw,16px)",
+            fontFamily: PANCHANG,
+            fontWeight: 700,
+            fontSize: "clamp(22px,2.4vw,34px)",
+            lineHeight: 0.9,
+            letterSpacing: "-0.04em",
+            color: "#F5F2ED",
+          }}
+        >
+          {num}
+        </span>
         <span
           aria-hidden
           style={{
@@ -115,9 +123,16 @@ export function ProjetoGridCard({
         />
       </div>
 
-      {/* Texto. Base de 160px: abaixo disso (celular) desce pra baixo
-          da miniatura em vez de espremer numa coluna ilegível. */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 0, flex: "1 1 160px" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+          minWidth: 0,
+          flex: 1,
+          padding: "clamp(16px,1.8vw,24px)",
+        }}
+      >
         {/* Quebra em vez de vazar: o rótulo não encolhe, e ao lado de um
             título longo não cabe na coluna de texto. */}
         <div
@@ -227,7 +242,9 @@ export function ProjetoGridCard({
           </div>
         )}
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 6 }}>
+        {/* `auto` empurra os botões pro pé: na mesma linha da grade, cards com
+            e sem stack terminam alinhados. */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: "auto", paddingTop: 6 }}>
           <span
             style={{
               display: "inline-flex",
