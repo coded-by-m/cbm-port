@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<link href="https://api.fontshare.com/v2/css?f[]=panchang@400,500,600,700,800&f[]=satoshi@300,400,500,600,700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --black:#000F08; --red:#FB3640; --white:#F5F2ED;
+    --g200:#C8C4BE; --g400:#8A8780;
+    --hair:rgba(245,242,237,0.12);
+    --display:'Panchang',sans-serif; --body:'Satoshi',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#111;display:flex;flex-direction:column;align-items:center;gap:40px;padding:40px;}
+
+  .slide{
+    position:relative;width:1080px;height:1080px;overflow:hidden;
+    background:var(--black);color:var(--white);font-family:var(--body);
+  }
+  .frame{position:absolute;inset:92px;display:flex;flex-direction:column;z-index:3;}
+
+  /* watermark — símbolo real CbM (M off-white + diagonal vermelha), fiel à
+     marca, totalmente contido na arte (não sangra/corta no canto), bem sutil */
+  .wm{position:absolute;right:64px;bottom:150px;width:300px;opacity:.07;z-index:1;}
+  .wm svg{width:100%;height:auto;}
+
+  /* ---- header ---- */
+  .hd{display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:30px;border-bottom:1px solid var(--hair);}
+  .hd-l{display:flex;align-items:center;gap:16px;}
+  .hd-l .sym{height:34px;width:auto;}
+  .wordmark{font-family:var(--display);font-weight:600;font-size:25px;letter-spacing:-0.01em;color:var(--white);}
+  .wordmark b{color:var(--red);}
+  .prog{font-family:var(--body);font-weight:500;font-size:15px;letter-spacing:0.16em;
+    color:var(--g400);font-variant-numeric:tabular-nums;}
+  .prog b{color:var(--red);}
+
+  /* ---- footer ---- */
+  .ft{margin-top:auto;display:flex;align-items:center;justify-content:space-between;
+    padding-top:28px;border-top:1px solid var(--hair);
+    font-family:var(--body);font-weight:500;font-size:15px;letter-spacing:0.2em;
+    text-transform:uppercase;color:var(--g400);}
+
+  /* ---- content ---- */
+  .main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:56px 0;}
+  .eyebrow{display:flex;align-items:center;gap:18px;font-family:var(--body);font-weight:600;
+    font-size:15px;letter-spacing:0.26em;text-transform:uppercase;color:var(--red);margin-bottom:38px;}
+  .eyebrow .ln{width:42px;height:1px;background:var(--red);}
+
+  h1{font-family:var(--display);font-weight:700;font-size:104px;line-height:.98;
+    letter-spacing:-0.025em;color:var(--white);}
+  h1 .r{color:var(--red);}
+  h2{font-family:var(--display);font-weight:700;font-size:66px;line-height:1.03;
+    letter-spacing:-0.02em;color:var(--white);}
+  h2 .r{color:var(--red);}
+  .lead{font-family:var(--body);font-weight:400;font-size:31px;line-height:1.5;
+    color:var(--g200);max-width:720px;margin-top:32px;}
+
+  /* statement (number bound to the claim — not a centered metric card) */
+  .stmt{display:flex;align-items:center;gap:40px;}
+  .stmt .bn{font-family:var(--display);font-weight:800;font-size:158px;line-height:.82;
+    letter-spacing:-0.04em;color:var(--red);flex:0 0 auto;}
+  .stmt .tx{font-family:var(--display);font-weight:600;font-size:44px;line-height:1.1;
+    letter-spacing:-0.015em;color:var(--white);flex:1;}
+  .note{font-family:var(--body);font-weight:400;font-size:27px;line-height:1.45;
+    color:var(--g200);max-width:680px;margin-top:42px;}
+  .src{display:flex;align-items:center;gap:12px;font-family:var(--body);font-weight:500;
+    font-size:17px;letter-spacing:0.14em;text-transform:uppercase;color:var(--g400);margin-top:26px;}
+  .src::before{content:"";width:7px;height:7px;background:var(--red);flex:0 0 auto;}
+
+  /* checklist */
+  .checks{display:flex;flex-direction:column;gap:30px;margin-top:50px;}
+  .checks li{list-style:none;display:flex;align-items:center;gap:26px;
+    font-family:var(--body);font-weight:500;font-size:40px;color:var(--white);}
+  .checks .mk{flex:0 0 auto;width:34px;height:34px;}
+
+  /* numbered steps */
+  .steps{display:flex;flex-direction:column;margin-top:46px;}
+  .steps li{list-style:none;display:flex;align-items:baseline;gap:30px;padding:24px 0;
+    border-top:1px solid var(--hair);}
+  .steps li:last-child{border-bottom:1px solid var(--hair);}
+  .steps .idx{font-family:var(--display);font-weight:700;font-size:30px;color:var(--red);
+    font-variant-numeric:tabular-nums;flex:0 0 auto;width:54px;}
+  .steps .lb{font-family:var(--body);font-weight:500;font-size:38px;color:var(--white);}
+
+  /* inline tags */
+  .tags{display:flex;flex-wrap:wrap;gap:14px 30px;margin-top:38px;}
+  .tags span{font-family:var(--display);font-weight:600;font-size:34px;color:var(--white);}
+  .tags span::before{content:"";display:inline-block;width:9px;height:9px;background:var(--red);
+    margin-right:16px;transform:translateY(-6px);}
+
+  .cue{display:flex;align-items:center;gap:14px;margin-top:54px;
+    font-family:var(--body);font-weight:600;font-size:15px;letter-spacing:0.28em;
+    text-transform:uppercase;color:var(--g400);}
+
+  /* CTA contact — empilhado em 2 linhas pra nunca vazar à direita */
+  .cta-line{width:96px;height:2px;background:var(--red);margin:44px 0 36px;}
+  .contact .line{font-family:var(--display);font-weight:600;font-size:48px;line-height:1.18;
+    letter-spacing:-0.01em;color:var(--white);}
+  .contact .at{color:var(--red);}
+
+  /* brand cover */
+  .bc{display:flex;flex-direction:column;}
+  .bc .big-sym{width:118px;margin-bottom:46px;}
+  .bc .mark{font-family:var(--display);font-weight:700;font-size:128px;line-height:.9;
+    letter-spacing:-0.035em;color:var(--white);}
+  .bc .mark .r{color:var(--red);}
+  .bc .sub{font-family:var(--body);font-weight:500;font-size:31px;letter-spacing:0.04em;
+    color:var(--g200);margin-top:34px;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const RED="#FB3640", WHITE="#F5F2ED";
+const SYM=(c1=WHITE)=>`<svg class="sym" viewBox="0 0 142 161" fill="none">
+  <path d="M11.5 148.039V59.0391L53.5 104.438" stroke="${c1}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="${c1}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9.5 18.0391L130.5 147.039" stroke="${RED}" stroke-width="9" stroke-linecap="round"/></svg>`;
+const WM=`<div class="wm"><svg viewBox="0 0 142 161" fill="none">
+  <path d="M11.5 148.039V59.0391L53.5 104.438" stroke="${WHITE}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="${WHITE}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9.5 18.0391L130.5 147.039" stroke="${RED}" stroke-width="9" stroke-linecap="round"/></svg></div>`;
+const ARROW=`<svg width="24" height="11" viewBox="0 0 24 11"><path d="M1 5.5h20M17 1l5 4.5-5 4.5" stroke="${RED}" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const CHK=`<svg class="mk" viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6" stroke="${RED}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const eb=(t)=>`<div class="eyebrow"><span class="ln"></span>${t}</div>`;
+
+function header(n,total){
+  return `<div class="hd"><div class="hd-l">${SYM()}<span class="wordmark">Coded by M<b>.</b></span></div>
+    <div class="prog"><b>${String(n).padStart(2,"0")}</b> &nbsp;/&nbsp; ${String(total).padStart(2,"0")}</div></div>`;
+}
+const footer=`<div class="ft"><span>codedbym.com</span><span>@codedbym.co</span></div>`;
+const contact=`<div class="contact"><div class="line">codedbym.com</div><div class="line at">@codedbym.co</div></div>`;
+
+function body(s){
+  if(s.type==="cover")
+    return `<div class="main">${eb(s.kicker)}<h1>${s.h}</h1><div class="cue">${ARROW} Arraste</div></div>`;
+  if(s.type==="brandcover")
+    return `<div class="main"><div class="bc"><div class="big-sym">${SYM()}</div>
+      <div class="mark">${s.h}</div><div class="sub">${s.sub}</div></div><div class="cue">${ARROW} Arraste</div></div>`;
+  if(s.type==="stmt")
+    return `<div class="main">${eb(s.kicker)}<div class="stmt"><div class="bn">${s.num}</div><div class="tx">${s.tx}</div></div>
+      ${s.note?`<div class="note">${s.note}</div>`:""}${s.src?`<div class="src">${s.src}</div>`:""}</div>`;
+  if(s.type==="checks")
+    return `<div class="main">${eb(s.kicker)}<h2>${s.h}</h2><ul class="checks">${s.items.map(i=>`<li>${CHK}${i}</li>`).join("")}</ul></div>`;
+  if(s.type==="steps")
+    return `<div class="main">${eb(s.kicker)}<h2>${s.h}</h2><ul class="steps">${s.items.map((i,k)=>`<li><span class="idx">${String(k+1).padStart(2,"0")}</span><span class="lb">${i}</span></li>`).join("")}</ul></div>`;
+  if(s.type==="text")
+    return `<div class="main">${eb(s.kicker)}<h2>${s.h}</h2>${s.lead?`<div class="lead">${s.lead}</div>`:""}${s.tags?`<div class="tags">${s.tags.map(t=>`<span>${t}</span>`).join("")}</div>`:""}</div>`;
+  if(s.type==="cta")
+    return `<div class="main">${eb(s.kicker)}<h2>${s.h}</h2><div class="cta-line"></div>${contact}</div>`;
+  return "";
+}
+function slide(s,n,total,id){
+  return `<section class="slide" data-shot="${id}">${WM}<div class="frame">${header(n,total)}${body(s)}${footer}</div></section>`;
+}
+
+const carousels=[
+ {id:"c1", slides:[
+   {type:"cover", kicker:"Importância de um bom site", h:`Seu site vende.<br><span class="r">Ou só existe?</span>`},
+   {type:"stmt", kicker:"O primeiro contato", num:"75%", tx:"julgam sua empresa pelo design do site.", note:"A primeira impressão é visual, e ela não acontece duas vezes.", src:"Fonte: Stanford Web Credibility Research"},
+   {type:"checks", kicker:"Credibilidade", h:`Um site bem feito<br>transmite:`, items:["Profissionalismo","Confiança","Um negócio levado a sério"]},
+   {type:"steps", kicker:"Conversão", h:`Bonito não basta.<br><span class="r">Precisa converter.</span>`, items:["WhatsApp sempre à vista","Navegação que não confunde","Carregamento rápido"]},
+   {type:"cta", kicker:"Sua vez", h:`Seu próximo cliente está<br>te procurando online.<br><span class="r">Seu site está pronto?</span>`},
+ ]},
+ {id:"c2", slides:[
+   {type:"brandcover", h:`Coded<br><span class="r">by M.</span>`, sub:"Web design & desenvolvimento"},
+   {type:"text", kicker:"O que fazemos", h:`Criamos sites<br>que <span class="r">posicionam.</span>`, lead:"Design e código, lado a lado. Cada pixel é uma decisão."},
+   {type:"text", kicker:"A diferença", h:`Design e código.<br><span class="r">Mesmo autor.</span>`, lead:"Sem terceirização. Sem template. Tudo construído do zero."},
+   {type:"text", kicker:"Para quem", h:`Para quem leva a sério<br>a <span class="r">primeira impressão.</span>`, tags:["Arquitetos","Clínicas","Marcas premium"]},
+   {type:"cta", kicker:"Bora", h:`<span class="r">Vamos conversar?</span>`},
+ ]},
+ {id:"c3", slides:[
+   {type:"cover", kicker:"Diagnóstico rápido", h:`<span class="r">3 sinais</span> de que<br>seu site precisa<br>de upgrade.`},
+   {type:"stmt", kicker:"Sinal 01 · Velocidade", num:"+3s", tx:"de carregamento e metade dos visitantes já foi.", note:"Teste agora: abra seu site no celular, no 4G, longe do Wi-Fi.", src:"Fonte: Google · think with Google"},
+   {type:"stmt", kicker:"Sinal 02 · Mobile", num:"60%", tx:"das visitas vêm do celular.", note:"Se o texto fica miúdo e o botão é difícil de tocar, você perde o cliente.", src:"Fonte: StatCounter Global Stats"},
+   {type:"text", kicker:"Sinal 03 · Identidade", h:`Parece igual<br>a <span class="r">todo mundo?</span>`, lead:"Template pronto e foto de banco diluem sua marca. Seu negócio é único, seu site também deveria ser."},
+   {type:"cta", kicker:"E o seu?", h:`<span class="r">Identificou</span> algum<br>desses sinais?`},
+ ]},
+];
+
+let html="";
+for(const c of carousels) c.slides.forEach((s,i)=>{ html+=slide(s,i+1,c.slides.length,`${c.id}-s${i+1}`); });
+document.getElementById("root").innerHTML=html;
+</script>
+</body>
+</html>

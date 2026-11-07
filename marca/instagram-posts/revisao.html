@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Coded by M — Carrosséis para avaliação</title>
+<link href="https://api.fontshare.com/v2/css?f[]=panchang@400,500,600,700,800&f[]=satoshi@300,400,500,600,700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --black:#000F08; --red:#FB3640; --white:#F5F2ED; --g200:#C8C4BE; --g400:#8A8780;
+    --hair:rgba(245,242,237,0.14); --surface:#0a120c;
+    --display:'Panchang',sans-serif; --body:'Satoshi',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--black);color:var(--white);font-family:var(--body);
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .wrap{max-width:1240px;margin:0 auto;padding:64px 56px 80px;}
+
+  /* cover / header */
+  .doc-head{display:flex;align-items:flex-end;justify-content:space-between;
+    padding-bottom:28px;border-bottom:1px solid var(--hair);margin-bottom:14px;}
+  .doc-head .sym{height:46px;}
+  .doc-head .ttl{font-family:var(--display);font-weight:700;font-size:34px;letter-spacing:-0.02em;}
+  .doc-head .ttl b{color:var(--red);}
+  .doc-head .meta{font-size:14px;letter-spacing:0.22em;text-transform:uppercase;color:var(--g400);text-align:right;line-height:1.7;}
+  .intro{color:var(--g200);font-size:17px;line-height:1.6;max-width:760px;margin:26px 0 8px;}
+  .intro b{color:var(--white);font-weight:600;}
+
+  /* carousel block */
+  .carousel{margin-top:64px;padding-top:40px;border-top:1px solid var(--hair);page-break-inside:avoid;break-inside:avoid;}
+  .carousel:first-of-type{border-top:none;}
+  .c-head{display:flex;align-items:baseline;gap:20px;margin-bottom:30px;}
+  .c-num{font-family:var(--display);font-weight:700;font-size:22px;color:var(--red);font-variant-numeric:tabular-nums;}
+  .c-title{font-family:var(--display);font-weight:600;font-size:30px;letter-spacing:-0.015em;}
+  .c-sub{font-size:14px;letter-spacing:0.2em;text-transform:uppercase;color:var(--g400);margin-left:auto;}
+
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+  .cell figure{margin:0;}
+  .cell img{width:100%;height:auto;display:block;border:1px solid var(--hair);border-radius:4px;}
+  .cell figcaption{font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--g400);margin-top:10px;text-align:center;}
+  .cell figcaption b{color:var(--red);}
+
+  /* caption block */
+  .legenda{margin-top:28px;background:var(--surface);border:1px solid var(--hair);border-radius:8px;padding:28px 32px;}
+  .legenda .lab{font-size:13px;letter-spacing:0.26em;text-transform:uppercase;color:var(--red);margin-bottom:14px;}
+  .legenda p{font-size:18px;line-height:1.62;color:var(--white);max-width:840px;}
+  .legenda p + p{margin-top:12px;}
+  .legenda .tags{margin-top:16px;font-size:15px;color:var(--g200);letter-spacing:0.01em;}
+
+  .foot{margin-top:72px;padding-top:24px;border-top:1px solid var(--hair);
+    display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.2em;
+    text-transform:uppercase;color:var(--g400);}
+
+  @media print{
+    @page{size:A4 portrait;margin:14mm;}
+    body{background:var(--black);}
+    .wrap{padding:0;max-width:none;}
+    .carousel{page-break-before:always;break-before:page;border-top:none;margin-top:0;padding-top:0;}
+    .carousel:first-of-type{page-break-before:avoid;break-before:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="doc-head">
+    <div style="display:flex;align-items:center;gap:18px;">
+      <svg class="sym" viewBox="0 0 142 161" fill="none">
+        <path d="M11.5 148.039V59.0391L53.5 104.438" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M130.5 103.039V19.0391L85.5 67.2944" stroke="#F5F2ED" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9.5 18.0391L130.5 147.039" stroke="#FB3640" stroke-width="9" stroke-linecap="round"/>
+      </svg>
+      <span class="ttl">Coded by M<b>.</b></span>
+    </div>
+    <div class="meta">Carrosséis Instagram<br>Material para avaliação</div>
+  </div>
+
+  <p class="intro">Três carrosséis de cinco slides (formato feed <b>1080×1080</b>), na identidade da marca:
+  fundo <b>#000F08</b>, vermelho-sinal <b>#FB3640</b>, tipografia <b>Panchang + Satoshi</b>. Cada bloco traz
+  os slides na ordem de publicação (s1 → s5) e a legenda sugerida com hashtags. Handle: <b>@codedbym.co</b>.</p>
+
+  <div id="root"></div>
+
+  <div class="foot"><span>codedbym.com</span><span>@codedbym.co</span></div>
+</div>
+
+<script>
+const CAR = [
+  { n:1, title:"Importância de um bom site", sub:"Captação · prova social",
+    legenda:["Seu site é a primeira impressão, e ela não se repete. Um site profissional não é luxo, é estratégia.",
+             "Quer saber como está o seu? Me chama. 👇"],
+    tags:"#SiteProfissional #PresençaDigital #WebDesign #CodedByM" },
+  { n:2, title:"Apresentação Coded by M", sub:"Marca · posicionamento",
+    legenda:["A Coded by M nasceu de uma crença simples: um bom site não é despesa, é o melhor cartão de visitas.",
+             "Web design e desenvolvimento premium para negócios que levam a sério a primeira impressão. Link do WhatsApp na bio. 👇"],
+    tags:"#CodedByM #WebDesign #SiteProfissional #PrimeiraImpressão #DesenvolvimentoWeb" },
+  { n:3, title:"Sinais de site desatualizado", sub:"Educativo · diagnóstico",
+    legenda:["Site lento, ruim no celular ou parecido com todo mundo? Esses 3 sinais podem estar custando clientes.",
+             "Dá pra resolver, com investimento acessível. Me chama pra um diagnóstico. 👇"],
+    tags:"#ErrosDeSite #MobileFirst #PresençaDigital #CodedByM" },
+];
+
+let html="";
+for(const c of CAR){
+  const cells = [1,2,3,4,5].map(s=>`
+    <div class="cell"><figure>
+      <img src="carrossel-${c.n}/c${c.n}-s${s}.png" alt="Carrossel ${c.n} slide ${s}" />
+      <figcaption><b>${String(s).padStart(2,"0")}</b> / 05</figcaption>
+    </figure></div>`).join("");
+  const leg = c.legenda.map(p=>`<p>${p}</p>`).join("");
+  html += `<section class="carousel">
+    <div class="c-head">
+      <span class="c-num">${String(c.n).padStart(2,"0")}</span>
+      <span class="c-title">${c.title}</span>
+      <span class="c-sub">${c.sub}</span>
+    </div>
+    <div class="grid">${cells}</div>
+    <div class="legenda">
+      <div class="lab">Legenda sugerida</div>
+      ${leg}
+      <div class="tags">${c.tags}</div>
+    </div>
+  </section>`;
+}
+document.getElementById("root").innerHTML=html;
+</script>
+</body>
+</html>
