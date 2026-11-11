@@ -19,6 +19,9 @@ Uso (da raiz do repo):
               mobile-tall (todos .webp). As telas (hero-N/section-NN) são
               escolhidas à mão entre os candidatos: `pick` abaixo.
     pick    → python scripts/capture-cases.py pick <slug> hero=0,3,5 section=7,9,12,14
+    mockups → python scripts/capture-cases.py mockups <slug>
+              mockup-desktop-3d.webp (1920x1500) e mockup-mobile-3d.webp
+              (1060x2000), fundo transparente, a partir dos brutos.
 """
 
 import json
@@ -273,6 +276,99 @@ def pick(slug, args):
             save_webp(im, os.path.join(dst, name))
 
 
+# Mockups 3D: monitor com pé e celular em perspectiva, renderizados em HTML/CSS
+# e fotografados com fundo transparente. Mesmo padrão dos mockups do Café Aroma.
+MONITOR_HTML = """<!doctype html><html><head><style>
+html,body{margin:0;background:transparent;width:1920px;height:1500px;overflow:hidden}
+.stage{position:absolute;inset:0;perspective:2600px;perspective-origin:50% 40%}
+.rig{position:absolute;left:50%;top:150px;width:1500px;margin-left:-790px;transform-style:preserve-3d;
+  transform:scale(.9) rotateX(4deg) rotateY(-15deg) rotateZ(-1.2deg)}
+.monitor{position:relative;width:1500px;height:952px;border-radius:26px;padding:22px;box-sizing:border-box;
+  background:linear-gradient(160deg,#3a3d44 0%,#22242a 45%,#16171b 100%);
+  box-shadow:inset 0 0 0 2px #4a4e57, inset 0 2px 0 3px rgba(255,255,255,.06), 0 40px 80px -30px rgba(0,0,0,.55)}
+.screen{width:100%;height:100%;border-radius:8px;overflow:hidden;background:#000;position:relative}
+.screen img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.screen:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.07) 0%,rgba(255,255,255,0) 38%)}
+.neck{position:absolute;left:50%;top:950px;width:150px;margin-left:-75px;height:180px;
+  background:linear-gradient(90deg,#2a2c32,#4b4f58 45%,#2b2d33);transform:translateZ(-60px)}
+.base{position:absolute;left:50%;top:1110px;width:520px;margin-left:-260px;height:36px;border-radius:10px 10px 16px 16px;
+  background:linear-gradient(180deg,#5a5e68,#2c2e34);transform:translateZ(-60px)}
+.shadow{position:absolute;left:50%;top:1215px;width:1200px;height:110px;margin-left:-620px;border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.42) 0%,rgba(0,0,0,.18) 45%,rgba(0,0,0,0) 72%);filter:blur(14px)}
+</style></head><body><div class="shadow"></div><div class="stage"><div class="rig">
+<div class="neck"></div><div class="base"></div>
+<div class="monitor"><div class="screen"><img src="__SRC__"></div></div>
+</div></div></body></html>"""
+
+# A faixa no topo da tela do celular leva a cor do site: a ilha da câmera
+# não cobre o logo do menu.
+PHONE_HTML = """<!doctype html><html><head><style>
+html,body{margin:0;background:transparent;width:1060px;height:2000px;overflow:hidden}
+.stage{position:absolute;inset:0;perspective:2400px;perspective-origin:50% 45%}
+.rig{position:absolute;left:50%;top:110px;width:780px;margin-left:-390px;transform-style:preserve-3d;
+  transform:rotateX(6deg) rotateY(18deg) rotateZ(4deg)}
+.phone{position:relative;width:780px;height:1640px;border-radius:118px;padding:26px;box-sizing:border-box;
+  background:linear-gradient(150deg,#45484f 0%,#24262b 40%,#141518 100%);
+  box-shadow:inset 0 0 0 3px #5a5e67, inset 0 0 0 9px #17181b, 0 60px 90px -30px rgba(0,0,0,.6), -24px 40px 60px -20px rgba(0,0,0,.35)}
+.screen{width:100%;height:100%;border-radius:94px;overflow:hidden;background:#000;position:relative}
+.screen img{width:100%;display:block;margin-top:92px}
+.island{position:absolute;top:24px;left:50%;width:200px;height:56px;margin-left:-100px;border-radius:30px;background:#050506;z-index:2}
+.screen:after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,0) 40%)}
+.btn{position:absolute;left:-7px;width:8px;border-radius:4px 0 0 4px;background:#3a3d44}
+.shadow{position:absolute;left:50%;top:1770px;width:820px;height:90px;margin-left:-390px;border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.38) 0%,rgba(0,0,0,.15) 45%,rgba(0,0,0,0) 72%);filter:blur(16px)}
+</style></head><body><div class="shadow"></div><div class="stage"><div class="rig">
+<div class="phone"><div class="btn" style="top:300px;height:110px"></div><div class="btn" style="top:440px;height:110px"></div>
+<div class="screen" style="background:__BG__"><div class="island"></div><img src="__SRC__"></div></div>
+</div></div></body></html>"""
+
+
+def _data_url(im):
+    import base64
+    import io
+
+    buf = io.BytesIO()
+    im.save(buf, "PNG")
+    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
+def mockups(slugs):
+    import io
+
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        for slug in slugs:
+            raw = os.path.join(RAW, slug)
+            dst = folder(slug)
+            print(slug)
+            desk = Image.open(os.path.join(raw, "desktop-full.png")).convert("RGB")
+            top = desk.crop((0, 0, desk.width, round(desk.width * 10 / 16))).resize((2880, 1800), Image.LANCZOS)
+            mob = Image.open(os.path.join(raw, "mobile-full.png")).convert("RGB")
+            mob_top = mob.crop((0, 0, mob.width, round(mob.width * 1600 / 780)))
+            r, g, b = mob.crop((0, 0, mob.width, 6)).resize((1, 1), Image.LANCZOS).getpixel((0, 0))
+            jobs = [
+                ("mockup-desktop-3d", MONITOR_HTML.replace("__SRC__", _data_url(top)), 1920, 1500),
+                (
+                    "mockup-mobile-3d",
+                    PHONE_HTML.replace("__SRC__", _data_url(mob_top)).replace("__BG__", f"rgb({r},{g},{b})"),
+                    1060,
+                    2000,
+                ),
+            ]
+            for name, html, w, h in jobs:
+                page = browser.new_page(viewport={"width": w, "height": h}, device_scale_factor=1)
+                page.set_content(html, wait_until="load")
+                png = page.screenshot(omit_background=True)
+                page.close()
+                im = Image.open(io.BytesIO(png)).convert("RGBA")
+                out = os.path.join(dst, name + ".webp")
+                im.save(out, "WEBP", quality=82, method=6)
+                print("  ", os.path.relpath(out, ROOT), im.size, os.path.getsize(out) // 1024, "KB")
+        browser.close()
+
+
 if __name__ == "__main__":
     cmd, rest = sys.argv[1], sys.argv[2:]
     if cmd == "capture":
@@ -284,3 +380,5 @@ if __name__ == "__main__":
             candidates(s)
     elif cmd == "pick":
         pick(rest[0], rest[1:])
+    elif cmd == "mockups":
+        mockups(rest)

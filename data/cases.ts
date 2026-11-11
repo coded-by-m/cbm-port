@@ -97,7 +97,6 @@ export const cases: CaseProject[] = [
       "/cases/estudio-lentz/section-01.webp",
       "/cases/estudio-lentz/section-02.webp",
       "/cases/estudio-lentz/section-03.webp",
-      "/cases/estudio-lentz/section-04.webp",
     ],
     overview: {
       heading: "Construir é pensar: o scroll vira obra",
@@ -290,6 +289,10 @@ export const cases: CaseProject[] = [
         "Dar forma à presença de um escritório de arquitetura entre o litoral e a serra, obras em tela cheia e um arquivo numerado, sem apresentar o estudo como entrega de cliente.",
     },
     gallery: [],
+    mockups: {
+      desktop3d: "/cases/nord-arch/mockup-desktop-3d.webp",
+      mobile3d: "/cases/nord-arch/mockup-mobile-3d.webp",
+    },
     palette: ["#f3f1ec", "#141614", "#8a8478", "#c5bba8"],
     status: "published",
     siteUrl: "nord-arch.vercel.app",

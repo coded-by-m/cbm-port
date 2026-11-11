@@ -53,8 +53,8 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
             <img
               src={desktop3d}
               alt={`${title}: mockup 3D desktop`}
-              width={1600}
-              height={1151}
+              width={1920}
+              height={1500}
               loading="lazy"
               decoding="async"
               className="w-full select-none drop-shadow-[0_40px_80px_-30px_rgba(0,0,0,0.85)]"
