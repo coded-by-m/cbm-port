@@ -21,8 +21,6 @@ export function CaseFrameScroll({
   alt,
   fallback = null,
   lazy = false,
-  /** Duração do auto-scroll no fallback touch. */
-  autoDurationSec = 32,
   /** Sensibilidade: px de imagem por px de delta da roda. Ajuste fino do feel. */
   sensitivity = 5,
 }: {
@@ -32,7 +30,6 @@ export function CaseFrameScroll({
   alt: string;
   fallback?: ReactNode;
   lazy?: boolean;
-  autoDurationSec?: number;
   sensitivity?: number;
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
@@ -126,7 +123,6 @@ export function CaseFrameScroll({
         src={src}
         poster={poster}
         alt={alt}
-        durationSec={autoDurationSec}
         lazy={lazy}
         fallback={fallback}
       />

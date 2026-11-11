@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { shotScrollKeyframes, useShotScroll } from "@/hooks/useShotScroll";
 import gsap from "gsap";
 import type { CaseProject } from "@/types/case";
 import { waLink } from "@/lib/contact";
@@ -234,6 +236,7 @@ export function ProjectCard({
                 <ImageWithFallback
                   src={project.preview.desktop}
                   alt={`${project.title}: preview desktop`}
+                  sizes="(max-width: 767px) 100px, 420px"
                   fallback={
                     <CardMeshPlaceholder variant="desktop" seed={seed} />
                   }
@@ -258,6 +261,7 @@ export function ProjectCard({
                 <ImageWithFallback
                   src={project.preview.mobile}
                   alt={`${project.title}: preview mobile`}
+                  sizes="(max-width: 767px) 44px, 140px"
                   fallback={
                     <CardMeshPlaceholder variant="mobile" seed={seed + 1} />
                   }
@@ -342,16 +346,12 @@ export function ProjectCard({
   // (desktop), como reforço opcional — nunca à toa.
   const scrollStyle = (
     <style>{`
-      @keyframes card-preview-img-scroll {
-        0%   { transform: translateY(0%); }
-        50%  { transform: translateY(-55%); }
-        100% { transform: translateY(0%); }
-      }
+      ${shotScrollKeyframes("card-preview-img-scroll")}
       .card-preview-img {
-        transform: translateY(0%);
+        transform: translateY(0);
       }
       .group\\/card:hover .card-preview-img {
-        animation: card-preview-img-scroll 22s ease-in-out infinite;
+        animation: card-preview-img-scroll var(--shot-dur, 22s) ease-in-out infinite;
       }
       @keyframes card-status-pulse {
         0%, 100% { opacity: 1; transform: scale(1); }
@@ -506,29 +506,38 @@ export function ProjectCard({
 }
 
 /**
- * `<img>` com fallback gracioso quando o asset falha (404, rede).
+ * Print de página inteira com fallback gracioso quando o asset falha (404, rede).
  *
- * Mantém o componente do card resiliente caso o usuário deploy sem dropar
- * as imagens em `public/cases/<slug>/`.
+ * Passa pelo next/image: o quadro tem 44–420px de largura e o print original
+ * chega a dezenas de megapixels — baixado cru, travava celular. A distância
+ * da rolagem no hover sai do tamanho real (useShotScroll).
  */
 function ImageWithFallback({
   src,
   alt,
+  sizes,
   fallback,
 }: {
   src: string;
   alt: string;
+  sizes: string;
   fallback: React.ReactNode;
 }) {
   const [errored, setErrored] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  useShotScroll(imgRef, { pxPerSec: 160, minSec: 10, maxSec: 30 });
   if (errored) return <>{fallback}</>;
   return (
-    // biome-ignore lint/a11y/useAltText: alt prop is forwarded
-    <img
+    <Image
+      ref={imgRef}
       src={src}
       alt={alt}
+      // Proporção real varia por print; o CSS manda (w-full h-auto).
+      width={420}
+      height={2400}
+      sizes={sizes}
       onError={() => setErrored(true)}
-      className="card-preview-img absolute left-0 top-0 w-full object-cover object-top"
+      className="card-preview-img absolute left-0 top-0 h-auto w-full"
     />
   );
 }

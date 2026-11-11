@@ -77,9 +77,9 @@ export interface CaseProject {
     /**
      * Recorte do topo, 760x874, para o card da grade.
      *
-     * Os `desktop`/`mobile` são páginas inteiras — o maison-etoile tem
-     * 2880x24972 (71,9 MP, ~288 MB decodificados). Carregar isso pra mostrar
-     * 260px de altura trava celular. Gerado com ffmpeg a partir do desktop.
+     * Os `desktop`/`mobile` são páginas inteiras (até 1440x12486). Carregar
+     * isso pra mostrar 260px de altura trava celular. Gerado por
+     * scripts/capture-cases.py a partir do desktop.
      */
     card?: string;
     /**

@@ -68,7 +68,6 @@ export function CaseResponsive({ project }: { project: CaseProject }) {
                   <CaseFrameScroll
                     src={mobile}
                     alt={`${project.title}: site mobile`}
-                    autoDurationSec={28}
                     lazy
                     fallback={
                       <div className="flex h-full w-full items-center justify-center bg-cbm-surface opacity-20">

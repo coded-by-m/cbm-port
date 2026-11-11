@@ -38,7 +38,6 @@ export function NoPhoneFrame() {
           <LiveScreenshot
             src={SHOT_MOBILE}
             alt="MJ Engenharia, site mobile"
-            durationSec={28}
           />
         </div>
       </PhoneFrame>
@@ -55,7 +54,6 @@ export function NoBrowserFrame() {
           <LiveScreenshot
             src={SHOT_DESKTOP}
             alt="MJ Engenharia, site desktop"
-            durationSec={32}
           />
         </div>
       </BrowserFrame>

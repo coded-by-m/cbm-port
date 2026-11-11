@@ -47,7 +47,6 @@ export function NoPhoneFrame() {
           <CaseFrameScroll
             src={SHOT_MOBILE}
             alt="MJ Engenharia, site mobile"
-            autoDurationSec={28}
           />
         </div>
       </PhoneFrame>

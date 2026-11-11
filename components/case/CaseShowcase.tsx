@@ -6,11 +6,13 @@ import { cbm } from "@/lib/palette";
  * Showcase dos mockups 3D — o "momento herói" da página de case.
  * desktop-3d grande e centrado, com mobile-3d sobreposto no canto, sobre um
  * gradiente radial sutil derivado da paleta da marca capturada.
- * Some se o projeto não tiver `mockups.desktop3d`.
+ * Sem mockups, o vídeo vitrine (se houver) ocupa a seção sozinho; sem
+ * nenhum dos dois, a seção some.
  */
 export function CaseShowcase({ project }: { project: CaseProject }) {
   const { mockups, palette, title } = project;
-  if (!mockups?.desktop3d) return null;
+  const desktop3d = mockups?.desktop3d;
+  if (!desktop3d && !project.video) return null;
 
   // Gradiente puxando a paleta da marca (com fallback pro verde da Home).
   const tint = palette?.[3] ?? palette?.[2] ?? "#073b4c";
@@ -38,17 +40,18 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
               style={{ background: "rgba(251,54,64,0.4)" }}
             />
             <h2 className="font-display text-[9px] font-semibold uppercase tracking-[0.4em] text-cbm-red">
-              Mockups
+              {desktop3d ? "Mockups" : "Vitrine"}
             </h2>
           </div>
         </Reveal>
 
+        {desktop3d && (
         <Reveal delay={120}>
           <div className="relative mx-auto w-full max-w-[920px]">
             {/* Desktop 3D — peça central */}
             {/* biome-ignore lint/a11y/useAltText: alt repassado */}
             <img
-              src={mockups.desktop3d}
+              src={desktop3d}
               alt={`${title}: mockup 3D desktop`}
               width={1600}
               height={1151}
@@ -58,7 +61,7 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
             />
 
             {/* Mobile 3D — sobreposto no canto inferior */}
-            {mockups.mobile3d && (
+            {mockups?.mobile3d && (
               // biome-ignore lint/a11y/useAltText: alt repassado
               <img
                 src={mockups.mobile3d}
@@ -70,10 +73,13 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
             )}
           </div>
         </Reveal>
+        )}
 
         {project.video && (
-          <Reveal delay={180}>
-            <figure className="mx-auto mt-16 w-full max-w-[920px] sm:mt-20">
+          <Reveal delay={desktop3d ? 180 : 120}>
+            <figure
+              className={`mx-auto w-full max-w-[920px] ${desktop3d ? "mt-16 sm:mt-20" : ""}`}
+            >
               <video
                 src={project.video}
                 poster={project.heroImages[0]}
@@ -82,9 +88,11 @@ export function CaseShowcase({ project }: { project: CaseProject }) {
                 preload="metadata"
                 className="w-full bg-cbm-surface"
               />
-              <figcaption className="mt-3 font-body text-[11px] uppercase tracking-[0.22em] text-cbm-gray-400">
-                Vitrine
-              </figcaption>
+              {desktop3d && (
+                <figcaption className="mt-3 font-body text-[11px] uppercase tracking-[0.22em] text-cbm-gray-400">
+                  Vitrine
+                </figcaption>
+              )}
             </figure>
           </Reveal>
         )}

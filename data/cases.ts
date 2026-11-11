@@ -290,11 +290,6 @@ export const cases: CaseProject[] = [
         "Dar forma à presença de um escritório de arquitetura entre o litoral e a serra, obras em tela cheia e um arquivo numerado, sem apresentar o estudo como entrega de cliente.",
     },
     gallery: [],
-    mockups: {
-      desktop3d: "/cases/nord-arch/mockup-desktop-3d.webp",
-      browser: "/cases/nord-arch/mockup-browser.webp",
-      phone: "/cases/nord-arch/mockup-phone.webp",
-    },
     palette: ["#f3f1ec", "#141614", "#8a8478", "#c5bba8"],
     status: "published",
     siteUrl: "nord-arch.vercel.app",
@@ -386,8 +381,11 @@ export const cases: CaseProject[] = [
       "/cases/machado/hero-1.webp",
       "/cases/machado/hero-2.webp",
       "/cases/machado/hero-3.webp",
-      "/cases/machado/hero-4.webp",
-      "/cases/machado/hero-5.webp",
+    ],
+    sections: [
+      "/cases/machado/section-01.webp",
+      "/cases/machado/section-02.webp",
+      "/cases/machado/section-03.webp",
     ],
     overview: {
       heading: "O que foi construído e por quê",
@@ -399,13 +397,7 @@ export const cases: CaseProject[] = [
       challenge:
         "Empresa técnica de alto valor percebido como commodity. Presença digital genérica não refletia a capacidade real do negócio.",
     },
-    gallery: [
-      "/cases/machado/gallery-1.webp",
-      "/cases/machado/gallery-2.webp",
-      "/cases/machado/gallery-3.webp",
-      "/cases/machado/gallery-4.webp",
-      "/cases/machado/gallery-5.webp",
-    ],
+    gallery: [],
     status: "published",
     type: "institucional",
     siteUrl: "machadoplataformas.com.br",
@@ -441,8 +433,15 @@ export const cases: CaseProject[] = [
       "Vercel",
     ],
     heroImages: [
-      "/cases/maison-etoile/hero-1.jpeg",
-      "/cases/maison-etoile/hero-2.jpeg",
+      "/cases/maison-etoile/hero-1.webp",
+      "/cases/maison-etoile/hero-2.webp",
+      "/cases/maison-etoile/hero-3.webp",
+    ],
+    sections: [
+      "/cases/maison-etoile/section-01.webp",
+      "/cases/maison-etoile/section-02.webp",
+      "/cases/maison-etoile/section-03.webp",
+      "/cases/maison-etoile/section-04.webp",
     ],
     overview: {
       heading: "Uma página, uma decisão",
@@ -454,13 +453,13 @@ export const cases: CaseProject[] = [
       challenge:
         "Transformar um estúdio boutique de interiores em uma presença digital de página única que comunica exclusividade e conduz à solicitação de proposta sem dispersar o visitante.",
     },
-    gallery: ["/cases/maison-etoile/gallery-1.jpeg", "/cases/maison-etoile/gallery-2.jpeg"],
+    gallery: [],
     status: "published",
     siteUrl: "lp-interiores.vercel.app",
     preview: {
       desktop: "/cases/maison-etoile/desktop-tall.webp",
       top: "/cases/maison-etoile/desktop-top.webp",
-      mobile: "/cases/maison-etoile/mobile-tall.jpeg",
+      mobile: "/cases/maison-etoile/mobile-tall.webp",
       card: "/cases/maison-etoile/card.webp",
     },
   },
@@ -488,8 +487,13 @@ export const cases: CaseProject[] = [
       "Vercel",
     ],
     heroImages: [
-      "/cases/forma-viva/hero-1.jpeg",
-      "/cases/forma-viva/hero-2.jpeg",
+      "/cases/forma-viva/hero-1.webp",
+      "/cases/forma-viva/hero-2.webp",
+      "/cases/forma-viva/hero-3.webp",
+    ],
+    sections: [
+      "/cases/forma-viva/section-01.webp",
+      "/cases/forma-viva/section-02.webp",
     ],
     overview: {
       heading: "Arquitetura como sistema navegável",
@@ -501,13 +505,13 @@ export const cases: CaseProject[] = [
       challenge:
         "Estruturar o portfólio de um atelier de arquitetura em um site institucional navegável, com páginas de projeto individuais, sem perder a atmosfera autoral.",
     },
-    gallery: ["/cases/forma-viva/gallery-1.jpeg"],
+    gallery: [],
     status: "published",
     siteUrl: "forma-viva.vercel.app",
     preview: {
-      desktop: "/cases/forma-viva/desktop-tall.jpeg",
+      desktop: "/cases/forma-viva/desktop-tall.webp",
       top: "/cases/forma-viva/desktop-top.webp",
-      mobile: "/cases/forma-viva/mobile-tall.jpeg",
+      mobile: "/cases/forma-viva/mobile-tall.webp",
       card: "/cases/forma-viva/card.webp",
     },
   },
@@ -535,8 +539,13 @@ export const cases: CaseProject[] = [
       "Vercel",
     ],
     heroImages: [
-      "/cases/estudio-monteiro/hero-1.jpeg",
-      "/cases/estudio-monteiro/hero-2.jpeg",
+      "/cases/estudio-monteiro/hero-1.webp",
+      "/cases/estudio-monteiro/hero-2.webp",
+      "/cases/estudio-monteiro/hero-3.webp",
+    ],
+    sections: [
+      "/cases/estudio-monteiro/section-01.webp",
+      "/cases/estudio-monteiro/section-02.webp",
     ],
     overview: {
       heading: "Permanência como linguagem",
@@ -548,13 +557,13 @@ export const cases: CaseProject[] = [
       challenge:
         "Dar a um escritório com 40+ obras uma presença digital que transmita permanência e autoria, organizando obras residenciais e corporativas num só sistema editorial.",
     },
-    gallery: ["/cases/estudio-monteiro/gallery-1.jpeg"],
+    gallery: [],
     status: "published",
     siteUrl: "monteiro-nine.vercel.app",
     preview: {
-      desktop: "/cases/estudio-monteiro/desktop-tall.jpeg",
+      desktop: "/cases/estudio-monteiro/desktop-tall.webp",
       top: "/cases/estudio-monteiro/desktop-top.webp",
-      mobile: "/cases/estudio-monteiro/mobile-tall.jpeg",
+      mobile: "/cases/estudio-monteiro/mobile-tall.webp",
       card: "/cases/estudio-monteiro/card.webp",
     },
   },

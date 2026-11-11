@@ -54,13 +54,15 @@ export function CaseScreens({ project }: { project: CaseProject }) {
                 <span className="pointer-events-none absolute right-3 top-2.5 z-10 font-display text-[10px] tracking-[0.25em] text-[#F5F2ED]/40 tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                {/* As telas SÃO o conteúdo do case — descritas, não decorativas. */}
+                {/* As telas SÃO o conteúdo do case — descritas, não decorativas.
+                    Recorte pelo topo: o painel largo (16:7) corta uma tela
+                    16:10, e pelo meio perdia o título de cada seção. */}
                 <img
                   src={src}
                   alt={`${project.title}: tela ${i + 1} do site`}
                   loading="lazy"
                   decoding="async"
-                  className={`w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02] ${
+                  className={`w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.02] ${
                     wide ? "aspect-[16/7]" : "aspect-[16/10]"
                   }`}
                 />
