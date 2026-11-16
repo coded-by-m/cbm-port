@@ -1,5 +1,6 @@
 import { cases } from "@/data/cases";
-import { SECTIONS } from "@/data/home";
+import { FEATURED_SLUG, SECTIONS } from "@/data/home";
+import { portfolioGroups } from "@/lib/galleryData";
 import { PROJECT_TYPE_COLOR } from "@/lib/projectTypes";
 import type { CaseProject } from "@/types/case";
 import { SectionHead } from "./shared";
@@ -99,11 +100,17 @@ function buildTiles(projects: CaseProject[]): DriftTile[] {
  */
 export function ProjectsSection() {
   const published = cases.filter((c) => c.status === "published");
+  const ordered = portfolioGroups(published).ordered;
 
-  const projects: StageProject[] = published.map((c) => ({
+  const projects: StageProject[] = ordered.map((c) => ({
     slug: c.slug,
     title: c.title,
-    meta: c.concept ? `Conceito · ${c.meta.ano}` : c.meta.ano,
+    meta:
+      c.slug === FEATURED_SLUG
+        ? "Cliente real · principal"
+        : c.concept
+          ? "Conceitual"
+          : "Cliente real",
     color: colorOf(c),
   }));
 
@@ -118,7 +125,7 @@ export function ProjectsSection() {
           />
         }
         projects={projects}
-        tiles={buildTiles(published)}
+        tiles={buildTiles(ordered)}
       />
     </section>
   );

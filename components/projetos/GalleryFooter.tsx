@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { waLink } from "@/lib/contact";
+import { WA_TEXT, waLink } from "@/lib/contact";
 import { publishedPosts } from "@/data/blog";
 import { PRIVACY_PATH } from "@/data/privacidade";
 import { TriArrow } from "@/components/ui/TriArrow";
@@ -22,9 +22,7 @@ const LINKS = [
  * em que se está.
  */
 export function GalleryFooter({ current }: { current?: string }) {
-  const waHref = waLink(
-    "Olá! Vi o portfólio da Coded by M e gostaria de conversar sobre um projeto.",
-  );
+  const waHref = waLink(WA_TEXT.projeto);
   return (
     <footer data-cm-section="contact" className="mt-20 border-t border-[#F5F2ED]/10">
       <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-5 py-14 md:flex-row md:items-center md:justify-between">

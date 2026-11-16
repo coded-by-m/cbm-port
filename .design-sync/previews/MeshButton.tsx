@@ -47,7 +47,7 @@ export function SemSeta() {
 export function ComoLink() {
   return (
     <div style={linha}>
-      <MeshButton label="Começar meu projeto" href="https://wa.me/5548999916638" target="_blank" />
+      <MeshButton label="Começar meu projeto" href="https://wa.me/5548999916638?text=Ol%C3%A1%2C%20quero%20or%C3%A7ar%20um%20projeto" target="_blank" />
     </div>
   );
 }

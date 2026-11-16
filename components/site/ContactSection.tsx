@@ -2,6 +2,7 @@ import { SECTIONS } from "@/data/home";
 import {
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
+  WA_TEXT,
   WHATSAPP_DISPLAY,
   waLink,
 } from "@/lib/contact";
@@ -10,7 +11,7 @@ import { cbm } from "@/lib/palette";
 import { FillButton } from "@/components/ui/FillButton";
 import { TriArrow } from "@/components/ui/TriArrow";
 
-const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
+const WA = waLink(WA_TEXT.projeto);
 
 /** Fechamento: convite + WhatsApp + Instagram. */
 export function ContactSection() {

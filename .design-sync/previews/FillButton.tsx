@@ -17,7 +17,7 @@ const linha = {
   alignItems: "center",
 };
 
-const WA = "https://wa.me/5548999916638";
+const WA = "https://wa.me/5548999916638?text=Ol%C3%A1%2C%20quero%20or%C3%A7ar%20um%20projeto";
 
 export function Canonico() {
   return (

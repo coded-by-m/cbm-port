@@ -32,7 +32,7 @@ import {
 } from "@/data/quantoCusta";
 import { ProseShell, PROSE_H1, PROSE_H2, PROSE_H3, PROSE_LINK, PROSE_P } from "@/components/prose/Prose";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { WHATSAPP_DISPLAY, WHATSAPP_NUMBER } from "@/lib/contact";
+import { WA_TEXT, WHATSAPP_DISPLAY, waLink } from "@/lib/contact";
 import {
   OG,
   OG_SIZE,
@@ -45,8 +45,7 @@ import {
 import { FillButton } from "@/components/ui/FillButton";
 import { cbm } from "@/lib/palette";
 
-/** wa.me sem texto pré-preenchido: é o href publicado no copy. */
-const WA = `https://wa.me/${WHATSAPP_NUMBER}`;
+const WA = waLink(WA_TEXT.projeto);
 
 const LIST: CSSProperties = {
   ...PROSE_P,

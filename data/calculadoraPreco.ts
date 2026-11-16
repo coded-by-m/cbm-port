@@ -2,11 +2,12 @@
  * Página /calculadora-preco-site.
  *
  * Os pisos saem de PUBLIC_PRICE (landing R$ 600, institucional R$ 1.500).
- * Os prazos são os já publicados nas páginas de serviço: 5 e 15 dias úteis.
+ * Prazos publicados: landing em 7 dias úteis, institucional a partir de 15.
  * Não há outro valor. O FAQ visível e o FAQPage saem do mesmo array.
  */
 
-import { PUBLIC_PRICE, type FaqItem } from "@/data/servicePages";
+import { PRAZO_NOTA, PRECO_FECHADO, PUBLIC_PRICE, type FaqItem } from "@/data/servicePages";
+import { WA_TEXT } from "@/lib/contact";
 
 export const CALC_PATH = "/calculadora-preco-site";
 
@@ -18,7 +19,7 @@ export const CALC_CRUMB = CALC_H1;
 export const CALC_TITLE = `${CALC_H1} · Coded by M`;
 
 const LANDING_PRECO = `a partir de ${PUBLIC_PRICE.landing.display}`;
-const LANDING_PRAZO = "a partir de 5 dias úteis";
+const LANDING_PRAZO = "em 7 dias úteis";
 const INSTITUCIONAL_PRECO = `a partir de ${PUBLIC_PRICE.institucional.display}`;
 const INSTITUCIONAL_PRAZO = "a partir de 15 dias úteis";
 
@@ -57,15 +58,15 @@ export const CALC_PLANO_LABEL = `P${CALC_PLANO_FRASE.slice(1)}`;
 export const CALC_FAQ: FaqItem[] = [
   {
     q: "A calculadora mostra o preço fechado?",
-    a: `Não. O resultado mostra só a faixa "a partir de". ${CALC_ESCOPO} O valor é fechado no orçamento, antes de começar.`,
+    a: `Não. O resultado mostra só a faixa "a partir de". ${CALC_ESCOPO} ${PRECO_FECHADO}`,
   },
   {
     q: "Qual a faixa de uma landing page?",
-    a: `Landing page ${LANDING_PRECO} e ${LANDING_PRAZO}. ${CALC_ESCOPO}`,
+    a: `Landing page ${LANDING_PRECO}, ${LANDING_PRAZO}. ${PRAZO_NOTA} ${PRECO_FECHADO}`,
   },
   {
     q: "Qual a faixa de um site institucional?",
-    a: `Site institucional ${INSTITUCIONAL_PRECO} e ${INSTITUCIONAL_PRAZO}. ${CALC_ESCOPO}`,
+    a: `Site institucional ${INSTITUCIONAL_PRECO}, ${INSTITUCIONAL_PRAZO}. ${PRAZO_NOTA} ${PRECO_FECHADO}`,
   },
   {
     q: "O plano mensal tem preço?",
@@ -84,8 +85,14 @@ export function calculatorMessage(input: {
   detalhes: string;
 }): string {
   const tipo = CALC_TIPOS.find((item) => item.id === input.tipo);
+  const abertura =
+    input.tipo === "landing"
+      ? WA_TEXT.landing
+      : input.tipo === "institucional"
+        ? WA_TEXT.institucional
+        : WA_TEXT.projeto;
   const linhas = [
-    "Olá! Vim pela calculadora de preço de site da Coded by M.",
+    abertura,
     tipo
       ? `Tipo: ${tipo.label}. Faixa: ${tipo.preco} e ${tipo.prazo}. ${CALC_INCLUSO}.`
       : "Tipo: ainda não escolhi entre landing page e site institucional.",

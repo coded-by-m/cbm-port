@@ -23,8 +23,19 @@ export const GOOGLE_MAPS_URL = "https://maps.google.com/?cid=1362888323480500884
 /** Número formatado pra exibição. */
 export const WHATSAPP_DISPLAY = "+55 48 99991-6638";
 
-const DEFAULT_MESSAGE =
-  "Olá! Vim pelo site da Coded by M e gostaria de conversar sobre um projeto.";
+/**
+ * Mensagens pré-preenchidas. O texto muda com o contexto; o número não.
+ * Sem ponto de exclamação: é o que a pessoa manda, não um slogan.
+ */
+export const WA_TEXT = {
+  projeto: "Olá, quero orçar um projeto",
+  landing: "Olá, quero orçar uma landing page",
+  institucional: "Olá, quero orçar um site institucional",
+  app: "Olá, quero orçar um aplicativo",
+  arquitetura: "Olá, quero orçar um site para o escritório",
+} as const;
+
+const DEFAULT_MESSAGE = WA_TEXT.projeto;
 
 /** Link wa.me com mensagem pré-preenchida (usa a padrão se nenhuma for dada). */
 export function waLink(message: string = DEFAULT_MESSAGE) {

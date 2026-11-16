@@ -1,44 +1,18 @@
-import { Fragment } from "react";
 import { HERO } from "@/data/home";
-import { waLink } from "@/lib/contact";
-import { PANCHANG, SATOSHI, SURFACE, TriangleMark } from "./shared";
-import { TriText } from "@/components/ui/TriText";
-import { STROKE_LINE_HEIGHT } from "@/components/ui/strokeMetrics";
+import { WA_TEXT, waLink } from "@/lib/contact";
+import { PANCHANG, SATOSHI, SURFACE, TriangleMark, Diamond } from "./shared";
 import { HeroLandscape } from "./HeroLandscape";
 import { cbm } from "@/lib/palette";
 import { FillButton } from "@/components/ui/FillButton";
 
-const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
-
-/** Entrada em stagger, rodando uma vez. Não é scroll-driven. */
-const enter = (delay: number): React.CSSProperties => ({
-  opacity: 0,
-  animation: `cbmIn 0.8s cubic-bezier(0.33,1,0.68,1) ${delay}s both`,
-});
-
-/** Régua fina das linhas de topo e de rodapé. */
-const RULE = "1px solid rgba(245,242,237,0.12)";
-
-const META: React.CSSProperties = {
-  fontFamily: SATOSHI,
-  fontWeight: 400,
-  fontSize: 10,
-  letterSpacing: "0.26em",
-  textTransform: "uppercase",
-  color: cbm("gray-400"),
-  whiteSpace: "nowrap",
-};
+const WA = waLink(WA_TEXT.projeto);
 
 /**
- * Hero — a marca ancorada à esquerda, a categoria abaixo dela.
+ * Hero da home.
  *
- * Três faixas em 100dvh: régua de topo com a marca, o miolo com o par
- * tipo/texto, e régua de rodapé com o estado da agenda. O miolo cresce pra
- * ocupar a sobra, então as réguas ficam presas nos extremos.
- *
- * As duas colunas do miolo assentam na MESMA linha inferior.
- *
- * O fundo é a geometria da marca, sangrando a viewport inteira.
+ * A promessa (o que se vende e onde) é o título. O nome da marca fica numa
+ * linha curta, menor que o título. O CTA vermelho e a linha de confiança
+ * ficam na mesma coluna do benefício, acima da faixa de cookies.
  */
 export function Hero() {
   return (
@@ -53,12 +27,11 @@ export function Hero() {
         display: "flex",
         flexDirection: "column",
         padding:
-          "clamp(88px,11vh,124px) clamp(24px,5vw,80px) clamp(28px,4vh,44px)",
+          "clamp(88px,11vh,124px) clamp(24px,5vw,80px) calc(clamp(20px,3vh,36px) + var(--cbm-consent-bar, 0px))",
       }}
     >
       <HeroLandscape />
 
-      {/* Véu que leva o pé do hero de volta ao fundo da página. */}
       <div
         aria-hidden
         style={{
@@ -81,32 +54,33 @@ export function Hero() {
           flex: 1,
           display: "flex",
           flexDirection: "column",
+          minHeight: 0,
         }}
       >
-        {/* Régua de topo: a marca à esquerda, a disciplina à direita */}
         <div
           style={{
             display: "flex",
             flexWrap: "wrap",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: 16,
+            gap: "10px 20px",
             paddingBottom: "clamp(14px,2vh,20px)",
-            borderBottom: RULE,
-            ...enter(0.05),
+            borderBottom: "1px solid rgba(245,242,237,0.16)",
           }}
         >
           <span style={META}>{HERO.eyebrow}</span>
-          <span style={META}>{HERO.meta}</span>
+          <span style={{ ...META, color: "#F5F2ED", display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <Diamond size={6} />
+            {HERO.ownership}
+          </span>
         </div>
 
-        {/* Miolo: categoria à esquerda, texto à direita, mesma base */}
         <div
           style={{
             flex: 1,
             display: "flex",
             alignItems: "center",
-            padding: "clamp(28px,5vh,64px) 0",
+            padding: "clamp(22px,4vh,52px) 0",
           }}
         >
           <div
@@ -118,118 +92,22 @@ export function Hero() {
               gap: "clamp(28px,4vw,72px)",
             }}
           >
-            <div
-              style={{ flex: "1 1 300px", minWidth: 0, containerType: "inline-size" }}
-            >
-              <div
-                /* Liga o cursor-triângulo da marca sobre a palavra. */
-                data-cursor="triangle"
-                style={{
-                  margin: 0,
-                  cursor: "none",
-                  fontFamily: PANCHANG,
-                  fontWeight: 800,
-                  /* Amarrado à largura do container E à altura da tela, pra
-                     nunca cortar a palavra nem estourar a dobra. */
-                  fontSize: "clamp(38px, min(15.5cqw, 15vh), 190px)",
-                  letterSpacing: "-0.04em",
-                  lineHeight: 0.84,
-                  color: "#F5F2ED",
-                  ...enter(0.16),
-                }}
-              >
-                {/* A marca se revela pela malha: uma instância por linha,
-                    encadeadas pelo `delay`, na caixa vertical fixa da métrica
-                    para as duas saírem no mesmo corpo. Os filetes vermelhos
-                    atravessam as letras junto com a onda e somem. */}
-                {/* A marca é o logo: leitor de tela lê "Coded by M" uma vez,
-                    não letra por letra. O título da página é o h1 abaixo. */}
-                <span role="img" aria-label="Coded by M" style={{ display: "block" }}>
-                {HERO.brand.map((word, i) => (
-                  <Fragment key={word}>
-                    {i > 0 && " "}
-                    <span
-                      style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: "0.06em",
-                        /* Reencosta as linhas: a caixa do TriText tem a
-                           altura da métrica, o desenho pede o entrelinha
-                           apertado que a marca sempre teve. */
-                        marginTop: i === 0 ? 0 : `${0.84 - STROKE_LINE_HEIGHT}em`,
-                      }}
-                    >
-                      <TriText
-                        text={word}
-                        fontFamily={PANCHANG}
-                        fontWeight={800}
-                        letterSpacing={-0.04 * 128}
-                        delay={0.2 + i * 0.3}
-                      />
-
-                      {i === 0 && (
-                        <TriangleMark
-                          strokeWidth={6}
-                          /* Entra quando a onda chega ao fim de "Coded". */
-                          drawDelay={0.2 + 0.8}
-                          style={{ width: "0.3em", marginTop: "0.06em" }}
-                        />
-                      )}
-                    </span>
-                  </Fragment>
-                ))}
-                </span>
-
-                {/* O h1: serviço + cidade, abaixo da marca e em corpo bem
-                    menor. Frase inteira, sem quebrar em letras. */}
-                <h1
-                  className="site-letter"
-                  style={{
-                    display: "block",
-                    maxWidth: "26ch",
-                    /* Em do corpo da marca (0.2em), com piso de 14px: em 390px
-                       o 0.2em caía para ~10,6px. No desktop o 0.2em já passa
-                       de 14px, então o piso não muda a marca grande. */
-                    margin: "1.2em 0 0",
-                    fontSize: "max(0.2em, 14px)",
-                    fontWeight: 700,
-                    letterSpacing: "0.01em",
-                    lineHeight: 1.2,
-                    color: cbm("gray-300"),
-                    textWrap: "balance",
-                    animationDelay: "0.72s",
-                  }}
-                >
-                  {HERO.lead}
-                </h1>
-              </div>
+            <div style={{ flex: "1 1 340px", minWidth: 0 }}>
+              <p style={BRAND} aria-label="Coded by M">
+                <span aria-hidden="true">Coded</span>
+                <span aria-hidden="true" style={{ color: "#FB3640" }}>by</span>
+                <span aria-hidden="true">M</span>
+                <TriangleMark
+                  strokeWidth={8}
+                  drawDelay={0.15}
+                  style={{ width: "0.7em" }}
+                />
+              </p>
+              <h1 style={LEAD}>{HERO.lead}</h1>
             </div>
 
-            {/* Texto, link e CTA em bloco */}
-            <div
-              style={{
-                flex: "0 1 400px",
-                minWidth: 0,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "stretch",
-                ...enter(0.32),
-              }}
-            >
-              <p
-                style={{
-                  margin: 0,
-                  fontFamily: PANCHANG,
-                  fontWeight: 600,
-                  fontSize: "clamp(17px,1.7vw,24px)",
-                  letterSpacing: "-0.014em",
-                  lineHeight: 1.24,
-                  color: "#F5F2ED",
-                  textWrap: "balance",
-                }}
-              >
-                {HERO.headline}
-              </p>
+            <div className="hero-copy">
+              <p style={BENEFIT}>{HERO.benefit}</p>
 
               <a
                 href="#projetos"
@@ -240,16 +118,15 @@ export function Hero() {
                   alignSelf: "flex-start",
                   display: "inline-flex",
                   alignItems: "center",
-                  marginTop: "clamp(20px,2.6vh,28px)",
+                  marginTop: "clamp(18px,2.4vh,26px)",
                   fontFamily: PANCHANG,
                   fontWeight: 600,
-                  fontSize: 10.5,
-                  letterSpacing: "0.18em",
+                  fontSize: 13,
+                  letterSpacing: "0.14em",
                   textTransform: "uppercase",
                   color: "#F5F2ED",
                   paddingBottom: 5,
                   textDecoration: "none",
-                  transition: "color 150ms ease",
                 }}
               >
                 {HERO.ctaSecondary}
@@ -261,10 +138,15 @@ export function Hero() {
                 full
                 data-cm-role="whatsapp"
                 data-cm-id="hero-whatsapp"
-                style={{ marginTop: "clamp(14px,2vh,20px)", padding: "16px 26px", fontSize: 12, letterSpacing: "0.14em" }}
+                style={{ marginTop: "clamp(14px,2vh,18px)", padding: "16px 26px", fontSize: 13, letterSpacing: "0.12em" }}
               >
                 {HERO.ctaPrimary}
               </FillButton>
+
+              <p style={TRUST}>
+                {HERO.trustLead}{" "}
+                <span style={{ color: "#F5F2ED", fontWeight: 500 }}>{HERO.trustProof}</span>
+              </p>
             </div>
           </div>
         </div>
@@ -272,3 +154,61 @@ export function Hero() {
     </section>
   );
 }
+
+/** Legenda do topo. 14px e cinza 200: contraste acima de 4,5:1 no fundo #0A0A0A. */
+const META: React.CSSProperties = {
+  fontFamily: SATOSHI,
+  fontWeight: 500,
+  fontSize: 14,
+  letterSpacing: "0.06em",
+  lineHeight: 1.45,
+  textTransform: "uppercase",
+  color: cbm("gray-200"),
+};
+
+/** Nome da marca. O teto (26px) fica abaixo do piso do título (32px). */
+const BRAND: React.CSSProperties = {
+  margin: "0 0 16px",
+  display: "flex",
+  alignItems: "center",
+  gap: "0.28em",
+  fontFamily: PANCHANG,
+  fontWeight: 700,
+  fontSize: "clamp(18px, 2vw, 26px)",
+  letterSpacing: "-0.03em",
+  lineHeight: 1,
+  color: "#F5F2ED",
+};
+
+const LEAD: React.CSSProperties = {
+  margin: 0,
+  maxWidth: "16ch",
+  fontFamily: PANCHANG,
+  fontWeight: 700,
+  fontSize: "clamp(32px, 4.4vw, 58px)",
+  letterSpacing: "-0.03em",
+  lineHeight: 1.02,
+  color: "#F5F2ED",
+  textWrap: "balance",
+};
+
+const BENEFIT: React.CSSProperties = {
+  margin: 0,
+  fontFamily: SATOSHI,
+  fontWeight: 400,
+  fontSize: "clamp(16px, 1.45vw, 20px)",
+  letterSpacing: "0",
+  lineHeight: 1.5,
+  color: "#F5F2ED",
+  textWrap: "pretty",
+};
+
+const TRUST: React.CSSProperties = {
+  margin: "14px 0 0",
+  fontFamily: SATOSHI,
+  fontWeight: 400,
+  fontSize: 15,
+  lineHeight: 1.5,
+  color: cbm("gray-200"),
+  textWrap: "pretty",
+};

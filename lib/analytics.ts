@@ -36,6 +36,7 @@ export function getConsent(): ConsentValue | null {
 export function setConsent(value: ConsentValue) {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(CONSENT_KEY, value);
+  if (typeof document !== "undefined") document.documentElement.dataset.consent = value;
   window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: value }));
 }
 

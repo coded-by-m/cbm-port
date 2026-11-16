@@ -9,4 +9,4 @@ export const PROJETOS_TITLE = "Portfólio de sites e landing pages";
 export const PROJETOS_H1 = "Projetos de sites e landing pages";
 
 export const PROJETOS_INTRO =
-  "Sites e landing pages feitos sob medida: clientes no ar e estudos conceituais. Veja o tipo de projeto e fale comigo se quiser o mesmo caminho.";
+  "Clientes reais: Machado Plataformas (o principal), MJ Engenharia e Valdete Costuras. Os demais projetos desta página são conceituais, estudos do estúdio, e não são entregas de cliente.";

@@ -55,7 +55,7 @@ export const QUANTO_CUSTA_H1 = "Quanto custa um site em Florianópolis em 2026?"
 export const QUANTO_CUSTA_CRUMB = "Quanto custa um site em Florianópolis";
 
 export const QUANTO_CUSTA_LEAD = [
-  "Na Coded by M, estúdio de web design em Florianópolis, uma landing page custa a partir de R$ 600 e um site institucional a partir de R$ 1.500. O valor final depende do escopo do projeto e é fechado com você antes de começar, com orçamento gratuito e sem compromisso.",
+  "Na Coded by M, estúdio de web design em Florianópolis, uma landing page custa a partir de R$ 600 e um site institucional a partir de R$ 1.500. O valor é fechado no orçamento, sem surpresa depois. O orçamento é gratuito e sem compromisso.",
   "Todos os sites são feitos do zero, com código próprio. O estúdio fica em Florianópolis (SC) e atende empresas de todo o Brasil de forma remota.",
 ] as const;
 
@@ -166,11 +166,15 @@ export const QUANTO_CUSTA_CTA = "Pedir orçamento no WhatsApp";
 export const QUANTO_CUSTA_FAQ: FaqItem[] = [
   {
     q: "Quanto custa um site institucional em Florianópolis?",
-    a: "Na Coded by M, um site institucional custa a partir de R$ 1.500. O valor final depende do escopo, como número de páginas, conteúdo e integrações.",
+    a: "Na Coded by M, um site institucional custa a partir de R$ 1.500. O valor é fechado no orçamento, sem surpresa depois.",
   },
   {
     q: "Quanto custa uma landing page?",
-    a: "Uma landing page custa a partir de R$ 600 na Coded by M. O valor final depende do escopo do projeto.",
+    a: "Uma landing page custa a partir de R$ 600 na Coded by M. O valor é fechado no orçamento, sem surpresa depois.",
+  },
+  {
+    q: "Em quanto tempo fica pronto?",
+    a: "Landing page em 7 dias úteis. Site institucional a partir de 15 dias úteis. O prazo inclui diagnóstico antes do desenho e código próprio.",
   },
   {
     q: "O orçamento é pago?",
