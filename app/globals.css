@@ -1139,3 +1139,94 @@ a:hover .tri-arrow--left, button:hover .tri-arrow--left { transform: translateX(
 @media (prefers-reduced-motion: reduce) {
   .tri-arrow { transition: none; }
 }
+
+/* Coluna do benefício no hero. No desktop fica estreita ao lado do título.
+   Quando a linha quebra, ocupa a largura toda, inclusive o CTA. */
+.hero-copy {
+  flex: 1 1 420px;
+  min-width: 0;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 900px) {
+  .hero-copy { max-width: none; flex-basis: 100%; }
+}
+
+/* Faixa de cookies. O script do layout define data-consent antes da pintura.
+   Enquanto não há escolha, a home reserva a altura da faixa para o CTA
+   não ficar embaixo dela. */
+:root { --cbm-consent-bar: 132px; }
+@media (min-width: 720px) {
+  :root { --cbm-consent-bar: 76px; }
+}
+html[data-consent="granted"],
+html[data-consent="denied"] { --cbm-consent-bar: 0px; }
+html[data-consent="granted"] .cbm-cookie,
+html[data-consent="denied"] .cbm-cookie { display: none; }
+
+.cbm-cookie {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  background: #0a0a0a;
+  border-top: 1px solid rgba(245, 242, 237, 0.2);
+}
+.cbm-cookie p {
+  margin: 0;
+  flex: 1 1 240px;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.45;
+  color: #f5f2ed;
+}
+.cbm-cookie a {
+  color: #f5f2ed;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: #fb3640;
+  text-underline-offset: 3px;
+}
+.cbm-cookie-actions {
+  display: flex;
+  flex: 1 1 220px;
+  gap: 8px;
+}
+.cbm-cookie button {
+  flex: 1;
+  min-height: 44px;
+  border-radius: 0;
+  padding: 0 14px;
+  font-family: "Panchang", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.cbm-cookie-accept {
+  background: #f5f2ed;
+  color: #0a0a0a;
+  border: 1px solid #f5f2ed;
+}
+.cbm-cookie-deny {
+  background: transparent;
+  color: #f5f2ed;
+  border: 1px solid rgba(245, 242, 237, 0.55);
+}
+@media (min-width: 720px) {
+  .cbm-cookie { padding: 12px 28px; }
+  .cbm-cookie-actions { flex: 0 0 auto; }
+  .cbm-cookie button { flex: none; min-width: 120px; }
+}

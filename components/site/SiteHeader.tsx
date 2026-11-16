@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   GITHUB_URL,
   INSTAGRAM_URL,
+  WA_TEXT,
   WHATSAPP_DISPLAY,
   waLink,
 } from "@/lib/contact";
@@ -14,7 +15,7 @@ import { TriArrow } from "@/components/ui/TriArrow";
 import { MeshButton } from "@/components/ui/MeshButton";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
-const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
+const WA = waLink(WA_TEXT.projeto);
 
 const SATOSHI = '"Satoshi", sans-serif';
 const PANCHANG = '"Panchang", sans-serif';
@@ -497,11 +498,12 @@ export function SiteHeader() {
             <span
               style={{
                 fontFamily: SATOSHI,
-                fontWeight: 400,
-                fontSize: 9,
-                letterSpacing: "0.22em",
+                fontWeight: 500,
+                fontSize: 14,
+                letterSpacing: "0.08em",
+                lineHeight: 1.4,
                 textTransform: "uppercase",
-                color: cbm("gray-400"),
+                color: cbm("gray-200"),
                 whiteSpace: "nowrap",
               }}
             >

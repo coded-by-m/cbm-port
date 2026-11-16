@@ -137,6 +137,7 @@ export function ProjetosGallery({ projects }: { projects: CaseProject[] }) {
           <ProjectBand
             id="clientes-no-ar"
             heading="Clientes no ar"
+            note="Machado Plataformas é o principal. MJ Engenharia e Valdete Costuras também são clientes reais."
             projects={live}
             active={active}
             startIndex={liveOffset}
@@ -145,6 +146,7 @@ export function ProjetosGallery({ projects }: { projects: CaseProject[] }) {
           <ProjectBand
             id="projetos-conceituais"
             heading="Projetos conceituais"
+            note="Estudos do estúdio. Não são entregas de cliente."
             projects={conceptual}
             active={active}
             startIndex={conceptOffset}
@@ -160,6 +162,7 @@ export function ProjetosGallery({ projects }: { projects: CaseProject[] }) {
 function ProjectBand({
   id,
   heading,
+  note,
   projects,
   active,
   startIndex,
@@ -168,6 +171,7 @@ function ProjectBand({
 }: {
   id: string;
   heading: string;
+  note?: string;
   projects: CaseProject[];
   active: ChipValue;
   startIndex: number;
@@ -191,9 +195,12 @@ function ProjectBand({
           : undefined
       }
     >
-      <h2 id={id} style={{ ...H2, marginBottom: "clamp(22px,3vh,32px)" }}>
+      <h2 id={id} style={{ ...H2, marginBottom: note ? 12 : "clamp(22px,3vh,32px)" }}>
         {heading}
       </h2>
+      {note ? (
+        <p style={{ ...INTRO, marginBottom: "clamp(22px,3vh,32px)" }}>{note}</p>
+      ) : null}
       <div style={GRID}>
         {projects.map((p, i) => {
           const index = startIndex + i;

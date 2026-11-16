@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { CursorTriangle } from "@/components/cursor/CursorTriangle";
 import { Analytics } from "@/components/analytics/Analytics";
+import { CodedInsights } from "@/components/analytics/CodedInsights";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
 import { WhatsAppFab } from "@/components/ui/WhatsAppFab";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
@@ -88,8 +90,11 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
-        {/* Coded Insights — analytics first-party. */}
-        <script defer src="https://insights.codedbym.com/tracker/v1.js" data-site="ci_pub_111f7f9b15d8d1c4bb6c77b2988079f5"></script>
+        {/* Marca o consentimento antes da pintura, para a faixa não piscar
+            e o hero já reservar o espaço dela. Sem decisão = pending. */}
+        <Script id="cbm-consent-boot" strategy="beforeInteractive">
+          {`try{var c=localStorage.getItem("cbm-cookie-consent");document.documentElement.dataset.consent=(c==="granted"||c==="denied")?c:"pending";}catch(e){document.documentElement.dataset.consent="pending";}`}
+        </Script>
         {/* Sem JavaScript o `Reveal` nunca dispara e o conteúdo ficaria em
             opacidade zero. Aqui ele aparece direto, sem a entrada. */}
         <noscript>
@@ -104,6 +109,7 @@ export default function RootLayout({
         <CursorTriangle />
         <WhatsAppFab />
         <CookieConsent />
+        <CodedInsights />
         <Analytics />
         <AgentationDev />
       </body>

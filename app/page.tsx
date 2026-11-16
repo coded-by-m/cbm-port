@@ -9,6 +9,7 @@ import { ProcessSection } from "@/components/site/ProcessSection";
 import { AboutSection } from "@/components/site/AboutSection";
 import { CapabilitiesSection } from "@/components/site/CapabilitiesSection";
 import { FaqSection } from "@/components/site/FaqSection";
+import { InsightsSection } from "@/components/site/InsightsSection";
 import { ContactSection } from "@/components/site/ContactSection";
 import Footer from "@/components/zones/CTASection/Footer";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -71,6 +72,7 @@ export default function HomePage() {
         <ProcessSection />
         <AboutSection />
         <CapabilitiesSection />
+        <InsightsSection />
         <FaqSection />
         <ContactSection />
       </main>

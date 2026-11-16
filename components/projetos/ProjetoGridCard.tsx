@@ -171,32 +171,32 @@ export function ProjetoGridCard({
               maxWidth: "100%",
             }}
           >
-            {project.concept && (
-              /* Mesma borda e o mesmo texto do chip inativo do filtro,
-                 em corpo de legenda. Rótulo, não controle — sem raio. */
-              <span
-                style={{
-                  border: "1px solid rgba(245,242,237,0.15)",
-                  padding: "4px 8px",
-                  fontFamily: SATOSHI,
-                  fontWeight: 500,
-                  fontSize: "0.7rem",
-                  letterSpacing: "0.22em",
-                  lineHeight: 1.4,
-                  textTransform: "uppercase",
-                  color: "rgba(245,242,237,0.55)",
-                }}
-              >
-                conceitual
-              </span>
-            )}
+            <span
+              style={{
+                border: "1px solid rgba(245,242,237,0.28)",
+                padding: "4px 8px",
+                fontFamily: SATOSHI,
+                fontWeight: 500,
+                fontSize: 13,
+                letterSpacing: "0.08em",
+                lineHeight: 1.4,
+                textTransform: "uppercase",
+                color: cbm("gray-200"),
+              }}
+            >
+              {project.slug === "machado-plataformas"
+                ? "principal"
+                : project.concept
+                  ? "conceitual"
+                  : "cliente"}
+            </span>
             <span
               style={{
                 fontFamily: SATOSHI,
                 fontWeight: 400,
-                fontSize: 10,
-                letterSpacing: "0.18em",
-                color: cbm("gray-400"),
+                fontSize: 14,
+                letterSpacing: "0.06em",
+                color: cbm("gray-200"),
               }}
             >
               {project.meta.ano}

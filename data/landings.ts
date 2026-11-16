@@ -81,7 +81,7 @@ export const LANDINGS: LandingConfig[] = [
   {
     slug: "arquitetura",
     blocks: ["hero", "pains", "promise", "proof", "process", "faq", "final"],
-    proofHeading: "Sites de arquitetura e interiores, no ar pra conferir.",
+    proofHeading: "Estudos conceituais de arquitetura e interiores. Não são entregas de cliente.",
     processHeading: "Quatro etapas, e você sabe onde está em cada uma.",
     final: {
       heading: "Vamos conversar sobre o seu escritório.",
@@ -107,11 +107,11 @@ export const LANDINGS: LandingConfig[] = [
     faq: [
       {
         q: "Quanto custa?",
-        a: "PREENCHER: a faixa depende do escopo, e a resposta honesta aqui é a que você pratica. Sem um número, esta pergunta trabalha contra: quem não vê preço assume que é caro e não pergunta.",
+        a: `Landing page a partir de ${PUBLIC_PRICE.landing.display}. Site institucional a partir de ${PUBLIC_PRICE.institucional.display}. O valor é fechado no orçamento, sem surpresa depois.`,
       },
       {
         q: "Quanto tempo leva?",
-        a: "PREENCHER: o prazo real do seu processo de quatro etapas, da estratégia ao deploy.",
+        a: "Landing page em 7 dias úteis. Site institucional a partir de 15 dias úteis. O prazo inclui diagnóstico antes do desenho e código próprio.",
       },
       {
         q: "Meu Instagram já não basta?",
@@ -127,8 +127,7 @@ export const LANDINGS: LandingConfig[] = [
       },
     ],
 
-    waMessage:
-      "Olá! Vim pela página para escritórios de arquitetura e queria falar sobre o site do meu escritório.",
+    waMessage: "Olá, quero orçar um site para o escritório",
 
     meta: {
       // Sem sufixo: o `template` do layout raiz já acrescenta "· Coded by M".
@@ -144,7 +143,7 @@ export const LANDINGS: LandingConfig[] = [
     blocks: ["hero", "proof", "pains", "differentials", "offer", "process", "faq", "final"],
 
     headline: "Site profissional para a sua empresa, feito do zero.",
-    sub: `A partir de ${PUBLIC_PRICE.institucional.display}, com hospedagem e domínio inclusos. Prazo a partir de 15 dias úteis. Estúdio em Florianópolis, atendimento em todo o Brasil.`,
+    sub: `A partir de ${PUBLIC_PRICE.institucional.display}, com hospedagem e domínio inclusos no valor total. Site institucional a partir de 15 dias úteis. Estúdio em Florianópolis, atendimento em todo o Brasil.`,
     ctaLabel: "Pedir orçamento no WhatsApp",
     heroCaseSlug: "machado-plataformas",
 
@@ -196,8 +195,8 @@ export const LANDINGS: LandingConfig[] = [
       includes: getServicePage("site-institucional").includes,
       price: `A partir de ${PUBLIC_PRICE.institucional.display}`,
       deadline: "A partir de 15 dias úteis",
-      note: "O valor final depende do projeto e é fechado no WhatsApp, antes de começar.",
-      alternative: `Precisa só de uma página? Landing page a partir de ${PUBLIC_PRICE.landing.display}, em 5 dias úteis.`,
+      note: "O valor é fechado no orçamento, sem surpresa depois.",
+      alternative: `Precisa só de uma página? Landing page a partir de ${PUBLIC_PRICE.landing.display}, em 7 dias úteis.`,
     },
 
     processHeading: "Quatro etapas, e você sabe onde está em cada uma.",
@@ -206,7 +205,7 @@ export const LANDINGS: LandingConfig[] = [
       { q: "Quanto custa um site?", a: INSTITUCIONAL_PRECO },
       {
         q: "Em quanto tempo fica pronto?",
-        a: "A partir de 15 dias úteis. O prazo final depende do número de páginas e do conteúdo e é fechado no orçamento no WhatsApp, antes de começar.",
+        a: "Site institucional a partir de 15 dias úteis. O prazo inclui diagnóstico antes do desenho e código próprio.",
       },
       {
         q: "Hospedagem e domínio estão inclusos?",
@@ -228,12 +227,12 @@ export const LANDINGS: LandingConfig[] = [
       text: "Você conta o projeto e eu respondo no mesmo dia com valor e prazo. O orçamento é gratuito e sem compromisso.",
     },
 
-    waMessage: "Olá! Vim pela página de sites para empresas da Coded by M e quero um orçamento.",
+    waMessage: "Olá, quero orçar um site institucional",
 
     meta: {
       // Sem sufixo: o `template` do layout raiz já acrescenta "· Coded by M".
       title: "Criação de site profissional para empresas",
-      description: `Site profissional feito do zero, a partir de ${PUBLIC_PRICE.institucional.display}, com hospedagem e domínio inclusos. Prazo a partir de 15 dias úteis. Peça um orçamento pelo WhatsApp.`,
+      description: `Site profissional feito do zero, a partir de ${PUBLIC_PRICE.institucional.display}, com hospedagem e domínio inclusos. Site institucional a partir de 15 dias úteis. Peça um orçamento pelo WhatsApp.`,
       ogImage: OG.home,
     },
   },

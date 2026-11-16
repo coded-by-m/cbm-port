@@ -6,26 +6,35 @@
  */
 
 import { LP_OU_URL } from "@/data/landingOuInstitucional";
-import { PUBLIC_PRICE, type FaqItem } from "@/data/servicePages";
+import {
+  ALEM_DE_SITES,
+  APROVACAO_DESIGN,
+  HOSPEDAGEM_INCLUSA,
+  MANUTENCAO,
+  PRAZO_GERAL,
+  PRECO_FECHADO,
+  PUBLIC_PRICE,
+  SEO_TECNICO,
+  type FaqItem,
+} from "@/data/servicePages";
 import { SITE_URL } from "@/lib/site";
 
-/** Slug do projeto em destaque no hero. Trocar aqui troca a vitrine inteira. */
-export const FEATURED_SLUG = "estudio-lentz";
+/** Slug do cliente em destaque. Machado é o projeto principal. */
+export const FEATURED_SLUG = "machado-plataformas";
 
 export const HERO = {
   eyebrow: "Estúdio independente · Florianópolis",
-  /** A marca é o enunciado principal do hero. */
-  brand: ["Coded", "by M"],
+  /** Destaque curto no topo, no lugar da disciplina antiga. */
+  ownership: "Código e acessos são seus",
   /**
-   * O H1 da página, logo abaixo da marca e em corpo menor. Diz serviço e
-   * cidade numa frase só — a marca acima é logo, não título.
+   * O H1. Diz o que se vende e onde. A marca fica acima, em corpo menor.
    */
   lead: "Criação de sites e landing pages sob medida em Florianópolis",
-  headline: "Projetamos a forma como sua empresa é percebida digitalmente.",
-  sub: "Landing pages, sites institucionais e aplicações web: da estratégia ao deploy, no mesmo lugar.",
+  benefit:
+    "Sua empresa é melhor do que o site que ela tem hoje. Sites feitos do zero para você mandar o link com orgulho e receber contato no WhatsApp.",
+  trustLead: "Você fala direto com Matheus Mendes, quem desenha e programa.",
+  trustProof: "Código e acessos são seus na entrega.",
   ctaPrimary: "Começar meu projeto",
-  /** Linha de apoio do canto superior direito, como o "BASED IN" da referência. */
-  meta: "Design + Development",
   ctaSecondary: "Ver projetos",
 } as const;
 
@@ -33,7 +42,7 @@ export const SECTIONS = {
   projetos: {
     label: "Projetos",
     heading: "Projetos no ar, abertos pra conferir.",
-    sub: "Dez projetos entre 2025 e 2026: três para clientes e sete conceituais, entre landing pages e sites institucionais para arquitetura, engenharia, interiores, costura, café e indústria. Cada um com o endereço no ar.",
+    sub: "Clientes reais: Machado Plataformas (o principal), MJ Engenharia e Valdete Costuras. Os demais projetos desta vitrine são conceituais, estudos do estúdio, e não são entregas de cliente.",
   },
   servicos: {
     label: "Serviços",
@@ -73,17 +82,41 @@ export const SECTIONS = {
 } as const;
 
 /**
- * Perguntas frequentes da home — visíveis antes do convite e no `FAQPage`.
- * PREENCHER = rascunho, fica fora do site e do schema até ter resposta.
+ * Perguntas frequentes da home. Visíveis antes do convite e no `FAQPage`.
+ * O marcador PREENCHER, se voltar, fica fora do site e do schema.
  */
 export const HOME_FAQ: FaqItem[] = [
   {
     q: "Quanto custa um site ou uma landing page?",
-    a: `Landing page a partir de ${PUBLIC_PRICE.landing.display}. Site institucional a partir de ${PUBLIC_PRICE.institucional.display}. Em ambos o valor final depende do projeto; no WhatsApp eu fecho valor e prazo antes de qualquer compromisso.`,
+    a: `Landing page a partir de ${PUBLIC_PRICE.landing.display}. Site institucional a partir de ${PUBLIC_PRICE.institucional.display}. ${PRECO_FECHADO}`,
     links: [
       { href: "/landing-page", label: "Landing page" },
       { href: "/site-institucional", label: "Site institucional" },
     ],
+  },
+  {
+    q: "Em quanto tempo fica pronto?",
+    a: PRAZO_GERAL,
+  },
+  {
+    q: "Hospedagem e domínio estão inclusos?",
+    a: HOSPEDAGEM_INCLUSA,
+  },
+  {
+    q: "Como funciona a aprovação do design?",
+    a: APROVACAO_DESIGN,
+  },
+  {
+    q: "Como funciona a manutenção?",
+    a: MANUTENCAO,
+  },
+  {
+    q: "O que vocês fazem além de sites?",
+    a: ALEM_DE_SITES,
+  },
+  {
+    q: "O site fica pronto para o Google?",
+    a: SEO_TECNICO,
   },
   {
     q: "Landing page ou site institucional: qual escolher?",
@@ -94,21 +127,12 @@ export const HOME_FAQ: FaqItem[] = [
     ],
   },
   {
-    q: "Em quanto tempo fica pronto?",
-    a: "O prazo depende do escopo e entra no orçamento no WhatsApp, antes de começar. Landing page costuma ser mais rápida; site institucional leva mais tempo porque tem mais páginas e conteúdo.",
-  },
-  {
     q: "Vocês atendem fora de Florianópolis?",
     a: "Sim. O estúdio fica em Florianópolis e atendo empresas de todo o Brasil de forma remota.",
   },
   {
     q: "Como funciona o processo?",
     a: "Em quatro etapas: estratégia (diagnóstico, escopo e posicionamento), design (arquitetura, identidade e protótipo), código (implementação e performance) e resultado: mensuração, ajustes e evolução depois do deploy.",
-  },
-  {
-    // Fora deste PR: sem política publicada. PREENCHER fica fora do HTML e do FAQPage.
-    q: "Hospedagem e domínio estão inclusos?",
-    a: "PREENCHER: o que entra na entrega e o que fica por conta do cliente.",
   },
 ];
 

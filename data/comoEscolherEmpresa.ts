@@ -10,7 +10,7 @@
 import { CALC_PATH } from "@/data/calculadoraPreco";
 import { QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
 import type { FaqItem } from "@/data/servicePages";
-import { WHATSAPP_DISPLAY, WHATSAPP_NUMBER } from "@/lib/contact";
+import { WA_TEXT, WHATSAPP_DISPLAY, waLink } from "@/lib/contact";
 
 export const ESCOLHER_PATH = "/como-escolher-empresa-criacao-de-sites-florianopolis";
 
@@ -137,7 +137,7 @@ export type CopyPart =
   | { type: "internal"; href: string; label: string }
   | { type: "external"; href: string; label: string };
 
-const WA = `https://wa.me/${WHATSAPP_NUMBER}`;
+const WA = waLink(WA_TEXT.projeto);
 
 export const ESCOLHER_ROWS: { criterio: string; parts: readonly CopyPart[] }[] = [
   {
@@ -161,7 +161,7 @@ export const ESCOLHER_ROWS: { criterio: string; parts: readonly CopyPart[] }[] =
   {
     criterio: "Prazo",
     parts: [
-      { type: "text", text: "Prazo informado no orçamento. Veja o prazo de cada serviço em " },
+      { type: "text", text: "Landing page em 7 dias úteis. Site institucional a partir de 15 dias úteis. O prazo inclui diagnóstico antes do desenho e código próprio. Detalhes em " },
       { type: "internal", href: "/landing-page", label: "landing page" },
       { type: "text", text: " e " },
       { type: "internal", href: "/site-institucional", label: "site institucional" },
@@ -173,7 +173,7 @@ export const ESCOLHER_ROWS: { criterio: string; parts: readonly CopyPart[] }[] =
     parts: [
       {
         type: "text",
-        text: "Landing page a partir de R$ 600 e site institucional a partir de R$ 1.500. O valor final depende do escopo. Detalhes em ",
+        text: "Landing page a partir de R$ 600 e site institucional a partir de R$ 1.500. O valor é fechado no orçamento, sem surpresa depois. Detalhes em ",
       },
       {
         type: "internal",

@@ -11,14 +11,13 @@ import { QUANTO_CUSTA_CRUMB, QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
  * Fonte única: a FAQ visível e o JSON-LD `FAQPage` saem do mesmo array, então
  * o texto do robô é sempre o texto da página.
  *
- * ATENÇÃO — respostas marcadas com PREENCHER dependem de números que só o
- * Matheus tem (prazo, hospedagem). Elas NÃO aparecem no site nem no schema
- * enquanto tiverem o marcador (ver `isFilled`): melhor uma pergunta a menos
- * que uma resposta inventada.
+ * Respostas com o marcador PREENCHER ficam fora do site e do schema
+ * (ver `isFilled`).
  *
- * Preço público (Matheus, 2026-10-26): landing a partir de R$ 600 e site
- * institucional a partir de R$ 1.500. O valor final depende do projeto.
- * Arquitetura não tem número publicado — a resposta segue sem faixa.
+ * Preço público: landing a partir de R$ 600 e site institucional a partir
+ * de R$ 1.500. O valor é fechado no orçamento, sem surpresa depois.
+ * Prazo: landing page em 7 dias úteis; site institucional a partir de
+ * 15 dias úteis. O prazo inclui diagnóstico antes do desenho e código próprio.
  */
 
 export interface FaqItem {
@@ -88,6 +87,29 @@ export const PUBLIC_PRICE = {
   institucional: { amount: "1500", display: "R$ 1.500" },
 } as const;
 
+/** Frase pública de preço. O piso continua "a partir de"; o fechamento não muda depois. */
+export const PRECO_FECHADO = "O valor é fechado no orçamento, sem surpresa depois.";
+
+export const PRAZO_LANDING = "Landing page em 7 dias úteis.";
+export const PRAZO_INSTITUCIONAL = "Site institucional a partir de 15 dias úteis.";
+export const PRAZO_NOTA = "O prazo inclui diagnóstico antes do desenho e código próprio.";
+export const PRAZO_GERAL = `${PRAZO_LANDING} ${PRAZO_INSTITUCIONAL} ${PRAZO_NOTA}`;
+
+export const HOSPEDAGEM_INCLUSA =
+  "Hospedagem e domínio estão inclusos no valor total do projeto.";
+
+export const APROVACAO_DESIGN =
+  "Há ajustes no design até você aprovar. Depois de aprovado, entram mais 3 rodadas de ajuste.";
+
+export const MANUTENCAO =
+  "Manutenções básicas são grátis nos 3 primeiros meses. Redesign e mudanças de estrutura são cobrados por hora técnica.";
+
+export const ALEM_DE_SITES =
+  "Além de sites, fazemos loja virtual, apps, logotipos e branding básico. Gestão de tráfego pago não está incluída.";
+
+export const SEO_TECNICO =
+  "SEO técnico deixa o site rápido e pronto para o Google. Não prometemos primeiro lugar.";
+
 export interface ServicePageConfig {
   /** Vira a rota: `/<slug>`. */
   slug: "landing-page" | "site-institucional" | "sites-para-arquitetura";
@@ -131,13 +153,9 @@ export const ATENDE_BRASIL: FaqItem = {
   a: "Sim, atendo todo o Brasil de forma remota.",
 };
 
-/** Página sem piso publicado (arquitetura). Não inventar número. */
-const PRECO_TEXTO =
-  "Depende do escopo: quantidade de seções ou páginas, textos e integrações. Você conta o projeto no WhatsApp e eu respondo com valor e prazo antes de qualquer compromisso.";
+const LANDING_PRECO = `A partir de ${PUBLIC_PRICE.landing.display}. O valor final depende do projeto (seções, formulários, integrações). ${PRECO_FECHADO}`;
 
-const LANDING_PRECO = `A partir de ${PUBLIC_PRICE.landing.display}. O valor final depende do projeto (seções, formulários, integrações). Orçamento claro no WhatsApp.`;
-
-export const INSTITUCIONAL_PRECO = `A partir de ${PUBLIC_PRICE.institucional.display}. O valor final depende do projeto: páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`;
+export const INSTITUCIONAL_PRECO = `A partir de ${PUBLIC_PRICE.institucional.display}. O valor final depende do projeto: páginas, conteúdo e integrações mudam o valor. ${PRECO_FECHADO}`;
 
 export const SERVICE_PAGES: ServicePageConfig[] = [
   {
@@ -166,7 +184,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     ],
     investimento: {
       price: PUBLIC_PRICE.landing.amount,
-      body: `Landing page sob medida a partir de ${PUBLIC_PRICE.landing.display}. O valor final depende do projeto (seções, formulários, integrações). Orçamento claro no WhatsApp.`,
+      body: `Landing page sob medida a partir de ${PUBLIC_PRICE.landing.display}. O valor final depende do projeto (seções, formulários, integrações). ${PRECO_FECHADO}`,
     },
     guide: {
       href: QUANTO_CUSTA_PATH,
@@ -178,8 +196,14 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     projectsHeading: "Landing pages no ar",
     faq: [
       { q: "Quanto custa uma landing page?", a: LANDING_PRECO },
-      { q: "Em quanto tempo fica pronta?", a: "PREENCHER: prazo típico de uma landing page." },
-      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER: o que entra na entrega e o que fica por conta do cliente." },
+      {
+        q: "Em quanto tempo uma landing page fica pronta?",
+        a: `${PRAZO_LANDING} ${PRAZO_NOTA}`,
+      },
+      { q: "Hospedagem e domínio estão inclusos?", a: HOSPEDAGEM_INCLUSA },
+      { q: "Como funciona a aprovação do design?", a: APROVACAO_DESIGN },
+      { q: "Como funciona a manutenção?", a: MANUTENCAO },
+      { q: "O site fica pronto para o Google?", a: SEO_TECNICO },
       ATENDE_BRASIL,
       {
         q: "Posso editar o conteúdo depois?",
@@ -190,12 +214,8 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
         a: "Landing page quando existe uma ação principal, como um serviço ou uma campanha. Site institucional quando a empresa precisa de várias páginas. {0}.",
         links: [{ href: LP_OU_URL, label: "Veja a comparação completa" }],
       },
-      {
-        q: "Em quanto tempo uma landing page fica pronta?",
-        a: "A partir de 5 dias úteis. O prazo final depende do escopo (seções, textos, integrações) e é fechado no orçamento no WhatsApp, antes de começar.",
-      },
     ],
-    waMessage: "Olá! Vim pela página de landing page da Coded by M e quero um orçamento.",
+    waMessage: "Olá, quero orçar uma landing page",
     ctaSource: "lp-page",
   },
   {
@@ -224,7 +244,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     ],
     investimento: {
       price: PUBLIC_PRICE.institucional.amount,
-      body: `Site institucional a partir de ${PUBLIC_PRICE.institucional.display}, dependendo do projeto: páginas, conteúdo e integrações mudam o valor. Escopo e prazo no orçamento antes de começar.`,
+      body: `Site institucional a partir de ${PUBLIC_PRICE.institucional.display}, dependendo do projeto: páginas, conteúdo e integrações mudam o valor. ${PRECO_FECHADO}`,
     },
     guide: {
       href: QUANTO_CUSTA_PATH,
@@ -236,25 +256,26 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     projectsHeading: "Sites institucionais no ar",
     faq: [
       { q: "Quanto custa um site institucional?", a: INSTITUCIONAL_PRECO },
-      { q: "Qual o prazo de entrega?", a: "PREENCHER: prazo típico de um site institucional." },
+      {
+        q: "Em quanto tempo o site fica pronto?",
+        a: `${PRAZO_INSTITUCIONAL} ${PRAZO_NOTA}`,
+      },
       {
         q: "Quantas páginas o site tem?",
         a: "Normalmente entre 5 e 12, definidas na etapa de estratégia a partir do que a empresa precisa apresentar.",
       },
-      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER: o que entra na entrega e o que fica por conta do cliente." },
-      { q: "Como funciona a manutenção depois da entrega?", a: "PREENCHER: suporte, ajustes e evolução após a publicação." },
+      { q: "Hospedagem e domínio estão inclusos?", a: HOSPEDAGEM_INCLUSA },
+      { q: "Como funciona a aprovação do design?", a: APROVACAO_DESIGN },
+      { q: "Como funciona a manutenção depois da entrega?", a: MANUTENCAO },
+      { q: "O site fica pronto para o Google?", a: SEO_TECNICO },
       ATENDE_BRASIL,
       {
         q: "Landing page ou site institucional: qual escolher?",
         a: "Site institucional quando você precisa apresentar a empresa em várias páginas. Landing page quando o foco é uma única ação ou campanha. {0}.",
         links: [{ href: LP_OU_URL, label: "Veja a comparação completa" }],
       },
-      {
-        q: "Em quanto tempo o site fica pronto?",
-        a: "A partir de 15 dias úteis. O prazo final depende do número de páginas e do conteúdo e é fechado no orçamento no WhatsApp, antes de começar.",
-      },
     ],
-    waMessage: "Olá! Vim pela página de site institucional da Coded by M e quero um orçamento.",
+    waMessage: "Olá, quero orçar um site institucional",
     ctaSource: "institucional-page",
   },
   {
@@ -301,10 +322,17 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       "CMS leve para publicar obra nova",
     ],
     caseSlugs: ["estudio-lentz", "forma-viva", "estudio-monteiro", "maison-etoile"],
-    projectsHeading: "Projetos de arquitetura e interiores",
+    projectsHeading: "Estudos conceituais de arquitetura e interiores",
     faq: [
-      { q: "Quanto custa um site para escritório de arquitetura?", a: PRECO_TEXTO },
-      { q: "Em quanto tempo fica pronto?", a: "PREENCHER: prazo típico de um site de arquitetura." },
+      {
+        q: "Quanto custa um site para escritório de arquitetura?",
+        a: `Landing page a partir de ${PUBLIC_PRICE.landing.display}. Site institucional a partir de ${PUBLIC_PRICE.institucional.display}. ${PRECO_FECHADO}`,
+      },
+      { q: "Em quanto tempo fica pronto?", a: PRAZO_GERAL },
+      { q: "Hospedagem e domínio estão inclusos?", a: HOSPEDAGEM_INCLUSA },
+      { q: "Como funciona a aprovação do design?", a: APROVACAO_DESIGN },
+      { q: "Como funciona a manutenção?", a: MANUTENCAO },
+      { q: "O site fica pronto para o Google?", a: SEO_TECNICO },
       {
         q: "Meu Instagram já não basta?",
         a: "O Instagram é ótimo pra ser lembrado e péssimo pra ser encontrado. Ele não aparece no Google, não organiza sua obra por projeto e não sobrevive ao feed. Um site é o único lugar onde o trabalho fica no seu endereço, na sua ordem, pra sempre.",
@@ -319,8 +347,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       },
       ATENDE_BRASIL,
     ],
-    waMessage:
-      "Olá! Vim pela página de sites para arquitetura da Coded by M e quero falar sobre o site do meu escritório.",
+    waMessage: "Olá, quero orçar um site para o escritório",
     ctaSource: "arquitetura-page",
   },
 ];

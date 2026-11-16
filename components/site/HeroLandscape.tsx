@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { deferUntilPaint } from "@/lib/deferUntilPaint";
 
 const Landscape = dynamic(
   () => import("@/components/zones/CTASection/FooterLandscape"),
@@ -21,7 +22,7 @@ const Landscape = dynamic(
  *    razão de a peça estar aqui, não acontece, e o custo cairia justamente
  *    no aparelho mais fraco.
  * 2. Só sem `prefers-reduced-motion`.
- * 3. Só depois que a página fica ociosa, para não disputar a primeira tela.
+ * 3. Só depois que o título e o CTA já pintaram e o navegador fica ocioso.
  *
  * Fora de vista o render loop congela (`active`), seguindo o mesmo padrão
  * dos canvases da experiência.
@@ -37,16 +38,10 @@ export function HeroLandscape() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!fine || reduce) return;
 
-    const idle =
-      window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 600));
-    const id = idle(() => {
+    return deferUntilPaint(() => {
       setSource(document.body);
       setMounted(true);
     });
-    return () => {
-      if (window.cancelIdleCallback) window.cancelIdleCallback(id as number);
-      else clearTimeout(id as unknown as number);
-    };
   }, []);
 
   useEffect(() => {

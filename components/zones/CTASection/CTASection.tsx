@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { MeshButton } from "@/components/ui/MeshButton";
-import { waLink } from "@/lib/contact";
+import { WA_TEXT, waLink } from "@/lib/contact";
 import Footer from "./Footer";
 import { cbm } from "@/lib/palette";
 
 const CTAFormation = dynamic(() => import("./CTAFormation"), { ssr: false });
 
 /** WhatsApp do estúdio + mensagem pré-preenchida. */
-const WHATSAPP = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
+const WHATSAPP = waLink(WA_TEXT.projeto);
 
 /**
  * Seção CTA FINAL da Home — clímax/conversão (zona 10).

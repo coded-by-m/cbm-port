@@ -95,11 +95,13 @@ export function ProjectsStage({
                   <span
                     style={{
                       marginLeft: "auto",
+                      maxWidth: "16em",
                       fontFamily: SATOSHI,
-                      fontSize: 10,
-                      letterSpacing: "0.18em",
-                      color: cbm("gray-400"),
-                      whiteSpace: "nowrap",
+                      fontSize: 14,
+                      letterSpacing: "0.04em",
+                      lineHeight: 1.35,
+                      textAlign: "right",
+                      color: cbm("gray-200"),
                     }}
                   >
                     {p.meta}
