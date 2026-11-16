@@ -18,6 +18,7 @@ import {
   getServicePage,
 } from "@/data/servicePages";
 import { OG } from "@/lib/seo";
+import { WHATSAPP_MESSAGES } from "@/lib/contact";
 
 export interface LandingFaq {
   q: string;
@@ -127,8 +128,7 @@ export const LANDINGS: LandingConfig[] = [
       },
     ],
 
-    waMessage:
-      "Olá! Vim pela página para escritórios de arquitetura e queria falar sobre o site do meu escritório.",
+    waMessage: WHATSAPP_MESSAGES.institutional,
 
     meta: {
       // Sem sufixo: o `template` do layout raiz já acrescenta "· Coded by M".
@@ -228,7 +228,7 @@ export const LANDINGS: LandingConfig[] = [
       text: "Você conta o projeto e eu respondo no mesmo dia com valor e prazo. O orçamento é gratuito e sem compromisso.",
     },
 
-    waMessage: "Olá! Vim pela página de sites para empresas da Coded by M e quero um orçamento.",
+    waMessage: WHATSAPP_MESSAGES.institutional,
 
     meta: {
       // Sem sufixo: o `template` do layout raiz já acrescenta "· Coded by M".

@@ -19,14 +19,13 @@ import {
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
   WHATSAPP_DISPLAY,
-  WHATSAPP_NUMBER,
+  contextualWaLink,
 } from "@/lib/contact";
 import { OG, OG_SIZE, ORG_ID, breadcrumbSchema, faqPageSchema, graph, webPageSchema } from "@/lib/seo";
 import { FillButton } from "@/components/ui/FillButton";
 import { cbm } from "@/lib/palette";
 
-/** wa.me sem texto pré-preenchido: é o href publicado no copy. */
-const WA = `https://wa.me/${WHATSAPP_NUMBER}`;
+const WA = contextualWaLink("general");
 
 const LIST: CSSProperties = {
   ...PROSE_P,

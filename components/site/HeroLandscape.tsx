@@ -33,19 +33,50 @@ export function HeroLandscape() {
   const [source, setSource] = useState<HTMLElement | undefined>();
 
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!fine || reduce) return;
 
-    const idle =
-      window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 600));
-    const id = idle(() => {
-      setSource(document.body);
-      setMounted(true);
-    });
+    let idleId: number | undefined;
+    let firstFrame = 0;
+    let secondFrame = 0;
+    let cancelled = false;
+
+    const schedule = () => {
+      firstFrame = window.requestAnimationFrame(() => {
+        secondFrame = window.requestAnimationFrame(() => {
+          const idle =
+            window.requestIdleCallback ??
+            ((cb: () => void) => window.setTimeout(cb, 600));
+          idleId = idle(() => {
+            if (cancelled) return;
+            setSource(document.body);
+            setMounted(true);
+          }) as number;
+        });
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        schedule();
+      },
+      { rootMargin: "160px 0px", threshold: 0 },
+    );
+    observer.observe(el);
+
     return () => {
-      if (window.cancelIdleCallback) window.cancelIdleCallback(id as number);
-      else clearTimeout(id as unknown as number);
+      cancelled = true;
+      observer.disconnect();
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+      if (idleId === undefined) return;
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idleId);
+      else clearTimeout(idleId);
     };
   }, []);
 

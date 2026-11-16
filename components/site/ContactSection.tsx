@@ -3,14 +3,14 @@ import {
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
   WHATSAPP_DISPLAY,
-  waLink,
+  contextualWaLink,
 } from "@/lib/contact";
 import { PANCHANG, SATOSHI, SECTION } from "./shared";
 import { cbm } from "@/lib/palette";
 import { FillButton } from "@/components/ui/FillButton";
 import { TriArrow } from "@/components/ui/TriArrow";
 
-const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
+const WA = contextualWaLink("general");
 
 /** Fechamento: convite + WhatsApp + Instagram. */
 export function ContactSection() {

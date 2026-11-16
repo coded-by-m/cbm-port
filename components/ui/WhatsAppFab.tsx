@@ -40,8 +40,9 @@ export function WhatsAppFab() {
 
   return (
     <div
-      className="fixed bottom-6 right-6 z-40 shadow-[0_10px_30px_rgba(0,0,0,0.45)] transition-[transform,opacity] duration-300"
+      className="fixed right-6 z-40 shadow-[0_10px_30px_rgba(0,0,0,0.45)] transition-[transform,opacity,bottom] duration-300"
       style={{
+        bottom: "calc(1.5rem + var(--cbm-consent-height, 0px))",
         opacity: shown ? 1 : 0,
         transform: shown ? "translateY(0)" : "translateY(12px)",
         pointerEvents: shown ? "auto" : "none",

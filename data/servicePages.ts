@@ -1,5 +1,6 @@
 import { LP_OU_URL } from "@/data/landingOuInstitucional";
 import { QUANTO_CUSTA_CRUMB, QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
+import { WHATSAPP_MESSAGES } from "@/lib/contact";
 
 /**
  * Páginas de serviço indexáveis — `/landing-page`, `/site-institucional` e
@@ -195,7 +196,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
         a: "A partir de 5 dias úteis. O prazo final depende do escopo (seções, textos, integrações) e é fechado no orçamento no WhatsApp, antes de começar.",
       },
     ],
-    waMessage: "Olá! Vim pela página de landing page da Coded by M e quero um orçamento.",
+    waMessage: WHATSAPP_MESSAGES.landing,
     ctaSource: "lp-page",
   },
   {
@@ -254,7 +255,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
         a: "A partir de 15 dias úteis. O prazo final depende do número de páginas e do conteúdo e é fechado no orçamento no WhatsApp, antes de começar.",
       },
     ],
-    waMessage: "Olá! Vim pela página de site institucional da Coded by M e quero um orçamento.",
+    waMessage: WHATSAPP_MESSAGES.institutional,
     ctaSource: "institucional-page",
   },
   {
@@ -319,8 +320,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       },
       ATENDE_BRASIL,
     ],
-    waMessage:
-      "Olá! Vim pela página de sites para arquitetura da Coded by M e quero falar sobre o site do meu escritório.",
+    waMessage: WHATSAPP_MESSAGES.institutional,
     ctaSource: "arquitetura-page",
   },
 ];

@@ -23,10 +23,29 @@ export const GOOGLE_MAPS_URL = "https://maps.google.com/?cid=1362888323480500884
 /** Número formatado pra exibição. */
 export const WHATSAPP_DISPLAY = "+55 48 99991-6638";
 
-const DEFAULT_MESSAGE =
-  "Olá! Vim pelo site da Coded by M e gostaria de conversar sobre um projeto.";
+export const WHATSAPP_MESSAGES = {
+  general: "Olá Matheus, vim pelo site e quero um orçamento de site",
+  landing: "Olá Matheus, vim pelo site e quero um orçamento de landing page",
+  institutional:
+    "Olá Matheus, vim pelo site e quero um orçamento de site institucional",
+  question: "Olá Matheus, vim pelo site e tenho uma dúvida antes de fechar",
+} as const;
+
+export type WhatsAppContext = keyof typeof WHATSAPP_MESSAGES;
+
+const DEFAULT_MESSAGE = WHATSAPP_MESSAGES.general;
 
 /** Link wa.me com mensagem pré-preenchida (usa a padrão se nenhuma for dada). */
 export function waLink(message: string = DEFAULT_MESSAGE) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+/** Link contextual. Detalhes opcionais entram depois da mensagem aprovada. */
+export function contextualWaLink(
+  context: WhatsAppContext = "general",
+  details?: string,
+) {
+  const base = WHATSAPP_MESSAGES[context];
+  const message = details?.trim() ? `${base}\n\n${details.trim()}` : base;
+  return waLink(message);
 }
