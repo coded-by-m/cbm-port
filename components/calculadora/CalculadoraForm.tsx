@@ -10,7 +10,7 @@ import {
   calculatorMessage,
   type CalculadoraTipo,
 } from "@/data/calculadoraPreco";
-import { waLink } from "@/lib/contact";
+import { contextualWaLink } from "@/lib/contact";
 import { PANCHANG, SATOSHI } from "@/components/site/shared";
 import { FillButton } from "@/components/ui/FillButton";
 import { cbm } from "@/lib/palette";
@@ -48,7 +48,10 @@ export function CalculadoraForm() {
   const [detalhes, setDetalhes] = useState("");
 
   const escolhido = CALC_TIPOS.find((item) => item.id === tipo) ?? null;
-  const href = waLink(calculatorMessage({ tipo, plano, detalhes }));
+  const href = contextualWaLink(
+    tipo === "landing" ? "landing" : tipo === "institucional" ? "institutional" : "general",
+    calculatorMessage({ tipo, plano, detalhes }),
+  );
 
   return (
     <div data-cm-section="calculadora">

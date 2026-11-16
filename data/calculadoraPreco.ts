@@ -85,7 +85,7 @@ export function calculatorMessage(input: {
 }): string {
   const tipo = CALC_TIPOS.find((item) => item.id === input.tipo);
   const linhas = [
-    "Olá! Vim pela calculadora de preço de site da Coded by M.",
+    "Dados preenchidos na calculadora de preço:",
     tipo
       ? `Tipo: ${tipo.label}. Faixa: ${tipo.preco} e ${tipo.prazo}. ${CALC_INCLUSO}.`
       : "Tipo: ainda não escolhi entre landing page e site institucional.",

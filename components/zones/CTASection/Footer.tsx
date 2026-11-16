@@ -169,7 +169,7 @@ export default function Footer({
           <div className="flex flex-col gap-6" style={rise(240)}>
             <nav aria-label="Serviços" className="flex flex-col gap-1.5">
               <span
-                className="mb-1 text-[0.62rem] uppercase tracking-[0.3em] text-[#F5F2ED]/40"
+                className="mb-1 text-[0.62rem] uppercase tracking-[0.3em] text-[#F5F2ED]/60"
                 style={{ fontFamily: SAT, fontWeight: 500 }}
               >
                 Serviços
@@ -210,7 +210,7 @@ export default function Footer({
               >
                 {INSTAGRAM_HANDLE}
               </a>
-              <span className="uppercase tracking-[0.2em] text-[#F5F2ED]/40">
+              <span className="uppercase tracking-[0.2em] text-[#F5F2ED]/60">
                 Florianópolis - SC · BR
               </span>
             </div>
@@ -220,7 +220,7 @@ export default function Footer({
 
         {/* © / tagline */}
         <div
-          className="mt-12 flex flex-col gap-3 border-t border-[#F5F2ED]/10 pt-7 text-[0.72rem] text-[#F5F2ED]/40 sm:flex-row sm:items-center sm:justify-between"
+          className="mt-12 flex flex-col gap-3 border-t border-[#F5F2ED]/10 pt-7 text-[0.72rem] text-[#F5F2ED]/60 sm:flex-row sm:items-center sm:justify-between"
           style={{ fontFamily: SAT, fontWeight: 400, ...rise(360) }}
         >
           <span

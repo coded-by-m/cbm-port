@@ -12,7 +12,7 @@
 
 import type { FaqItem } from "@/data/servicePages";
 import { QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
-import { WHATSAPP_NUMBER } from "@/lib/contact";
+import { contextualWaLink } from "@/lib/contact";
 import { SITE_URL } from "@/lib/site";
 
 export const LP_OU_PATH = "/landing-page-ou-site-institucional";
@@ -211,7 +211,7 @@ export const LP_OU_COMO =
 
 export const LP_OU_CTA = "Pedir orçamento no WhatsApp";
 
-export const LP_OU_CTA_HREF = `https://wa.me/${WHATSAPP_NUMBER}`;
+export const LP_OU_CTA_HREF = contextualWaLink("general");
 
 export const LP_OU_FAQ: FaqItem[] = [
   {

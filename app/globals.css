@@ -51,6 +51,18 @@ body:has(.site-home) {
   background: rgb(var(--cbm-base));
 }
 
+/* Consentimento: faixa fina, sem cobrir o CTA ou o botão flutuante. */
+@media (max-width: 680px) {
+  .cookie-strip__inner {
+    align-items: stretch !important;
+    flex-direction: column;
+  }
+  .cookie-strip__actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 /* Hovers da home estática — o design entrega estados de hover, que estilo
    inline não expressa. Uma classe por estado, valores idênticos ao aprovado. */
 .site-burger:hover { border-color: rgb(var(--cbm-white)); background: rgb(var(--cbm-white) / 0.05); }

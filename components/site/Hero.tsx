@@ -1,14 +1,11 @@
-import { Fragment } from "react";
 import { HERO } from "@/data/home";
-import { waLink } from "@/lib/contact";
+import { contextualWaLink } from "@/lib/contact";
 import { PANCHANG, SATOSHI, SURFACE, TriangleMark } from "./shared";
-import { TriText } from "@/components/ui/TriText";
-import { STROKE_LINE_HEIGHT } from "@/components/ui/strokeMetrics";
 import { HeroLandscape } from "./HeroLandscape";
 import { cbm } from "@/lib/palette";
 import { FillButton } from "@/components/ui/FillButton";
 
-const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
+const WA = contextualWaLink("general");
 
 /** Entrada em stagger, rodando uma vez. Não é scroll-driven. */
 const enter = (delay: number): React.CSSProperties => ({
@@ -83,7 +80,7 @@ export function Hero() {
           flexDirection: "column",
         }}
       >
-        {/* Régua de topo: a marca à esquerda, a disciplina à direita */}
+        {/* Régua de topo: marca pequena e localização. */}
         <div
           style={{
             display: "flex",
@@ -96,141 +93,98 @@ export function Hero() {
             ...enter(0.05),
           }}
         >
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              fontFamily: PANCHANG,
+              fontWeight: 700,
+              fontSize: 13,
+              letterSpacing: "0.01em",
+              color: cbm("white"),
+            }}
+          >
+            {HERO.brand}
+            <TriangleMark
+              strokeWidth={7}
+              drawDelay={0.2}
+              style={{ width: 12 }}
+            />
+          </span>
           <span style={META}>{HERO.eyebrow}</span>
-          <span style={META}>{HERO.meta}</span>
         </div>
 
-        {/* Miolo: categoria à esquerda, texto à direita, mesma base */}
+        {/* Miolo: serviço, benefício, CTA e confiança em uma única leitura. */}
         <div
           style={{
             flex: 1,
             display: "flex",
             alignItems: "center",
-            padding: "clamp(28px,5vh,64px) 0",
+            padding: "clamp(32px,6vh,72px) 0",
           }}
         >
           <div
             style={{
               width: "100%",
+              maxWidth: 980,
               display: "flex",
-              flexWrap: "wrap",
-              alignItems: "flex-end",
-              gap: "clamp(28px,4vw,72px)",
+              flexDirection: "column",
+              alignItems: "flex-start",
             }}
           >
-            <div
-              style={{ flex: "1 1 300px", minWidth: 0, containerType: "inline-size" }}
-            >
-              <div
-                /* Liga o cursor-triângulo da marca sobre a palavra. */
-                data-cursor="triangle"
-                style={{
-                  margin: 0,
-                  cursor: "none",
-                  fontFamily: PANCHANG,
-                  fontWeight: 800,
-                  /* Amarrado à largura do container E à altura da tela, pra
-                     nunca cortar a palavra nem estourar a dobra. */
-                  fontSize: "clamp(38px, min(15.5cqw, 15vh), 190px)",
-                  letterSpacing: "-0.04em",
-                  lineHeight: 0.84,
-                  color: "#F5F2ED",
-                  ...enter(0.16),
-                }}
-              >
-                {/* A marca se revela pela malha: uma instância por linha,
-                    encadeadas pelo `delay`, na caixa vertical fixa da métrica
-                    para as duas saírem no mesmo corpo. Os filetes vermelhos
-                    atravessam as letras junto com a onda e somem. */}
-                {/* A marca é o logo: leitor de tela lê "Coded by M" uma vez,
-                    não letra por letra. O título da página é o h1 abaixo. */}
-                <span role="img" aria-label="Coded by M" style={{ display: "block" }}>
-                {HERO.brand.map((word, i) => (
-                  <Fragment key={word}>
-                    {i > 0 && " "}
-                    <span
-                      style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: "0.06em",
-                        /* Reencosta as linhas: a caixa do TriText tem a
-                           altura da métrica, o desenho pede o entrelinha
-                           apertado que a marca sempre teve. */
-                        marginTop: i === 0 ? 0 : `${0.84 - STROKE_LINE_HEIGHT}em`,
-                      }}
-                    >
-                      <TriText
-                        text={word}
-                        fontFamily={PANCHANG}
-                        fontWeight={800}
-                        letterSpacing={-0.04 * 128}
-                        delay={0.2 + i * 0.3}
-                      />
-
-                      {i === 0 && (
-                        <TriangleMark
-                          strokeWidth={6}
-                          /* Entra quando a onda chega ao fim de "Coded". */
-                          drawDelay={0.2 + 0.8}
-                          style={{ width: "0.3em", marginTop: "0.06em" }}
-                        />
-                      )}
-                    </span>
-                  </Fragment>
-                ))}
-                </span>
-
-                {/* O h1: serviço + cidade, abaixo da marca e em corpo bem
-                    menor. Frase inteira, sem quebrar em letras. */}
-                <h1
-                  className="site-letter"
-                  style={{
-                    display: "block",
-                    maxWidth: "26ch",
-                    /* Em do corpo da marca (0.2em), com piso de 14px: em 390px
-                       o 0.2em caía para ~10,6px. No desktop o 0.2em já passa
-                       de 14px, então o piso não muda a marca grande. */
-                    margin: "1.2em 0 0",
-                    fontSize: "max(0.2em, 14px)",
-                    fontWeight: 700,
-                    letterSpacing: "0.01em",
-                    lineHeight: 1.2,
-                    color: cbm("gray-300"),
-                    textWrap: "balance",
-                    animationDelay: "0.72s",
-                  }}
-                >
-                  {HERO.lead}
-                </h1>
-              </div>
-            </div>
-
-            {/* Texto, link e CTA em bloco */}
-            <div
+            <h1
               style={{
-                flex: "0 1 400px",
-                minWidth: 0,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "stretch",
+                margin: 0,
+                maxWidth: "18ch",
+                fontFamily: PANCHANG,
+                fontWeight: 800,
+                fontSize: "clamp(38px,7.2vw,92px)",
+                letterSpacing: "-0.035em",
+                lineHeight: 0.96,
+                color: cbm("white"),
+                textWrap: "balance",
+                ...enter(0.16),
+              }}
+            >
+              {HERO.lead}
+            </h1>
+
+            <p
+              style={{
+                margin: "clamp(22px,3vh,32px) 0 0",
+                maxWidth: "62ch",
+                fontFamily: SATOSHI,
+                fontWeight: 400,
+                fontSize: "clamp(17px,1.8vw,23px)",
+                lineHeight: 1.5,
+                color: cbm("gray-100"),
+                textWrap: "balance",
                 ...enter(0.32),
               }}
             >
-              <p
-                style={{
-                  margin: 0,
-                  fontFamily: PANCHANG,
-                  fontWeight: 600,
-                  fontSize: "clamp(17px,1.7vw,24px)",
-                  letterSpacing: "-0.014em",
-                  lineHeight: 1.24,
-                  color: "#F5F2ED",
-                  textWrap: "balance",
-                }}
-              >
-                {HERO.headline}
-              </p>
+              {HERO.headline}
+            </p>
 
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                gap: "14px 24px",
+                marginTop: "clamp(26px,4vh,38px)",
+                ...enter(0.42),
+              }}
+            >
+              <FillButton
+                href={WA}
+                target="_blank"
+                data-cm-role="whatsapp"
+                data-cm-id="hero-whatsapp"
+                style={{ padding: "17px 28px", fontSize: 12, letterSpacing: "0.14em" }}
+              >
+                {HERO.ctaPrimary}
+              </FillButton>
               <a
                 href="#projetos"
                 data-cm-role="primary-cta"
@@ -240,7 +194,6 @@ export function Hero() {
                   alignSelf: "flex-start",
                   display: "inline-flex",
                   alignItems: "center",
-                  marginTop: "clamp(20px,2.6vh,28px)",
                   fontFamily: PANCHANG,
                   fontWeight: 600,
                   fontSize: 10.5,
@@ -254,18 +207,23 @@ export function Hero() {
               >
                 {HERO.ctaSecondary}
               </a>
-
-              <FillButton
-                href={WA}
-                target="_blank"
-                full
-                data-cm-role="whatsapp"
-                data-cm-id="hero-whatsapp"
-                style={{ marginTop: "clamp(14px,2vh,20px)", padding: "16px 26px", fontSize: 12, letterSpacing: "0.14em" }}
-              >
-                {HERO.ctaPrimary}
-              </FillButton>
             </div>
+
+            <p
+              style={{
+                margin: "clamp(18px,2.5vh,24px) 0 0",
+                maxWidth: "72ch",
+                fontFamily: SATOSHI,
+                fontWeight: 400,
+                fontSize: 13,
+                lineHeight: 1.6,
+                color: cbm("gray-200"),
+                textWrap: "pretty",
+                ...enter(0.52),
+              }}
+            >
+              {HERO.trust}
+            </p>
           </div>
         </div>
       </div>

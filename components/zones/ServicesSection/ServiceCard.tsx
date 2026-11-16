@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ServiceConfig } from "@/data/services";
-import { waLink } from "@/lib/contact";
+import { contextualWaLink, type WhatsAppContext } from "@/lib/contact";
 import ServiceMiniScene from "./ServiceMiniScene";
 import { useBorderDraw } from "./useBorderDraw";
 
@@ -57,7 +57,13 @@ export default function ServiceCard({
   }, [play]);
 
   const isDimmed = someExpanded && !expanded;
-  const contactHref = waLink(`Olá! Tenho interesse no serviço: ${service.title}.`);
+  const context: WhatsAppContext =
+    service.variant === "landing"
+      ? "landing"
+      : service.variant === "institutional"
+        ? "institutional"
+        : "general";
+  const contactHref = contextualWaLink(context);
 
   // Stagger interno: delays em ms quando expanded vira true.
   const detailStagger = (i: number) => (expanded ? 280 + i * 70 : 0);

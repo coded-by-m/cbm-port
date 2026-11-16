@@ -98,12 +98,22 @@ function buildTiles(projects: CaseProject[]): DriftTile[] {
  * uso.
  */
 export function ProjectsSection() {
-  const published = cases.filter((c) => c.status === "published");
+  const published = cases
+    .filter((c) => c.status === "published")
+    .sort((a, b) => {
+      if (a.slug === "machado-plataformas") return -1;
+      if (b.slug === "machado-plataformas") return 1;
+      return 0;
+    });
 
   const projects: StageProject[] = published.map((c) => ({
     slug: c.slug,
     title: c.title,
-    meta: c.concept ? `Conceito · ${c.meta.ano}` : c.meta.ano,
+    meta: c.concept
+      ? `Conceito · ${c.meta.ano}`
+      : c.slug === "machado-plataformas"
+        ? `Cliente real principal · ${c.meta.ano}`
+        : `Cliente real · ${c.meta.ano}`,
     color: colorOf(c),
   }));
 

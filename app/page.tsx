@@ -8,6 +8,7 @@ import { ServicesSection } from "@/components/site/ServicesSection";
 import { ProcessSection } from "@/components/site/ProcessSection";
 import { AboutSection } from "@/components/site/AboutSection";
 import { CapabilitiesSection } from "@/components/site/CapabilitiesSection";
+import { InsightsSection } from "@/components/site/InsightsSection";
 import { FaqSection } from "@/components/site/FaqSection";
 import { ContactSection } from "@/components/site/ContactSection";
 import Footer from "@/components/zones/CTASection/Footer";
@@ -71,6 +72,7 @@ export default function HomePage() {
         <ProcessSection />
         <AboutSection />
         <CapabilitiesSection />
+        <InsightsSection />
         <FaqSection />
         <ContactSection />
       </main>

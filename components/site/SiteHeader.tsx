@@ -5,7 +5,7 @@ import {
   GITHUB_URL,
   INSTAGRAM_URL,
   WHATSAPP_DISPLAY,
-  waLink,
+  contextualWaLink,
 } from "@/lib/contact";
 import { NAV_LINKS } from "@/data/home";
 import { SURFACE } from "./shared";
@@ -14,7 +14,7 @@ import { TriArrow } from "@/components/ui/TriArrow";
 import { MeshButton } from "@/components/ui/MeshButton";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
-const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
+const WA = contextualWaLink("general");
 
 const SATOSHI = '"Satoshi", sans-serif';
 const PANCHANG = '"Panchang", sans-serif';

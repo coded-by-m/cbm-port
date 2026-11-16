@@ -14,19 +14,14 @@ export const FEATURED_SLUG = "estudio-lentz";
 
 export const HERO = {
   eyebrow: "Estúdio independente · Florianópolis",
-  /** A marca é o enunciado principal do hero. */
-  brand: ["Coded", "by M"],
-  /**
-   * O H1 da página, logo abaixo da marca e em corpo menor. Diz serviço e
-   * cidade numa frase só — a marca acima é logo, não título.
-   */
-  lead: "Criação de sites e landing pages sob medida em Florianópolis",
-  headline: "Projetamos a forma como sua empresa é percebida digitalmente.",
-  sub: "Landing pages, sites institucionais e aplicações web: da estratégia ao deploy, no mesmo lugar.",
-  ctaPrimary: "Começar meu projeto",
-  /** Linha de apoio do canto superior direito, como o "BASED IN" da referência. */
-  meta: "Design + Development",
+  brand: "Coded by M",
+  lead: "Criação de sites profissionais e landing pages para pequenas empresas.",
+  headline:
+    "Sites sob medida, feitos para passar confiança e transformar visitas em conversas.",
+  ctaPrimary: "Pedir orçamento",
   ctaSecondary: "Ver projetos",
+  trust:
+    "Você fala direto com Matheus Mendes, quem desenha e programa. Código e acessos são seus na entrega.",
 } as const;
 
 export const SECTIONS = {
@@ -60,6 +55,11 @@ export const SECTIONS = {
     heading: "O que entra em cada projeto.",
     /** Marcador da escala, alinhado à direita do cabeçalho. */
     aside: "Escala 1: 10",
+  },
+  insights: {
+    label: "Coded Insights",
+    heading: "Seu site não termina na entrega.",
+    body: "Todo site entregue pode ser acompanhado no Coded Insights, um painel próprio de visitas e cliques, sem dados pessoais.",
   },
   faq: {
     label: "Dúvidas",
@@ -95,7 +95,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "Em quanto tempo fica pronto?",
-    a: "O prazo depende do escopo e entra no orçamento no WhatsApp, antes de começar. Landing page costuma ser mais rápida; site institucional leva mais tempo porque tem mais páginas e conteúdo.",
+    a: "Landing page: 7 dias úteis. Site institucional: a partir de 15 dias úteis.",
   },
   {
     q: "Vocês atendem fora de Florianópolis?",
@@ -106,9 +106,24 @@ export const HOME_FAQ: FaqItem[] = [
     a: "Em quatro etapas: estratégia (diagnóstico, escopo e posicionamento), design (arquitetura, identidade e protótipo), código (implementação e performance) e resultado: mensuração, ajustes e evolução depois do deploy.",
   },
   {
-    // Fora deste PR: sem política publicada. PREENCHER fica fora do HTML e do FAQPage.
     q: "Hospedagem e domínio estão inclusos?",
-    a: "PREENCHER: o que entra na entrega e o que fica por conta do cliente.",
+    a: "Sim. Hospedagem e domínio estão inclusos no preço total do projeto.",
+  },
+  {
+    q: "Como funciona a manutenção depois da entrega?",
+    a: "Manutenções básicas são grátis nos 3 primeiros meses. Redesign e mudanças de estrutura são cobrados por hora técnica.",
+  },
+  {
+    q: "Quantas revisões estão inclusas?",
+    a: "Os ajustes de design continuam até a aprovação. Depois de aprovado, o projeto inclui 3 rodadas de alteração.",
+  },
+  {
+    q: "Você faz outros tipos de projeto?",
+    a: "Além de landing pages e sites institucionais, faço e-commerce, apps, logotipos e branding básico. Gestão de tráfego pago ainda não faz parte do serviço.",
+  },
+  {
+    q: "O site já vem com SEO?",
+    a: "Todo projeto recebe SEO técnico básico, com estrutura semântica, metadados, sitemap e cuidados de performance. Isso ajuda os mecanismos de busca a entender o site, mas não há promessa de posição no Google.",
   },
 ];
 

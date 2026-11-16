@@ -10,7 +10,7 @@
 import { CALC_PATH } from "@/data/calculadoraPreco";
 import { QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
 import type { FaqItem } from "@/data/servicePages";
-import { WHATSAPP_DISPLAY, WHATSAPP_NUMBER } from "@/lib/contact";
+import { WHATSAPP_DISPLAY, contextualWaLink } from "@/lib/contact";
 
 export const ESCOLHER_PATH = "/como-escolher-empresa-criacao-de-sites-florianopolis";
 
@@ -137,7 +137,7 @@ export type CopyPart =
   | { type: "internal"; href: string; label: string }
   | { type: "external"; href: string; label: string };
 
-const WA = `https://wa.me/${WHATSAPP_NUMBER}`;
+const WA = contextualWaLink("question");
 
 export const ESCOLHER_ROWS: { criterio: string; parts: readonly CopyPart[] }[] = [
   {

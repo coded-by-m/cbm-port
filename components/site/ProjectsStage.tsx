@@ -75,7 +75,7 @@ export function ProjectsStage({
                       fontWeight: 700,
                       fontSize: 11,
                       letterSpacing: "0.04em",
-                      color: "rgba(245,242,237,0.32)",
+                      color: cbm("gray-400"),
                       width: "3ch",
                     }}
                   >

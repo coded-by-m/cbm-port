@@ -1,4 +1,4 @@
-import { waLink } from "@/lib/contact";
+import { contextualWaLink } from "@/lib/contact";
 
 /**
  * Os 3 serviços da Coded by M.
@@ -95,9 +95,7 @@ export const SERVICES: ServiceConfig[] = [
       "Empresas com processos digitais, equipes que precisam de ferramentas internas, ou SaaS em formação.",
     mailSubject: "Interesse em Aplicação Web",
     cta: {
-      href: waLink(
-        "Olá! Vim pelo site da Coded by M e quero falar sobre uma aplicação web.",
-      ),
+      href: contextualWaLink("general"),
       label: "Falar no WhatsApp",
     },
   },

@@ -43,7 +43,7 @@ export const INK = {
   /** Corpo. */
   body: cbm("gray-600"),
   /** Secundário e legendas. */
-  muted: cbm("gray-500"),
+  muted: cbm("gray-600"),
   /** Bordas sobre o claro. */
   border: cbm("base", 0.14),
   /** Fundo de card sobre o claro. */

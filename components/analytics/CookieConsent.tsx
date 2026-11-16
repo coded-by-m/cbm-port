@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CONSENT_EVENT, getConsent, setConsent } from "@/lib/analytics";
@@ -16,6 +16,7 @@ import { cbm } from "@/lib/palette";
  */
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
+  const stripRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -25,6 +26,29 @@ export function CookieConsent() {
     window.addEventListener(CONSENT_EVENT, hide);
     return () => window.removeEventListener(CONSENT_EVENT, hide);
   }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const strip = stripRef.current;
+    if (!visible || !strip) {
+      root.style.setProperty("--cbm-consent-height", "0px");
+      return;
+    }
+
+    const update = () => {
+      root.style.setProperty(
+        "--cbm-consent-height",
+        `${Math.ceil(strip.getBoundingClientRect().height)}px`,
+      );
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(strip);
+    return () => {
+      observer.disconnect();
+      root.style.setProperty("--cbm-consent-height", "0px");
+    };
+  }, [visible]);
 
   // As rotas /posts são telas de export (carrosséis) — sem chrome do site.
   if (pathname?.startsWith("/posts")) return null;
@@ -37,96 +61,108 @@ export function CookieConsent() {
 
   return (
     <div
-      role="dialog"
+      ref={stripRef}
+      role="region"
       aria-label="Consentimento de cookies"
+      className="cookie-strip"
       style={{
         position: "fixed",
-        left: "clamp(12px,3vw,20px)",
-        right: "auto",
-        bottom: "clamp(12px,3vw,20px)",
+        left: 0,
+        right: 0,
+        bottom: 0,
         zIndex: 200,
-        width: "min(calc(100vw - 24px), 380px)",
         boxSizing: "border-box",
-        background: cbm("base", 0.94),
+        background: cbm("base", 0.97),
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
-        border: "1px solid rgba(245,242,237,0.14)",
-        padding: "16px 18px",
-        display: "flex",
-        flexDirection: "column",
-        gap: 14,
-        boxShadow: "0 18px 44px -12px rgba(0,0,0,0.8)",
+        borderTop: `1px solid ${cbm("line")}`,
+        boxShadow: "0 -10px 30px rgba(0,0,0,0.3)",
       }}
     >
-      <p
+      <div
+        className="cookie-strip__inner"
         style={{
-          margin: 0,
-          fontFamily: "Satoshi, sans-serif",
-          fontWeight: 300,
-          fontSize: 13,
-          lineHeight: 1.6,
-          color: cbm("gray-300"),
+          width: "100%",
+          maxWidth: 1440,
+          margin: "0 auto",
+          padding: "10px clamp(16px,4vw,48px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "10px 20px",
         }}
       >
-        Usamos cookies para medir o desempenho do site e entender como ele é
-        usado. Você decide.{" "}
-        <Link
-          href={PRIVACY_PATH}
-          className="focus-signal"
+        <p
           style={{
-            color: "#F5F2ED",
-            textDecoration: "underline",
-            textDecorationColor: "#FB3640",
-            textUnderlineOffset: 3,
+            margin: 0,
+            maxWidth: "78ch",
+            fontFamily: "Satoshi, sans-serif",
+            fontWeight: 400,
+            fontSize: 13,
+            lineHeight: 1.5,
+            color: cbm("gray-200"),
           }}
         >
-          Política de privacidade
-        </Link>
-      </p>
+          Cookies opcionais ajudam a medir o uso do site. Você pode aceitar ou
+          recusar. {" "}
+          <Link
+            href={PRIVACY_PATH}
+            className="focus-signal"
+            style={{
+              color: cbm("white"),
+              textDecoration: "underline",
+              textDecorationColor: cbm("red"),
+              textUnderlineOffset: 3,
+            }}
+          >
+            Política de privacidade
+          </Link>
+        </p>
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-        <button
-          type="button"
-          onClick={() => decide("granted")}
-          style={{
-            flex: 1,
-            minHeight: 44,
-            background: "rgba(245,242,237,0.94)",
-            color: cbm("base"),
-            border: "1px solid rgba(245,242,237,0.94)",
-            borderRadius: 0,
-            padding: "0 18px",
-            fontFamily: "Panchang, sans-serif",
-            fontWeight: 700,
-            fontSize: 11,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            cursor: "pointer",
-          }}
-        >
-          Aceitar
-        </button>
-        <button
-          type="button"
-          onClick={() => decide("denied")}
-          style={{
-            flex: 1,
-            minHeight: 44,
-            background: "transparent",
-            color: "#F5F2ED",
-            border: "1px solid rgba(245,242,237,0.38)",
-            borderRadius: 0,
-            padding: "0 18px",
-            fontFamily: "Panchang, sans-serif",
-            fontWeight: 700,
-            fontSize: 11,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            cursor: "pointer",
-          }}
-        >
-          Recusar
-        </button>
+        <div className="cookie-strip__actions" style={{ display: "flex", gap: 8, flex: "none" }}>
+          <button
+            type="button"
+            className="focus-signal"
+            onClick={() => decide("granted")}
+            style={{
+              minHeight: 40,
+              background: cbm("white"),
+              color: cbm("base"),
+              border: `1px solid ${cbm("white")}`,
+              borderRadius: 0,
+              padding: "0 16px",
+              fontFamily: "Panchang, sans-serif",
+              fontWeight: 700,
+              fontSize: 10,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+            }}
+          >
+            Aceitar
+          </button>
+          <button
+            type="button"
+            className="focus-signal"
+            onClick={() => decide("denied")}
+            style={{
+              minHeight: 40,
+              background: "transparent",
+              color: cbm("white"),
+              border: `1px solid ${cbm("gray-400")}`,
+              borderRadius: 0,
+              padding: "0 16px",
+              fontFamily: "Panchang, sans-serif",
+              fontWeight: 700,
+              fontSize: 10,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+            }}
+          >
+            Recusar
+          </button>
+        </div>
       </div>
     </div>
   );

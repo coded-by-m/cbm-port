@@ -28,14 +28,22 @@ export type ConsentValue = "granted" | "denied";
 /** Lê o consentimento salvo (só no client). */
 export function getConsent(): ConsentValue | null {
   if (typeof window === "undefined") return null;
-  const v = window.localStorage.getItem(CONSENT_KEY);
-  return v === "granted" || v === "denied" ? v : null;
+  try {
+    const v = window.localStorage.getItem(CONSENT_KEY);
+    return v === "granted" || v === "denied" ? v : null;
+  } catch {
+    return null;
+  }
 }
 
 /** Salva o consentimento e notifica os listeners (Analytics reage sem reload). */
 export function setConsent(value: ConsentValue) {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(CONSENT_KEY, value);
+  try {
+    window.localStorage.setItem(CONSENT_KEY, value);
+  } catch {
+    // O evento ainda vale para a sessão quando o navegador bloqueia storage.
+  }
   window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: value }));
 }
 
