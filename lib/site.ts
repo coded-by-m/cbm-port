@@ -11,3 +11,17 @@ export const SITE_URL = (
 ).replace(/\/$/, "");
 
 export const SITE_NAME = "Coded by M";
+
+/**
+ * Identificação empresarial exibida no rodapé da landing `/criacao-de-sites`.
+ *
+ * Razão social e CNPJ ainda não foram informados (pendência em
+ * docs/lp/criacao-de-sites.md). Enquanto forem `undefined`, a linha não
+ * aparece: melhor uma informação a menos que um dado inventado.
+ */
+export const LEGAL: { owner: string; city: string; razaoSocial?: string; cnpj?: string } = {
+  owner: "Matheus Mendes",
+  city: "Florianópolis, SC",
+  razaoSocial: undefined,
+  cnpj: undefined,
+};

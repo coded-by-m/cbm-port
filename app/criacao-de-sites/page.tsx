@@ -1,89 +1,87 @@
 import type { Metadata } from "next";
-import { LANDING, LANDING_PATH, type LandingBlock, type LandingConfig } from "@/data/landings";
-import { SURFACE } from "@/components/site/shared";
-import { LpFooter } from "@/components/lp/LpFooter";
-import { LpHeader } from "@/components/lp/LpHeader";
+import "./landing.css";
+import { Contact, Footer } from "@/components/landing/Contact";
+import { Header } from "@/components/landing/Header";
+import { Hero } from "@/components/landing/Hero";
+import { Projects } from "@/components/landing/Projects";
 import {
-  LpDifferentials,
-  LpFaq,
-  LpFinal,
-  LpHero,
-  LpOffer,
-  LpPains,
-  LpProcess,
-  LpPromise,
-  LpProof,
-} from "@/components/lp/LpBlocks";
-
-const BLOCKS: Record<LandingBlock, (props: { lp: LandingConfig }) => JSX.Element | null> = {
-  hero: LpHero,
-  pains: LpPains,
-  promise: LpPromise,
-  proof: LpProof,
-  differentials: LpDifferentials,
-  offer: LpOffer,
-  process: LpProcess,
-  faq: LpFaq,
-  final: LpFinal,
-};
-
-const lp = LANDING;
+  About,
+  Deliverables,
+  Faq,
+  Investment,
+  Process,
+  Situations,
+} from "@/components/landing/Sections";
+import { META } from "@/data/criacaoDeSites";
+import { LANDING_PATH } from "@/data/landings";
+import { OG, OG_SIZE } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: lp.meta.title,
-  description: lp.meta.description,
+  title: META.title,
+  description: META.description,
   alternates: { canonical: LANDING_PATH },
   /**
-   * Noindex de propósito. A página existe pra receber clique pago: se o
-   * Google a indexasse, ela competiria com a `/` pelas mesmas buscas e
-   * entregaria a quem vem da busca uma página sem navegação.
+   * Noindex de propósito. A página existe para receber clique pago: se o
+   * Google a indexasse, ela competiria com a `/` e com `/site-institucional`
+   * pelas mesmas buscas. O que importa aqui é o preview do link quando alguém
+   * encaminha a página no WhatsApp, e isso é o Open Graph abaixo.
    */
   robots: { index: false, follow: false },
   openGraph: {
     type: "website",
     locale: "pt_BR",
     url: LANDING_PATH,
-    title: lp.meta.title,
-    description: lp.meta.description,
-    images: [lp.meta.ogImage],
+    title: META.title,
+    description: META.description,
+    images: [{ url: OG.home, ...OG_SIZE, alt: "Coded by M: criação de sites para empresas" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: lp.meta.title,
-    description: lp.meta.description,
-    images: [lp.meta.ogImage],
+    title: META.title,
+    description: META.description,
+    images: [OG.home],
   },
 };
 
 /**
- * Landing de campanha.
+ * Landing comercial de sites institucionais e landing pages.
  *
- * Não é a home com outra headline: a home é navegável e convida a explorar,
- * esta é um corredor com uma porta no fim. Um único tipo de CTA, repetido, e
- * nenhuma saída lateral — a ordem dos blocos leva do reconhecimento da dor
- * até o contato.
+ * A ordem segue as perguntas de quem compara fornecedores: é para mim? (abertura),
+ * tem cliente de verdade? (projetos), resolve o meu caso? (situações), o que
+ * eu recebo? (entregas), como funciona e onde eu aprovo? (processo), quem
+ * faz? (quem faz), quanto custa no total? (investimento), e as objeções que
+ * sobraram (dúvidas). A única ação é pedir orçamento no WhatsApp.
  *
- * Sem `three` e sem o rodapé-showpiece: esta é a página que recebe gente no
- * 4G, e cada KB aqui sai do bolso duas vezes — em conversão perdida e em
- * custo por clique.
+ * Sem `three` e sem WebGL: é a página que recebe gente no 4G, e o 3D do
+ * estúdio já aparece onde cumpre função, nos projetos conceituais que a
+ * pessoa pode abrir.
+ *
+ * Copy em `data/criacaoDeSites.ts`. Estratégia, medição e pendências em
+ * `docs/lp/criacao-de-sites.md`.
  */
 export default function LandingPage() {
   return (
-    <div
-      className="site-home"
-      /* Sem `overflow` aqui: overflow em QUALQUER ancestral mata o
-         `position: sticky` do cabeçalho. A landing não tem drawer, então
-         também não precisa dele. */
-      style={{ background: SURFACE.base, color: "#F5F2ED" }}
-    >
-      <LpHeader message={lp.waMessage} />
-      <main>
-        {lp.blocks.map((key) => {
-          const Block = BLOCKS[key];
-          return <Block key={key} lp={lp} />;
-        })}
+    /* `site-home` mantém o fundo do <body> na base da paleta (globals.css).
+       Sem `overflow` aqui: overflow em ancestral mata o `position: sticky`
+       do cabeçalho. */
+    <div className="site-home cs-page">
+      <a href="#conteudo" className="cs-skip">
+        Pular para o conteúdo
+      </a>
+      <Header />
+      {/* `tabIndex={-1}`: o link "Pular para o conteúdo" leva o foco, não só a rolagem. */}
+      <main id="conteudo" tabIndex={-1} className="cs-main">
+        <Hero />
+        <Projects />
+        <Situations />
+        <Deliverables />
+        <Process />
+        <About />
+        <Investment />
+        <Faq />
+        <Contact />
       </main>
-      <LpFooter message={lp.waMessage} />
+      <Footer />
     </div>
   );
 }

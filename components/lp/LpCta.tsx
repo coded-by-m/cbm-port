@@ -12,7 +12,7 @@ import { FillButton } from "@/components/ui/FillButton";
  * A leitura da URL acontece em `useEffect` de propósito: no servidor não há
  * `location`, e ler durante a renderização quebraria a hidratação.
  */
-function useCampaignHref(message: string) {
+export function useCampaignHref(message: string) {
   const [href, setHref] = useState(() => waLink(message));
 
   useEffect(() => {

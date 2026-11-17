@@ -1,4 +1,10 @@
 /**
+ * LEGADO desde 2026-11-17: a página `/criacao-de-sites` foi refeita e hoje lê
+ * `data/criacaoDeSites.ts`. `LANDING` continua aqui só para o `/lab/revisao` e
+ * para o design-sync, que ainda mostram os blocos de `components/lp/LpBlocks`.
+ * `LANDING_PATH` segue sendo a fonte do endereço da landing.
+ *
+ * Texto original do arquivo:
  * Landing de anúncio: o conteúdo de `/criacao-de-sites`.
  *
  * Uma landing só, de propósito (decisão de 2026-11-17): a de arquitetura saiu e
