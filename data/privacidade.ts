@@ -13,7 +13,7 @@ export const PRIVACY_TITLE = "Política de privacidade";
 export const PRIVACY_DESCRIPTION =
   "Quais dados o site da Coded by M coleta, para quê, com quem são compartilhados e como exercer seus direitos pela LGPD.";
 
-export const PRIVACY_UPDATED = "5 de novembro de 2026";
+export const PRIVACY_UPDATED = "17 de novembro de 2026";
 
 export const PRIVACY_LEAD =
   "Esta página explica quais dados o site da Coded by M coleta, para quê, e o que você pode decidir sobre eles.";
@@ -29,7 +29,7 @@ export const PRIVACY_SECTIONS: { heading: string; paragraphs: string[] }[] = [
   {
     heading: "O que é coletado com o seu consentimento",
     paragraphs: [
-      "Se você aceitar os cookies, o site carrega o Google Analytics, o Google Ads e o Meta Pixel. Essas ferramentas registram as páginas visitadas, de qual anúncio você veio e os cliques no WhatsApp. Com isso, meço quais páginas e anúncios funcionam e ajusto as campanhas.",
+      "Se você aceitar os cookies, o site carrega o Google Analytics, o Google Ads e o Meta Pixel. Essas ferramentas registram as páginas visitadas, de qual anúncio você veio e os cliques nos botões, no WhatsApp e nos links de projetos. Com isso, meço quais páginas e anúncios funcionam e ajusto as campanhas.",
       "Se você recusar ou não decidir, nenhuma dessas ferramentas é carregada.",
     ],
   },

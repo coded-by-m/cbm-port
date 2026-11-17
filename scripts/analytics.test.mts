@@ -48,7 +48,55 @@ test("sem as variáveis, nenhuma conversão sai e o GA4 continua", () => {
   const calls = stubWindow("granted");
   withoutAds.trackEvent("whatsapp_click", { location: "lp-hero" });
   assert.equal(conversions(calls).length, 0);
-  assert.ok(calls.some((c) => c[1] === "generate_lead"));
+  assert.ok(calls.some((c) => c[1] === "whatsapp_click"));
+});
+
+test("o clique no WhatsApp não é enviado como lead", () => {
+  const calls = stubWindow("granted");
+  const meta = [];
+  globalThis.window.fbq = (...args) => meta.push(args);
+  withAds.trackEvent("whatsapp_click", { location: "lp-hero" });
+  assert.equal(calls.filter((c) => c[1] === "generate_lead").length, 0);
+  assert.deepEqual(meta, [["track", "Contact", { content_name: "lp-hero" }]]);
+});
+
+test("um clique no WhatsApp gera um único evento whatsapp_click no GA4", () => {
+  const calls = stubWindow("granted");
+  withAds.trackEvent("whatsapp_click", { location: "lp-hero" });
+  assert.equal(calls.filter((c) => c[1] === "whatsapp_click").length, 1);
+});
+
+test("o clique no CTA sai separado do clique no WhatsApp", () => {
+  const calls = stubWindow("granted");
+  withAds.trackCta("lp-hero", "whatsapp");
+  assert.deepEqual(
+    calls.filter((c) => c[0] === "event"),
+    [["event", "cta_click", { cta_id: "lp-hero", cta_dest: "whatsapp", transport_type: "beacon" }]],
+  );
+});
+
+test("sem consentimento, o clique no CTA não chega ao GA4", () => {
+  const calls = stubWindow(null);
+  withAds.trackCta("lp-hero", "whatsapp");
+  assert.equal(calls.length, 0);
+});
+
+test("o Insights recebe o CTA e a abertura de projeto como eventos nomeados", () => {
+  assert.deepEqual(withAds.insightsEventFor("cta_click", { cta_id: "lp-hero", section: "hero" }), {
+    name: "custom_event",
+    properties: { name: "cta.click", element_id: "lp-hero", section_role: "hero" },
+    urgency: "urgent",
+  });
+  assert.deepEqual(withAds.insightsEventFor("project_open", { project: "mj-engenharia" }), {
+    name: "custom_event",
+    properties: { name: "project.open", element_id: "mj-engenharia" },
+    urgency: "urgent",
+  });
+});
+
+test("nenhum parâmetro de evento aceita telefone ou e-mail", () => {
+  assert.equal(withAds.insightsEventFor("cta_click", { cta_id: "5548999916638" }), null);
+  assert.equal(withAds.insightsEventFor("cta_click", { cta_id: "a@b.com" }), null);
 });
 
 test("outro evento não vira conversão", () => {

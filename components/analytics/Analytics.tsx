@@ -11,7 +11,9 @@ import {
   getConsent,
   contactKind,
   trackContact,
+  trackCta,
   trackEvent,
+  trackProjectOpen,
   type ConsentValue,
 } from "@/lib/analytics";
 
@@ -56,20 +58,40 @@ export function Analytics() {
   // dobro. O default do link segue — a navegação não é cancelada. Se o
   // tracker ainda não carregou, o clique segue e o autocapture cobre.
   useEffect(() => {
+    // Duplo clique e toque repetido no mesmo link contam uma vez só.
+    let last = { key: "", at: 0 };
     const onClick = (e: MouseEvent) => {
       if (e.type === "auxclick" && e.button !== 1) return;
       const link = (e.target as Element | null)?.closest?.("a[href]");
       if (!link) return;
-      const kind = contactKind(link.getAttribute("href") ?? "");
-      if (!kind) return;
-      const location =
-        link.getAttribute("data-cm-id") ??
-        link.closest("[data-cm-section]")?.getAttribute("data-cm-section") ??
-        "unknown";
+      const href = link.getAttribute("href") ?? "";
+      const kind = contactKind(href);
+      // `data-cm-cta` marca um botão de ação; `data-cm-project`, o link que
+      // abre o site no ar de um projeto. São etapas diferentes do funil: o
+      // clique no CTA não é o clique no WhatsApp, e nenhum dos dois é contato.
+      const cta = link.getAttribute("data-cm-cta");
+      const project = link.getAttribute("data-cm-project");
+      if (!kind && !cta && !project) return;
+      const tracked = Boolean(window.__codedInsightsInternals?.emit);
+      const key = `${cta ?? ""}|${project ?? ""}|${href}`;
+      const now = Date.now();
+      if (key === last.key && now - last.at < 1000) {
+        if (kind && tracked) e.stopPropagation();
+        return;
+      }
+      last = { key, at: now };
       const section =
         link.closest("[data-cm-section]")?.getAttribute("data-cm-section") ?? undefined;
+      if (cta) {
+        const dest =
+          kind ?? (href.startsWith("#") ? "anchor" : /^https?:/.test(href) ? "external" : "internal");
+        trackCta(cta, dest, section);
+      }
+      if (project) trackProjectOpen(project, section);
+      if (!kind) return;
+      const location = link.getAttribute("data-cm-id") ?? section ?? "unknown";
       trackContact(kind, location, section);
-      if (window.__codedInsightsInternals?.emit) e.stopPropagation();
+      if (tracked) e.stopPropagation();
     };
     const onSubmit = (e: Event) => {
       const form = e.target;

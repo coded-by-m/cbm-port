@@ -60,7 +60,11 @@ export type TrackName =
   | "whatsapp_click"
   | "email_click"
   | "form_submit"
-  | "project_view";
+  | "project_view"
+  /** Clique num botão de ação, vá ele para o WhatsApp, uma âncora ou outro lugar. */
+  | "cta_click"
+  /** Abertura do site no ar de um projeto (link que sai da página). */
+  | "project_open";
 
 export interface TrackParams {
   /** `data-cm-id` do link (hero, footer, floating…). Não é dado pessoal. */
@@ -71,6 +75,10 @@ export interface TrackParams {
   section?: string;
   form_id?: string;
   form_role?: string;
+  /** `data-cm-cta` do botão. Não é dado pessoal. */
+  cta_id?: string;
+  /** Para onde o botão leva: `whatsapp`, `anchor`, `internal` ou `external`. */
+  cta_dest?: string;
 }
 
 /** Token do protocolo v1. Fora disto o coletor recusa o lote. */
@@ -116,14 +124,22 @@ export function insightsEventFor(
     if (section) properties.section_role = section;
     return { name: "form_submit", properties, urgency: "urgent" };
   }
+  if (name === "cta_click") {
+    const cta = insightToken(params.cta_id);
+    if (!cta) return null;
+    const properties: Record<string, string> = { name: "cta.click", element_id: cta };
+    if (section) properties.section_role = section;
+    return { name: "custom_event", properties, urgency: "urgent" };
+  }
   const project = insightToken(params.project);
   if (!project) return null;
   const properties: Record<string, string> = {
-    name: "project.view",
+    name: name === "project_open" ? "project.open" : "project.view",
     element_id: project,
   };
   if (section) properties.section_role = section;
-  return { name: "custom_event", properties, urgency: "normal" };
+  // Abrir o site do cliente sai da página: precisa ir antes da navegação.
+  return { name: "custom_event", properties, urgency: name === "project_open" ? "urgent" : "normal" };
 }
 
 type PendingInsight = InsightsEvent;
@@ -185,12 +201,11 @@ export function trackEvent(name: TrackName, params: TrackParams = {}) {
     const location = event?.properties.element_id ?? "unknown";
     gtagEvent(name, { location });
     if (name === "whatsapp_click" && getConsent() === "granted") {
-      window.gtag?.("event", "generate_lead", {
-        event_category: "contato",
-        event_label: location,
-        transport_type: "beacon",
-      });
-      window.fbq?.("track", "Lead", { content_name: location });
+      // Um clique no WhatsApp não é um lead: a pessoa pode não enviar a
+      // mensagem. Por isso o GA4 recebe só `whatsapp_click` (acima) e a Meta
+      // recebe `Contact`, não `Lead`. Lead, proposta e contrato são
+      // registrados fora do site (docs/lp/criacao-de-sites.md, "Medição").
+      window.fbq?.("track", "Contact", { content_name: location });
       if (GOOGLE_ADS_ID && GOOGLE_ADS_WA_LABEL) {
         window.gtag?.("event", "conversion", {
           send_to: `${GOOGLE_ADS_ID}/${GOOGLE_ADS_WA_LABEL}`,
@@ -205,8 +220,15 @@ export function trackEvent(name: TrackName, params: TrackParams = {}) {
     gtagEvent("form_submit", formId ? { form_id: formId } : {});
     return;
   }
+  if (name === "cta_click") {
+    const cta = event?.properties.element_id;
+    if (!cta) return;
+    const dest = insightToken(params.cta_dest);
+    gtagEvent("cta_click", dest ? { cta_id: cta, cta_dest: dest } : { cta_id: cta });
+    return;
+  }
   const project = event?.properties.element_id;
-  if (project) gtagEvent("project_view", { project });
+  if (project) gtagEvent(name === "project_open" ? "project_open" : "project_view", { project });
 }
 
 /** Clique de contato. `location` é o `data-cm-id`, nunca o número ou o e-mail. */
@@ -225,6 +247,16 @@ export function contactKind(href: string): "whatsapp" | "email" | null {
   if (url.protocol === "mailto:") return "email";
   if (url.protocol === "whatsapp:") return "whatsapp";
   return /(^|\.)(wa\.me|whatsapp\.com)$/.test(url.hostname) ? "whatsapp" : null;
+}
+
+/** Clique num botão de ação. `id` é o `data-cm-cta`; `dest`, o tipo de destino. */
+export function trackCta(id: string, dest: string, section?: string) {
+  trackEvent("cta_click", { cta_id: id, cta_dest: dest, section });
+}
+
+/** Abertura do site no ar de um projeto, a partir de um link da página. */
+export function trackProjectOpen(slug: string, section?: string) {
+  trackEvent("project_open", { project: slug, section });
 }
 
 /**
