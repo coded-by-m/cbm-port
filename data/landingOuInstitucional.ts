@@ -37,7 +37,7 @@ export const LP_OU_H1 = LP_OU_TITLE;
 export const LP_OU_CRUMB = LP_OU_H1;
 
 export const LP_OU_LEAD =
-  "Escolha uma landing page quando o site tem um objetivo só, como divulgar um serviço ou uma campanha e levar a pessoa a entrar em contato. Escolha um site institucional quando a empresa precisa se apresentar por completo, com páginas para serviços, história e projetos. Na Coded by M, em Florianópolis, a landing page parte de R$ 600 e o site institucional de R$ 1.500, com valor final conforme o escopo.";
+  "Escolha uma landing page quando o site tem um objetivo só, como divulgar um serviço ou uma campanha e levar a pessoa a entrar em contato. Escolha um site institucional quando a empresa precisa se apresentar por completo, com páginas para serviços, história e projetos. Na Coded by M, em Florianópolis, a landing page parte de R$ 800 e o site institucional de R$ 1.500, com valor final conforme o escopo.";
 
 export const LP_OU_TABLE_HEADING = "Diferença entre landing page e site institucional";
 
@@ -108,7 +108,7 @@ export const LP_OU_ROWS: {
   },
   {
     criterio: "Investimento na Coded by M",
-    landing: [{ type: "text", text: "a partir de R$ 600" }],
+    landing: [{ type: "text", text: "a partir de R$ 800" }],
     institucional: [{ type: "text", text: "a partir de R$ 1.500" }],
   },
   {

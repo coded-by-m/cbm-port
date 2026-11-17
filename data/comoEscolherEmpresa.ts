@@ -173,7 +173,7 @@ export const ESCOLHER_ROWS: { criterio: string; parts: readonly CopyPart[] }[] =
     parts: [
       {
         type: "text",
-        text: "Landing page a partir de R$ 600 e site institucional a partir de R$ 1.500. O valor final depende do escopo. Detalhes em ",
+        text: "Landing page a partir de R$ 800 e site institucional a partir de R$ 1.500. O valor final depende do escopo. Detalhes em ",
       },
       {
         type: "internal",

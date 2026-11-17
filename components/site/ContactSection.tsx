@@ -1,4 +1,4 @@
-import { SECTIONS } from "@/data/home";
+import { HOME_WA_MESSAGE, SECTIONS } from "@/data/home";
 import {
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
@@ -10,7 +10,7 @@ import { cbm } from "@/lib/palette";
 import { FillButton } from "@/components/ui/FillButton";
 import { TriArrow } from "@/components/ui/TriArrow";
 
-const WA = waLink("Olá! Quero iniciar um projeto com a Coded by M.");
+const WA = waLink(HOME_WA_MESSAGE);
 
 /** Fechamento: convite + WhatsApp + Instagram. */
 export function ContactSection() {
@@ -54,8 +54,20 @@ export function ContactSection() {
             data-cm-id="contact-whatsapp"
             style={{ padding: "18px 34px", fontSize: 14, letterSpacing: "0.1em" }}
           >
-            {WHATSAPP_DISPLAY}
+            {SECTIONS.contato.cta}
           </FillButton>
+          {/* O número continua à vista: o DDD 48 é parte da prova local. */}
+          <span
+            style={{
+              fontFamily: SATOSHI,
+              fontWeight: 500,
+              fontSize: 15,
+              color: cbm("gray-200"),
+              whiteSpace: "nowrap",
+            }}
+          >
+            {WHATSAPP_DISPLAY}
+          </span>
           <a
             href={INSTAGRAM_URL}
             target="_blank"

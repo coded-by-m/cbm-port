@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { cases } from "@/data/cases";
+import { CLIENT_PROOF } from "@/data/clientProof";
 import { PROCESS_STEPS } from "@/data/process";
 import type { LandingConfig } from "@/data/landings";
 import { isFilled } from "@/data/servicePages";
@@ -78,7 +79,23 @@ export function LpHero({ lp }: { lp: LandingConfig }) {
           >
             {lp.sub}
           </p>
-          <div style={{ marginTop: 38 }}>
+          {lp.heroPrice && (
+            <p
+              style={{
+                margin: "18px 0 0",
+                maxWidth: "52ch",
+                fontFamily: SATOSHI,
+                fontWeight: 500,
+                fontSize: "clamp(15px,1.4vw,17px)",
+                lineHeight: 1.6,
+                color: "#F5F2ED",
+                textWrap: "pretty",
+              }}
+            >
+              {lp.heroPrice}
+            </p>
+          )}
+          <div style={{ marginTop: 34 }}>
             <LpCta label={lp.ctaLabel} message={lp.waMessage} size="lg" source="lp-hero" />
           </div>
         </div>
@@ -88,19 +105,37 @@ export function LpHero({ lp }: { lp: LandingConfig }) {
             simulação do Lighthouse. Sem `priority` de propósito: lazy em
             `display: none` não baixa o arquivo. */}
         {src && shot && (
-          <Image
-            src={src}
-            alt={`Site da ${shot.title}`}
-            width={1440}
-            height={900}
-            sizes="46vw"
-            className="lp-hero-shot"
-            style={{
-              width: "100%",
-              height: "auto",
-              border: "1px solid rgba(245,242,237,0.12)",
-            }}
-          />
+          <figure className="lp-hero-shot" style={{ margin: 0, minWidth: 0 }}>
+            <Image
+              src={src}
+              alt={`Site da ${shot.title}`}
+              width={1440}
+              height={900}
+              sizes="46vw"
+              style={{
+                display: "block",
+                width: "100%",
+                height: "auto",
+                border: "1px solid rgba(245,242,237,0.12)",
+              }}
+            />
+            {/* Diz de quem é o site: sem legenda, a captura lê como enfeite,
+                não como prova. Só para cliente real. */}
+            {!shot.concept && (
+              <figcaption
+                style={{
+                  marginTop: 12,
+                  fontFamily: SATOSHI,
+                  fontWeight: 400,
+                  fontSize: 13,
+                  lineHeight: 1.5,
+                  color: cbm("gray-300"),
+                }}
+              >
+                {shot.title}, cliente do estúdio{shot.siteUrl ? `. No ar em ${shot.siteUrl}` : ""}.
+              </figcaption>
+            )}
+          </figure>
         )}
       </div>
     </section>
@@ -183,6 +218,45 @@ export function LpPromise({ lp }: { lp: LandingConfig }) {
   );
 }
 
+/**
+ * Resultado medido e depoimento do cliente, quando existem (`CLIENT_PROOF`).
+ * Responde "vai trazer cliente ou é só bonito?" com dado, não com adjetivo.
+ */
+function ProofFact({ slug }: { slug: string }) {
+  const proof = CLIENT_PROOF.find((p) => p.slug === slug);
+  if (!proof?.fact && !proof?.quote) return null;
+
+  const text: React.CSSProperties = {
+    margin: 0,
+    fontFamily: SATOSHI,
+    fontWeight: 400,
+    fontSize: 14,
+    lineHeight: 1.6,
+    color: cbm("gray-100"),
+    textWrap: "pretty",
+  };
+
+  return (
+    <div
+      style={{
+        marginTop: 8,
+        paddingTop: 12,
+        borderTop: "1px solid rgba(245,242,237,0.1)",
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+      }}
+    >
+      {proof.fact && <p style={text}>{proof.fact}</p>}
+      {proof.quote && (
+        <p style={text}>
+          “{proof.quote}”{proof.author ? ` ${proof.author}` : ""}
+        </p>
+      )}
+    </div>
+  );
+}
+
 /** Grade de cards de case. */
 function ProofGrid({ list }: { list: CaseProject[] }) {
   return (
@@ -249,14 +323,15 @@ function ProofGrid({ list }: { list: CaseProject[] }) {
                 style={{
                   fontFamily: SATOSHI,
                   fontWeight: 400,
-                  fontSize: 10,
-                  letterSpacing: "0.2em",
+                  fontSize: 12,
+                  letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  color: cbm("gray-400"),
+                  color: cbm("gray-300"),
                 }}
               >
                 {c.meta.setor} · {c.concept ? "Projeto conceitual · " : ""}{c.meta.ano}
               </span>
+              <ProofFact slug={c.slug} />
             </div>
           </article>
         </Reveal>
@@ -372,7 +447,7 @@ export function LpDifferentials({ lp }: { lp: LandingConfig }) {
 /** Oferta: o que está incluso, preço e prazo, sem ninguém precisar perguntar. */
 export function LpOffer({ lp }: { lp: LandingConfig }) {
   if (!lp.offer) return null;
-  const { heading, includes, price, deadline, note, alternative } = lp.offer;
+  const { heading, includes, price, deadline, note, alternative, excludes } = lp.offer;
 
   return (
     <section data-cm-section="offer" style={{ borderTop: `1px solid ${cbm("border")}` }}>
@@ -484,6 +559,20 @@ export function LpOffer({ lp }: { lp: LandingConfig }) {
                 }}
               >
                 {alternative}
+              </p>
+            )}
+            {excludes && (
+              <p
+                style={{
+                  margin: "10px 0 0",
+                  fontFamily: SATOSHI,
+                  fontWeight: 400,
+                  fontSize: 14,
+                  lineHeight: 1.6,
+                  color: cbm("gray-300"),
+                }}
+              >
+                {excludes}
               </p>
             )}
           </div>

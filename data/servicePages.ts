@@ -16,7 +16,7 @@ import { QUANTO_CUSTA_CRUMB, QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
  * enquanto tiverem o marcador (ver `isFilled`): melhor uma pergunta a menos
  * que uma resposta inventada.
  *
- * Preço público (Matheus, 2026-10-26): landing a partir de R$ 600 e site
+ * Preço público (Matheus, 2026-11-16): landing a partir de R$ 800 e site
  * institucional a partir de R$ 1.500. O valor final depende do projeto.
  * Arquitetura não tem número publicado — a resposta segue sem faixa.
  */
@@ -84,7 +84,7 @@ export function faqAnswerText(f: FaqItem) {
  * `display` é o que a pessoa lê. Sem aggregateRating.
  */
 export const PUBLIC_PRICE = {
-  landing: { amount: "600", display: "R$ 600" },
+  landing: { amount: "800", display: "R$ 800" },
   institucional: { amount: "1500", display: "R$ 1.500" },
 } as const;
 
@@ -131,6 +131,45 @@ export const ATENDE_BRASIL: FaqItem = {
   a: "Sim, atendo todo o Brasil de forma remota.",
 };
 
+/**
+ * Respostas que valem para qualquer projeto. Uma constante só, para a home, as
+ * páginas de serviço e as landings dizerem a mesma coisa.
+ */
+export const HOSPEDAGEM_INCLUSA: FaqItem = {
+  q: "Hospedagem e domínio estão inclusos?",
+  a: "Sim. A hospedagem fica por minha conta e está incluída no valor do projeto. O domínio é registrado no nome da sua empresa, e o custo também está incluído.",
+};
+
+export const PLANO_MENSAL =
+  "Existe um plano mensal opcional de suporte e atualizações, com valor que depende do serviço.";
+
+/** Matheus, 2026-11-16: emite contrato e nota fiscal em todo projeto. */
+export const CONTRATO_NF: FaqItem = {
+  q: "Tem contrato e nota fiscal?",
+  a: "Sim. Emito contrato e nota fiscal em todo projeto. Valor e prazo são fechados antes de começar.",
+};
+
+/** Matheus, 2026-11-16: o layout muda até o cliente aprovar. */
+export const LAYOUT_AJUSTES: FaqItem = {
+  q: "E se eu não gostar do layout?",
+  a: "O layout é ajustado até ficar do seu agrado. Você acompanha o desenho na etapa de design, antes de o código começar.",
+};
+
+export const GARANTIA_GOOGLE: FaqItem = {
+  q: "Vocês garantem o primeiro lugar no Google?",
+  a: "Não, e ninguém pode garantir. O que entra em todo projeto é o SEO técnico: páginas leves, metadados e dados estruturados prontos para o Google desde o primeiro dia. A posição depende também da concorrência e do conteúdo.",
+};
+
+/** A objeção ao estúdio solo, respondida com o que já é fato publicado. */
+export const ESTUDIO_SOLO: FaqItem = {
+  q: "O estúdio é de uma pessoa só. E se eu quiser trocar de fornecedor?",
+  a: "Você fala direto com quem desenha e programa, sem repasse para terceiros. E não fica preso: o domínio é registrado no nome da sua empresa e, na entrega, código e acessos ficam com você.",
+};
+
+/** Matheus, 2026-11-16: todo cliente que fecha recebe acesso ao Coded Insights. */
+export const PAINEL_VISITAS =
+  "quantas pessoas entram no site, de onde vêm e quantas clicam no WhatsApp";
+
 /** Página sem piso publicado (arquitetura). Não inventar número. */
 const PRECO_TEXTO =
   "Depende do escopo: quantidade de seções ou páginas, textos e integrações. Você conta o projeto no WhatsApp e eu respondo com valor e prazo antes de qualquer compromisso.";
@@ -160,7 +199,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       "Estratégia de conversão e copywriting",
       "Design exclusivo, sem template",
       "Versão mobile pensada desde o início",
-      "Integração com WhatsApp e métricas configuradas",
+      "Integração com WhatsApp e painel de visitas próprio",
       "SEO técnico e carregamento rápido",
       "Publicação e handover",
     ],
@@ -179,7 +218,9 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
     faq: [
       { q: "Quanto custa uma landing page?", a: LANDING_PRECO },
       { q: "Em quanto tempo fica pronta?", a: "PREENCHER: prazo típico de uma landing page." },
-      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER: o que entra na entrega e o que fica por conta do cliente." },
+      HOSPEDAGEM_INCLUSA,
+      CONTRATO_NF,
+      LAYOUT_AJUSTES,
       ATENDE_BRASIL,
       {
         q: "Posso editar o conteúdo depois?",
@@ -219,7 +260,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       "De 5 a 12 páginas estruturadas",
       "Design system aplicado, sem template",
       "SEO técnico, dados estruturados e performance",
-      "Integração com WhatsApp e métricas configuradas",
+      "Integração com WhatsApp e painel de visitas próprio",
       "CMS leve e handover",
     ],
     investimento: {
@@ -241,8 +282,13 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
         q: "Quantas páginas o site tem?",
         a: "Normalmente entre 5 e 12, definidas na etapa de estratégia a partir do que a empresa precisa apresentar.",
       },
-      { q: "Hospedagem e domínio estão inclusos?", a: "PREENCHER: o que entra na entrega e o que fica por conta do cliente." },
-      { q: "Como funciona a manutenção depois da entrega?", a: "PREENCHER: suporte, ajustes e evolução após a publicação." },
+      HOSPEDAGEM_INCLUSA,
+      {
+        q: "Como funciona a manutenção depois da entrega?",
+        a: `${PLANO_MENSAL} Com ou sem plano, código e acessos ficam com você na entrega.`,
+      },
+      CONTRATO_NF,
+      LAYOUT_AJUSTES,
       ATENDE_BRASIL,
       {
         q: "Landing page ou site institucional: qual escolher?",
@@ -297,7 +343,7 @@ export const SERVICE_PAGES: ServicePageConfig[] = [
       "Páginas de projeto individuais",
       "Tratamento de peso e recorte das fotos",
       "SEO técnico, dados estruturados e performance",
-      "Integração com WhatsApp e métricas configuradas",
+      "Integração com WhatsApp e painel de visitas próprio",
       "CMS leve para publicar obra nova",
     ],
     caseSlugs: ["estudio-lentz", "forma-viva", "estudio-monteiro", "maison-etoile"],

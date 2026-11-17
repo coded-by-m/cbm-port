@@ -47,7 +47,7 @@ export const QUANTO_CUSTA_TITLE =
   "Quanto custa um site em Florianópolis (2026) · Coded by M";
 
 export const QUANTO_CUSTA_DESCRIPTION =
-  "Landing page a partir de R$ 600 e site institucional a partir de R$ 1.500 em Florianópolis. Veja o que muda o preço e peça seu orçamento grátis.";
+  "Landing page a partir de R$ 800 e site institucional a partir de R$ 1.500 em Florianópolis. Veja o que muda o preço e peça seu orçamento grátis.";
 
 export const QUANTO_CUSTA_H1 = "Quanto custa um site em Florianópolis em 2026?";
 
@@ -55,7 +55,7 @@ export const QUANTO_CUSTA_H1 = "Quanto custa um site em Florianópolis em 2026?"
 export const QUANTO_CUSTA_CRUMB = "Quanto custa um site em Florianópolis";
 
 export const QUANTO_CUSTA_LEAD = [
-  "Na Coded by M, estúdio de web design em Florianópolis, uma landing page custa a partir de R$ 600 e um site institucional a partir de R$ 1.500. O valor final depende do escopo do projeto e é fechado com você antes de começar, com orçamento gratuito e sem compromisso.",
+  "Na Coded by M, estúdio de web design em Florianópolis, uma landing page custa a partir de R$ 800 e um site institucional a partir de R$ 1.500. O valor final depende do escopo do projeto e é fechado com você antes de começar, com orçamento gratuito e sem compromisso.",
   "Todos os sites são feitos do zero, com código próprio. O estúdio fica em Florianópolis (SC) e atende empresas de todo o Brasil de forma remota.",
 ] as const;
 
@@ -68,7 +68,7 @@ export const QUANTO_CUSTA_ROWS = [
     href: "/landing-page",
     para: "Uma página focada em uma oferta, campanha ou serviço, com um objetivo claro de contato",
     incluso: "Design e código do zero, hospedagem e domínio",
-    preco: "a partir de R$ 600",
+    preco: "a partir de R$ 800",
   },
   {
     tipo: "Site institucional",
@@ -170,7 +170,7 @@ export const QUANTO_CUSTA_FAQ: FaqItem[] = [
   },
   {
     q: "Quanto custa uma landing page?",
-    a: "Uma landing page custa a partir de R$ 600 na Coded by M. O valor final depende do escopo do projeto.",
+    a: "Uma landing page custa a partir de R$ 800 na Coded by M. O valor final depende do escopo do projeto.",
   },
   {
     q: "O orçamento é pago?",

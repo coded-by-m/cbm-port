@@ -56,4 +56,10 @@ export const SKILLS: Skill[] = [
     label: "Performance & SEO",
     desc: "Páginas leves, metadados e dados estruturados prontos para o Google desde o primeiro dia.",
   },
+  {
+    label: "Painel de visitas",
+    // Texto fixo, sem importar de servicePages: este arquivo entra no bundle
+    // do cliente (CapabilitiesSection) e não deve arrastar as páginas de serviço.
+    desc: "Acesso ao Coded Insights para ver quantas pessoas entram no site, de onde vêm e quantas clicam no WhatsApp.",
+  },
 ];

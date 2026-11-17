@@ -13,6 +13,15 @@ import { cbm } from "@/lib/palette";
  * Aparece só quando não há decisão salva. "Aceitar" libera GA4 + Meta Pixel
  * (via setConsent → Analytics reage e carrega os scripts); "Recusar" bloqueia.
  * Linguagem angular (border-radius 0), fundo escuro da paleta ativa (token `base`), acento vermelho raro.
+ *
+ * Faixa baixa, e não um cartão: o cartão de antes cobria um quinto da tela no
+ * celular e disputava a dobra com o botão de orçamento. Texto e botões ficam
+ * na mesma linha quando cabem (cerca de 64px de altura) e quebram em duas no
+ * celular (cerca de 90px).
+ *
+ * Aparece já na entrada, sem esperar a rolagem: a conversão do Google Ads só
+ * é medida com consentimento, e quem clica no WhatsApp sem rolar ficaria de
+ * fora.
  */
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
@@ -45,33 +54,35 @@ export function CookieConsent() {
         right: "auto",
         bottom: "clamp(12px,3vw,20px)",
         zIndex: 200,
-        width: "min(calc(100vw - 24px), 380px)",
+        width: "min(calc(100vw - 24px), 580px)",
         boxSizing: "border-box",
         background: cbm("base", 0.94),
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         border: "1px solid rgba(245,242,237,0.14)",
-        padding: "16px 18px",
+        padding: "10px 12px 10px 14px",
         display: "flex",
-        flexDirection: "column",
-        gap: 14,
+        flexWrap: "wrap",
+        alignItems: "center",
+        gap: "8px 16px",
         boxShadow: "0 18px 44px -12px rgba(0,0,0,0.8)",
       }}
     >
       <p
         style={{
+          flex: "1 1 230px",
           margin: 0,
           fontFamily: "Satoshi, sans-serif",
-          fontWeight: 300,
+          fontWeight: 400,
           fontSize: 13,
-          lineHeight: 1.6,
-          color: cbm("gray-300"),
+          lineHeight: 1.45,
+          color: cbm("gray-200"),
         }}
       >
-        Usamos cookies para medir o desempenho do site e entender como ele é
-        usado. Você decide.{" "}
+        Usamos cookies para medir o uso do site.{" "}
         <Link
           href={PRIVACY_PATH}
+          aria-label="Política de privacidade"
           className="focus-signal"
           style={{
             color: "#F5F2ED",
@@ -80,11 +91,11 @@ export function CookieConsent() {
             textUnderlineOffset: 3,
           }}
         >
-          Política de privacidade
+          Privacidade
         </Link>
       </p>
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+      <div style={{ flex: "1 1 200px", display: "flex", gap: 8 }}>
         <button
           type="button"
           onClick={() => decide("granted")}
@@ -95,7 +106,7 @@ export function CookieConsent() {
             color: cbm("base"),
             border: "1px solid rgba(245,242,237,0.94)",
             borderRadius: 0,
-            padding: "0 18px",
+            padding: "0 14px",
             fontFamily: "Panchang, sans-serif",
             fontWeight: 700,
             fontSize: 11,
@@ -116,7 +127,7 @@ export function CookieConsent() {
             color: "#F5F2ED",
             border: "1px solid rgba(245,242,237,0.38)",
             borderRadius: 0,
-            padding: "0 18px",
+            padding: "0 14px",
             fontFamily: "Panchang, sans-serif",
             fontWeight: 700,
             fontSize: 11,

@@ -194,8 +194,8 @@ export function ServicesSection() {
                     style={{
                       fontFamily: SATOSHI,
                       fontWeight: 500,
-                      fontSize: 9,
-                      letterSpacing: "0.28em",
+                      fontSize: 11,
+                      letterSpacing: "0.2em",
                       textTransform: "uppercase",
                       color: INK.muted,
                     }}
@@ -261,7 +261,8 @@ export function ServicesSection() {
           <Link href="/site-institucional" className="site-inline-link">
             site institucional
           </Link>{" "}
-          a partir de {PUBLIC_PRICE.institucional.display}. O valor final depende do projeto.
+          a partir de {PUBLIC_PRICE.institucional.display}. O valor final depende do projeto.{" "}
+          {SECTIONS.servicos.naoFaz}
         </p>
       </div>
     </section>

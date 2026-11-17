@@ -13,7 +13,14 @@
 
 import {
   ATENDE_BRASIL,
+  CONTRATO_NF,
+  ESTUDIO_SOLO,
+  GARANTIA_GOOGLE,
+  HOSPEDAGEM_INCLUSA,
   INSTITUCIONAL_PRECO,
+  LAYOUT_AJUSTES,
+  PAINEL_VISITAS,
+  PLANO_MENSAL,
   PUBLIC_PRICE,
   getServicePage,
 } from "@/data/servicePages";
@@ -45,6 +52,11 @@ export interface LandingConfig {
   headline: string;
   sub: string;
   ctaLabel: string;
+  /**
+   * Linha de preço do hero, entre o subtítulo e o CTA: os pisos dos dois
+   * serviços, para filtrar quem procura o site mais barato antes do clique.
+   */
+  heroPrice?: string;
   /** Slug de `data/cases.ts` cuja captura aparece no hero. Sem isto, só texto. */
   heroCaseSlug?: string;
   /** 3 ou 4 pontos de dor, se a página listar o bloco `pains`. */
@@ -66,9 +78,11 @@ export interface LandingConfig {
     note: string;
     /** Uma linha com a opção menor. */
     alternative?: string;
+    /** O que fica de fora, dito antes da conversa. */
+    excludes?: string;
   };
   processHeading: string;
-  /** 4 a 6 objeções reais. */
+  /** Objeções reais de quem compara antes de chamar. */
   faq: LandingFaq[];
   final: { heading: string; text: string };
   /** Base da mensagem do WhatsApp; a origem da campanha é anexada em runtime. */
@@ -144,7 +158,9 @@ export const LANDINGS: LandingConfig[] = [
     blocks: ["hero", "proof", "pains", "differentials", "offer", "process", "faq", "final"],
 
     headline: "Site profissional para a sua empresa, feito do zero.",
-    sub: `A partir de ${PUBLIC_PRICE.institucional.display}, com hospedagem e domínio inclusos. Prazo a partir de 15 dias úteis. Estúdio em Florianópolis, atendimento em todo o Brasil.`,
+    /** Subtítulo e linha de preço como a análise do Gianini sugeriu (2026-11-16). */
+    sub: "Sites e landing pages sob medida em Florianópolis, feitos por quem desenha e programa. Você fala direto comigo e fica com o código e os acessos.",
+    heroPrice: `Landing page a partir de ${PUBLIC_PRICE.landing.display} · site institucional a partir de ${PUBLIC_PRICE.institucional.display}. Valor final no orçamento.`,
     ctaLabel: "Pedir orçamento no WhatsApp",
     heroCaseSlug: "machado-plataformas",
 
@@ -159,15 +175,21 @@ export const LANDINGS: LandingConfig[] = [
       "estudio-lentz",
     ],
 
+    /** As dores da persona (2026-11-16), nas palavras de quem contrata. */
     pains: [
-      "Seu site parece com o do concorrente, porque saiu do mesmo template.",
-      "A página demora a abrir no celular, e a pessoa volta para o Google.",
-      "Quem procura o seu serviço na sua cidade não encontra a sua empresa.",
+      "Você evita mandar o link do site, porque ele parece de uma empresa menor que a sua.",
+      "O concorrente é mais novo, o site dele passa mais confiança, e o orçamento vai para ele.",
+      "Quem fez o seu site sumiu, e você ficou sem o código e sem os acessos.",
+      "As pessoas entram no site, olham tudo e não chamam no WhatsApp.",
     ],
 
     differentials: {
       heading: "O que muda quando o site é feito do zero.",
       items: [
+        {
+          title: "Atendimento direto",
+          text: "Você fala com quem desenha e programa o site. Sem atendente e sem repasse para terceiros.",
+        },
         {
           title: "Código próprio",
           text: "Design exclusivo, sem template e sem o peso de um construtor de sites.",
@@ -181,12 +203,12 @@ export const LANDINGS: LandingConfig[] = [
           text: "SEO técnico e dados estruturados desde o primeiro dia.",
         },
         {
-          title: "Domínio",
-          text: "Registrado no nome da sua empresa. Se você quiser sair, ele continua seu.",
+          title: "Nada preso",
+          text: "O domínio é registrado no nome da sua empresa e, na entrega, código e acessos ficam com você.",
         },
         {
-          title: "Métricas",
-          text: "WhatsApp integrado e métricas configuradas na entrega.",
+          title: "Painel de visitas",
+          text: `Acesso ao Coded Insights para ver ${PAINEL_VISITAS}.`,
         },
       ],
     },
@@ -196,8 +218,9 @@ export const LANDINGS: LandingConfig[] = [
       includes: getServicePage("site-institucional").includes,
       price: `A partir de ${PUBLIC_PRICE.institucional.display}`,
       deadline: "A partir de 15 dias úteis",
-      note: "O valor final depende do projeto e é fechado no WhatsApp, antes de começar.",
+      note: "O valor final depende do projeto e é fechado no WhatsApp, antes de começar. Dá para parcelar.",
       alternative: `Precisa só de uma página? Landing page a partir de ${PUBLIC_PRICE.landing.display}, em 5 dias úteis.`,
+      excludes: "Não inclui loja virtual, logotipo nem gestão de anúncios.",
     },
 
     processHeading: "Quatro etapas, e você sabe onde está em cada uma.",
@@ -208,14 +231,12 @@ export const LANDINGS: LandingConfig[] = [
         q: "Em quanto tempo fica pronto?",
         a: "A partir de 15 dias úteis. O prazo final depende do número de páginas e do conteúdo e é fechado no orçamento no WhatsApp, antes de começar.",
       },
-      {
-        q: "Hospedagem e domínio estão inclusos?",
-        a: "Sim. A hospedagem fica por minha conta e está incluída no valor do projeto. O domínio é registrado no nome da sua empresa, e o custo também está incluído.",
-      },
-      {
-        q: "Tem mensalidade?",
-        a: "Existe um plano mensal opcional de suporte e atualizações, com valor que depende do serviço.",
-      },
+      HOSPEDAGEM_INCLUSA,
+      { q: "Tem mensalidade?", a: PLANO_MENSAL },
+      CONTRATO_NF,
+      LAYOUT_AJUSTES,
+      ESTUDIO_SOLO,
+      GARANTIA_GOOGLE,
       {
         q: "Posso editar o conteúdo depois?",
         a: "Sim. A entrega inclui handover, e se o conteúdo muda com frequência o site sai com um CMS leve para você editar sem depender de mim.",
@@ -233,7 +254,7 @@ export const LANDINGS: LandingConfig[] = [
     meta: {
       // Sem sufixo: o `template` do layout raiz já acrescenta "· Coded by M".
       title: "Criação de site profissional para empresas",
-      description: `Site profissional feito do zero, a partir de ${PUBLIC_PRICE.institucional.display}, com hospedagem e domínio inclusos. Prazo a partir de 15 dias úteis. Peça um orçamento pelo WhatsApp.`,
+      description: `Sites e landing pages feitos do zero. Landing page a partir de ${PUBLIC_PRICE.landing.display} e site institucional a partir de ${PUBLIC_PRICE.institucional.display}, com hospedagem e domínio inclusos. Peça um orçamento pelo WhatsApp.`,
       ogImage: OG.home,
     },
   },

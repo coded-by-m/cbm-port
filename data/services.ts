@@ -50,7 +50,7 @@ export const SERVICES: ServiceConfig[] = [
       "Estratégia de conversão",
       "Copywriting persuasivo",
       "Design responsivo",
-      "Setup de analytics",
+      "Painel de visitas próprio",
       "Deploy e handover",
     ],
     indicatedFor:
@@ -67,9 +67,9 @@ export const SERVICES: ServiceConfig[] = [
       "Presença completa. Estrutura, autoridade, profundidade.",
     includes: [
       "Arquitetura de informação",
-      "Design system aplicado",
       "5–12 páginas estruturadas",
       "SEO técnico e performance",
+      "Painel de visitas próprio",
       "CMS leve e handover",
     ],
     indicatedFor:

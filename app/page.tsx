@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { Hero } from "@/components/site/Hero";
 import { ProjectsSection } from "@/components/site/ProjectsSection";
+import { ClientsSection } from "@/components/site/ClientsSection";
 import { ServicesSection } from "@/components/site/ServicesSection";
 import { ProcessSection } from "@/components/site/ProcessSection";
 import { AboutSection } from "@/components/site/AboutSection";
@@ -67,6 +68,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <ProjectsSection />
+        <ClientsSection />
         <ServicesSection />
         <ProcessSection />
         <AboutSection />
