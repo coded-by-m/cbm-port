@@ -36,7 +36,7 @@ const H2: React.CSSProperties = {
 /**
  * Hero: headline dirigida a quem clicou. Nada aqui usa `Reveal`: ele esconde o
  * conteúdo até o JavaScript rodar, e título, preço e CTA são o que a pessoa veio
- * ver. Medido em /lp/arquitetura, com o título no `Reveal`: LCP de 4,7 s.
+ * ver. Medido na antiga /lp/arquitetura, com o título no `Reveal`: LCP de 4,7 s.
  */
 export function LpHero({ lp }: { lp: LandingConfig }) {
   const shot = lp.heroCaseSlug ? cases.find((c) => c.slug === lp.heroCaseSlug) : undefined;

@@ -5,7 +5,7 @@ import { QUANTO_CUSTA_CRUMB, QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
  * Páginas de serviço indexáveis — `/landing-page`, `/site-institucional` e
  * `/sites-para-arquitetura`.
  *
- * Diferente das `/lp/*` (noindex, corredor de campanha): estas existem pra
+ * Diferente de `/criacao-de-sites` (noindex, corredor de campanha): estas existem pra
  * aparecer na busca. Têm navegação, links pros cases e FAQ com schema.
  *
  * Fonte única: a FAQ visível e o JSON-LD `FAQPage` saem do mesmo array, então

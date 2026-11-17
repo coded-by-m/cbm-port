@@ -133,9 +133,8 @@ export const CASE_SOON = {
   preview: undefined,
 };
 
-/** Landing page real do repo (segmento arquitetura), encurtada. */
+/** Fixture da antiga landing de arquitetura, encurtada: exercita os blocos de dor e promessa. */
 export const LANDING: LandingConfig = {
-  slug: "arquitetura",
   blocks: ["hero", "pains", "promise", "proof", "process", "faq", "final"],
   proofHeading: "Sites de arquitetura e interiores, no ar pra conferir.",
   processHeading: "Quatro etapas, e você sabe onde está em cada uma.",

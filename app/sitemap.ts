@@ -11,7 +11,7 @@ import { CALC_PATH } from "@/data/calculadoraPreco";
 import { PRIVACY_PATH } from "@/data/privacidade";
 
 /**
- * Rotas públicas e indexáveis. Fora daqui, de propósito: `/lp/*`, `/lab`,
+ * Rotas públicas e indexáveis. Fora daqui, de propósito: `/criacao-de-sites`, `/lab`,
  * `/ui-lab` e `/posts/*` (todas noindex) e os cases "em breve" (404).
  *
  * Sem `lastModified` na maior parte das rotas: a data do build não é a

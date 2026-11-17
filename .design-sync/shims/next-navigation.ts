@@ -3,7 +3,7 @@
 // Os hooks de rota do App Router leem contextos que so existem dentro do Next.
 //
 // O caminho devolvido NAO e "/" de proposito. O WhatsAppFab se esconde em "/",
-// em "/experiencia" e em "/lp/*" — na home o header ja tem contato fixo, e nas
+// em "/experiencia" e em "/criacao-de-sites" — na home o header ja tem contato fixo, e nas
 // landings o CTA proprio disputaria a mesma acao. Devolver "/" fazia o
 // componente renderizar `null`, e o card saia vazio sem que nada estivesse
 // quebrado. "/projetos" e uma rota real onde ele aparece, que e o estado util

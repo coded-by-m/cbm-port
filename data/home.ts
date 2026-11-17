@@ -28,7 +28,7 @@ export const HOME_WA_MESSAGE = "Olá! Vim pelo site da Coded by M e quero um or�
 /**
  * O hero é do portfólio: marca e posicionamento, sem preço nem prova na dobra.
  * Dor, preço e prazo logo no topo são papel da landing de anúncio
- * (`/lp/site-para-empresa`), não desta página (decisão de 2026-11-16).
+ * (`/criacao-de-sites`), não desta página (decisão de 2026-11-16).
  */
 export const HERO = {
   eyebrow: "Estúdio independente · Florianópolis",

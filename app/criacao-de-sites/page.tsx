@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { LANDINGS, getLanding, type LandingBlock, type LandingConfig } from "@/data/landings";
+import { LANDING, LANDING_PATH, type LandingBlock, type LandingConfig } from "@/data/landings";
 import { SURFACE } from "@/components/site/shared";
 import { LpFooter } from "@/components/lp/LpFooter";
 import { LpHeader } from "@/components/lp/LpHeader";
@@ -28,40 +27,33 @@ const BLOCKS: Record<LandingBlock, (props: { lp: LandingConfig }) => JSX.Element
   final: LpFinal,
 };
 
-type Params = { params: { segmento: string } };
+const lp = LANDING;
 
-/** Pré-renderiza todos os segmentos; abrir um novo é acrescentar um objeto. */
-export function generateStaticParams() {
-  return LANDINGS.map((l) => ({ segmento: l.slug }));
-}
-
-export function generateMetadata({ params }: Params): Metadata {
-  const lp = getLanding(params.segmento);
-  if (!lp) return { title: "Não encontrado" };
-  return {
+export const metadata: Metadata = {
+  title: lp.meta.title,
+  description: lp.meta.description,
+  alternates: { canonical: LANDING_PATH },
+  /**
+   * Noindex de propósito. A página existe pra receber clique pago: se o
+   * Google a indexasse, ela competiria com a `/` pelas mesmas buscas e
+   * entregaria a quem vem da busca uma página sem navegação.
+   */
+  robots: { index: false, follow: false },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: LANDING_PATH,
     title: lp.meta.title,
     description: lp.meta.description,
-    /**
-     * Noindex de propósito. A página existe pra receber clique pago: se o
-     * Google a indexasse, ela competiria com a `/` pelas mesmas buscas e
-     * entregaria a quem vem da busca uma página sem navegação.
-     */
-    robots: { index: false, follow: false },
-    openGraph: {
-      type: "website",
-      locale: "pt_BR",
-      title: lp.meta.title,
-      description: lp.meta.description,
-      images: [lp.meta.ogImage],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: lp.meta.title,
-      description: lp.meta.description,
-      images: [lp.meta.ogImage],
-    },
-  };
-}
+    images: [lp.meta.ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: lp.meta.title,
+    description: lp.meta.description,
+    images: [lp.meta.ogImage],
+  },
+};
 
 /**
  * Landing de campanha.
@@ -75,10 +67,7 @@ export function generateMetadata({ params }: Params): Metadata {
  * 4G, e cada KB aqui sai do bolso duas vezes — em conversão perdida e em
  * custo por clique.
  */
-export default function LandingPage({ params }: Params) {
-  const lp = getLanding(params.segmento);
-  if (!lp) notFound();
-
+export default function LandingPage() {
   return (
     <div
       className="site-home"
