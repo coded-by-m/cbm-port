@@ -13,6 +13,8 @@ import {
   SURFACE,
 } from "@/components/site/shared";
 import { LpCta } from "./LpCta";
+import { LpHeroWall, type HeroWallProject } from "./LpHeroWall";
+import type { DriftTile } from "@/components/site/DriftWall";
 import { cbm } from "@/lib/palette";
 
 /** Largura útil da landing — mais estreita que a home: um corredor, não uma vitrine. */
@@ -33,33 +35,83 @@ const H2: React.CSSProperties = {
   textWrap: "balance",
 };
 
+/** Até 8 recortes por cliente, do mais reconhecível (topo da home) pro mais interno. */
+const WALL_SHOTS = 8;
+
+function shotsOf(c: CaseProject) {
+  const all = [c.preview?.top, ...c.heroImages, ...(c.sections ?? []), ...c.gallery, c.preview?.card];
+  return Array.from(new Set(all.filter((s): s is string => !!s))).slice(0, WALL_SHOTS);
+}
+
+/**
+ * Tiles e cartões da parede do hero. Intercalados por cliente (o i-ésimo
+ * tile é do cliente `i % n`): com colunas coprimas com `n`, cada coluna passa
+ * por todos. Só cliente real: o site nunca apresenta conceito como entrega.
+ */
+function heroWall(slugs: string[]): { tiles: DriftTile[]; projects: HeroWallProject[] } {
+  const list = slugs
+    .map((slug) => cases.find((c) => c.slug === slug && !c.concept && c.status === "published"))
+    .filter((c): c is CaseProject => !!c);
+  const shots = list.map(shotsOf);
+  const depth = Math.max(0, ...shots.map((s) => s.length));
+  const tiles: DriftTile[] = [];
+  for (let k = 0; k < depth; k++) {
+    list.forEach((c, i) => {
+      const src = shots[i][k];
+      if (src) tiles.push({ src, slug: c.slug, title: c.title, color: "#FB3640" });
+    });
+  }
+  const projects = list.map((c) => {
+    const proof = CLIENT_PROOF.find((p) => p.slug === c.slug);
+    const setor = c.meta.setor;
+    return {
+      slug: c.slug,
+      title: c.title,
+      meta: [setor.charAt(0).toUpperCase() + setor.slice(1).toLowerCase(), c.meta.ano].join(" · "),
+      fact: proof?.fact,
+      quote: proof?.quote,
+      author: proof?.author,
+      siteUrl: c.siteUrl,
+    };
+  });
+  return { tiles, projects };
+}
+
 /**
  * Hero: headline dirigida a quem clicou. Nada aqui usa `Reveal`: ele esconde o
  * conteúdo até o JavaScript rodar, e título, preço e CTA são o que a pessoa veio
  * ver. Medido na antiga /lp/arquitetura, com o título no `Reveal`: LCP de 4,7 s.
+ *
+ * Com `heroWallSlugs`, a parede de sites de clientes entra de fundo no desktop
+ * e como faixa abaixo do CTA no celular (ver `.lp-hero` em globals.css). Ela
+ * chega depois da hidratação, então o LCP continua sendo o texto.
  */
 export function LpHero({ lp }: { lp: LandingConfig }) {
-  const shot = lp.heroCaseSlug ? cases.find((c) => c.slug === lp.heroCaseSlug) : undefined;
-  const src = shot?.preview?.top;
+  const wall = lp.heroWallSlugs?.length ? heroWall(lp.heroWallSlugs) : null;
+  const hasWall = !!wall && wall.tiles.length > 0;
 
   return (
-    <section data-cm-section="hero" style={{ ...WRAP, paddingTop: "clamp(48px,7vh,84px)" }}>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: src ? "repeat(auto-fit,minmax(min(100%,360px),1fr))" : "1fr",
-          gap: "clamp(36px,5vw,64px)",
-          alignItems: "center",
-        }}
-      >
-        <div style={{ minWidth: 0 }}>
+    <section
+      data-cm-section="hero"
+      className={hasWall ? "lp-hero has-wall" : "lp-hero"}
+    >
+      {hasWall && (
+        <>
+          <div className="lp-hero-wall">
+            <LpHeroWall tiles={wall.tiles} projects={wall.projects} waMessage={lp.waMessage} />
+          </div>
+          <div className="lp-hero-shade" aria-hidden />
+        </>
+      )}
+
+      <div className="lp-hero-content" style={{ ...WRAP, paddingTop: "clamp(48px,7vh,84px)" }}>
+        <div className="lp-hero-text">
           <h1
             style={{
               ...H2,
               marginTop: 24,
               maxWidth: "17ch",
-              /* Com a captura ao lado, a coluna é menos da metade da página. */
-              fontSize: src ? "clamp(30px,3.8vw,52px)" : "clamp(34px,5.4vw,66px)",
+              fontSize: hasWall ? "clamp(30px,3.8vw,52px)" : "clamp(34px,5.4vw,66px)",
               lineHeight: 1.02,
             }}
           >
@@ -99,44 +151,6 @@ export function LpHero({ lp }: { lp: LandingConfig }) {
             <LpCta label={lp.ctaLabel} message={lp.waMessage} size="lg" source="lp-hero" />
           </div>
         </div>
-
-        {/* Só a partir de 900px (ver `.lp-hero-shot`). No celular ela repetiria o
-            primeiro card do portfólio e seria o LCP: medido, 3 s contra 0,8 s na
-            simulação do Lighthouse. Sem `priority` de propósito: lazy em
-            `display: none` não baixa o arquivo. */}
-        {src && shot && (
-          <figure className="lp-hero-shot" style={{ margin: 0, minWidth: 0 }}>
-            <Image
-              src={src}
-              alt={`Site da ${shot.title}`}
-              width={1440}
-              height={900}
-              sizes="46vw"
-              style={{
-                display: "block",
-                width: "100%",
-                height: "auto",
-                border: "1px solid rgba(245,242,237,0.12)",
-              }}
-            />
-            {/* Diz de quem é o site: sem legenda, a captura lê como enfeite,
-                não como prova. Só para cliente real. */}
-            {!shot.concept && (
-              <figcaption
-                style={{
-                  marginTop: 12,
-                  fontFamily: SATOSHI,
-                  fontWeight: 400,
-                  fontSize: 13,
-                  lineHeight: 1.5,
-                  color: cbm("gray-300"),
-                }}
-              >
-                {shot.title}, cliente do estúdio{shot.siteUrl ? `. No ar em ${shot.siteUrl}` : ""}.
-              </figcaption>
-            )}
-          </figure>
-        )}
       </div>
     </section>
   );

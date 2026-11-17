@@ -59,6 +59,8 @@ export function DriftWall({
   turn = -14,
   depth = 120,
   lift = 64,
+  columns: columnsOverride,
+  linkTiles = true,
 }: {
   tiles: DriftTile[];
   /** Slug que o índice está apontando — acende os tiles dele, apaga o resto. */
@@ -72,6 +74,18 @@ export function DriftWall({
   turn?: number;
   depth?: number;
   lift?: number;
+  /**
+   * Colunas fixas em vez das de `driftColumnCount`. Útil com poucos projetos:
+   * com 3 projetos e 3 colunas, cada coluna mostraria um projeto só. Escolha
+   * um número coprimo com a quantidade de projetos.
+   */
+  columns?: { wide: number; compact: number };
+  /**
+   * `false` tira o link do case: o tile vira só alvo de toque e clique, e o
+   * projeto escolhido chega por `onActiveChange`. Para a landing, que não
+   * tem saída lateral.
+   */
+  linkTiles?: boolean;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const planeRef = useRef<HTMLDivElement>(null);
@@ -135,7 +149,11 @@ export function DriftWall({
     () => new Set(tiles.map((t) => t.slug)).size,
     [tiles],
   );
-  const columns = driftColumnCount(compact, projectCount);
+  const columns = columnsOverride
+    ? compact
+      ? columnsOverride.compact
+      : columnsOverride.wide
+    : driftColumnCount(compact, projectCount);
   // O tile acompanha a largura do muro: fixo em px, 5 colunas de 200px
   // sobram num monitor largo e estouram num notebook.
   const tileW = Math.round(
@@ -277,6 +295,18 @@ export function DriftWall({
     );
   };
 
+  // Toque não tem hover: o tile escolhido chega pelo clique. No mouse o clique
+  // só confirma o que o hover já acendeu.
+  const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const tile = (e.target as HTMLElement).closest<HTMLElement>("[data-tile-id]");
+    if (!tile) return;
+    setActive(
+      tile.dataset.tileId ?? null,
+      Number(tile.dataset.col),
+      tile.dataset.slug ?? null,
+    );
+  };
+
   const onPointerLeave = () => {
     pointerRef.current = { x: 0, y: 0 };
     setActive(null, -1, null);
@@ -298,6 +328,7 @@ export function DriftWall({
       style={vars}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
+      onClick={onClick}
       aria-hidden
     >
       <div ref={planeRef} className="dw-plane">
@@ -317,34 +348,39 @@ export function DriftWall({
                   ]
                     .filter(Boolean)
                     .join(" ");
-                  return (
-                    <Link
-                      key={id}
-                      href={`/cases/${t.slug}`}
-                      tabIndex={-1}
-                      className={cls}
-                      data-tile-id={id}
-                      data-col={c}
-                      data-slug={t.slug}
-                      draggable={false}
-                    >
-                      <span className="dw-inner">
-                        <Image
-                          src={t.src}
-                          alt=""
-                          width={600}
-                          height={384}
-                          sizes={`${tileW}px`}
-                          draggable={false}
-                          className="dw-img"
-                        />
-                        <span className="dw-veil" />
-                        <span
-                          className="dw-corner"
-                          style={{ borderColor: t.color }}
-                        />
-                      </span>
+                  const tileProps = {
+                    className: cls,
+                    "data-tile-id": id,
+                    "data-col": c,
+                    "data-slug": t.slug,
+                    draggable: false,
+                  };
+                  const inner = (
+                    <span className="dw-inner">
+                      <Image
+                        src={t.src}
+                        alt=""
+                        width={600}
+                        height={384}
+                        sizes={`${tileW}px`}
+                        draggable={false}
+                        className="dw-img"
+                      />
+                      <span className="dw-veil" />
+                      <span
+                        className="dw-corner"
+                        style={{ borderColor: t.color }}
+                      />
+                    </span>
+                  );
+                  return linkTiles ? (
+                    <Link key={id} href={`/cases/${t.slug}`} tabIndex={-1} {...tileProps}>
+                      {inner}
                     </Link>
+                  ) : (
+                    <span key={id} {...tileProps}>
+                      {inner}
+                    </span>
                   );
                 }),
               )}

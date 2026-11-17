@@ -56,8 +56,11 @@ export interface LandingConfig {
    * serviços, para filtrar quem procura o site mais barato antes do clique.
    */
   heroPrice?: string;
-  /** Slug de `data/cases.ts` cuja captura aparece no hero. Sem isto, só texto. */
-  heroCaseSlug?: string;
+  /**
+   * Clientes reais (slugs de `data/cases.ts`) da parede de sites do hero. Sem
+   * isto, o hero é só texto. Conceito é ignorado mesmo se listado.
+   */
+  heroWallSlugs?: string[];
   /** 3 ou 4 pontos de dor, se a página listar o bloco `pains`. */
   pains?: string[];
   /** Uma frase, se a página listar o bloco `promise`. */
@@ -102,7 +105,7 @@ export const LANDING: LandingConfig = {
   sub: "Sites e landing pages sob medida em Florianópolis, feitos por quem desenha e programa. Você fala direto comigo e fica com o código e os acessos.",
   heroPrice: `Landing page a partir de ${PUBLIC_PRICE.landing.display} · site institucional a partir de ${PUBLIC_PRICE.institucional.display}. Valor final no orçamento.`,
   ctaLabel: "Pedir orçamento no WhatsApp",
-  heroCaseSlug: "machado-plataformas",
+  heroWallSlugs: ["machado-plataformas", "mj-engenharia", "valdete-costuras"],
 
   proofHeading: "Empresas que já estão no ar com um site nosso.",
   conceptHeading: "Projetos conceituais, para mostrar o alcance do trabalho.",
