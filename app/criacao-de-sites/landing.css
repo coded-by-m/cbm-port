@@ -1298,7 +1298,7 @@ html:has(.cs-page) {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: clamp(320px, 38vw, 560px);
+  height: clamp(240px, 28vw, 420px);
   object-fit: cover;
   object-position: 50% 100%;
   pointer-events: none;

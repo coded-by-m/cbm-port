@@ -10,8 +10,8 @@ export const dynamic = "force-static";
 
 export function GET() {
   const svg = terrainSvg({
-    cols: 46,
-    rows: 18,
+    cols: 78,
+    rows: 28,
     stroke: paletteHex("white"),
     strokeOpacity: 0.24,
     signal: paletteHex("red"),

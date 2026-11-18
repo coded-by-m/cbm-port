@@ -73,7 +73,7 @@ export function terrainSvg({
 
   // A face vermelha: perto da frente, à direita.
   const r = rows - 5;
-  const c = Math.round(cols * 0.68);
+  const c = Math.round(cols * 0.58);
   const face = [grid[r][c], grid[r][c + 1], grid[r + 1][c + 1]].map((p) => p.join(",")).join(" ");
 
   return (
