@@ -19,6 +19,7 @@ import {
   PAINEL_VISITAS,
   PUBLIC_PRICE,
 } from "@/data/servicePages";
+import type { DriftTile } from "@/components/site/DriftWall";
 import type { CaseProject } from "@/types/case";
 
 /* ── Contato ─────────────────────────────────────────────────────────────── */
@@ -61,7 +62,7 @@ export const META = {
   // Sem sufixo: o `template` do layout raiz acrescenta "· Coded by M".
   title: "Criação de sites para empresas",
   description:
-    "Sites institucionais e landing pages sob medida, desenhados e programados por Matheus Mendes em Florianópolis. Três clientes no ar para conferir. Orçamento pelo WhatsApp.",
+    "Sites institucionais e landing pages sob medida, desenhados e programados por Matheus Mendes em Florianópolis. Sites de clientes no ar para conferir. Orçamento pelo WhatsApp.",
 };
 
 /* ── Navegação da página ─────────────────────────────────────────────────── */
@@ -73,14 +74,6 @@ export const NAV = [
   { href: "#duvidas", label: "Dúvidas" },
 ] as const;
 
-/**
- * Régua de cada seção: o pré-título da marca (caixa alta espaçada, traço
- * vermelho). À esquerda a posição e o nome, à direita uma contagem que a
- * seção cumpre logo abaixo. As contagens vêm dos próprios dados: se um item
- * entra ou sai, a régua acompanha. Preenchido depois das seções, no fim do
- * arquivo.
- */
-export type SectionRuleCopy = { n: string; label: string; aside?: string };
 
 /* ── Abertura ────────────────────────────────────────────────────────────── */
 
@@ -228,8 +221,38 @@ export const CLIENT_PLATES: ClientPlate[] = PLATE_COPY.map((copy) => {
   };
 });
 
+/**
+ * Parede de fundo da abertura: recortes dos sites dos clientes reais (nunca
+ * conceito), intercalados por cliente. O i-ésimo tile é do cliente `i % n`;
+ * com colunas coprimas com `n` (5 e 4 para 3 clientes), cada coluna passa
+ * pelos três. Até 8 recortes por cliente, do mais reconhecível ao mais interno.
+ */
+const WALL_SHOTS = 8;
+
+export const HERO_WALL: DriftTile[] = (() => {
+  const list = CLIENT_PLATES.map((p) => caseOf(p.slug));
+  const shots = list.map((c) =>
+    Array.from(
+      new Set(
+        [c.preview?.top, ...c.heroImages, ...(c.sections ?? []), ...c.gallery, c.preview?.card].filter(
+          (src): src is string => !!src,
+        ),
+      ),
+    ).slice(0, WALL_SHOTS),
+  );
+  const depth = Math.max(0, ...shots.map((list) => list.length));
+  const tiles: DriftTile[] = [];
+  for (let k = 0; k < depth; k++) {
+    list.forEach((c, i) => {
+      const src = shots[i][k];
+      if (src) tiles.push({ src, slug: c.slug, title: c.title, color: "#FB3640" });
+    });
+  }
+  return tiles;
+})();
+
 export const PROJECTS = {
-  heading: "Três clientes, três sites no ar.",
+  heading: "Sites de clientes, no ar para conferir.",
   sub: "Abra cada um e confira. Os números sobre as telas marcam o que cada site faz por quem está decidindo a compra.",
   cta: {
     text: "Quer um site nesse nível para a sua empresa?",
@@ -282,7 +305,7 @@ export const SITUATIONS = {
     },
     {
       before: "As pessoas entram no site, olham tudo e não chamam.",
-      after: "O pedido de orçamento fica à vista em todas as telas, como nos três sites acima.",
+      after: "O pedido de orçamento fica à vista em todas as telas, como nos sites acima.",
     },
     {
       before: "Você não sabe quantas pessoas visitam o site nem de onde elas vêm.",
@@ -323,7 +346,7 @@ export const DELIVERABLES = {
     },
     {
       title: "Domínio e hospedagem",
-      text: "Incluídos no valor do projeto. O domínio é registrado no nome da sua empresa.",
+      text: "Incluídos no primeiro ano. O domínio é registrado no nome da sua empresa.",
     },
     {
       title: "Entrega de código e acessos",
@@ -390,7 +413,7 @@ export const ABOUT_LP = {
   /** A objeção do estúdio solo, dita pelo próprio estúdio. */
   honest:
     "O estúdio é novo: são três clientes no ar e sete estudos conceituais. Uma agência com quinze anos de mercado tem mais estrutura. O que eu ofereço é atenção direta e a garantia de que nada fica preso comigo.",
-  guardTitle: "Se o estúdio é de uma pessoa só, o que protege você",
+  guardTitle: "Tudo por escrito e no nome da sua empresa.",
   guards: [
     { title: "Contrato", text: "Valor e prazo por escrito, antes de começar." },
     { title: "Domínio", text: "Registrado no nome da sua empresa, não no meu." },
@@ -429,7 +452,7 @@ export const INVESTMENT = {
   after: {
     title: "Depois da entrega",
     rows: [
-      { label: "Hospedagem e domínio", value: "Incluídos no valor do projeto." },
+      { label: "Hospedagem e domínio", value: "Incluídos no primeiro ano. Do segundo ano em diante, a renovação é anual." },
       { label: "Plano mensal", value: "Opcional. Cobre suporte e atualizações, e o valor depende do serviço." },
       { label: "Sem o plano", value: "O site continua seu, com código e acessos." },
     ],
@@ -481,22 +504,3 @@ export const CONTACT = {
   cta: CTA_LABEL,
   numberLabel: "Se preferir, salve o número:",
 };
-
-/* ── Réguas das seções ───────────────────────────────────────────────────── */
-
-const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
-
-export const SECTION_RULES = {
-  projetos: {
-    n: "01",
-    label: "Projetos",
-    aside: `${plural(CLIENT_PLATES.length, "cliente", "clientes")} · ${plural(CONCEPTS.cards.length, "estudo", "estudos")}`,
-  },
-  situacoes: { n: "02", label: "O que muda", aside: plural(SITUATIONS.rows.length, "situação", "situações") },
-  entregas: { n: "03", label: "O que entra", aside: plural(DELIVERABLES.items.length, "item", "itens") },
-  processo: { n: "04", label: "Como funciona", aside: plural(PROCESS.steps.length, "etapa", "etapas") },
-  quemFaz: { n: "05", label: "Quem faz" },
-  investimento: { n: "06", label: "Investimento", aside: plural(INVESTMENT.formats.length, "formato", "formatos") },
-  duvidas: { n: "07", label: "Dúvidas", aside: plural(FAQ.items.length, "pergunta", "perguntas") },
-  contato: { n: "08", label: "Contato" },
-} satisfies Record<string, SectionRuleCopy>;

@@ -1,31 +1,28 @@
-import Image from "next/image";
-import { BrowserFrame } from "@/components/case/BrowserFrame";
 import { TriangleMark } from "@/components/site/shared";
 import { TriArrow } from "@/components/ui/TriArrow";
-import { CLIENT_PLATES, CTA_LABEL, HERO, WA_MESSAGE } from "@/data/criacaoDeSites";
+import { CLIENT_PLATES, CTA_LABEL, HERO, HERO_WALL, WA_MESSAGE } from "@/data/criacaoDeSites";
 import { WaCta } from "./Cta";
-import { Terrain } from "./Terrain";
+import { HeroWall } from "./HeroWall";
 
 /**
  * Abertura. A primeira tela responde quatro coisas: o que é vendido (a régua
- * de cima), para quem (título e apoio), por que considerar (o site de um
- * cliente, no computador e no celular, com o resultado medido em destaque) e
- * como avançar (o botão e a frase que diz o que acontece ao tocar).
+ * de cima), para quem (título e apoio), por que considerar (a parede de sites
+ * de clientes e o resultado medido da Machado) e como avançar (o botão e a
+ * frase que diz o que acontece ao tocar).
  *
- * O título ocupa a largura inteira no corpo de display da marca, sobre o
- * terreno triangulado da home (aqui em SVG estático, sem WebGL).
+ * Desktop: o título ocupa a largura inteira no corpo de display da marca, e a
+ * parede à deriva da home corre de fundo, à direita, com o escuro da página
+ * vindo da esquerda e de cima para o texto ler limpo. Celular: a parede vira
+ * uma faixa entre o botão e o resultado.
  *
- * Nada aqui usa `Reveal` nem anima o título: ele esconde o conteúdo até o
- * JavaScript rodar e atrasa o LCP. Só o terreno entra em movimento, em CSS.
- * A captura do computador é `priority` porque no desktop ela disputa o LCP.
+ * Nada aqui usa `Reveal` nem anima o título: ele esconderia o conteúdo até o
+ * JavaScript rodar e atrasaria o LCP.
  */
 export function Hero() {
   const plate = CLIENT_PLATES.find((p) => p.slug === HERO.figureSlug) ?? CLIENT_PLATES[0];
 
   return (
     <section className="cs-hero" data-cm-section="hero">
-      <Terrain define className="cs-hero-terrain" />
-
       <div className="cs-wrap">
         <p className="cs-meta">
           <strong>{HERO.kicker}</strong>
@@ -62,44 +59,22 @@ export function Hero() {
             </ul>
           </div>
 
-          <figure className="cs-hero-fig">
-            <div className="cs-hero-stage">
-              <BrowserFrame url={plate.siteUrl}>
-                <div className="cs-shot">
-                  <Image
-                    src={plate.shots.desktop}
-                    alt={`Primeira tela do site da ${plate.title} no computador`}
-                    width={1440}
-                    height={900}
-                    priority
-                    sizes="(max-width: 999px) 88vw, 680px"
-                  />
-                </div>
-              </BrowserFrame>
-              <div className="cs-phone cs-hero-phone">
-                <Image
-                  src={plate.shots.mobile}
-                  alt={`O mesmo site da ${plate.title} no celular`}
-                  width={plate.shots.mobileSize.width}
-                  height={plate.shots.mobileSize.height}
-                  sizes="(max-width: 999px) 24vw, 170px"
-                />
-              </div>
-            </div>
-            <figcaption className="cs-hero-cap">
-              {plate.metric && (
-                <p className="cs-stat">
-                  <span className="cs-stat-n">{plate.metric.value}</span>
-                  <span className="cs-stat-label">
-                    {plate.metric.label} {plate.metric.period}.
-                  </span>
-                </p>
-              )}
+          <HeroWall tiles={HERO_WALL} />
+          <div className="cs-hero-shade" aria-hidden />
+
+          {plate.metric && (
+            <div className="cs-hero-proof">
+              <p className="cs-stat">
+                <span className="cs-stat-n">{plate.metric.value}</span>
+                <span className="cs-stat-label">
+                  {plate.metric.label} {plate.metric.period}.
+                </span>
+              </p>
               <p className="cs-cap-name">
                 {plate.title}: {plate.business.toLowerCase()}, {plate.place}.
               </p>
-            </figcaption>
-          </figure>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -68,6 +68,18 @@ direção visual saiu da identidade da marca (`DESIGN-LANGUAGE.md`), não de ref
   com a rolagem (CSS `view-timeline`; sem suporte ou com movimento reduzido, aparece inteiro), com
   nome e função embaixo. Mesmo estado do bloco Sobre da home. Ao preencher `ABOUT.founder.photo`,
   a foto ocupa o mesmo quadro. As três garantias viraram faixa própria, em colunas.
+- **Rodada de ajustes do Matheus (2026-11-18).**
+  - **Abertura:** o terreno e o mockup da Machado saíram. No lugar, a parede à deriva da seção
+    Projetos da home (`DriftWall` via `HeroWall.tsx`), só com os três clientes (`HERO_WALL`). No
+    desktop ela fica de fundo, à direita, com o escuro da página vindo da esquerda e de cima. No
+    celular vira uma faixa entre o botão e o "181".
+  - **Réguas numeradas** (`SECTION_RULES`, `SectionRule.tsx`) removidas de todas as seções. A régua
+    da abertura (o que é vendido e onde) ficou.
+  - **Contato:** o terreno virou SVG gerado no build (`lib/terrain.ts`, servido em
+    `/criacao-de-sites/terreno.svg`), com triângulos menores e traço mais visível.
+  - **Copy:** o título de Projetos não conta mais os sites ("Sites de clientes, no ar para
+    conferir."). O título das garantias virou "Tudo por escrito e no nome da sua empresa.".
+    Domínio e hospedagem agora dizem "incluídos no primeiro ano".
 - **Sem formulário.** O canal de venda é a conversa. Um formulário sem backend seria retorno falso.
 - **Sem WebGL nesta rota.** O 3D do estúdio aparece nos projetos conceituais, que a pessoa pode abrir.
 - **`noindex` mantido.** A página recebe clique pago e competiria com `/` e `/site-institucional`.
@@ -81,7 +93,8 @@ direção visual saiu da identidade da marca (`DESIGN-LANGUAGE.md`), não de ref
 | `app/criacao-de-sites/page.tsx` | Rota, metadados e ordem das seções |
 | `app/criacao-de-sites/landing.css` | Estilos da rota (prefixo `cs-`), só carregados aqui |
 | `data/criacaoDeSites.ts` | Toda a copy e a estrutura; preços vêm de `PUBLIC_PRICE` |
-| `components/landing/*` | Cabeçalho, abertura, projetos, seções, contato e rodapé |
+| `components/landing/*` | Cabeçalho, abertura (com `HeroWall`), projetos, seções, contato e rodapé |
+| `lib/terrain.ts`, `app/criacao-de-sites/terreno.svg/route.ts` | Terreno triangulado do contato, gerado estático no build |
 | `scripts/build-lp-shots.py` | Gera `mobile-top.webp` dos três clientes |
 | `lib/analytics.ts`, `components/analytics/Analytics.tsx` | Eventos `cta_click` e `project_open` |
 | `lib/site.ts` (`LEGAL`) | Razão social e CNPJ do rodapé, quando informados |

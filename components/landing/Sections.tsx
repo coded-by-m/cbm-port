@@ -8,13 +8,11 @@ import {
   FAQ,
   INVESTMENT,
   PROCESS,
-  SECTION_RULES,
   SITUATIONS,
   WA_MESSAGE,
 } from "@/data/criacaoDeSites";
 import { GOOGLE_MAPS_URL, INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/contact";
 import { WaCta } from "./Cta";
-import { SectionRule } from "./SectionRule";
 
 /**
  * Situações. Não é lista de dores: cada linha junta o que o dono vive hoje
@@ -25,7 +23,6 @@ export function Situations() {
   return (
     <section className="cs-section cs-section--raised" data-cm-section="situacoes" aria-labelledby="situacoes-titulo">
       <div className="cs-wrap">
-        <SectionRule rule={SECTION_RULES.situacoes} />
         <h2 id="situacoes-titulo" className="cs-h2">
           {SITUATIONS.heading}
         </h2>
@@ -60,7 +57,6 @@ export function Deliverables() {
   return (
     <section className="cs-section" data-cm-section="entregas" aria-labelledby="entregas-titulo">
       <div className="cs-wrap">
-        <SectionRule rule={SECTION_RULES.entregas} />
         <div className="cs-deliv">
           <div className="cs-deliv-side">
             <h2 id="entregas-titulo" className="cs-h2">
@@ -106,7 +102,6 @@ export function Process() {
       aria-labelledby="processo-titulo"
     >
       <div className="cs-wrap">
-        <SectionRule rule={SECTION_RULES.processo} />
         <h2 id="processo-titulo" className="cs-h2">
           {PROCESS.heading}
         </h2>
@@ -199,7 +194,6 @@ export function About() {
   return (
     <section className="cs-section" data-cm-section="quem-faz" aria-labelledby="quem-titulo">
       <div className="cs-wrap">
-        <SectionRule rule={SECTION_RULES.quemFaz} />
         <div className="cs-about">
           <FounderPlate />
 
@@ -271,7 +265,6 @@ export function Investment() {
       aria-labelledby="investimento-titulo"
     >
       <div className="cs-wrap">
-        <SectionRule rule={SECTION_RULES.investimento} />
         <h2 id="investimento-titulo" className="cs-h2">
           {INVESTMENT.heading}
         </h2>
@@ -341,7 +334,6 @@ export function Faq() {
   return (
     <section id="duvidas" className="cs-section" data-cm-section="duvidas" aria-labelledby="duvidas-titulo">
       <div className="cs-wrap">
-        <SectionRule rule={SECTION_RULES.duvidas} />
         <div className="cs-faq">
           <h2 id="duvidas-titulo" className="cs-h2">
             {FAQ.heading}
