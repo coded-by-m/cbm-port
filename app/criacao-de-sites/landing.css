@@ -1131,29 +1131,53 @@ html:has(.cs-page) {
   .cs-guards { grid-column: 1 / -1; }
 }
 
-/* ── Investimento ── */
-.cs-formats {
-  margin-top: clamp(32px, 4.5vw, 56px);
-  display: grid;
-  border-top: 1px solid var(--hair-strong);
+/* ── Investimento ──
+   Uma folha de proposta em duas colunas que atravessam a seção inteira:
+   planos, condições e fechamento usam a mesma divisão, o mesmo respiro e o
+   mesmo filete vertical. Cada faixa fecha com o filete forte. */
+.cs-light { --sheet-gap: clamp(24px, 4vw, 56px); }
+.cs-formats,
+.cs-terms,
+.cs-invest-cta { display: grid; }
+.cs-formats { margin-top: clamp(32px, 4.5vw, 56px); border-top: 1px solid var(--hair-strong); }
+.cs-format,
+.cs-terms > section,
+.cs-invest-cta > * {
+  min-width: 0;
+  padding-block: clamp(28px, 3.4vw, 40px);
+  border-bottom: 1px solid var(--hair-strong);
 }
-.cs-format { padding: 28px 0 30px; border-bottom: 1px solid var(--hair-strong); display: grid; gap: 14px; align-content: start; }
-.cs-format .cs-p { min-height: 0; }
-.cs-format dl { margin: 10px 0 0; display: grid; }
-.cs-format dl div {
-  display: grid;
-  grid-template-columns: 116px minmax(0, 1fr);
-  gap: 16px;
-  align-items: baseline;
-  padding: 13px 0;
-  border-top: 1px solid var(--hair);
+.cs-invest-cta > * { border-bottom: 0; }
+@media (min-width: 760px) {
+  .cs-formats,
+  .cs-terms,
+  .cs-invest-cta { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .cs-format,
+  .cs-terms > section,
+  .cs-invest-cta > * { padding-right: var(--sheet-gap); }
+  .cs-format + .cs-format,
+  .cs-terms > section + section,
+  .cs-invest-cta > * + * { padding-left: var(--sheet-gap); padding-right: 0; border-left: 1px solid var(--hair); }
 }
-.cs-format dt { font-size: 0.9375rem; color: var(--muted); }
+
+/* Plano: nome, para quem, preço e a ficha (tamanho e prazo lado a lado). */
+.cs-format { display: grid; grid-template-rows: auto auto 1fr auto; gap: 12px; }
+.cs-format .cs-p { margin: 0; max-width: 44ch; }
+.cs-format dl {
+  margin: 14px 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-self: end;
+}
+.cs-format dl div { display: grid; gap: 4px; align-content: start; padding: 14px 0 0; border-top: 1px solid var(--hair); }
+.cs-format dl div:first-child { grid-column: 1 / -1; padding: 0 0 22px; border-top: 0; }
+.cs-format dl div:last-child { padding-left: 20px; border-left: 1px solid var(--hair); }
+.cs-format dt { font-size: 0.8125rem; letter-spacing: 0.02em; color: var(--muted); }
 .cs-format dd { margin: 0; font-weight: 500; color: var(--ink); }
 .cs-price small { display: block; font-size: 0.9375rem; font-weight: 400; color: var(--body); }
 .cs-price b {
   display: block;
-  margin-top: 6px;
+  margin-top: 4px;
   font-family: var(--display);
   font-weight: 800;
   font-size: clamp(2.25rem, 1rem + 3.4vw, 4rem);
@@ -1161,37 +1185,25 @@ html:has(.cs-page) {
   letter-spacing: -0.03em;
   white-space: nowrap;
 }
-/* O preço ganha a linha inteira: no corpo de display ele não cabe ao lado do rótulo. */
-.cs-format dl div:first-child { grid-template-columns: minmax(0, 1fr); gap: 8px; padding-top: 18px; }
-@media (min-width: 760px) {
-  .cs-formats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .cs-format { padding: 34px clamp(24px, 4vw, 56px) 36px 0; }
-  .cs-format + .cs-format { padding-left: clamp(24px, 4vw, 56px); padding-right: 0; border-left: 1px solid var(--hair); }
-  .cs-format .cs-p { min-height: 3.3em; }
-}
-.cs-terms { margin-top: clamp(36px, 5vw, 56px); display: grid; gap: clamp(32px, 4vw, 48px); }
-.cs-terms section { display: grid; gap: 12px; align-content: start; }
-.cs-terms dl { margin: 4px 0 0; border-top: 1px solid var(--hair); }
-.cs-terms dl div { display: grid; gap: 2px; padding: 13px 0; border-bottom: 1px solid var(--hair); }
+
+/* Condições: o que muda o valor (texto) e depois da entrega (tabela). */
+.cs-terms > section { display: grid; gap: 14px; align-content: start; }
+.cs-terms .cs-p { margin: 0; max-width: 46ch; }
+.cs-terms dl { margin: 0; }
+.cs-terms dl div { display: grid; gap: 2px; padding: 12px 0; border-top: 1px solid var(--hair); }
+.cs-terms dl div:first-child { border-top: 0; padding-top: 2px; }
 .cs-terms dt { font-weight: 700; color: var(--ink); }
 .cs-terms dd { margin: 0; color: var(--body); }
-@media (min-width: 560px) {
-  .cs-terms dl div { grid-template-columns: 190px minmax(0, 1fr); gap: 20px; }
+@media (min-width: 1100px) {
+  .cs-terms dl div { grid-template-columns: 200px minmax(0, 1fr); gap: 20px; }
 }
-@media (min-width: 1000px) {
-  .cs-terms { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(48px, 6vw, 96px); }
-}
-.cs-invest-cta {
-  margin-top: clamp(40px, 5vw, 64px);
-  padding-top: clamp(28px, 3.6vw, 40px);
-  border-top: 1px solid var(--hair-strong);
-  display: grid;
-  gap: 24px;
-  justify-items: start;
-}
+
+/* Fechamento: o filtro à esquerda, o botão à direita, na mesma divisão. */
+.cs-invest-cta { align-items: center; }
+.cs-invest-cta > p { margin: 0; max-width: 46ch; }
 .cs-invest-cta > div { display: grid; gap: 14px; justify-items: start; }
-@media (min-width: 900px) {
-  .cs-invest-cta { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 48px; }
+@media (max-width: 759px) {
+  .cs-invest-cta > div { padding-top: 0; }
 }
 
 /* ── Dúvidas ── */

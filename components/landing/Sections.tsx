@@ -276,7 +276,7 @@ export function Investment() {
               <p className="cs-p">{format.when}</p>
               <dl>
                 <div>
-                  <dt>{INVESTMENT.rowLabels.price}</dt>
+                  <dt className="sr-only">{INVESTMENT.rowLabels.price}</dt>
                   <dd className="cs-price">
                     <small>{INVESTMENT.from}</small>
                     <b>{nobreak(format.price)}</b>
