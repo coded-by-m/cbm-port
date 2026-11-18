@@ -381,6 +381,8 @@ export const PROCESS = {
 
 export const ABOUT_LP = {
   heading: "Você fala com quem desenha e programa.",
+  /** Legenda da prancha do fundador (o nome vem de `ABOUT.founder.name`). */
+  plate: { role: "Desenho e programação", place: "Florianópolis, SC" },
   paragraphs: [
     "Sou Matheus Mendes, de Florianópolis. Formado em Análise e Desenvolvimento de Sistemas, desenho e programo cada site da Coded by M.",
     "Não tem atendente nem repasse para terceiros: a pessoa que ouve o problema é a que resolve. O atendimento é à distância, por WhatsApp e videochamada, para empresas de todo o Brasil.",

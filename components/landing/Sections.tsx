@@ -143,38 +143,76 @@ export function Process() {
 }
 
 /**
- * Quem faz. Responde a objeção do estúdio solo de frente: quem é a pessoa,
- * o que ela não tem (anos de mercado) e o que protege o cliente mesmo assim.
- * A foto só aparece quando `ABOUT.founder.photo` existir.
+ * Prancha do fundador: o lugar do retrato. Enquanto não há foto
+ * (`ABOUT.founder.photo`), o objeto é o símbolo CbM, que se desenha traço a
+ * traço quando entra na tela, com a diagonal vermelha cortando por último
+ * (DESIGN-LANGUAGE §5.6: o logo é desenhado, não colocado). É o mesmo estado
+ * do bloco Sobre da home. Quando a foto entrar, ela ocupa este quadro.
+ *
+ * O desenho usa animação ligada à rolagem, só em CSS: onde o navegador não
+ * suporta, ou com movimento reduzido, o símbolo já aparece inteiro.
  */
-export function About() {
+function FounderPlate() {
+  const { name } = ABOUT.founder;
   const photo = ABOUT.founder.photo;
 
+  return (
+    <figure className="cs-founder">
+      <div className="cs-founder-frame">
+        {photo ? (
+          <Image
+            src={photo}
+            alt={`${name}, fundador da Coded by M`}
+            fill
+            sizes="(max-width: 999px) 90vw, 460px"
+            className="cs-founder-photo"
+          />
+        ) : (
+          <svg className="cs-founder-mark" viewBox="0 0 142 161" fill="none" aria-hidden>
+            <path d="M11.5 148.039V59.0391L53.5 104.438" pathLength={1} />
+            <path d="M130.5 103.039V19.0391L85.5 67.2944" pathLength={1} />
+            <path className="cs-founder-cut" d="M9.5 18.0391L130.5 147.039" pathLength={1} />
+          </svg>
+        )}
+        <span className="cs-founder-tag" aria-hidden>
+          Coded by M
+        </span>
+      </div>
+      <figcaption className="cs-founder-cap">
+        <span className="cs-founder-name">{name}</span>
+        <span className="cs-founder-role">
+          {ABOUT_LP.plate.role} · <span className="cs-nowrap">{ABOUT_LP.plate.place}</span>
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
+
+/**
+ * Quem faz. Responde a objeção do estúdio solo de frente: quem é a pessoa,
+ * o que ela não tem (anos de mercado) e o que protege o cliente mesmo assim.
+ *
+ * As garantias saem da coluna e viram faixa própria, em três colunas com
+ * título grande: são a resposta à objeção, e pesam como resposta.
+ */
+export function About() {
   return (
     <section className="cs-section" data-cm-section="quem-faz" aria-labelledby="quem-titulo">
       <div className="cs-wrap">
         <SectionRule rule={SECTION_RULES.quemFaz} />
         <div className="cs-about">
+          <FounderPlate />
+
           <div className="cs-about-main">
             <h2 id="quem-titulo" className="cs-h2">
               {ABOUT_LP.heading}
             </h2>
-            {photo && (
-              <Image
-                src={photo}
-                alt="Matheus Mendes, fundador da Coded by M"
-                width={640}
-                height={800}
-                sizes="(max-width: 999px) 80vw, 320px"
-                className="cs-about-photo"
-              />
-            )}
             {ABOUT_LP.paragraphs.map((text) => (
               <p key={text} className="cs-p">
                 {text}
               </p>
             ))}
-            <p className="cs-p">{ABOUT_LP.honest}</p>
+            <p className="cs-p cs-honest">{ABOUT_LP.honest}</p>
           </div>
 
           <div className="cs-guards">

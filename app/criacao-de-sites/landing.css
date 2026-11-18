@@ -949,34 +949,160 @@ html:has(.cs-page) {
 }
 
 /* ── Quem faz ── */
-.cs-about { display: grid; gap: clamp(36px, 5vw, 56px); }
+/* Celular: texto, prancha, garantias. Desktop: prancha e texto lado a lado,
+   garantias numa faixa de três colunas embaixo. */
+.cs-about { display: grid; gap: clamp(40px, 6vw, 72px); }
 .cs-about-main { display: grid; gap: 20px; align-content: start; }
 .cs-about-main .cs-h2 { margin-bottom: 8px; }
-.cs-about-photo {
-  width: min(100%, 320px);
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border: 1px solid var(--hair);
-}
-.cs-guards { display: grid; gap: 0; align-content: start; }
-.cs-guards h3 { margin-bottom: 18px; }
-.cs-guards dl { margin: 0; border-top: 1px solid var(--hair-strong); }
-.cs-guards dl div {
+.cs-honest { margin-top: 4px; padding-top: 20px; border-top: 1px solid var(--hair); }
+
+/* Prancha do fundador: o quadro do retrato, com o símbolo no lugar da foto. */
+.cs-founder { margin: 0; min-width: 0; display: grid; gap: 18px; align-content: start; }
+.cs-founder-frame {
+  position: relative;
+  aspect-ratio: 5 / 4;
   display: grid;
-  gap: 4px;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--hair);
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--hair-strong);
+  background: rgb(var(--cbm-sunken));
 }
-.cs-guards dt { font-weight: 700; color: var(--ink); }
-.cs-guards dd { margin: 0; color: var(--body); }
+/* Cantos de enquadramento, em vermelho: a mira da prancha. */
+.cs-founder-frame::before,
+.cs-founder-frame::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 0 solid var(--signal);
+}
+.cs-founder-frame::before { top: 14px; left: 14px; border-top-width: 1px; border-left-width: 1px; }
+.cs-founder-frame::after { right: 14px; bottom: 14px; border-right-width: 1px; border-bottom-width: 1px; }
+.cs-founder-photo { object-fit: cover; }
+/* Absoluto: a altura em % precisa do quadro (definido pelo aspect-ratio)
+   como referência; dentro do grid ela não resolve. */
+.cs-founder-mark {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: auto;
+  height: 52%;
+  overflow: visible;
+  stroke: var(--ink);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cs-founder-mark .cs-founder-cut { stroke: var(--signal); }
+.cs-founder-tag {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.cs-founder-cap { display: grid; gap: 6px; }
+.cs-nowrap { white-space: nowrap; }
+.cs-founder-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.375rem, 1rem + 1.2vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.cs-founder-role {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* O símbolo se desenha com a rolagem: as duas estruturas, depois a diagonal
+   vermelha, mais curta e mais rápida (a incisão). Sem suporte a
+   `animation-timeline`, ele já está inteiro. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (view-timeline: --a block) {
+    /* A linha do tempo é a do quadro, não a de cada traço: a caixa de um
+       `path` dentro do SVG não serve de referência confiável. */
+    .cs-founder-frame { view-timeline: --founder block; }
+    .cs-founder-mark path {
+      stroke-dasharray: 1;
+      animation: csDraw linear both;
+      animation-timeline: --founder;
+      animation-range: entry 10% cover 34%;
+    }
+    .cs-founder-mark path:nth-child(2) { animation-range: entry 30% cover 40%; }
+    .cs-founder-mark .cs-founder-cut { animation-range: cover 38% cover 47%; }
+  }
+}
+@keyframes csDraw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Garantias: a resposta à objeção do estúdio solo, em faixa própria. */
+.cs-guards { display: grid; gap: 0; align-content: start; }
+.cs-guards h3 {
+  margin-bottom: clamp(20px, 2.6vw, 32px);
+  max-width: 30ch;
+  font-size: clamp(1.25rem, 0.95rem + 1.1vw, 1.875rem);
+  line-height: 1.2;
+}
+.cs-guards dl { margin: 0; display: grid; }
+.cs-guards dl div {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 22px 0 24px 30px;
+  border-top: 1px solid var(--hair-strong);
+}
+/* O nó da marca: o mesmo losango das etapas do processo. */
+.cs-guards dl div::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: calc(22px + 0.55em);
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--ink);
+  transform: rotate(45deg);
+}
+.cs-guards dt {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.125rem, 0.95rem + 0.7vw, 1.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.cs-guards dd { margin: 0; max-width: 36ch; color: var(--body); text-wrap: pretty; }
 .cs-verify { margin-top: 28px; display: grid; gap: 4px; }
 .cs-verify ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0 28px; }
 .cs-verify a { display: inline-flex; align-items: center; min-height: 44px; }
-@media (min-width: 560px) {
-  .cs-guards dl div { grid-template-columns: 170px minmax(0, 1fr); gap: 24px; }
+@media (max-width: 999px) {
+  .cs-founder { order: 2; max-width: 520px; }
+  .cs-guards { order: 3; }
+}
+@media (min-width: 760px) {
+  .cs-guards dl { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(24px, 3vw, 40px); }
 }
 @media (min-width: 1000px) {
-  .cs-about { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(48px, 6vw, 96px); }
+  .cs-about {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    column-gap: clamp(48px, 6vw, 96px);
+    row-gap: clamp(64px, 8vw, 112px);
+    align-items: start;
+  }
+  .cs-founder-frame { aspect-ratio: 1 / 1; }
+  .cs-about-main { align-self: center; }
+  .cs-guards { grid-column: 1 / -1; }
 }
 
 /* ── Investimento ── */

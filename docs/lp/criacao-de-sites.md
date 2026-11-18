@@ -64,6 +64,10 @@ direção visual saiu da identidade da marca (`DESIGN-LANGUAGE.md`), não de ref
   uma face vermelha), numerais vazados nas pranchas e nas etapas, o "181" em display na abertura
   e na prancha da Machado, e os preços em display. Copy e estrutura não mudaram. O CTA continua
   na primeira tela de 320×640 a 1920×1080.
+- **"Quem faz" sem foto (2026-11-18).** O quadro do retrato mostra o símbolo CbM, que se desenha
+  com a rolagem (CSS `view-timeline`; sem suporte ou com movimento reduzido, aparece inteiro), com
+  nome e função embaixo. Mesmo estado do bloco Sobre da home. Ao preencher `ABOUT.founder.photo`,
+  a foto ocupa o mesmo quadro. As três garantias viraram faixa própria, em colunas.
 - **Sem formulário.** O canal de venda é a conversa. Um formulário sem backend seria retorno falso.
 - **Sem WebGL nesta rota.** O 3D do estúdio aparece nos projetos conceituais, que a pessoa pode abrir.
 - **`noindex` mantido.** A página recebe clique pago e competiria com `/` e `/site-institucional`.
