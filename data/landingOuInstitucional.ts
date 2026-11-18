@@ -54,7 +54,7 @@ const PRECO_URL = `${SITE_URL}${QUANTO_CUSTA_PATH}`;
 const CALC_URL = `${SITE_URL}/calculadora-preco-site`;
 
 const EM_COMUM =
-  "Eu faço os dois do zero, com código próprio e a identidade do cliente; hospedagem e domínio inclusos, com domínio no nome do cliente";
+  "Eu faço os dois do zero, com código próprio e a identidade do cliente; hospedagem e domínio inclusos no primeiro ano, com domínio no nome do cliente";
 
 export const LP_OU_ROWS: {
   criterio: string;

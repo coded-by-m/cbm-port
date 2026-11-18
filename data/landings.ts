@@ -203,7 +203,7 @@ export const LANDING: LandingConfig = {
   meta: {
     // Sem sufixo: o `template` do layout raiz já acrescenta "· Coded by M".
     title: "Criação de site profissional para empresas",
-    description: `Sites e landing pages feitos do zero. Landing page a partir de ${PUBLIC_PRICE.landing.display} e site institucional a partir de ${PUBLIC_PRICE.institucional.display}, com hospedagem e domínio inclusos. Peça um orçamento pelo WhatsApp.`,
+    description: `Sites e landing pages feitos do zero. Landing page a partir de ${PUBLIC_PRICE.landing.display} e site institucional a partir de ${PUBLIC_PRICE.institucional.display}, com hospedagem e domínio inclusos no primeiro ano. Peça um orçamento pelo WhatsApp.`,
     ogImage: OG.home,
   },
 };

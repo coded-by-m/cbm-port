@@ -192,7 +192,7 @@ Google Ads (não há ID configurado).
 | 4 | **Foto do Matheus** | Seção "Quem faz" sem imagem; entra sozinha ao preencher `ABOUT.founder.photo` |
 | 5 | **Depoimentos autorizados** | Nenhum na página; `CLIENT_PROOF` aceita `quote` e `author` |
 | 6 | **Parcelamento:** em quantas vezes, cartão ou Pix | Página diz só "Dá para parcelar" |
-| 7 | **Hospedagem inclusa:** por quanto tempo, e quanto custa depois | Página diz "incluídos no valor do projeto", sem período |
+| 7 | **Hospedagem inclusa:** por quanto tempo, e quanto custa depois | Resolvido: primeiro ano incluso em todo o site; custo depois não é informado (decisão do Matheus) |
 | 8 | **Plano mensal:** valor ou faixa | Página diz "o valor depende do serviço" |
 | 9 | **"Respondo no mesmo dia com valor e prazo":** vale à noite e no fim de semana? | Frase mantida como já estava publicada |
 | 10 | **Videochamada:** confirmar que é oferecida | Citada em "Quem faz" e em uma dúvida, a partir da persona |

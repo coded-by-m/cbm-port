@@ -24,8 +24,8 @@ const INSTITUCIONAL_PRAZO = "a partir de 15 dias úteis";
 
 export const CALC_ESCOPO = "O valor final depende do escopo.";
 
-/** O artigo já publica hospedagem e domínio no valor, para os dois tipos. */
-export const CALC_INCLUSO = "Hospedagem e domínio inclusos";
+/** Hospedagem e domínio entram no valor só no primeiro ano, para os dois tipos. */
+export const CALC_INCLUSO = "Hospedagem e domínio inclusos no primeiro ano";
 
 export const CALC_DESCRIPTION = `Landing page ${LANDING_PRECO} e ${LANDING_PRAZO}. Site institucional ${INSTITUCIONAL_PRECO} e ${INSTITUCIONAL_PRAZO}. ${CALC_ESCOPO}`;
 

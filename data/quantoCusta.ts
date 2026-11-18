@@ -67,14 +67,14 @@ export const QUANTO_CUSTA_ROWS = [
     tipo: "Landing page",
     href: "/landing-page",
     para: "Uma página focada em uma oferta, campanha ou serviço, com um objetivo claro de contato",
-    incluso: "Design e código do zero, hospedagem e domínio",
+    incluso: "Design e código do zero, hospedagem e domínio no primeiro ano",
     preco: "a partir de R$ 800",
   },
   {
     tipo: "Site institucional",
     href: "/site-institucional",
     para: "Empresa que precisa apresentar quem é, o que faz e como ser contratada, em várias páginas",
-    incluso: "Design e código do zero, hospedagem e domínio",
+    incluso: "Design e código do zero, hospedagem e domínio no primeiro ano",
     preco: "a partir de R$ 1.500",
   },
   {
@@ -89,7 +89,7 @@ export const QUANTO_CUSTA_ROWS = [
 export const QUANTO_CUSTA_INCLUSO_HEADING = "Hospedagem, domínio e mensalidade";
 
 export const QUANTO_CUSTA_INCLUSO = [
-  "A hospedagem fica por minha conta e está incluída no valor final do projeto. Eu registro o domínio, e o custo também está incluído no valor do projeto.",
+  "O primeiro ano de hospedagem e de domínio está incluído no valor do projeto. A hospedagem fica por minha conta, e o domínio é registrado no nome da sua empresa.",
   "A mensalidade é um plano opcional de acompanhamento e atualizações recorrentes. Ela depende do serviço.",
 ] as const;
 
@@ -190,7 +190,7 @@ export const QUANTO_CUSTA_FAQ: FaqItem[] = [
   },
   {
     q: "A hospedagem e o domínio estão inclusos?",
-    a: "Sim. A hospedagem fica por minha conta e está incluída no valor final do projeto. Eu registro o domínio, e o custo também está incluído no valor do projeto.",
+    a: "Sim, no primeiro ano. A hospedagem fica por minha conta, e o domínio é registrado no nome da sua empresa. Os dois estão incluídos no valor do projeto durante o primeiro ano.",
   },
   {
     q: "Tem mensalidade?",

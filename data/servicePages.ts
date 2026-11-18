@@ -137,7 +137,7 @@ export const ATENDE_BRASIL: FaqItem = {
  */
 export const HOSPEDAGEM_INCLUSA: FaqItem = {
   q: "Hospedagem e domínio estão inclusos?",
-  a: "Sim. A hospedagem fica por minha conta e está incluída no valor do projeto. O domínio é registrado no nome da sua empresa, e o custo também está incluído.",
+  a: "Sim, no primeiro ano. A hospedagem fica por minha conta, e o domínio é registrado no nome da sua empresa. Os dois estão incluídos no valor do projeto durante o primeiro ano.",
 };
 
 export const PLANO_MENSAL =

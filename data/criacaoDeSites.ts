@@ -412,7 +412,7 @@ export const ABOUT_LP = {
   ],
   /** A objeção do estúdio solo, dita pelo próprio estúdio. */
   honest:
-    "O estúdio é novo: são três clientes no ar e sete estudos conceituais. Uma agência com quinze anos de mercado tem mais estrutura. O que eu ofereço é atenção direta e a garantia de que nada fica preso comigo.",
+    "O estúdio é novo e enxuto. Uma agência com quinze anos de mercado tem mais estrutura. O que eu ofereço é atenção direta, cada projeto feito do zero e a garantia de que nada fica preso comigo.",
   guardTitle: "Tudo por escrito e no nome da sua empresa.",
   guards: [
     { title: "Contrato", text: "Valor e prazo por escrito, antes de começar." },
@@ -452,7 +452,7 @@ export const INVESTMENT = {
   after: {
     title: "Depois da entrega",
     rows: [
-      { label: "Hospedagem e domínio", value: "Incluídos no primeiro ano. Do segundo ano em diante, a renovação é anual." },
+      { label: "Hospedagem e domínio", value: "Incluídos no primeiro ano." },
       { label: "Plano mensal", value: "Opcional. Cobre suporte e atualizações, e o valor depende do serviço." },
       { label: "Sem o plano", value: "O site continua seu, com código e acessos." },
     ],

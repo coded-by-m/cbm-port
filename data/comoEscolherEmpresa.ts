@@ -154,7 +154,7 @@ export const ESCOLHER_ROWS: { criterio: string; parts: readonly CopyPart[] }[] =
     parts: [
       {
         type: "text",
-        text: "O domínio é registrado no nome do cliente. A Coded by M cuida de tudo, com hospedagem e domínio inclusos no preço do projeto. Se você quiser sair, o domínio continua seu.",
+        text: "O domínio é registrado no nome do cliente. A Coded by M cuida de tudo, com hospedagem e domínio inclusos no primeiro ano. Se você quiser sair, o domínio continua seu.",
       },
     ],
   },
