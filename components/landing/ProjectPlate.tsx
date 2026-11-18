@@ -19,7 +19,7 @@ import type { ClientPlate } from "@/data/criacaoDeSites";
  * dentro da moldura. O print tem de 300 a 540 KB e só é baixado nesse
  * pedido. No celular entra o print de celular, que é legível em 390px.
  */
-export function ProjectPlate({ plate, flip }: { plate: ClientPlate; flip: boolean }) {
+export function ProjectPlate({ plate, index, flip }: { plate: ClientPlate; index: number; flip: boolean }) {
   const ref = useRef<HTMLElement>(null);
   const titleId = useId();
   const [active, setActive] = useState<number | null>(null);
@@ -58,6 +58,9 @@ export function ProjectPlate({ plate, flip }: { plate: ClientPlate; flip: boolea
   return (
     <article ref={ref} className={classes} aria-labelledby={titleId}>
       <header className="cs-plate-head">
+        <span className="cs-numeral cs-plate-n" aria-hidden>
+          {String(index + 1).padStart(2, "0")}
+        </span>
         <h3 id={titleId} className="cs-h3">
           {plate.title}
         </h3>
@@ -153,11 +156,12 @@ export function ProjectPlate({ plate, flip }: { plate: ClientPlate; flip: boolea
         </ol>
 
         {plate.metric && (
-          <p className="cs-metric">
-            <strong>
-              {plate.metric.value} {plate.metric.label}
-            </strong>
-            {plate.metric.period}.<span>{plate.metric.source}</span>
+          <p className="cs-stat cs-metric">
+            <span className="cs-stat-n">{plate.metric.value}</span>
+            <span className="cs-stat-label">
+              <strong>{plate.metric.label}</strong> {plate.metric.period}.
+            </span>
+            <span className="cs-metric-src">{plate.metric.source}</span>
           </p>
         )}
 

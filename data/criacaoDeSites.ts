@@ -73,6 +73,15 @@ export const NAV = [
   { href: "#duvidas", label: "Dúvidas" },
 ] as const;
 
+/**
+ * Régua de cada seção: o pré-título da marca (caixa alta espaçada, traço
+ * vermelho). À esquerda a posição e o nome, à direita uma contagem que a
+ * seção cumpre logo abaixo. As contagens vêm dos próprios dados: se um item
+ * entra ou sai, a régua acompanha. Preenchido depois das seções, no fim do
+ * arquivo.
+ */
+export type SectionRuleCopy = { n: string; label: string; aside?: string };
+
 /* ── Abertura ────────────────────────────────────────────────────────────── */
 
 export const HERO = {
@@ -470,3 +479,22 @@ export const CONTACT = {
   cta: CTA_LABEL,
   numberLabel: "Se preferir, salve o número:",
 };
+
+/* ── Réguas das seções ───────────────────────────────────────────────────── */
+
+const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+
+export const SECTION_RULES = {
+  projetos: {
+    n: "01",
+    label: "Projetos",
+    aside: `${plural(CLIENT_PLATES.length, "cliente", "clientes")} · ${plural(CONCEPTS.cards.length, "estudo", "estudos")}`,
+  },
+  situacoes: { n: "02", label: "O que muda", aside: plural(SITUATIONS.rows.length, "situação", "situações") },
+  entregas: { n: "03", label: "O que entra", aside: plural(DELIVERABLES.items.length, "item", "itens") },
+  processo: { n: "04", label: "Como funciona", aside: plural(PROCESS.steps.length, "etapa", "etapas") },
+  quemFaz: { n: "05", label: "Quem faz" },
+  investimento: { n: "06", label: "Investimento", aside: plural(INVESTMENT.formats.length, "formato", "formatos") },
+  duvidas: { n: "07", label: "Dúvidas", aside: plural(FAQ.items.length, "pergunta", "perguntas") },
+  contato: { n: "08", label: "Contato" },
+} satisfies Record<string, SectionRuleCopy>;

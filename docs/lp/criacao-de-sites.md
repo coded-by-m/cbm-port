@@ -57,6 +57,13 @@ direção visual saiu da identidade da marca (`DESIGN-LANGUAGE.md`), não de ref
 - **Ideia visual: prancha de conferência.** Página escura como mesa de luz, sites dos clientes como
   objetos claros, cotas numeradas que ligam um detalhe da tela a um argumento. Vermelho só no CTA,
   na cota ativa e no foco. Investimento em superfície off-white, como proposta impressa.
+- **Passe "mais ousada" (2026-11-18).** A página deixava de fora os recursos mais fortes da marca
+  que a home usa. Entraram: título no corpo de display (até 76px; antes 36px, menor que os H2),
+  régua de micro-labels no topo e em cada seção (`SECTION_RULES`, com contagens tiradas dos
+  dados), terreno triangulado em SVG estático na abertura e no contato (`Terrain.tsx`, sem WebGL,
+  uma face vermelha), numerais vazados nas pranchas e nas etapas, o "181" em display na abertura
+  e na prancha da Machado, e os preços em display. Copy e estrutura não mudaram. O CTA continua
+  na primeira tela de 320×640 a 1920×1080.
 - **Sem formulário.** O canal de venda é a conversa. Um formulário sem backend seria retorno falso.
 - **Sem WebGL nesta rota.** O 3D do estúdio aparece nos projetos conceituais, que a pessoa pode abrir.
 - **`noindex` mantido.** A página recebe clique pago e competiria com `/` e `/site-institucional`.

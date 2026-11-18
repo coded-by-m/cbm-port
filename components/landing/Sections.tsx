@@ -8,11 +8,13 @@ import {
   FAQ,
   INVESTMENT,
   PROCESS,
+  SECTION_RULES,
   SITUATIONS,
   WA_MESSAGE,
 } from "@/data/criacaoDeSites";
 import { GOOGLE_MAPS_URL, INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/contact";
 import { WaCta } from "./Cta";
+import { SectionRule } from "./SectionRule";
 
 /**
  * Situações. Não é lista de dores: cada linha junta o que o dono vive hoje
@@ -23,6 +25,7 @@ export function Situations() {
   return (
     <section className="cs-section cs-section--raised" data-cm-section="situacoes" aria-labelledby="situacoes-titulo">
       <div className="cs-wrap">
+        <SectionRule rule={SECTION_RULES.situacoes} />
         <h2 id="situacoes-titulo" className="cs-h2">
           {SITUATIONS.heading}
         </h2>
@@ -56,31 +59,34 @@ export function Situations() {
 export function Deliverables() {
   return (
     <section className="cs-section" data-cm-section="entregas" aria-labelledby="entregas-titulo">
-      <div className="cs-wrap cs-deliv">
-        <div className="cs-deliv-side">
-          <h2 id="entregas-titulo" className="cs-h2">
-            {DELIVERABLES.heading}
-          </h2>
-          <p className="cs-p">{DELIVERABLES.text}</p>
-          <div className="cs-out">
-            <h3 className="cs-h3">{DELIVERABLES.excluded.title}</h3>
-            <p className="cs-p">{DELIVERABLES.excluded.text}</p>
+      <div className="cs-wrap">
+        <SectionRule rule={SECTION_RULES.entregas} />
+        <div className="cs-deliv">
+          <div className="cs-deliv-side">
+            <h2 id="entregas-titulo" className="cs-h2">
+              {DELIVERABLES.heading}
+            </h2>
+            <p className="cs-p">{DELIVERABLES.text}</p>
+            <div className="cs-out">
+              <h3 className="cs-h3">{DELIVERABLES.excluded.title}</h3>
+              <p className="cs-p">{DELIVERABLES.excluded.text}</p>
+            </div>
           </div>
-        </div>
-        <div>
-          <ol className="cs-deliv-list">
-            {DELIVERABLES.items.map((item) => (
-              <li key={item.title}>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </li>
-            ))}
-          </ol>
-          <ul className="cs-extras">
-            {DELIVERABLES.extras.map((extra) => (
-              <li key={extra}>{extra}</li>
-            ))}
-          </ul>
+          <div>
+            <ol className="cs-deliv-list">
+              {DELIVERABLES.items.map((item) => (
+                <li key={item.title}>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </li>
+              ))}
+            </ol>
+            <ul className="cs-extras">
+              {DELIVERABLES.extras.map((extra) => (
+                <li key={extra}>{extra}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -100,13 +106,14 @@ export function Process() {
       aria-labelledby="processo-titulo"
     >
       <div className="cs-wrap">
+        <SectionRule rule={SECTION_RULES.processo} />
         <h2 id="processo-titulo" className="cs-h2">
           {PROCESS.heading}
         </h2>
         <ol className="cs-steps">
           {PROCESS.steps.map((step, i) => (
             <li key={step.title} className="cs-step">
-              <span className="cs-step-n" aria-hidden>
+              <span className="cs-numeral cs-step-n" aria-hidden>
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="cs-h3">{step.title}</h3>
@@ -145,57 +152,60 @@ export function About() {
 
   return (
     <section className="cs-section" data-cm-section="quem-faz" aria-labelledby="quem-titulo">
-      <div className="cs-wrap cs-about">
-        <div className="cs-about-main">
-          <h2 id="quem-titulo" className="cs-h2">
-            {ABOUT_LP.heading}
-          </h2>
-          {photo && (
-            <Image
-              src={photo}
-              alt="Matheus Mendes, fundador da Coded by M"
-              width={640}
-              height={800}
-              sizes="(max-width: 999px) 80vw, 320px"
-              className="cs-about-photo"
-            />
-          )}
-          {ABOUT_LP.paragraphs.map((text) => (
-            <p key={text} className="cs-p">
-              {text}
-            </p>
-          ))}
-          <p className="cs-p">{ABOUT_LP.honest}</p>
-        </div>
-
-        <div className="cs-guards">
-          <h3 className="cs-h3">{ABOUT_LP.guardTitle}</h3>
-          <dl>
-            {ABOUT_LP.guards.map((guard) => (
-              <div key={guard.title}>
-                <dt>{guard.title}</dt>
-                <dd>{guard.text}</dd>
-              </div>
+      <div className="cs-wrap">
+        <SectionRule rule={SECTION_RULES.quemFaz} />
+        <div className="cs-about">
+          <div className="cs-about-main">
+            <h2 id="quem-titulo" className="cs-h2">
+              {ABOUT_LP.heading}
+            </h2>
+            {photo && (
+              <Image
+                src={photo}
+                alt="Matheus Mendes, fundador da Coded by M"
+                width={640}
+                height={800}
+                sizes="(max-width: 999px) 80vw, 320px"
+                className="cs-about-photo"
+              />
+            )}
+            {ABOUT_LP.paragraphs.map((text) => (
+              <p key={text} className="cs-p">
+                {text}
+              </p>
             ))}
-          </dl>
-          <div className="cs-verify">
-            <p className="cs-small">{ABOUT_LP.verifyTitle}</p>
-            <ul>
-              <li>
-                <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="cs-link" data-cm-id="lp-quem-google">
-                  Perfil da empresa no Google
-                  <TriArrow dir="up-right" />
-                  <span className="sr-only"> (abre em nova aba)</span>
-                </a>
-              </li>
-              <li>
-                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="cs-link" data-cm-id="lp-quem-instagram">
-                  Instagram {INSTAGRAM_HANDLE}
-                  <TriArrow dir="up-right" />
-                  <span className="sr-only"> (abre em nova aba)</span>
-                </a>
-              </li>
-            </ul>
+            <p className="cs-p">{ABOUT_LP.honest}</p>
+          </div>
+
+          <div className="cs-guards">
+            <h3 className="cs-h3">{ABOUT_LP.guardTitle}</h3>
+            <dl>
+              {ABOUT_LP.guards.map((guard) => (
+                <div key={guard.title}>
+                  <dt>{guard.title}</dt>
+                  <dd>{guard.text}</dd>
+                </div>
+              ))}
+            </dl>
+            <div className="cs-verify">
+              <p className="cs-small">{ABOUT_LP.verifyTitle}</p>
+              <ul>
+                <li>
+                  <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="cs-link" data-cm-id="lp-quem-google">
+                    Perfil da empresa no Google
+                    <TriArrow dir="up-right" />
+                    <span className="sr-only"> (abre em nova aba)</span>
+                  </a>
+                </li>
+                <li>
+                  <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="cs-link" data-cm-id="lp-quem-instagram">
+                    Instagram {INSTAGRAM_HANDLE}
+                    <TriArrow dir="up-right" />
+                    <span className="sr-only"> (abre em nova aba)</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -223,6 +233,7 @@ export function Investment() {
       aria-labelledby="investimento-titulo"
     >
       <div className="cs-wrap">
+        <SectionRule rule={SECTION_RULES.investimento} />
         <h2 id="investimento-titulo" className="cs-h2">
           {INVESTMENT.heading}
         </h2>
@@ -291,20 +302,23 @@ export function Investment() {
 export function Faq() {
   return (
     <section id="duvidas" className="cs-section" data-cm-section="duvidas" aria-labelledby="duvidas-titulo">
-      <div className="cs-wrap cs-faq">
-        <h2 id="duvidas-titulo" className="cs-h2">
-          {FAQ.heading}
-        </h2>
-        <div className="cs-faq-list">
-          {FAQ.items.map((item) => (
-            <details key={item.q} className="lp-faq">
-              <summary>
-                {item.q}
-                <span aria-hidden className="lp-faq-mark" />
-              </summary>
-              <p>{item.a}</p>
-            </details>
-          ))}
+      <div className="cs-wrap">
+        <SectionRule rule={SECTION_RULES.duvidas} />
+        <div className="cs-faq">
+          <h2 id="duvidas-titulo" className="cs-h2">
+            {FAQ.heading}
+          </h2>
+          <div className="cs-faq-list">
+            {FAQ.items.map((item) => (
+              <details key={item.q} className="lp-faq">
+                <summary>
+                  {item.q}
+                  <span aria-hidden className="lp-faq-mark" />
+                </summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </div>
     </section>

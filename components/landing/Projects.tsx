@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { TriArrow } from "@/components/ui/TriArrow";
-import { CLIENT_PLATES, CONCEPTS, CTA_LABEL, PROJECTS, WA_MESSAGE } from "@/data/criacaoDeSites";
+import { CLIENT_PLATES, CONCEPTS, CTA_LABEL, PROJECTS, SECTION_RULES, WA_MESSAGE } from "@/data/criacaoDeSites";
 import { WaCta } from "./Cta";
 import { ProjectPlate } from "./ProjectPlate";
+import { SectionRule } from "./SectionRule";
 
 /**
  * Projetos. Clientes reais primeiro, cada um com o endereço no ar para a
@@ -13,6 +14,7 @@ export function Projects() {
   return (
     <section id="projetos" className="cs-section" data-cm-section="projetos" aria-labelledby="projetos-titulo">
       <div className="cs-wrap">
+        <SectionRule rule={SECTION_RULES.projetos} />
         <div className="cs-section-head">
           <h2 id="projetos-titulo" className="cs-h2">
             {PROJECTS.heading}
@@ -22,7 +24,7 @@ export function Projects() {
 
         <div className="cs-plates">
           {CLIENT_PLATES.map((plate, i) => (
-            <ProjectPlate key={plate.slug} plate={plate} flip={i % 2 === 1} />
+            <ProjectPlate key={plate.slug} plate={plate} index={i} flip={i % 2 === 1} />
           ))}
         </div>
 
