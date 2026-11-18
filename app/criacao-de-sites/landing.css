@@ -555,16 +555,76 @@ html:has(.cs-page) {
 .cs-mark.is-active span,
 .cs-notes li.is-active .cs-note-n span { color: rgb(var(--cbm-base)); }
 
-/* As cotas entram em ordem quando a prancha chega à tela: dirigem o olho do
-   ponto 1 ao 3. Sem JavaScript ou com movimento reduzido, já estão no lugar. */
+/* ── Entrada da prancha ──
+   Construção antes da forma, uma vez por prancha: a tela entra varrida a
+   partir do lado da legenda, a captura assenta, o celular sobe, o numeral
+   se revela de baixo e as cotas surgem em ordem. Cada cota, ao surgir, acende
+   o losango da sua linha na legenda: o olho aprende qual número fala de quê.
+
+   `is-armed` só existe com JavaScript e sem movimento reduzido (ProjectPlate).
+   Sem ele, tudo já está no lugar. O recorte final é negativo para não cortar
+   a sombra da moldura nem as cotas que passam da borda. */
+.cs-plate {
+  --wipe-from: inset(0 0 0 100%);
+  --wipe-to: inset(-40px -40px -80px -40px);
+  --t-build: cubic-bezier(0.33, 1, 0.68, 1);
+}
+@media (min-width: 1000px) {
+  .cs-plate--flip { --wipe-from: inset(0 100% 0 0); }
+}
+.cs-plate.is-armed .cs-view--desktop { clip-path: var(--wipe-from); }
+.cs-plate.is-armed .cs-view--mobile,
 .cs-plate.is-armed .cs-mark { opacity: 0; }
+.cs-plate.is-armed .cs-plate-n { clip-path: inset(100% 0 0 0); }
+
+.cs-plate.is-in .cs-view--desktop { animation: csWipe 760ms var(--t-build) both; }
+.cs-plate.is-in .cs-view--desktop .cs-shot > img { animation: csSettle 1300ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.cs-plate.is-in .cs-view--mobile { animation: csRiseIn 640ms var(--t-build) 220ms both; }
+.cs-plate.is-in .cs-plate-n { animation: csNumeral 700ms var(--t-build) 120ms both; }
 .cs-plate.is-in .cs-mark {
   animation: csMark 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(var(--i) * 150ms + 250ms);
+  animation-delay: calc(var(--i) * 160ms + 620ms);
+}
+/* Sem preenchimento: o quadro inicial é o estado normal, e o flash não se
+   repete quando o mouse entra e sai de uma linha da legenda. */
+.cs-plate.is-in .cs-notes li .cs-note-n::before {
+  animation: csNoteFlash 1100ms ease;
+  animation-delay: calc(var(--i) * 160ms + 620ms);
+}
+
+@keyframes csWipe {
+  from { clip-path: var(--wipe-from); }
+  to { clip-path: var(--wipe-to); }
+}
+@keyframes csSettle {
+  from { transform: scale(1.05); }
+  to { transform: none; }
+}
+@keyframes csRiseIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes csNumeral {
+  from { clip-path: inset(100% 0 0 0); transform: translateY(0.12em); }
+  to { clip-path: inset(-10% -5% -10% -5%); transform: none; }
 }
 @keyframes csMark {
   from { opacity: 0; transform: scale(0.4); }
   to { opacity: 1; transform: scale(1); }
+}
+@keyframes csNoteFlash {
+  0%, 100% { background: rgb(var(--cbm-base)); border-color: rgb(var(--cbm-white)); }
+  25%, 55% { background: var(--signal); border-color: var(--signal); }
+}
+
+/* "Ver a página inteira" e a volta: a vista nova desce varrendo de cima.
+   `is-swapped` só entra depois do primeiro clique, para não tocar na entrada. */
+.cs-plate.is-swapped .cs-view--desktop,
+.cs-plate.is-swapped .cs-view--full { animation: csSwap 480ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.cs-plate.is-swapped .cs-view--mobile { animation: csRiseIn 480ms var(--t-build) 80ms both; }
+@keyframes csSwap {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(-40px -40px -80px -40px); }
 }
 
 .cs-notes {

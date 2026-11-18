@@ -24,6 +24,8 @@ export function ProjectPlate({ plate, index, flip }: { plate: ClientPlate; index
   const titleId = useId();
   const [active, setActive] = useState<number | null>(null);
   const [full, setFull] = useState(false);
+  /** Já houve troca de vista: liga a transição da troca, não a da entrada. */
+  const [swapped, setSwapped] = useState(false);
   /** `armed`: JavaScript ativo e prancha ainda fora da tela. `seen`: já entrou. */
   const [armed, setArmed] = useState(false);
   const [seen, setSeen] = useState(false);
@@ -50,6 +52,7 @@ export function ProjectPlate({ plate, index, flip }: { plate: ClientPlate; index
     "cs-plate",
     flip ? "cs-plate--flip" : "",
     full ? "is-full" : "",
+    swapped && armed ? "is-swapped" : "",
     seen ? "is-in" : armed ? "is-armed" : "",
   ]
     .filter(Boolean)
@@ -144,6 +147,7 @@ export function ProjectPlate({ plate, index, flip }: { plate: ClientPlate; index
             <li
               key={note.text}
               className={active === i ? "is-active" : undefined}
+              style={{ ["--i" as string]: i }}
               onMouseEnter={() => setActive(i)}
               onMouseLeave={() => setActive(null)}
             >
@@ -185,7 +189,10 @@ export function ProjectPlate({ plate, index, flip }: { plate: ClientPlate; index
             className="cs-toggle"
             aria-pressed={full}
             data-cm-id={`lp-projeto-${plate.slug}-pagina`}
-            onClick={() => setFull((v) => !v)}
+            onClick={() => {
+              setSwapped(true);
+              setFull((v) => !v);
+            }}
           >
             {full ? "Voltar para a primeira tela" : "Ver a página inteira"}
           </button>
