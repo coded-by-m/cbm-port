@@ -12,13 +12,13 @@ const DriftWall = dynamic(() => import("@/components/site/DriftWall").then((m) =
   ssr: false,
 });
 
-/** 5 e 4 são coprimos com 3 clientes: cada coluna passa pelos três. */
+/** `wide` precisa bater com `WALL_COLUMNS` de `HERO_WALL`. */
 const COLUMNS = { wide: 5, compact: 4 };
 
 /**
- * Parede de sites de clientes, a mesma da seção Projetos da home, só com os
- * três clientes reais. É ambiente: os tiles não levam a lugar nenhum (a
- * landing não tem saída lateral), e o muro inteiro é `aria-hidden`. A prova
+ * Parede de projetos, a mesma da seção Projetos da home, com todos os sites
+ * publicados. É ambiente: os tiles não levam a lugar nenhum (a landing não
+ * tem saída lateral), e o muro inteiro é `aria-hidden`. A prova de cliente
  * que se lê está nas pranchas logo abaixo.
  */
 export function HeroWall({ tiles }: { tiles: DriftTile[] }) {

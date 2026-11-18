@@ -70,7 +70,7 @@ direção visual saiu da identidade da marca (`DESIGN-LANGUAGE.md`), não de ref
   a foto ocupa o mesmo quadro. As três garantias viraram faixa própria, em colunas.
 - **Rodada de ajustes do Matheus (2026-11-18).**
   - **Abertura:** o terreno e o mockup da Machado saíram. No lugar, a parede à deriva da seção
-    Projetos da home (`DriftWall` via `HeroWall.tsx`), só com os três clientes (`HERO_WALL`). No
+    Projetos da home (`DriftWall` via `HeroWall.tsx`), com todos os projetos publicados (`HERO_WALL`), só primeira dobra e telas de abertura. É ambiente, sem rótulo: a prova de cliente fica nas pranchas. No
     desktop ela fica de fundo, à direita, com o escuro da página vindo da esquerda e de cima. No
     celular vira uma faixa entre o botão e o "181".
   - **Réguas numeradas** (`SECTION_RULES`, `SectionRule.tsx`) removidas de todas as seções. A régua

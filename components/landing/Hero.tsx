@@ -6,8 +6,8 @@ import { HeroWall } from "./HeroWall";
 
 /**
  * Abertura. A primeira tela responde quatro coisas: o que é vendido (a régua
- * de cima), para quem (título e apoio), por que considerar (a parede de sites
- * de clientes e o resultado medido da Machado) e como avançar (o botão e a
+ * de cima), para quem (título e apoio), por que considerar (a parede de projetos
+ * do estúdio e o resultado medido da Machado) e como avançar (o botão e a
  * frase que diz o que acontece ao tocar).
  *
  * Desktop: o título ocupa a largura inteira no corpo de display da marca, e a

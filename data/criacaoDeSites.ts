@@ -222,31 +222,44 @@ export const CLIENT_PLATES: ClientPlate[] = PLATE_COPY.map((copy) => {
 });
 
 /**
- * Parede de fundo da abertura: recortes dos sites dos clientes reais (nunca
- * conceito), intercalados por cliente. O i-ésimo tile é do cliente `i % n`;
- * com colunas coprimas com `n` (5 e 4 para 3 clientes), cada coluna passa
- * pelos três. Até 8 recortes por cliente, do mais reconhecível ao mais interno.
+ * Parede de fundo da abertura: todos os projetos publicados, clientes
+ * primeiro. É ambiente (sem rótulo, sem link, `aria-hidden`), então mostra o
+ * repertório inteiro do estúdio; o que se afirma como entrega de cliente
+ * continua nas pranchas logo abaixo.
+ *
+ * Só a primeira dobra e as telas de abertura de cada site (`preview.top` e
+ * `heroImages`): as seções internas são texto miúdo, que no muro vira ruído.
+ *
+ * O DriftWall põe o tile `i` na coluna `i % colunas`. A grade abaixo é
+ * montada para 5 colunas: na linha `r`, coluna `c`, entra o projeto
+ * `(r + 2c) % n`, então cada coluna passa por vários projetos e colunas
+ * vizinhas não repetem o mesmo site lado a lado. Cada projeto gira pelas
+ * próprias telas a cada aparição.
  */
-const WALL_SHOTS = 8;
+const WALL_COLUMNS = 5;
+const WALL_SHOTS = 3;
 
 export const HERO_WALL: DriftTile[] = (() => {
-  const list = CLIENT_PLATES.map((p) => caseOf(p.slug));
-  const shots = list.map((c) =>
-    Array.from(
-      new Set(
-        [c.preview?.top, ...c.heroImages, ...(c.sections ?? []), ...c.gallery, c.preview?.card].filter(
-          (src): src is string => !!src,
-        ),
-      ),
-    ).slice(0, WALL_SHOTS),
-  );
-  const depth = Math.max(0, ...shots.map((list) => list.length));
+  const clientSlugs: string[] = CLIENT_PLATES.map((p) => p.slug);
+  const list = cases
+    .filter((c) => c.status === "published")
+    .map((c) => ({
+      c,
+      shots: Array.from(new Set([c.preview?.top, ...c.heroImages].filter((src): src is string => !!src))),
+    }))
+    .filter((item) => item.shots.length > 0)
+    .sort((a, b) => Number(!clientSlugs.includes(a.c.slug)) - Number(!clientSlugs.includes(b.c.slug)));
+  const n = list.length;
+  if (n === 0) return [];
+  const used = new Array<number>(n).fill(0);
+  const rows = Math.ceil((n * WALL_SHOTS) / WALL_COLUMNS);
   const tiles: DriftTile[] = [];
-  for (let k = 0; k < depth; k++) {
-    list.forEach((c, i) => {
-      const src = shots[i][k];
-      if (src) tiles.push({ src, slug: c.slug, title: c.title, color: "#FB3640" });
-    });
+  for (let r = 0; r < rows; r++) {
+    for (let col = 0; col < WALL_COLUMNS; col++) {
+      const k = (r + 2 * col) % n;
+      const { c, shots } = list[k];
+      tiles.push({ src: shots[used[k]++ % shots.length], slug: c.slug, title: c.title, color: "#FB3640" });
+    }
   }
   return tiles;
 })();
