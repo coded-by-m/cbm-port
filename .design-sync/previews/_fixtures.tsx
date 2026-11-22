@@ -9,8 +9,6 @@
 // design system. Um src quebrado renderiza icone de imagem faltando no card. As
 // data-URIs abaixo sao fixtures — conteudo de exemplo, na paleta da marca, para
 // que o card mostre o componente de verdade em vez de um buraco.
-import type { LandingConfig } from "../../data/landings";
-
 import { ACTIVE_PALETTE, PALETTES } from "@/lib/palette";
 
 // SVG em data-URI e documento isolado: nao le var(--cbm-*), entao leva o hex da paleta ativa.
@@ -133,46 +131,3 @@ export const CASE_SOON = {
   preview: undefined,
 };
 
-/** Fixture da antiga landing de arquitetura, encurtada: exercita os blocos de dor e promessa. */
-export const LANDING: LandingConfig = {
-  blocks: ["hero", "pains", "promise", "proof", "process", "faq", "final"],
-  proofHeading: "Sites de arquitetura e interiores, no ar pra conferir.",
-  processHeading: "Quatro etapas, e você sabe onde está em cada uma.",
-  final: {
-    heading: "Vamos conversar sobre o seu escritório.",
-    text: "Você conta o contexto, eu digo o que faria e em quanto tempo entrego. Sem formulário e sem proposta automática.",
-  },
-  headline: "Sua obra merece um site tão bem resolvido quanto ela.",
-  sub: "Sites e landing pages para escritórios que projetam espaço, feitos do zero, sem template, com a apresentação que o seu trabalho já teria se fosse impresso.",
-  ctaLabel: "Falar sobre o meu escritório",
-  pains: [
-    "Seu portfólio vive no Instagram, e cada projeto some do feed em dois dias.",
-    "O site que existe foi montado num template, e nivela seu escritório com quem não projeta metade.",
-    "Quem pesquisa seu nome encontra foto comprimida e nenhum projeto por inteiro.",
-    "A obra vai pro escritório ao lado, que não projeta melhor. Só se apresenta melhor.",
-  ],
-  promise:
-    "Um site que apresenta sua obra com o mesmo cuidado que você teve ao projetá-la.",
-  caseSlugs: ["estudio-lentz", "forma-viva"],
-  faq: [
-    {
-      q: "Meu Instagram já não basta?",
-      a: "O Instagram é ótimo pra ser lembrado e péssimo pra ser encontrado. Ele não aparece no Google, não organiza sua obra por projeto e não sobrevive ao feed. Um site é o único lugar onde o trabalho fica no seu endereço, na sua ordem, pra sempre.",
-    },
-    {
-      q: "E os meus textos e as minhas fotos?",
-      a: "As fotos são suas e eu trabalho com elas, inclusive tratando peso e recorte, que é o que costuma estragar site de arquitetura. O texto a gente escreve junto: você conta o projeto e eu estruturo a narrativa.",
-    },
-    {
-      q: "Quanto tempo leva?",
-      a: "Quatro etapas (estratégia, design, código e entrega), com data combinada em cada uma. Você sabe onde o projeto está em qualquer dia.",
-    },
-  ],
-  waMessage: "Oi Matheus, vim pela página de arquitetura",
-  meta: {
-    title: "Sites para escritórios de arquitetura · Coded by M",
-    description:
-      "Sites e landing pages para escritórios que projetam espaço, feitos do zero.",
-    ogImage: SHOT_DESKTOP,
-  },
-};

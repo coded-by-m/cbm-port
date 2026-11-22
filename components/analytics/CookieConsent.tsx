@@ -35,8 +35,6 @@ export function CookieConsent() {
     return () => window.removeEventListener(CONSENT_EVENT, hide);
   }, []);
 
-  // As rotas /posts são telas de export (carrosséis) — sem chrome do site.
-  if (pathname?.startsWith("/posts")) return null;
   if (!visible) return null;
 
   const decide = (value: "granted" | "denied") => {

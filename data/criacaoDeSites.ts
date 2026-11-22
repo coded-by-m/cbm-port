@@ -22,6 +22,9 @@ import {
 import type { DriftTile } from "@/components/site/DriftWall";
 import type { CaseProject } from "@/types/case";
 
+/** Endereço da landing. Os antigos `/lp/*` redirecionam para cá (next.config.js). */
+export const LANDING_PATH = "/criacao-de-sites";
+
 /* ── Contato ─────────────────────────────────────────────────────────────── */
 
 /** Tipo de projeto escolhido antes do clique. Vai na mensagem e no `data-cm-id`. */

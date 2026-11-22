@@ -6,13 +6,12 @@
 //
 // Uso: node scripts/check-green.mjs   (sai com 1 se encontrar algo)
 //
-// Fora da busca: app/ui-lab (vitrine antiga, o "antes") e lib/palette.ts (a
-// fonte declarada, onde a paleta "atual" ainda guarda os verdes de produção).
+// Fora da busca: lib/palette.ts (a fonte declarada, onde a paleta "atual" ainda guarda os verdes de produção).
 import fs from "node:fs";
 import path from "node:path";
 
 const ROOTS = ["app", "components", "lib", "hooks", ".design-sync"];
-const SKIP_DIRS = new Set(["node_modules", ".next", ".cache", "ds-package", "ui-lab"]);
+const SKIP_DIRS = new Set(["node_modules", ".next", ".cache", "ds-package"]);
 const SKIP_FILES = new Set([path.join("lib", "palette.ts")]);
 const EXT = /\.(tsx?|css|mjs|glsl)$/;
 const COLOR = /#([0-9a-fA-F]{6})\b|0x([0-9a-fA-F]{6})\b|rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g;

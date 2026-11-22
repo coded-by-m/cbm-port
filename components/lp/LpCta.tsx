@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { waLink } from "@/lib/contact";
 import { messageWithCampaign, readCampaign } from "@/lib/campaign";
 import { FillButton } from "@/components/ui/FillButton";
@@ -50,34 +50,5 @@ export function LpCta({
     >
       {label}
     </FillButton>
-  );
-}
-
-/** O mesmo destino do CTA, como link de texto. */
-export function LpWaLink({
-  message,
-  source,
-  style,
-  children,
-}: {
-  message: string;
-  source: string;
-  style?: CSSProperties;
-  children: ReactNode;
-}) {
-  const href = useCampaignHref(message);
-
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      data-cm-role="whatsapp"
-      data-cm-id={source}
-      className="site-footer-link"
-      style={style}
-    >
-      {children}
-    </a>
   );
 }

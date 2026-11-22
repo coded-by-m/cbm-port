@@ -45,18 +45,8 @@ export { ProcessSection } from "../components/site/ProcessSection";
 export { ProjectsSection } from "../components/site/ProjectsSection";
 export { ServicesSection } from "../components/site/ServicesSection";
 
-// -- Landing pages ---------------------------------------------------------
-export { LpHeader } from "../components/lp/LpHeader";
+// -- CTA de WhatsApp -------------------------------------------------------
 export { LpCta } from "../components/lp/LpCta";
-export {
-  LpHero,
-  LpPains,
-  LpPromise,
-  LpProof,
-  LpProcess,
-  LpFaq,
-  LpFinal,
-} from "../components/lp/LpBlocks";
 
 // -- Vitrine de projetos ---------------------------------------------------
 export { FilterChips } from "../components/projetos/FilterChips";

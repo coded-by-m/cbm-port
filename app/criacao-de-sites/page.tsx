@@ -12,8 +12,7 @@ import {
   Process,
   Situations,
 } from "@/components/landing/Sections";
-import { META } from "@/data/criacaoDeSites";
-import { LANDING_PATH } from "@/data/landings";
+import { LANDING_PATH, META } from "@/data/criacaoDeSites";
 import { OG, OG_SIZE } from "@/lib/seo";
 
 export const metadata: Metadata = {

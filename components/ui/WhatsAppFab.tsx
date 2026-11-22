@@ -32,9 +32,7 @@ export function WhatsAppFab() {
     pathname?.startsWith("/experiencia") ||
     // Landing de campanha tem CTA proprio, repetido: um botao flutuante de
     // contato ao lado dele disputa a mesma acao e dilui as duas.
-    pathname?.startsWith("/criacao-de-sites") ||
-    // As rotas /posts são telas de export (carrosséis) — sem chrome do site.
-    pathname?.startsWith("/posts")
+    pathname?.startsWith("/criacao-de-sites")
   )
     return null;
 

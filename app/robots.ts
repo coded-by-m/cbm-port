@@ -4,7 +4,7 @@ import { SITE_URL } from "@/lib/site";
 /**
  * Nada é bloqueado aqui de propósito.
  *
- * As rotas internas (`/lab`, `/ui-lab`, `/posts/*`) ficam fora do índice pela
+ * As rotas fora da busca (`/lab`, `/criacao-de-sites`) ficam fora do índice pela
  * tag `noindex` que cada uma declara, não por `Disallow`. Os dois juntos se
  * anulam: um crawler proibido de rastrear nunca lê a tag, e o Google pode
  * indexar a URL às cegas, só pelo link, sem conteúdo. Deixar o robô entrar é
