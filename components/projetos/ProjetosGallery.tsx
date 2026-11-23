@@ -93,21 +93,6 @@ export function ProjetosGallery({ projects }: { projects: CaseProject[] }) {
 
       <Reveal delay={120}>
         <p style={{ ...INTRO, marginTop: 18 }}>{PROJETOS_INTRO}</p>
-        <p style={{ ...INTRO, marginTop: 12 }}>
-          Para o mesmo caminho:{" "}
-          <Link href="/landing-page" className="projetos-text-link">
-            landing page
-          </Link>
-          ,{" "}
-          <Link href="/site-institucional" className="projetos-text-link">
-            site institucional
-          </Link>{" "}
-          ou{" "}
-          <Link href="/sites-para-arquitetura" className="projetos-text-link">
-            site para arquitetura
-          </Link>
-          .
-        </p>
       </Reveal>
 
       <Reveal delay={220}>

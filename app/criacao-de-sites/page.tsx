@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   alternates: { canonical: LANDING_PATH },
   /**
    * Noindex de propósito. A página existe para receber clique pago: se o
-   * Google a indexasse, ela competiria com a `/` e com `/site-institucional`
-   * pelas mesmas buscas. O que importa aqui é o preview do link quando alguém
-   * encaminha a página no WhatsApp, e isso é o Open Graph abaixo.
+   * Google a indexasse, ela competiria com a `/` pelas mesmas buscas. O que
+   * importa aqui é o preview do link quando alguém encaminha a página no
+   * WhatsApp, e isso é o Open Graph abaixo.
    */
   robots: { index: false, follow: false },
   openGraph: {

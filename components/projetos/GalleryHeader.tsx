@@ -2,7 +2,7 @@ import Link from "next/link";
 import { TriArrow } from "@/components/ui/TriArrow";
 
 /**
- * Topo fino e sticky da vitrine e das páginas de serviço. Link pra
+ * Topo fino e sticky da vitrine e dos artigos. Link pra
  * experiência imersiva. `label` diz onde a pessoa está.
  */
 export function GalleryHeader({ label = "Projetos" }: { label?: string }) {

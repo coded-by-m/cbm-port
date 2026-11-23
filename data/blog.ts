@@ -7,7 +7,7 @@
  * nenhuma.
  *
  * Cada artigo responde à pergunta do título no primeiro parágrafo e linka ao
- * menos duas páginas de serviço. Texto revisado pelo Matheus antes de virar
+ * menos duas páginas do site. Texto revisado pelo Matheus antes de virar
  * `draft: false`.
  */
 
@@ -46,8 +46,8 @@ export const POSTS: BlogPost[] = [
       { heading: "Como pedir um orçamento que dá pra comparar", body: ["PREENCHER"] },
     ],
     related: [
-      { href: "/site-institucional", label: "Site institucional" },
-      { href: "/landing-page", label: "Criação de landing page" },
+      { href: "/quanto-custa-um-site-florianopolis", label: "Quanto custa um site em Florianópolis" },
+      { href: "/calculadora-preco-site", label: "Calculadora de preço de site" },
     ],
   },
   {
@@ -64,8 +64,8 @@ export const POSTS: BlogPost[] = [
       { heading: "Dá pra ter os dois?", body: ["PREENCHER"] },
     ],
     related: [
-      { href: "/landing-page", label: "Criação de landing page" },
-      { href: "/site-institucional", label: "Site institucional" },
+      { href: "/quanto-custa-um-site-florianopolis", label: "Quanto custa um site em Florianópolis" },
+      { href: "/projetos", label: "Projetos" },
     ],
   },
   {
@@ -82,8 +82,8 @@ export const POSTS: BlogPost[] = [
       { heading: "Contato sem atrito", body: ["PREENCHER"] },
     ],
     related: [
-      { href: "/sites-para-arquitetura", label: "Sites para arquitetura" },
-      { href: "/site-institucional", label: "Site institucional" },
+      { href: "/projetos", label: "Projetos" },
+      { href: "/contato", label: "Contato" },
     ],
   },
 ];

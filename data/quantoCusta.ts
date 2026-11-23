@@ -65,21 +65,18 @@ export const QUANTO_CUSTA_TABLE_NOTE =
 export const QUANTO_CUSTA_ROWS = [
   {
     tipo: "Landing page",
-    href: "/landing-page",
     para: "Uma página focada em uma oferta, campanha ou serviço, com um objetivo claro de contato",
     incluso: "Design e código do zero, hospedagem e domínio no primeiro ano",
     preco: "a partir de R$ 800",
   },
   {
     tipo: "Site institucional",
-    href: "/site-institucional",
     para: "Empresa que precisa apresentar quem é, o que faz e como ser contratada, em várias páginas",
     incluso: "Design e código do zero, hospedagem e domínio no primeiro ano",
     preco: "a partir de R$ 1.500",
   },
   {
     tipo: "Outros projetos ou escopo maior",
-    href: null,
     para: "Projetos que vão além de uma landing page ou de um site institucional padrão",
     incluso: "Definido no orçamento",
     preco: "sob consulta",

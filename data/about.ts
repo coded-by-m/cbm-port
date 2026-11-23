@@ -59,7 +59,7 @@ export const SKILLS: Skill[] = [
   {
     label: "Painel de visitas",
     // Texto fixo, sem importar de servicePages: este arquivo entra no bundle
-    // do cliente (CapabilitiesSection) e não deve arrastar as páginas de serviço.
+    // do cliente (CapabilitiesSection) e não deve arrastar o resto daquele arquivo.
     desc: "Acesso ao Coded Insights para ver quantas pessoas entram no site, de onde vêm e quantas clicam no WhatsApp.",
   },
 ];

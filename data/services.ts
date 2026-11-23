@@ -29,13 +29,11 @@ export interface ServiceConfig {
   indicatedFor: string;
   /** Subject do mailto do CTA expandido. */
   mailSubject: string;
-  /** Página de serviço própria, quando existe — e o texto do link pra ela. */
-  page?: { href: string; label: string };
   /**
-   * CTA externo quando ainda não há página 200. Não inventar rota
-   * (`/aplicacoes-web` responde 404).
+   * CTA do card: WhatsApp com a mensagem do serviço. `id` é o `data-cm-id`
+   * do clique. Não inventar rota (`/aplicacoes-web` responde 404).
    */
-  cta?: { href: string; label: string };
+  cta?: { href: string; label: string; id: string };
 }
 
 export const SERVICES: ServiceConfig[] = [
@@ -56,7 +54,13 @@ export const SERVICES: ServiceConfig[] = [
     indicatedFor:
       "Empresas com produto único ou campanha específica que precisam de uma página focada em conversão.",
     mailSubject: "Interesse em Landing Page",
-    page: { href: "/landing-page", label: "Criação de landing page" },
+    cta: {
+      href: waLink(
+        "Olá! Vim pelo site da Coded by M e quero falar sobre uma landing page.",
+      ),
+      label: "Falar no WhatsApp",
+      id: "services-landing-whatsapp",
+    },
   },
   {
     slug: "sites-institucionais",
@@ -75,7 +79,13 @@ export const SERVICES: ServiceConfig[] = [
     indicatedFor:
       "Empresas que querem presença sólida, comunicando autoridade, produtos e cultura.",
     mailSubject: "Interesse em Site Institucional",
-    page: { href: "/site-institucional", label: "Site institucional sob medida" },
+    cta: {
+      href: waLink(
+        "Olá! Vim pelo site da Coded by M e quero falar sobre um site institucional.",
+      ),
+      label: "Falar no WhatsApp",
+      id: "services-institucional-whatsapp",
+    },
   },
   {
     slug: "aplicacoes-web",
@@ -99,6 +109,7 @@ export const SERVICES: ServiceConfig[] = [
         "Olá! Vim pelo site da Coded by M e quero falar sobre uma aplicação web.",
       ),
       label: "Falar no WhatsApp",
+      id: "services-aplicacoes-whatsapp",
     },
   },
 ];

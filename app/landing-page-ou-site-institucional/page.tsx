@@ -15,11 +15,9 @@ import {
   LP_OU_H1,
   LP_OU_INST_HEADING,
   LP_OU_INST_ITEMS,
-  LP_OU_INST_MORE,
   LP_OU_LEAD,
   LP_OU_LP_HEADING,
   LP_OU_LP_ITEMS,
-  LP_OU_LP_MORE,
   LP_OU_MIGRAR,
   LP_OU_MIGRAR_HEADING,
   LP_OU_PATH,
@@ -220,9 +218,6 @@ export default function LandingOuInstitucionalPage() {
             </li>
           ))}
         </ul>
-        <p style={PROSE_P}>
-          <Copy parts={LP_OU_LP_MORE} />
-        </p>
 
         <h2 style={PROSE_H2}>{LP_OU_INST_HEADING}</h2>
         <ul style={{ ...LIST, listStyle: "disc" }}>
@@ -232,9 +227,6 @@ export default function LandingOuInstitucionalPage() {
             </li>
           ))}
         </ul>
-        <p style={PROSE_P}>
-          <Copy parts={LP_OU_INST_MORE} />
-        </p>
 
         <h2 style={PROSE_H2}>{LP_OU_MIGRAR_HEADING}</h2>
         <p style={PROSE_P}>{LP_OU_MIGRAR}</p>

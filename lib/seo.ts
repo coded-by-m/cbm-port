@@ -82,7 +82,7 @@ export function organizationSchema(): Json {
       addressRegion: "SC",
       addressCountry: "BR",
     },
-    // O que o site diz no hero, no rodapé e nas páginas de serviço: o estúdio
+    // O que o site diz no hero e no rodapé: o estúdio
     // fica em Florianópolis e atende o Brasil inteiro, remoto.
     areaServed: AREA_SERVED,
     founder: { "@id": FOUNDER_ID },
@@ -159,7 +159,7 @@ export function webPageSchema(opts: {
 /**
  * A calculadora de preço. `name`, `description` e o autor são o que a
  * página mostra. Sem `offers`: a ferramenta não publica um preço próprio,
- * e os pisos ficam nas páginas de serviço.
+ * e os pisos ficam na home e nos guias.
  */
 export function webApplicationSchema(opts: {
   path: string;
@@ -235,43 +235,6 @@ const AREA_SERVED = [
   { "@type": "Country", name: "Brasil" },
 ];
 
-/**
- * Um serviço oferecido pela organização (páginas de serviço).
- *
- * `offer` só quando a página mostra o piso. `description` é o parágrafo da
- * seção Investimento — "a partir de", e o valor final depende do escopo.
- * Sem `aggregateRating`.
- */
-export function serviceSchema(opts: {
-  path: string;
-  name: string;
-  description: string;
-  offer?: { price: string; description: string };
-}): Json {
-  const url = `${SITE_URL}${opts.path}`;
-  return {
-    "@type": "Service",
-    "@id": `${url}#service`,
-    name: opts.name,
-    description: opts.description,
-    url,
-    serviceType: opts.name,
-    provider: { "@id": ORG_ID },
-    areaServed: { "@type": "Country", name: "Brasil" },
-    mainEntityOfPage: { "@id": `${url}#webpage` },
-    ...(opts.offer
-      ? {
-          offers: {
-            "@type": "Offer",
-            url,
-            price: opts.offer.price,
-            priceCurrency: "BRL",
-            description: opts.offer.description,
-          },
-        }
-      : {}),
-  };
-}
 
 /**
  * FAQPage a partir das MESMAS perguntas que a página mostra. Rascunhos

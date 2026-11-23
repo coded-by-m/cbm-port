@@ -76,19 +76,7 @@ export default function SobrePage() {
       </section>
 
       <p style={{ ...PROSE_P, marginTop: 48 }}>
-        Conheça os serviços:{" "}
-        <Link href="/landing-page" style={PROSE_LINK}>
-          criação de landing page
-        </Link>
-        {", "}
-        <Link href="/site-institucional" style={PROSE_LINK}>
-          site institucional
-        </Link>
-        {" e "}
-        <Link href="/sites-para-arquitetura" style={PROSE_LINK}>
-          sites para arquitetura
-        </Link>
-        . Ou veja os{" "}
+        Veja os{" "}
         <Link href="/projetos" style={PROSE_LINK}>
           projetos
         </Link>

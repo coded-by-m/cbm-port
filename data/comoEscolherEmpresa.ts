@@ -161,11 +161,10 @@ export const ESCOLHER_ROWS: { criterio: string; parts: readonly CopyPart[] }[] =
   {
     criterio: "Prazo",
     parts: [
-      { type: "text", text: "Prazo informado no orçamento. Veja o prazo de cada serviço em " },
-      { type: "internal", href: "/landing-page", label: "landing page" },
-      { type: "text", text: " e " },
-      { type: "internal", href: "/site-institucional", label: "site institucional" },
-      { type: "text", text: "." },
+      {
+        type: "text",
+        text: "Prazo informado no orçamento: landing page a partir de 5 dias úteis, site institucional a partir de 15 dias úteis.",
+      },
     ],
   },
   {

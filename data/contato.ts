@@ -30,7 +30,7 @@ export const CONTATO_MENSAGEM = [
 ] as const;
 
 /** Frase até "Detalhes em". Os links de serviço entram na página, depois dela. */
-export const CONTATO_INVESTIMENTO = `Landing page a partir de ${PUBLIC_PRICE.landing.display}. Site institucional a partir de ${PUBLIC_PRICE.institucional.display}. O valor final depende do projeto e é fechado no WhatsApp antes de começar. Detalhes em`;
+export const CONTATO_INVESTIMENTO = `Landing page a partir de ${PUBLIC_PRICE.landing.display}. Site institucional a partir de ${PUBLIC_PRICE.institucional.display}. O valor final depende do projeto e é fechado no WhatsApp antes de começar.`;
 
 export const CONTATO_FAQ: FaqItem[] = [
   {

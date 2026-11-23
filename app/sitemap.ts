@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { cases } from "@/data/cases";
-import { SERVICE_PAGES } from "@/data/servicePages";
 import { publishedPosts } from "@/data/blog";
 import { QUANTO_CUSTA_PATH } from "@/data/quantoCusta";
 import { ESCOLHER_PATH } from "@/data/comoEscolherEmpresa";
@@ -30,12 +29,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: SITE_URL, changeFrequency: "monthly", priority: 1 },
-    // Páginas de serviço: as que respondem às buscas comerciais.
-    ...SERVICE_PAGES.map((p) => ({
-      url: `${SITE_URL}/${p.slug}`,
-      changeFrequency: "monthly" as const,
-      priority: 0.9,
-    })),
     // Artigo de preço na raiz. A URL não leva o ano para poder ser atualizada.
     {
       url: `${SITE_URL}${QUANTO_CUSTA_PATH}`,

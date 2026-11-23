@@ -189,13 +189,7 @@ export default function QuantoCustaPage() {
               {QUANTO_CUSTA_ROWS.map((row) => (
                 <tr key={row.tipo}>
                   <td data-label={COLS[0]}>
-                    {row.href ? (
-                      <Link href={row.href} style={PROSE_LINK}>
-                        {row.tipo}
-                      </Link>
-                    ) : (
-                      row.tipo
-                    )}
+                    {row.tipo}
                   </td>
                   <td data-label={COLS[1]}>{row.para}</td>
                   <td data-label={COLS[2]}>{row.incluso}</td>
@@ -232,15 +226,8 @@ export default function QuantoCustaPage() {
           </p>
         ))}
         <p style={PROSE_P}>
-          {"O prazo de cada serviço está na página da "}
-          <Link href="/landing-page" style={PROSE_LINK}>
-            landing page
-          </Link>
-          {" e na página do "}
-          <Link href="/site-institucional" style={PROSE_LINK}>
-            site institucional
-          </Link>
-          .
+          Landing page a partir de 5 dias úteis. Site institucional a partir de 15 dias úteis. O prazo
+          final depende do escopo e é fechado no orçamento.
         </p>
 
         <h2 style={PROSE_H2}>Landing page ou site institucional: qual escolher?</h2>
@@ -302,14 +289,6 @@ export default function QuantoCustaPage() {
         </section>
 
         <p style={{ ...PROSE_P, marginTop: 48 }}>
-          <Link href="/landing-page" style={PROSE_LINK}>
-            Landing page
-          </Link>
-          {" · "}
-          <Link href="/site-institucional" style={PROSE_LINK}>
-            Site institucional
-          </Link>
-          {" · "}
           <Link href={CALC_PATH} style={PROSE_LINK}>
             Calculadora de preço de site
           </Link>

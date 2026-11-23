@@ -33,13 +33,6 @@ const NAV_BASE = [
   { label: "Privacidade", href: PRIVACY_PATH, external: false },
 ];
 
-/** Páginas de serviço — links de texto pra busca e pra quem rola até o fim. */
-const SERVICE_LINKS = [
-  { href: "/landing-page", label: "Criação de landing page" },
-  { href: "/site-institucional", label: "Site institucional" },
-  { href: "/sites-para-arquitetura", label: "Sites para arquitetura" },
-];
-
 /**
  * Footer-showpiece (zona 11) — paisagem triangulada da marca subindo da base +
  * wordmark gigante "Coded by M", status/waitlist, nav e contato. Tudo entra
@@ -165,27 +158,8 @@ export default function Footer({
             ))}
           </nav>
 
-          {/* Coluna 3 — serviços + contato */}
+          {/* Coluna 3 — contato */}
           <div className="flex flex-col gap-6" style={rise(240)}>
-            <nav aria-label="Serviços" className="flex flex-col gap-1.5">
-              <span
-                className="mb-1 text-[0.62rem] uppercase tracking-[0.3em] text-[#F5F2ED]/40"
-                style={{ fontFamily: SAT, fontWeight: 500 }}
-              >
-                Serviços
-              </span>
-              {SERVICE_LINKS.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  data-cursor="triangle"
-                  className="text-[0.8rem] text-[#F5F2ED]/60 transition-colors hover:text-[#F5F2ED]"
-                  style={{ fontFamily: SAT, fontWeight: 400 }}
-                >
-                  {l.label}
-                </Link>
-              ))}
-            </nav>
             <div
               className="flex flex-col gap-1.5 text-[0.8rem] text-[#F5F2ED]/60"
               style={{ fontFamily: SAT, fontWeight: 400 }}

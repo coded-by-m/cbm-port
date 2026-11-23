@@ -48,8 +48,6 @@ export type CopyPart =
   | { type: "internal"; href: string; label: string }
   | { type: "external"; href: string; label: string };
 
-const LANDING_URL = `${SITE_URL}/landing-page`;
-const INSTITUCIONAL_URL = `${SITE_URL}/site-institucional`;
 const PRECO_URL = `${SITE_URL}${QUANTO_CUSTA_PATH}`;
 const CALC_URL = `${SITE_URL}/calculadora-preco-site`;
 
@@ -97,14 +95,8 @@ export const LP_OU_ROWS: {
   },
   {
     criterio: "Prazo na Coded by M",
-    landing: [
-      { type: "text", text: "veja em " },
-      { type: "internal", href: LANDING_URL, label: "landing page" },
-    ],
-    institucional: [
-      { type: "text", text: "veja em " },
-      { type: "internal", href: INSTITUCIONAL_URL, label: "site institucional" },
-    ],
+    landing: [{ type: "text", text: "a partir de 5 dias úteis" }],
+    institucional: [{ type: "text", text: "a partir de 15 dias úteis" }],
   },
   {
     criterio: "Investimento na Coded by M",
@@ -179,12 +171,6 @@ export const LP_OU_LP_ITEMS: readonly (readonly CopyPart[])[] = [
   ],
 ];
 
-export const LP_OU_LP_MORE: readonly CopyPart[] = [
-  { type: "text", text: "Saiba mais na página de " },
-  { type: "internal", href: LANDING_URL, label: "landing page" },
-  { type: "text", text: "." },
-];
-
 export const LP_OU_INST_HEADING = "Quando o site institucional é a melhor escolha";
 
 export const LP_OU_INST_ITEMS = [
@@ -192,12 +178,6 @@ export const LP_OU_INST_ITEMS = [
   "Quem pesquisa a empresa quer ver história, projetos e formas de contato. E 89,1% das pessoas com 10 anos ou mais usaram a internet nos últimos três meses (IBGE, PNAD Contínua TIC 2024).",
   "O site vai ser a referência principal da marca na internet.",
 ] as const;
-
-export const LP_OU_INST_MORE: readonly CopyPart[] = [
-  { type: "text", text: "Saiba mais na página de " },
-  { type: "internal", href: INSTITUCIONAL_URL, label: "site institucional" },
-  { type: "text", text: "." },
-];
 
 export const LP_OU_MIGRAR_HEADING = "Dá para começar com uma e depois ter a outra?";
 

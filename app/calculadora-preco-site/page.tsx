@@ -154,14 +154,6 @@ export default function CalculadoraPrecoPage() {
             {QUANTO_CUSTA_CRUMB}
           </Link>
           {" · "}
-          <Link href="/landing-page" style={PROSE_LINK}>
-            Landing page
-          </Link>
-          {" · "}
-          <Link href="/site-institucional" style={PROSE_LINK}>
-            Site institucional
-          </Link>
-          {" · "}
           <Link href="/contato" style={PROSE_LINK}>
             Contato
           </Link>

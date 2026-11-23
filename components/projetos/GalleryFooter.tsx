@@ -4,11 +4,8 @@ import { publishedPosts } from "@/data/blog";
 import { PRIVACY_PATH } from "@/data/privacidade";
 import { TriArrow } from "@/components/ui/TriArrow";
 
-/** Links internos do rodapé: serviços, vitrine, sobre e blog (se houver artigo). */
+/** Links internos do rodapé: vitrine, sobre, contato e blog (se houver artigo). */
 const LINKS = [
-  { href: "/landing-page", label: "Criação de landing page" },
-  { href: "/site-institucional", label: "Site institucional" },
-  { href: "/sites-para-arquitetura", label: "Sites para arquitetura" },
   { href: "/projetos", label: "Projetos" },
   { href: "/sobre", label: "Sobre" },
   { href: "/contato", label: "Contato" },
@@ -17,9 +14,8 @@ const LINKS = [
 ];
 
 /**
- * Rodapé CTA da vitrine e das páginas de serviço. WhatsApp no botão,
- * /contato na navegação, e os serviços linkados. `current` omite a página
- * em que se está.
+ * Rodapé CTA da vitrine e dos artigos. WhatsApp no botão, /contato na
+ * navegação. `current` omite a página em que se está.
  */
 export function GalleryFooter({ current }: { current?: string }) {
   const waHref = waLink(
@@ -49,11 +45,11 @@ export function GalleryFooter({ current }: { current?: string }) {
         </div>
       </div>
       <nav
-        aria-label="Serviços"
+        aria-label="Navegação do rodapé"
         className="mx-auto flex max-w-6xl flex-col gap-3 border-t border-[#F5F2ED]/10 px-5 py-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8"
       >
         <span className="text-[0.62rem] uppercase tracking-[0.3em] text-cbm-gray-400">
-          Serviços
+          Navegação
         </span>
         {LINKS.filter((l) => l.href !== current).map((l) => (
           <Link

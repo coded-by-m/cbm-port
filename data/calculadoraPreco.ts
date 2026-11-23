@@ -2,7 +2,7 @@
  * Página /calculadora-preco-site.
  *
  * Os pisos saem de PUBLIC_PRICE (landing R$ 800, institucional R$ 1.500).
- * Os prazos são os já publicados nas páginas de serviço: 5 e 15 dias úteis.
+ * Os prazos são os já publicados na FAQ da home: 5 e 15 dias úteis.
  * Não há outro valor. O FAQ visível e o FAQPage saem do mesmo array.
  */
 

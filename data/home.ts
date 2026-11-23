@@ -106,10 +106,6 @@ export const HOME_FAQ: FaqItem[] = [
   {
     q: "Quanto custa um site ou uma landing page?",
     a: `Landing page a partir de ${PUBLIC_PRICE.landing.display}. Site institucional a partir de ${PUBLIC_PRICE.institucional.display}. Em ambos o valor final depende do projeto; no WhatsApp eu fecho valor e prazo antes de qualquer compromisso. Dá para parcelar.`,
-    links: [
-      { href: "/landing-page", label: "Landing page" },
-      { href: "/site-institucional", label: "Site institucional" },
-    ],
   },
   {
     q: "Em quanto tempo fica pronto?",
@@ -134,11 +130,8 @@ export const HOME_FAQ: FaqItem[] = [
   ESTUDIO_SOLO,
   {
     q: "Landing page ou site institucional: qual escolher?",
-    a: "Landing page quando há uma ação principal, como uma campanha ou um serviço. Site institucional quando a empresa precisa de várias páginas. {0}. Se for escritório de arquitetura ou interiores, veja também {1}.",
-    links: [
-      { href: LP_OU_URL, label: "Veja a comparação completa" },
-      { href: `${SITE_URL}/sites-para-arquitetura`, label: "sites para arquitetura" },
-    ],
+    a: "Landing page quando há uma ação principal, como uma campanha ou um serviço. Site institucional quando a empresa precisa de várias páginas. {0}.",
+    links: [{ href: LP_OU_URL, label: "Veja a comparação completa" }],
   },
   {
     q: "Vocês atendem fora de Florianópolis?",

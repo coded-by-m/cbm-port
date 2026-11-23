@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cases, getCaseBySlug } from "@/data/cases";
-import { serviceLinksForCase } from "@/data/servicePages";
 import { CaseHero } from "@/components/case/CaseHero";
 import { CaseOverview } from "@/components/case/CaseOverview";
 import { CaseShowcase } from "@/components/case/CaseShowcase";
@@ -129,7 +128,6 @@ export default function CasePage({
       <CaseReturnCTA
         siteUrl={project.siteUrl}
         next={next && next !== project ? { slug: next.slug, title: next.title } : undefined}
-        {...serviceLinksForCase(project)}
       />
       <style>{`
         @keyframes case-fade-in { from { opacity: 0 } to { opacity: 1 } }

@@ -80,10 +80,8 @@ export function ServicesSection() {
                 textWrap: "pretty",
               }}
             >
-              {SECTIONS.servicos.sub} Para uma campanha, o caminho é uma{" "}
-              <Link href="/landing-page" className="site-inline-link">landing page</Link>; para presença completa, um{" "}
-              <Link href="/site-institucional" className="site-inline-link">site institucional</Link>. Escritórios de arquitetura e interiores têm página própria:{" "}
-              <Link href="/sites-para-arquitetura" className="site-inline-link">sites para arquitetura</Link>.
+              {SECTIONS.servicos.sub} Para uma campanha, o caminho é uma landing page; para presença
+              completa, um site institucional.
             </p>
           </Reveal>
         </div>
@@ -215,21 +213,13 @@ export function ServicesSection() {
                   >
                     {s.indicatedFor}
                   </p>
-                  {s.page ? (
-                    <Link
-                      href={s.page.href}
-                      className="site-link-underline"
-                      style={CARD_CTA}
-                    >
-                      {s.page.label} <span aria-hidden style={{ color: INK.signal }}><TriArrow dir="right" /></span>
-                    </Link>
-                  ) : s.cta ? (
+                  {s.cta ? (
                     <a
                       href={s.cta.href}
                       target="_blank"
                       rel="noopener noreferrer"
                       data-cm-role="whatsapp"
-                      data-cm-id="services-aplicacoes-whatsapp"
+                      data-cm-id={s.cta.id}
                       className="site-link-underline"
                       style={CARD_CTA}
                     >
@@ -254,14 +244,7 @@ export function ServicesSection() {
             textWrap: "pretty",
           }}
         >
-          <Link href="/landing-page" className="site-inline-link">
-            Landing page
-          </Link>{" "}
-          a partir de {PUBLIC_PRICE.landing.display} ·{" "}
-          <Link href="/site-institucional" className="site-inline-link">
-            site institucional
-          </Link>{" "}
-          a partir de {PUBLIC_PRICE.institucional.display}. O valor final depende do projeto.{" "}
+          Landing page a partir de {PUBLIC_PRICE.landing.display} · site institucional a partir de {PUBLIC_PRICE.institucional.display}. O valor final depende do projeto.{" "}
           {SECTIONS.servicos.naoFaz}
         </p>
       </div>

@@ -29,8 +29,6 @@ export const metadata: Metadata = {
 const LINKS = [
   { href: "/", label: "Início" },
   { href: "/projetos", label: "Projetos" },
-  { href: "/landing-page", label: "Criação de landing page" },
-  { href: "/site-institucional", label: "Site institucional" },
 ];
 
 /**

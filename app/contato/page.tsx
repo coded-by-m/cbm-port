@@ -129,15 +129,7 @@ export default function ContatoPage() {
 
         <h2 style={PROSE_H2}>Investimento</h2>
         <p style={PROSE_P}>
-          {CONTATO_INVESTIMENTO}{" "}
-          <Link href="/landing-page" style={PROSE_LINK}>
-            Landing page
-          </Link>
-          {" e "}
-          <Link href="/site-institucional" style={PROSE_LINK}>
-            Site institucional
-          </Link>
-          .
+          {CONTATO_INVESTIMENTO}
         </p>
 
         <p style={{ ...PROSE_P, marginTop: 48 }}>
