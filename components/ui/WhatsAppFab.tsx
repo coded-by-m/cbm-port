@@ -35,7 +35,9 @@ export function WhatsAppFab() {
     pathname?.startsWith("/criacao-de-sites") ||
     // A vitrine tem o dock fixo na base da tela e fecha no proprio CTA de
     // WhatsApp; o flutuante cairia em cima do dock.
-    pathname === "/projetos"
+    pathname === "/projetos" ||
+    // Bancadas internas: o flutuante so atrapalha o que esta sendo testado.
+    pathname?.startsWith("/lab")
   )
     return null;
 

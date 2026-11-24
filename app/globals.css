@@ -1527,3 +1527,943 @@ a:hover .tri-arrow--left, button:hover .tri-arrow--left { transform: translateX(
   .pi-dock { transition-duration: 0.01ms; }
   .pi-index[data-live] .pi-row.is-active .pi-name { transform: none; }
 }
+
+/* ── /lab/aberturas: aberturas em teste para a /projetos ─────────────────
+   Quatro cenas que tocam por cima da página real e saem. São protótipo:
+   moram em `components/lab/aberturas` e nenhuma está ligada à /projetos. */
+.ab-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: hidden;
+}
+
+/* Barra da bancada */
+.ab-bar {
+  position: fixed;
+  top: 66px;
+  left: 50%;
+  z-index: 70;
+  display: flex;
+  gap: 4px;
+  max-width: calc(100vw - 16px);
+  padding: 5px;
+  overflow-x: auto;
+  border: 1px solid rgb(245 242 237 / 0.16);
+  background: rgb(var(--cbm-base) / 0.92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transform: translateX(-50%);
+  transition: opacity 200ms ease;
+}
+.ab-bar.is-hidden { opacity: 0; pointer-events: none; }
+.ab-bar button {
+  flex: none;
+  min-height: 40px;
+  padding: 0 11px;
+  border: 1px solid transparent;
+  background: none;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgb(245 242 237 / 0.78);
+  cursor: pointer;
+}
+.ab-bar button:hover { color: #f5f2ed; }
+.ab-bar button[aria-pressed="true"] { border-color: #fb3640; color: #f5f2ed; }
+.ab-bar button:focus-visible { outline: 2px solid #fb3640; outline-offset: 2px; }
+
+/* 1 · Cartão: a frente do cartão em duas metades que dobram pra trás */
+.ab-fold { perspective: 1400px; }
+.ab-flap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+  backface-visibility: hidden;
+  transition: transform 620ms cubic-bezier(0.6, 0.02, 0.2, 1), filter 620ms ease-in;
+}
+.ab-flap--top { top: 0; transform-origin: 50% 0; }
+.ab-flap--bottom { bottom: 0; transform-origin: 50% 100%; }
+.ab-flap-face { position: absolute; left: 0; right: 0; height: 200%; }
+.ab-flap--top .ab-flap-face { top: 0; }
+.ab-flap--bottom .ab-flap-face { bottom: 0; }
+.ab-fold.is-open .ab-flap--top { transform: rotateX(-97deg); filter: brightness(0.3); }
+.ab-fold.is-open .ab-flap--bottom { transform: rotateX(97deg); filter: brightness(0.3); }
+.ab-card {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #060606;
+}
+.ab-card-logo { width: clamp(84px, 24vw, 132px); height: auto; }
+.ab-card-mesh {
+  position: absolute;
+  inset: auto 0 0;
+  width: 100%;
+  height: 34%;
+}
+
+/* 2 · QR */
+.ab-qr { transition: opacity 360ms ease; }
+.ab-qr.is-leaving { opacity: 0; }
+.ab-qr canvas { display: block; width: 100%; height: 100%; }
+
+/* 3 · Corte: sem transição nenhuma, de propósito */
+.ab-cut {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 clamp(20px, 5vw, 80px);
+}
+.ab-cut p { margin: 0; font-family: "Panchang", sans-serif; }
+.ab-cut--brand { align-items: center; background: #050505; color: #f5f2ed; }
+.ab-cut--brand p { font-weight: 700; font-size: clamp(22px, 6vw, 44px); letter-spacing: -0.01em; }
+.ab-cut--names { background: #f5f2ed; color: #0b0b0b; }
+.ab-cut--names p {
+  font-weight: 800;
+  font-size: clamp(54px, 17vw, 210px);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+}
+
+/* 4 · Código */
+.ab-code {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 clamp(20px, 5vw, 80px);
+  background: #060606;
+}
+.ab-code-file {
+  margin: 0 0 22px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgb(245 242 237 / 0.6);
+}
+.ab-code-file::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 10px;
+  background: #fb3640;
+}
+.ab-code-lines {
+  display: grid;
+  gap: clamp(16px, 3vh, 28px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ab-code-line {
+  display: grid;
+  align-items: center;
+  min-height: clamp(64px, 19vw, 180px);
+}
+.ab-code-src,
+.ab-code-out {
+  grid-area: 1 / 1;
+  transition: opacity 420ms ease, filter 420ms ease, transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ab-code-src {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: clamp(11px, 3vw, 16px);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: rgb(245 242 237 / 0.85);
+  transform-origin: 0 0;
+}
+.ab-code-caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 2px;
+  background: #fb3640;
+  vertical-align: -0.15em;
+}
+.ab-code-out {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(10px);
+}
+.ab-code-name {
+  min-width: 0;
+  font-family: "Panchang", sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 8.6vw, 84px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: #f5f2ed;
+}
+.ab-code-thumb {
+  flex: none;
+  width: clamp(64px, 18vw, 150px);
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  border: 1px solid rgb(245 242 237 / 0.14);
+}
+/* O código "derrete": estica pra baixo, borra e some; o nome sobe no lugar. */
+.ab-code-line.is-rendered .ab-code-src {
+  opacity: 0;
+  filter: blur(9px);
+  transform: scaleY(2.2);
+}
+.ab-code-line.is-rendered .ab-code-out {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+/* 5 · Mar: canvas das cenas 1 a 3 e, por cima, os projetos em cacos */
+.ab-mar { background: #060606; }
+.ab-mar-canvas {
+  position: absolute;
+  inset: 0;
+  transition: opacity 700ms ease;
+}
+/* Sai sem zoom: a grua já levou a câmera pro alto, e é esse enquadramento
+   que os cacos continuam. */
+.ab-mar-canvas.is-out { opacity: 0; }
+.ab-mar-canvas::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 85% 70% at 50% 46%, transparent 45%, rgb(0 0 0 / 0.62) 100%);
+  pointer-events: none;
+}
+.ab-mar-flash {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  animation: abFlash 260ms ease-out;
+}
+@keyframes abFlash {
+  0% { opacity: 0.22; }
+  100% { opacity: 0; }
+}
+.ab-mar-skip {
+  position: absolute;
+  right: clamp(16px, 4vw, 40px);
+  bottom: calc(clamp(16px, 4vw, 40px) + env(safe-area-inset-bottom));
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgb(245 242 237 / 0.22);
+  background: rgb(6 6 6 / 0.5);
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(245 242 237 / 0.8);
+  cursor: pointer;
+}
+.ab-shards {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+}
+.ab-shards-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 8px;
+  animation: piFade 500ms ease-out 400ms both;
+}
+.ab-shards-bar button {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid rgb(245 242 237 / 0.2);
+  background: none;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(245 242 237 / 0.8);
+  cursor: pointer;
+}
+.ab-shards-grid {
+  position: relative;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* Os polígonos têm QUATRO pontos (a ponta repetida) pra que o clip-path
+   consiga animar até o retângulo cheio quando o caco abre. */
+.ab-shard {
+  position: absolute;
+  padding: 3px;
+  /* Cresce a partir do lado que aponta pro impacto, com um leve giro. */
+  transform-origin: var(--ox, 50%) var(--oy, 50%);
+  animation: abShardIn 760ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes abShardIn {
+  0% { opacity: 0; transform: scale(0.35) rotate(-7deg); }
+  55% { opacity: 1; }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+/* A foto acende depois que o caco assenta: primeiro a faceta, depois o site. */
+.ab-shard img {
+  animation: abShardLit 700ms ease-out both;
+  animation-delay: calc(var(--d, 0ms) + 260ms);
+}
+@keyframes abShardLit {
+  from { filter: brightness(0.08) saturate(0); }
+  to { filter: brightness(0.64) saturate(1); }
+}
+.ab-shard a {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: rgb(var(--cbm-sunken));
+  color: #f5f2ed;
+  text-decoration: none;
+}
+.ab-shard.is-up a,
+.ab-shard-open.is-up { clip-path: polygon(50% 0, 50% 0, 100% 100%, 0 100%); }
+.ab-shard.is-down a,
+.ab-shard-open.is-down { clip-path: polygon(0 0, 100% 0, 50% 100%, 50% 100%); }
+.ab-shard img,
+.ab-shard-open img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+.ab-shard img { filter: brightness(0.64); }
+/* Escurece só a parte larga do triângulo, onde o rótulo mora. */
+.ab-shard a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transition: opacity 300ms ease;
+}
+.ab-shard.is-up a::after { background: linear-gradient(to top, rgb(6 6 6 / 0.92) 8%, rgb(6 6 6 / 0) 62%); }
+.ab-shard.is-down a::after { background: linear-gradient(to bottom, rgb(6 6 6 / 0.92) 8%, rgb(6 6 6 / 0) 62%); }
+.ab-shard a:hover::after,
+.ab-shard a:focus-visible::after { opacity: 0.55; }
+.ab-shard a:focus-visible { outline: none; }
+.ab-shard a:focus-visible .ab-shard-label { text-decoration: underline; text-decoration-color: #fb3640; }
+/* O rótulo fica na parte larga do triângulo: embaixo no de ponta pra cima,
+   em cima no de ponta pra baixo. */
+.ab-shard-label {
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  font-family: "Panchang", sans-serif;
+  font-weight: 700;
+  font-size: clamp(11px, 3.1vw, 17px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  z-index: 1;
+}
+.ab-shard-label span {
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--pi-color, #fb3640);
+}
+.ab-shard.is-up .ab-shard-label { bottom: 9%; }
+.ab-shard.is-down .ab-shard-label { top: 9%; }
+
+.ab-shard-open {
+  position: fixed;
+  z-index: 80;
+  overflow: hidden;
+  background: rgb(var(--cbm-sunken));
+  transition: top 520ms cubic-bezier(0.6, 0.02, 0.2, 1), left 520ms cubic-bezier(0.6, 0.02, 0.2, 1),
+    width 520ms cubic-bezier(0.6, 0.02, 0.2, 1), height 520ms cubic-bezier(0.6, 0.02, 0.2, 1),
+    clip-path 520ms cubic-bezier(0.6, 0.02, 0.2, 1);
+}
+.ab-shard-open.is-full {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* 6 a 8 · Cenas em WebGL (poeira, cidade, tipografia): moldura comum */
+.ab-cena { background: #060606; transition: opacity 520ms ease; }
+.ab-cena.is-leaving { opacity: 0; pointer-events: none; }
+.ab-cena-cue {
+  position: absolute;
+  left: clamp(16px, 4vw, 40px);
+  bottom: calc(clamp(16px, 4vw, 40px) + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  max-width: calc(100% - 140px);
+  margin: 0;
+  font-family: "Panchang", sans-serif;
+  font-weight: 700;
+  font-size: clamp(13px, 1.5vw, 18px);
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #f5f2ed;
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.7);
+  animation: abCueIn 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.ab-cena-cue span {
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  color: rgb(245 242 237 / 0.7);
+}
+@keyframes abCueIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* HUD das cenas: barra de progresso, carimbo e a mira do QR (7 · Cidade) */
+.ab-hud { position: absolute; inset: 0; pointer-events: none; }
+.ab-hud::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 90% 75% at 50% 45%, transparent 40%, rgb(0 0 0 / 0.6) 100%);
+  opacity: 1;
+  transition: opacity 900ms ease;
+}
+.ab-hud.is-scan::before { opacity: 0; }
+.ab-hud-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--ab-accent, #fb3640);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 700ms linear;
+}
+.ab-hud.is-scan .ab-hud-bar { transform: scaleX(0.12); }
+.ab-hud.is-rise .ab-hud-bar { transform: scaleX(0.42); transition-duration: 1400ms; }
+.ab-hud.is-fly .ab-hud-bar { transform: scaleX(0.88); transition-duration: 2200ms; }
+.ab-hud.is-dive .ab-hud-bar { transform: scaleX(1); }
+.ab-hud-stamp {
+  position: absolute;
+  top: calc(20px + env(safe-area-inset-top));
+  left: clamp(16px, 4vw, 40px);
+  right: clamp(16px, 4vw, 40px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #f5f2ed;
+  transition: color 900ms ease;
+}
+.ab-hud-stamp i { width: 8px; height: 8px; background: var(--ab-accent, #fb3640); }
+.ab-hud-stamp b { margin-left: auto; font-weight: 500; opacity: 0.72; }
+.ab-hud.is-scan .ab-hud-stamp { color: #0b0b0b; }
+.ab-hud-scan {
+  --k: #0b0b0b;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 86vmin;
+  height: 86vmin;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.08);
+  transition: opacity 320ms ease, transform 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  background:
+    linear-gradient(var(--k), var(--k)) 0 0 / 26px 2px,
+    linear-gradient(var(--k), var(--k)) 0 0 / 2px 26px,
+    linear-gradient(var(--k), var(--k)) 100% 0 / 26px 2px,
+    linear-gradient(var(--k), var(--k)) 100% 0 / 2px 26px,
+    linear-gradient(var(--k), var(--k)) 0 100% / 26px 2px,
+    linear-gradient(var(--k), var(--k)) 0 100% / 2px 26px,
+    linear-gradient(var(--k), var(--k)) 100% 100% / 26px 2px,
+    linear-gradient(var(--k), var(--k)) 100% 100% / 2px 26px;
+  background-repeat: no-repeat;
+}
+.ab-hud.is-scan .ab-hud-scan { opacity: 1; transform: translate(-50%, -50%); }
+.ab-hud-scan i {
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  top: 4%;
+  height: 2px;
+  background: var(--ab-accent, #fb3640);
+  box-shadow: 0 0 18px 2px var(--ab-accent, #fb3640);
+  animation: abScan 760ms cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+@keyframes abScan {
+  to { top: 96%; }
+}
+
+/* ── Lab · hero outdoor: o hero como placa da cidade-QR ─────────────────── */
+.ho-root { background: #060606; color: #f5f2ed; }
+.ho-stage { position: relative; height: 860vh; }
+.ho-sticky {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: hidden;
+  background: #060606;
+}
+.ho-sticky > div:first-child { position: absolute !important; inset: 0; }
+.ho-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 95% 80% at 50% 45%, transparent 45%, rgb(0 0 0 / 0.55) 100%);
+}
+.ho-fade {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: rgb(var(--cbm-base));
+}
+
+/* A placa. Sem WebGL fica no meio da tela; com a cena, o JS a prende no 3D.
+   É um painel digital: a imagem sangra a placa inteira e o texto, pouco, fica
+   por cima dela. */
+.ho-board {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(88vw, 1000px);
+  aspect-ratio: 2 / 3;
+  transform: translate(-50%, -50%);
+  transform-origin: 0 0;
+  container-type: size;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: clamp(14px, 4.6cqw, 40px);
+  border: 1px solid rgb(245 242 237 / 0.16);
+  background: #0a0a0a;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+.ho-board--chapter { opacity: 0; visibility: hidden; }
+
+/* Capas: a que entra abre da esquerda pra direita por cima da anterior. */
+.ho-shots { position: absolute; inset: 0; }
+.ho-shots img {
+  object-fit: cover;
+  object-position: 50% 0;
+  clip-path: inset(0 100% 0 0);
+}
+.ho-shots img.is-prev { clip-path: inset(0); z-index: 1; }
+.ho-shots img.is-on {
+  clip-path: inset(0);
+  z-index: 2;
+  transition: clip-path 900ms cubic-bezier(0.7, 0, 0.2, 1);
+}
+/* Véu: escurece a base da imagem, onde o texto assenta. */
+.ho-shots::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(
+    to bottom,
+    rgb(6 6 6 / 0.5) 0%,
+    rgb(6 6 6 / 0) 22%,
+    rgb(6 6 6 / 0.2) 34%,
+    rgb(6 6 6 / 0.93) 52%,
+    rgb(6 6 6 / 0.98) 100%
+  );
+}
+
+.ho-tag {
+  position: relative;
+  z-index: 4;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  margin: 0;
+  padding: 7px 10px;
+  background: rgb(6 6 6 / 0.82);
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #f5f2ed;
+  animation: abCueIn 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.ho-tag i { flex: none; width: 8px; height: 8px; background: #fb3640; }
+.ho-tag span { opacity: 0.7; }
+
+.ho-copy {
+  position: relative;
+  z-index: 4;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+.ho-brand {
+  margin: 0;
+  font-family: "Panchang", sans-serif;
+  font-weight: 800;
+  font-size: min(20cqw, 16cqh);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  color: #f5f2ed;
+}
+.ho-brand span { display: block; }
+.ho-lead {
+  max-width: 26ch;
+  margin: 0.9em 0 0;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: max(13px, min(3.7cqw, 2.6cqh));
+  line-height: 1.35;
+  color: rgb(245 242 237 / 0.78);
+  text-wrap: balance;
+}
+.ho-cta { margin-top: 3.2cqh; }
+
+/* Placa deitada: a imagem ocupa a coluna da direita, o texto a da esquerda. */
+@container (min-aspect-ratio: 13 / 10) {
+  .ho-board--hero .ho-shots { left: auto; width: 44%; }
+  .ho-board--hero .ho-shots::after {
+    background: linear-gradient(to right, #0a0a0a 0%, rgb(10 10 10 / 0) 26%);
+  }
+  .ho-board--hero .ho-copy { max-width: 52%; }
+  .ho-brand { font-size: min(11.5cqw, 25cqh); }
+  .ho-lead { font-size: max(13px, min(1.5cqw, 3.2cqh)); }
+  .ho-cta { max-width: 300px; }
+}
+
+.ho-chapter-title {
+  position: relative;
+  z-index: 4;
+  margin: auto 0 0;
+  font-family: "Panchang", sans-serif;
+  font-weight: 800;
+  font-size: min(11.5cqw, 26cqh);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+/* O pouso: galeria só de imagem, com a legenda mínima embaixo de cada uma. */
+/* O miolo de um outdoor de capítulo: pouco texto, em linhas curtas. */
+.ho-body {
+  position: relative;
+  z-index: 4;
+  margin: 3.4cqh 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: max(12px, min(3.7cqw, 4cqh));
+  line-height: 1.3;
+  color: rgb(245 242 237 / 0.82);
+}
+.ho-body li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 1.5cqh 0;
+  border-top: 1px solid rgb(245 242 237 / 0.16);
+}
+.ho-body li span { color: rgb(245 242 237 / 0.56); white-space: nowrap; }
+.ho-body li b { font-weight: 500; color: #f5f2ed; }
+.ho-body p { max-width: 34ch; margin: 0; text-wrap: balance; }
+.ho-body small { display: block; margin-top: 0.7em; font-size: 0.82em; color: rgb(245 242 237 / 0.56); }
+.ho-body--steps { display: grid; grid-template-columns: 1fr 1fr; column-gap: 5cqw; }
+.ho-body--steps li { justify-content: flex-start; gap: 8px; }
+.ho-more {
+  position: relative;
+  z-index: 4;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 1.6cqh;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #f5f2ed;
+}
+.ho-more::after {
+  content: "";
+  width: 9px;
+  height: 10px;
+  background: #fb3640;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  transition: transform 240ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.ho-more:hover::after { transform: translateX(4px); }
+.ho-more:focus-visible { outline: 2px solid #fb3640; outline-offset: 2px; }
+.ho-board--chapter .ho-cta { position: relative; z-index: 4; width: min(100%, 320px); }
+.ho-board--chapter .ho-chapter-title { font-size: min(10cqw, 17cqh); }
+
+/* Dúvidas: fora da cidade, texto puro (é o que o buscador lê). */
+.ho-faq {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 56px) clamp(72px, 12vh, 140px);
+}
+.ho-faq h2 {
+  margin: 0 0 24px;
+  font-family: "Panchang", sans-serif;
+  font-weight: 800;
+  font-size: clamp(26px, 5vw, 44px);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+.ho-faq details { border-top: 1px solid rgb(245 242 237 / 0.16); }
+.ho-faq summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  list-style: none;
+}
+.ho-faq summary::-webkit-details-marker { display: none; }
+.ho-faq summary::after { content: "+"; color: #fb3640; }
+.ho-faq details[open] summary::after { content: "–"; }
+.ho-faq summary:focus-visible { outline: 2px solid #fb3640; outline-offset: 2px; }
+.ho-faq details p {
+  max-width: 62ch;
+  margin: 0 0 20px;
+  font-family: "Satoshi", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgb(245 242 237 / 0.72);
+}
+
+.ho-gallery {
+  position: relative;
+  padding: clamp(40px, 8vw, 120px) clamp(16px, 4vw, 56px) clamp(80px, 12vw, 180px);
+  background: rgb(var(--cbm-base));
+}
+.ho-gallery header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: clamp(28px, 5vw, 64px);
+}
+.ho-gallery header span {
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgb(245 242 237 / 0.7);
+}
+.ho-gallery h2 {
+  margin: 0;
+  font-family: "Panchang", sans-serif;
+  font-weight: 800;
+  font-size: clamp(34px, 7vw, 96px);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+.ho-gallery ol {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 4vw, 56px) clamp(16px, 2.4vw, 36px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 720px) {
+  .ho-gallery ol { grid-template-columns: repeat(2, 1fr); }
+  .ho-gallery li:nth-child(2n) { margin-top: clamp(40px, 7vw, 110px); }
+}
+@media (min-width: 1200px) {
+  .ho-gallery ol { grid-template-columns: repeat(3, 1fr); }
+  .ho-gallery li:nth-child(2n) { margin-top: 0; }
+  .ho-gallery li:nth-child(3n + 2) { margin-top: clamp(40px, 6vw, 110px); }
+}
+.ho-gallery a { display: block; color: inherit; text-decoration: none; }
+.ho-gallery a:focus-visible { outline: 2px solid #fb3640; outline-offset: 4px; }
+.ho-g-shot {
+  position: relative;
+  display: block;
+  aspect-ratio: 760 / 874;
+  overflow: hidden;
+  background: #101011;
+}
+.ho-g-shot img {
+  object-fit: cover;
+  object-position: 50% 0;
+  transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.ho-gallery a:hover .ho-g-shot img { transform: scale(1.035); }
+.ho-g-cap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(245 242 237 / 0.7);
+}
+.ho-g-cap i { flex: none; width: 8px; height: 8px; background: var(--c, #fb3640); }
+.ho-g-cap b { font-weight: 500; color: #f5f2ed; }
+@media (prefers-reduced-motion: reduce) {
+  .ho-shots img.is-on, .ho-g-shot img { transition: none; }
+}
+
+/* Navegação fixa, mínima: o triângulo da marca (início) e uma placa que dá o
+   zoom no poste da cidade. */
+.ho-nav {
+  position: absolute;
+  z-index: 6;
+  top: calc(10px + env(safe-area-inset-top));
+  left: clamp(8px, 3vw, 40px);
+  right: clamp(8px, 3vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ho-nav-home {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  transition: transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.ho-nav-home:hover { transform: rotate(-12deg) scale(1.08); }
+/* O botão do menu: um postinho de placas desenhado a traço e a palavra, no
+   meio do topo. Sem chapa: é um desenho, não um botão cheio. */
+.ho-sign {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 44px;
+  padding: 0 10px;
+  border: 0;
+  background: none;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #f5f2ed;
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+.ho-sign svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  transform-origin: 45% 100%;
+  transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.ho-sign:hover svg { transform: rotate(-7deg); }
+.ho-sign:hover,
+.ho-sign[aria-pressed="true"] { color: #fb3640; }
+.ho-sign:focus-visible,
+.ho-nav-home:focus-visible { outline: 2px solid #fb3640; outline-offset: 2px; }
+
+/* Rótulo de uma placa do poste. A chapa off-white é 3D; aqui vai só o texto,
+   e no hover a chapa inteira fica vermelha (mesmo recorte da geometria). */
+.ho-plate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  visibility: hidden;
+  transform-origin: 0 0;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--sh) * 0.22);
+  padding: 0 calc(var(--sh) * 0.8) 0 calc(var(--sh) * 0.3);
+  font-family: "Panchang", sans-serif;
+  font-weight: 800;
+  font-size: calc(var(--sh) * 0.4);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #0a0a0a;
+  will-change: transform, opacity;
+  isolation: isolate;
+}
+.ho-plate.is-left { flex-direction: row-reverse; padding: 0 calc(var(--sh) * 0.3) 0 calc(var(--sh) * 0.8); }
+.ho-plate::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: #fb3640;
+  opacity: 0;
+  clip-path: polygon(0 0, 86% 0, 100% 50%, 86% 100%, 0 100%);
+  transition: opacity 160ms ease;
+}
+.ho-plate.is-left::before { clip-path: polygon(14% 0, 100% 0, 100% 100%, 14% 100%, 0 50%); }
+.ho-plate:hover::before,
+.ho-plate:focus-visible::before { opacity: 1; }
+.ho-plate:focus-visible { outline: none; }
+.ho-plate span {
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: calc(var(--sh) * 0.2);
+  letter-spacing: 0.14em;
+  opacity: 0.72;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ho-sign, .ho-nav-home, .ho-plate::before { transition: none; }
+}

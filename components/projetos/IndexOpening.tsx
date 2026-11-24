@@ -9,8 +9,15 @@ import { PROJETOS_H1, PROJETOS_INTRO } from "@/data/projetos";
  * movimento". O `aria-label` devolve o título inteiro pro leitor de tela, que
  * senão leria palavra por palavra.
  */
-export function IndexOpening({ total }: { total: number }) {
-  const words = PROJETOS_H1.split(" ");
+export function IndexOpening({
+  total,
+  title = PROJETOS_H1,
+}: {
+  total: number;
+  /** Só o /lab troca o título, pra testar headline de abertura. */
+  title?: string;
+}) {
+  const words = title.split(" ");
 
   return (
     <div className="pi-opening">
@@ -18,7 +25,7 @@ export function IndexOpening({ total }: { total: number }) {
         <span aria-hidden className="pi-mark" />
         {String(total).padStart(2, "0")} projetos
       </p>
-      <h1 className="pi-h1" aria-label={PROJETOS_H1}>
+      <h1 className="pi-h1" aria-label={title}>
         {words.map((word, i) => (
           // O espaço fica FORA da máscara: dentro de um inline-block ele some.
           <Fragment key={i}>
