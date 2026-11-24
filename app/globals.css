@@ -148,8 +148,7 @@ body:has(.site-home) {
   border-color: #fb3640;
   transform: translateY(-4px);
 }
-.site-card .site-shot,
-.site-card .site-shot-window {
+.site-card .site-shot {
   transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 /* Percurso curto de proposito. Deslizar a imagem inteira (800px+ num
@@ -157,26 +156,6 @@ body:has(.site-home) {
    nao o que ele revela. 128px mostram que ha mais pagina e param. */
 .site-card:hover .site-shot {
   transform: translateY(-128px);
-}
-
-/* A miniatura da celula de projeto. O percurso vai em % da IMAGEM porque a
-   janela nao tem altura fixa — as duas dependem da mesma largura W:
-
-     janela  = W * 11/16   = 0.6875W   (aspect-ratio da caixa)
-     imagem  = W * 874/760 = 1.15W     (recorte do card)
-     sobra   = 0.4625W               = 40,2% da altura da imagem
-
-   Entao -38% desliza quase tudo e para pouco antes da borda de baixo, que e
-   o que faz a miniatura continuar dizendo "tem mais pagina". Mexeu no
-   aspect-ratio da janela ou no formato do recorte, refaz a conta.
-
-   Mais lento que o resto dos hovers: aqui o gesto imita rolagem, e rolagem
-   rapida em 122px de altura vira tremor. */
-.site-card .site-shot-window {
-  transition-duration: 900ms;
-}
-.site-card:hover .site-shot-window {
-  transform: translateY(-38%);
 }
 
 /* O Reveal envolve cada card num div; sem isso o card perde o stretch do grid
@@ -217,7 +196,6 @@ body:has(.site-home) {
 @media (prefers-reduced-motion: reduce) {
   .site-card:hover { transform: none; }
   .site-card:hover .site-shot { transform: none; }
-  .site-card:hover .site-shot-window { transform: none; }
   .site-pulse { animation: none; }
   .site-shot-scroll,
   .site-shot-progress { animation: none; }
@@ -507,10 +485,6 @@ body:has(.site-home) {
   outline: 2px solid #fb3640;
   outline-offset: 4px;
 }
-
-/* Célula filtrada fora da vista. Esconder em vez de desmontar mantém o
-   catálogo inteiro no HTML inicial. */
-.is-hidden { display: none; }
 
 /* ── Projetos: muro à deriva ─────────────────────────────────────────────
    O muro ocupa a tela inteira e o índice fica por cima, na esquerda. O plano
@@ -1133,4 +1107,423 @@ a:hover .tri-arrow--up-right, button:hover .tri-arrow--up-right { transform: tra
 a:hover .tri-arrow--left, button:hover .tri-arrow--left { transform: translateX(-3px) rotate(180deg); }
 @media (prefers-reduced-motion: reduce) {
   .tri-arrow { transition: none; }
+}
+
+/* ── /projetos: índice vivo ──────────────────────────────────────────────
+   A lista de projetos em tipografia grande, com a capa do projeto ativo em
+   cena atrás (`.pi-stage`, fixa). No celular a capa cobre a tela sob um véu;
+   no desktop com mouse vira janela na coluna da direita, que segue o
+   ponteiro (o JS escreve o transform do `.pi-frame`).
+
+   Contraste: o véu de 0.78 deixa a capa mais clara possível (branco puro)
+   em ~#3E3E3E. Sobre isso, texto #F5F2ED a 0.82 dá ~7:1 e o nome inativo a
+   0.44 dá ~3.1:1 — passa AA de texto grande, que é o que ele é. Mexeu no
+   véu ou nas opacidades, refaz a conta. */
+.pi-root {
+  --pi-gutter: clamp(20px, 5vw, 80px);
+  --pi-window: min(36vw, 620px);
+  --pi-ink: 245 242 237;
+  position: relative;
+}
+
+.pi-stage {
+  position: fixed;
+  inset: 0 0 auto;
+  /* lvh: a barra de endereço do celular some e volta sem redimensionar o
+     canvas a cada vez. */
+  height: 100vh;
+  height: 100lvh;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.pi-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: rgb(var(--cbm-sunken));
+}
+.pi-shot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+.pi-shot.is-on { opacity: 1; }
+.pi-canvas {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+.pi-canvas.is-on { opacity: 1; }
+.pi-veil {
+  position: absolute;
+  inset: 0;
+  background: rgb(var(--cbm-base) / 0.78);
+}
+.pi-corner { display: none; }
+
+.pi-mark {
+  display: inline-block;
+  flex: none;
+  width: 6px;
+  height: 6px;
+  background: var(--pi-color, #fb3640);
+}
+
+/* Abertura */
+.pi-opening {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 70svh;
+  padding: clamp(48px, 9vh, 96px) var(--pi-gutter) clamp(32px, 6vh, 64px);
+}
+.pi-count {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 clamp(16px, 2.6vh, 28px);
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgb(var(--pi-ink) / 0.82);
+  animation: piFade 700ms ease-out both;
+}
+.pi-h1 {
+  margin: 0;
+  font-family: "Panchang", sans-serif;
+  font-weight: 800;
+  font-size: clamp(38px, 10.6vw, 104px);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  /* O tracking negativo come o espaço entre palavras; isto devolve. */
+  word-spacing: 0.1em;
+  color: #f5f2ed;
+}
+/* A máscara corta descendentes ("j", "g") se tiver a altura exata da linha:
+   a folga de baixo entra em padding e sai em margem, sem mexer no ritmo. */
+.pi-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.pi-word > span {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: piRise 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i) * 70ms + 120ms);
+}
+.pi-intro {
+  margin: clamp(18px, 3vh, 30px) 0 0;
+  max-width: 46ch;
+  font-family: "Satoshi", sans-serif;
+  font-size: clamp(14px, 1.3vw, 16px);
+  line-height: 1.7;
+  color: rgb(var(--pi-ink) / 0.82);
+  text-wrap: pretty;
+  animation: piFade 800ms ease-out both;
+  animation-delay: calc(var(--i) * 70ms + 260ms);
+}
+@keyframes piRise { to { transform: translateY(0); } }
+@keyframes piFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Índice */
+.pi-chapters {
+  position: relative;
+  z-index: 1;
+  padding: 0 var(--pi-gutter) 30svh;
+}
+.pi-chapter + .pi-chapter { margin-top: clamp(56px, 9vh, 104px); }
+.pi-chapter-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgb(var(--pi-ink) / 0.82);
+}
+.pi-chapter-head h2 {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+}
+.pi-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid rgb(var(--pi-ink) / 0.14);
+}
+.pi-row { border-top: 1px solid rgb(var(--pi-ink) / 0.14); }
+.pi-row-link {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px 16px;
+  padding: clamp(18px, 3.2vh, 30px) 0;
+  color: #f5f2ed;
+  text-decoration: none;
+}
+.pi-row-link:focus-visible {
+  outline: 2px solid #fb3640;
+  outline-offset: 4px;
+}
+.pi-kicker {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  font-family: "Satoshi", sans-serif;
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: rgb(var(--pi-ink) / 0.82);
+}
+/* O setor é o item mais longo da meta; em tela estreita ele sai e a linha
+   fica em tipo + ano. */
+.pi-kicker-sector { display: none; }
+.pi-tag {
+  border: 1px solid rgb(var(--pi-ink) / 0.32);
+  padding: 2px 7px;
+}
+.pi-name {
+  margin: 0;
+  min-width: 0;
+  font-family: "Panchang", sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 8.6vw, 84px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  hyphens: auto;
+  overflow-wrap: anywhere;
+  transition: opacity 260ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pi-go {
+  color: var(--pi-color, #fb3640);
+  font-size: clamp(16px, 2vw, 26px);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 260ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* O rebaixamento só liga depois de hidratar: sem JS todas as linhas ficam
+   em tinta cheia. */
+.pi-index[data-live] .pi-row:not(.is-active) .pi-name { opacity: 0.44; }
+.pi-index[data-live] .pi-row.is-active .pi-name { transform: translateX(clamp(6px, 1vw, 16px)); }
+.pi-index[data-live] .pi-row.is-active .pi-go { opacity: 1; transform: none; }
+.pi-empty {
+  position: relative;
+  z-index: 1;
+  margin: 0 var(--pi-gutter) 96px;
+  border: 1px solid rgb(var(--pi-ink) / 0.14);
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgb(var(--pi-ink) / 0.7);
+}
+
+/* Dock */
+.pi-dock {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px var(--pi-gutter) calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid rgb(var(--pi-ink) / 0.14);
+  background: rgb(var(--cbm-base) / 0.9);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1), visibility 0s 420ms;
+}
+.pi-dock.is-on {
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+.pi-dock-count {
+  flex: none;
+  font-family: "Panchang", sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #f5f2ed;
+}
+.pi-dock-count span { display: none; color: rgb(var(--cbm-gray-300)); }
+.pi-dock-text {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: "Satoshi", sans-serif;
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgb(var(--cbm-gray-300));
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  animation: piDockIn 320ms ease-out both;
+}
+@keyframes piDockIn { from { opacity: 0; } to { opacity: 1; } }
+.pi-dock-link {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgb(var(--pi-ink) / 0.28);
+  font-family: "Panchang", sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #f5f2ed;
+  transition: border-color 260ms ease, background 260ms ease;
+}
+.pi-dock-link .tri-arrow { color: #fb3640; }
+.pi-dock-link:hover { border-color: #fb3640; background: rgb(251 54 64 / 0.1); }
+.pi-dock-link:focus-visible { outline: 2px solid #fb3640; outline-offset: 3px; }
+
+/* Fecho — sólido e acima da cena: é ele que encerra a capa. */
+.pi-closing {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid rgb(var(--pi-ink) / 0.12);
+  background: rgb(var(--cbm-base));
+}
+.pi-closing-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(28px, 5vh, 48px);
+  padding: clamp(72px, 16vh, 168px) var(--pi-gutter) clamp(56px, 10vh, 112px);
+}
+.pi-closing-title {
+  margin: 0;
+  max-width: 12em;
+  font-family: "Panchang", sans-serif;
+  font-weight: 700;
+  font-size: clamp(34px, 8vw, 96px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #f5f2ed;
+  text-wrap: balance;
+}
+.pi-closing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 28px;
+  border: 1px solid rgb(251 54 64 / 0.6);
+  background: rgb(251 54 64 / 0.1);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #f5f2ed;
+  transition: border-color 300ms ease, background 300ms ease;
+}
+.pi-closing-cta:hover { border-color: #fb3640; background: #fb3640; }
+.pi-closing-cta:focus-visible { outline: 2px solid #fb3640; outline-offset: 3px; }
+.pi-closing-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px var(--pi-gutter) 36px;
+  border-top: 1px solid rgb(var(--pi-ink) / 0.1);
+}
+.pi-closing-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgb(var(--cbm-gray-400));
+}
+.pi-closing-link {
+  font-size: 0.8rem;
+  color: rgb(var(--pi-ink) / 0.7);
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+.pi-closing-link:hover,
+.pi-closing-link:focus-visible { color: #f5f2ed; }
+
+@media (min-width: 640px) {
+  .pi-kicker-sector { display: inline; }
+  .pi-dock-count span { display: inline; }
+  .pi-dock-text { font-size: 13px; -webkit-line-clamp: 1; }
+  .pi-closing-nav { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 12px 32px; }
+  .pi-closing-place { margin-left: auto; }
+}
+
+/* Duas colunas: o texto à esquerda, a capa em janela à direita. Só com
+   mouse — em tablet a capa segue em tela cheia, que é o que o toque pede. */
+@media (min-width: 900px) and (hover: hover) and (pointer: fine) {
+  .pi-frame {
+    inset: 0 var(--pi-gutter) auto auto;
+    width: var(--pi-window);
+    aspect-ratio: 16 / 10;
+    border: 1px solid rgb(var(--pi-ink) / 0.14);
+    transform: translate3d(0, calc(50vh - 50%), 0);
+    will-change: transform;
+  }
+  .pi-veil { display: none; }
+  .pi-corner {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    border-left: 2px solid var(--pi-color, #fb3640);
+    border-top: 2px solid var(--pi-color, #fb3640);
+    transition: border-color 400ms ease;
+  }
+  .pi-opening,
+  .pi-chapters {
+    padding-right: calc(var(--pi-window) + var(--pi-gutter) * 2);
+  }
+  .pi-name { font-size: clamp(40px, 5vw, 84px); }
+  .pi-h1 { font-size: clamp(48px, 5.6vw, 104px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pi-word > span { transform: none; animation: none; }
+  .pi-count,
+  .pi-intro,
+  .pi-dock-text { animation: none; }
+  .pi-shot,
+  .pi-name,
+  .pi-go,
+  .pi-dock { transition-duration: 0.01ms; }
+  .pi-index[data-live] .pi-row.is-active .pi-name { transform: none; }
 }

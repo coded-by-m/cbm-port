@@ -32,7 +32,10 @@ export function WhatsAppFab() {
     pathname?.startsWith("/experiencia") ||
     // Landing de campanha tem CTA proprio, repetido: um botao flutuante de
     // contato ao lado dele disputa a mesma acao e dilui as duas.
-    pathname?.startsWith("/criacao-de-sites")
+    pathname?.startsWith("/criacao-de-sites") ||
+    // A vitrine tem o dock fixo na base da tela e fecha no proprio CTA de
+    // WhatsApp; o flutuante cairia em cima do dock.
+    pathname === "/projetos"
   )
     return null;
 

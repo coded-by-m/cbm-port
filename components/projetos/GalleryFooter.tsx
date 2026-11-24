@@ -4,8 +4,15 @@ import { publishedPosts } from "@/data/blog";
 import { PRIVACY_PATH } from "@/data/privacidade";
 import { TriArrow } from "@/components/ui/TriArrow";
 
-/** Links internos do rodapé: vitrine, sobre, contato e blog (se houver artigo). */
-const LINKS = [
+/** Mensagem do WhatsApp de quem vem do portfólio. */
+export const PORTFOLIO_WA_MESSAGE =
+  "Olá! Vi o portfólio da Coded by M e gostaria de conversar sobre um projeto.";
+
+/**
+ * Links internos do rodapé: vitrine, sobre, contato e blog (se houver artigo).
+ * Exportado porque o fecho da `/projetos` mostra a mesma navegação.
+ */
+export const FOOTER_LINKS = [
   { href: "/projetos", label: "Projetos" },
   { href: "/sobre", label: "Sobre" },
   { href: "/contato", label: "Contato" },
@@ -18,9 +25,7 @@ const LINKS = [
  * navegação. `current` omite a página em que se está.
  */
 export function GalleryFooter({ current }: { current?: string }) {
-  const waHref = waLink(
-    "Olá! Vi o portfólio da Coded by M e gostaria de conversar sobre um projeto.",
-  );
+  const waHref = waLink(PORTFOLIO_WA_MESSAGE);
   return (
     <footer data-cm-section="contact" className="mt-20 border-t border-[#F5F2ED]/10">
       <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-5 py-14 md:flex-row md:items-center md:justify-between">
@@ -51,7 +56,7 @@ export function GalleryFooter({ current }: { current?: string }) {
         <span className="text-[0.62rem] uppercase tracking-[0.3em] text-cbm-gray-400">
           Navegação
         </span>
-        {LINKS.filter((l) => l.href !== current).map((l) => (
+        {FOOTER_LINKS.filter((l) => l.href !== current).map((l) => (
           <Link
             key={l.href}
             href={l.href}

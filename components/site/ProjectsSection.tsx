@@ -94,8 +94,7 @@ function buildTiles(projects: CaseProject[]): DriftTile[] {
  * Projetos — tela cheia, o muro à deriva de fundo e o índice por cima.
  *
  * Saiu do grid de cards: na home a seção é vitrine de clima, e o catálogo com
- * descrição e stack continua em `/projetos`, onde `ProjetoGridCard` segue em
- * uso.
+ * descrição continua em `/projetos`, no índice vivo.
  */
 export function ProjectsSection() {
   const published = cases.filter((c) => c.status === "published");
