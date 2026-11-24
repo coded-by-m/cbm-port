@@ -221,3 +221,83 @@
    juntos, a faixa mostra só o nome (o selo já está logo acima). */
 .bb-roll-bar b, .bb-roll-bar span { white-space: nowrap; }
 @media (max-width: 419px) { .bb-roll-bar span { display: none; } }
+
+/* ═══ Chegada pelo cartão: leitura do QR + mergulho ══════════════════ */
+/* O véu é o papel do cartão. Nada aqui dentro leva transform ou opacity no
+   caminho entre o laser e o QR: isolaria o blend que pinta os módulos. */
+.bb-qr-veil { display: none; }
+html.bb-qr { overflow: hidden; }
+html.bb-qr .bb-qr-veil {
+  position: fixed; inset: 0; z-index: 60; overflow: hidden;
+  display: grid; place-items: center;
+  background: #f4f0e6; color: #0b0b0b;
+  --qr: min(80vw, 62svh, 440px);
+  --aim: #0b0b0b;
+}
+.bb-qr-stamp {
+  position: absolute; top: calc(20px + env(safe-area-inset-top)); left: var(--bb-gut); right: var(--bb-gut);
+  display: flex; align-items: center; gap: 10px; margin: 0;
+  font: 500 10.5px/1 Satoshi, sans-serif; letter-spacing: 0.2em; text-transform: uppercase;
+  animation: bb-qr-fade 0.4s var(--bb-ease) both, bb-qr-out 0.2s 1.75s ease-in forwards;
+}
+.bb-qr-stamp i { width: 8px; height: 8px; background: var(--bb-red); }
+.bb-qr-stamp b { margin-left: auto; font-weight: 500; opacity: 0.72; }
+.bb-qr-veil.is-read .bb-qr-stamp b { color: var(--bb-red); opacity: 1; }
+.bb-qr-box { position: relative; width: var(--qr); height: var(--qr); }
+.bb-qr-code { position: absolute; inset: 0; will-change: transform; }
+.bb-qr-code svg { display: block; width: 100%; height: 100%; animation: bb-qr-fade 0.35s var(--bb-ease) both; }
+
+/* A mira: quatro cantos que vêm das bordas e travam no QR. */
+.bb-qr-aim {
+  position: absolute; inset: -4%;
+  background:
+    linear-gradient(var(--aim), var(--aim)) 0 0 / 28px 2px,
+    linear-gradient(var(--aim), var(--aim)) 0 0 / 2px 28px,
+    linear-gradient(var(--aim), var(--aim)) 100% 0 / 28px 2px,
+    linear-gradient(var(--aim), var(--aim)) 100% 0 / 2px 28px,
+    linear-gradient(var(--aim), var(--aim)) 0 100% / 28px 2px,
+    linear-gradient(var(--aim), var(--aim)) 0 100% / 2px 28px,
+    linear-gradient(var(--aim), var(--aim)) 100% 100% / 28px 2px,
+    linear-gradient(var(--aim), var(--aim)) 100% 100% / 2px 28px;
+  background-repeat: no-repeat;
+  animation: bb-qr-lock 1.6s var(--bb-ease) both, bb-qr-out 0.2s 1.75s ease-in forwards;
+}
+@property --aim { syntax: "<color>"; inherits: true; initial-value: #0b0b0b; }
+@keyframes bb-qr-lock {
+  0% { transform: scale(1.4); opacity: 0; }
+  28% { transform: scale(1); opacity: 1; }
+  88% { transform: scale(1); --aim: #0b0b0b; }
+  93% { transform: scale(1.04); --aim: #fb3640; }
+  100% { transform: scale(1); --aim: #fb3640; }
+}
+
+/* O laser desce uma vez; a faixa atrás dele pinta a tinta de vermelho
+   (lighten: o papel claro não muda, o preto vira vermelho). */
+/* Janela do laser: corta a faixa no quadrado do QR. overflow não cria
+   contexto de empilhamento, então o blend continua enxergando o QR. */
+.bb-qr-scanwin { position: absolute; inset: 0; overflow: hidden; }
+.bb-qr-laser {
+  position: absolute; left: 0; right: 0; top: 0; height: 2px;
+  background: var(--bb-red); mix-blend-mode: lighten; opacity: 0;
+  animation: bb-qr-scan 0.95s 0.45s cubic-bezier(0.45, 0, 0.55, 1) both;
+}
+.bb-qr-laser::before {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: calc(var(--qr) * 0.22);
+  background: linear-gradient(to top, #fb3640, rgb(251 54 64 / 0));
+}
+@keyframes bb-qr-scan {
+  0% { top: 0; opacity: 0; }
+  8% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+@keyframes bb-qr-fade { from { opacity: 0; } }
+@keyframes bb-qr-out { to { opacity: 0; } }
+
+/* Pouso: o que estava atrás do vão sobe no lugar. */
+html.bb-arrived .bb-header { animation: bb-arrive-fade 0.8s var(--bb-ease) both; }
+html.bb-arrived .bb-lead > * { animation: bb-arrive 0.9s var(--bb-ease) both; }
+html.bb-arrived .bb-lead > :nth-child(2) { animation-delay: 0.08s; }
+html.bb-arrived .bb-roll-item:first-of-type .bb-roll-side { animation: bb-arrive 0.9s 0.16s var(--bb-ease) both; }
+@keyframes bb-arrive { from { opacity: 0; transform: translateY(18px); } }
+@keyframes bb-arrive-fade { from { opacity: 0; } }

@@ -26,10 +26,12 @@ import {
  *   T_FLY .... T_DIVE   voo por cima dos telhados, passando pelos painéis
  *   T_DIVE ... T_END    mergulho no último painel
  */
-const T_RISE = 0.8;
-const T_FLY = 2.2;
-const T_DIVE = 4.5;
-const T_END = 5.2;
+// A leitura ganhou tempo (era 0,8s): a mira trava, o laser passa uma vez
+// pintando os módulos de vermelho e só então a cidade sobe.
+const T_RISE = 1.6;
+const T_FLY = 3.0;
+const T_DIVE = 5.1;
+const T_END = 5.8;
 
 const FOV = 42;
 export const N = QR_ROWS.length;

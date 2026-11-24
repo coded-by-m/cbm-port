@@ -82,28 +82,16 @@ export function BbHeader() {
   );
 }
 
-/** A primeira frase. Vindo do cartão, quem fala é o Matheus. */
+/** A primeira frase. Igual pra todo mundo, venha do cartão ou do Google. */
 export function BbLead({ className = "" }: { className?: string }) {
-  const fromCard = useFromCard();
   return (
     <div className={`bb-lead ${className}`}>
       <h1 className="bb-h1">
-        {fromCard ? (
-          <>
-            Oi, sou o Matheus. <span>Esses sites eu fiz.</span>
-          </>
-        ) : (
-          <>
-            Três sites que eu fiz <span>do zero.</span>
-          </>
-        )}
+        Três sites que eu fiz <span>do zero.</span>
       </h1>
       <p className="bb-sub">
-        {fromCard
-          ? "A Coded by M é meu estúdio"
-          : "Sou o Matheus, da Coded by M,"}{" "}
-        em Florianópolis. Desenho e programo sites e landing pages sob medida,
-        sem template.
+        Sou o Matheus, da Coded by M, em Florianópolis. Desenho e programo sites
+        e landing pages sob medida, sem template.
       </p>
     </div>
   );

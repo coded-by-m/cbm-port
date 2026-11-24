@@ -3,6 +3,7 @@
 import Image from "next/image";
 import type React from "react";
 import { Outros } from "./Outros";
+import { QR_DIVE_BOOT, QrDive } from "./QrDive";
 import {
   BbClosing,
   BbHeader,
@@ -29,6 +30,9 @@ export function Bobina({
 }) {
   return (
     <div className="bb bb-roll">
+      {/* Decide o mergulho antes do primeiro quadro (ver QrDive). */}
+      <script dangerouslySetInnerHTML={{ __html: QR_DIVE_BOOT }} />
+      <QrDive />
       <BbHeader />
       <main data-cm-section="projects">
         <BbLead className="bb-roll-lead" />

@@ -14,8 +14,8 @@ export type CenaId = keyof typeof SCENES;
 
 /** O que o carimbo do HUD diz em cada fase. */
 const HUD_LABEL: Record<string, string> = {
-  scan: "QR lido",
-  rise: "Construindo",
+  scan: "Lendo",
+  rise: "QR lido",
   fly: "Projetos",
   dive: "Projetos",
 };

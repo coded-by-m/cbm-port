@@ -58,7 +58,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR">
+    // suppressHydrationWarning: o script do mergulho no QR (/projetos) marca
+    // o <html> antes de o React hidratar. Vale só pros atributos do <html>.
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
         {/* As cores do site inteiro: variáveis --cbm-* da paleta ativa
             (lib/palette.ts). Primeiro filho para valer antes de qualquer CSS. */}
