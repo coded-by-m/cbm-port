@@ -1,0 +1,223 @@
+/* ─── /projetos · a bobina ─────────────── */
+
+.bb {
+  --bb-bg: #0a0a0a;
+  --bb-ink: #f5f2ed;
+  --bb-dim: rgba(245, 242, 237, 0.66);
+  --bb-line: rgba(245, 242, 237, 0.14);
+  --bb-red: #fb3640;
+  --bb-gut: clamp(16px, 4.5vw, 56px);
+  --bb-head: 56px;
+  --bb-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  min-height: 100svh;
+  background: var(--bb-bg);
+  color: var(--bb-ink);
+  font-family: Satoshi, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.bb ::selection { background: var(--bb-red); color: var(--bb-ink); }
+.bb a, .bb button { color: inherit; -webkit-tap-highlight-color: transparent; }
+.bb h1, .bb h2 { text-wrap: balance; }
+.bb p, .bb-meta, .bb-other-text span, .bb-others-hint { text-wrap: pretty; }
+/* `text-wrap` é atalho e religa a quebra; por isso o selo repete as duas. */
+.bb .bb-keep { white-space: nowrap; text-wrap: nowrap; }
+.bb :focus-visible { outline: 2px solid var(--bb-red); outline-offset: 3px; }
+
+/* Cabeçalho ─────────────────────────────────────────────────────────── */
+.bb-header {
+  position: fixed; inset: 0 0 auto; z-index: 40;
+  height: var(--bb-head); padding: 0 var(--bb-gut);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: var(--bb-bg); border-bottom: 1px solid var(--bb-line);
+  pointer-events: none;
+}
+.bb-header > * { pointer-events: auto; }
+.bb-mark {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px;
+  font: 700 13px/1 Panchang, sans-serif; letter-spacing: 0.02em; text-decoration: none;
+}
+.bb-mark-tri { width: 16px; height: 16px; color: var(--bb-red); }
+.bb-header-wa {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 2px;
+  font: 500 14px/1 Satoshi, sans-serif; text-decoration: none;
+}
+.bb-header-wa:hover { color: var(--bb-red); }
+
+/* Abertura ──────────────────────────────────────────────────────────── */
+.bb-lead { padding: calc(var(--bb-head) + 56px) var(--bb-gut) 56px; max-width: 1280px; }
+.bb-h1 {
+  font: 700 clamp(34px, 8.4vw, 96px)/0.98 Panchang, sans-serif;
+  letter-spacing: -0.03em; text-transform: uppercase; text-wrap: balance; margin: 0;
+}
+.bb-h1 span { color: var(--bb-red); }
+.bb-sub {
+  margin: 22px 0 0; max-width: 44ch;
+  font-size: clamp(15px, 1.4vw, 18px); line-height: 1.5; color: var(--bb-dim);
+}
+.bb-meta { margin: 10px 0 0; max-width: 52ch; font-size: 14px; line-height: 1.45; color: var(--bb-dim); }
+
+/* Links e botões ───────────────────────────────────────────────────── */
+.bb-links { display: flex; flex-wrap: wrap; gap: 4px 24px; margin-top: 18px; }
+.bb-link {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+  font: 500 15px/1 Satoshi, sans-serif; text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.bb-link:hover { color: var(--bb-red); }
+.bb-link.is-quiet { color: var(--bb-dim); }
+.bb-link.is-quiet:hover { color: var(--bb-ink); }
+
+.bb-contact { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.bb-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 0 22px;
+  font: 500 15px/1 Satoshi, sans-serif; text-decoration: none;
+  border: 1px solid var(--bb-line);
+  transition: background-color 0.3s var(--bb-ease), border-color 0.3s var(--bb-ease), color 0.3s var(--bb-ease);
+}
+.bb-btn:hover { border-color: var(--bb-ink); }
+.bb-btn.is-primary { background: var(--bb-red); border-color: var(--bb-red); color: #fff; }
+.bb-btn.is-primary:hover { background: #e52a34; border-color: #e52a34; }
+.bb-contact.is-compact { margin-top: 0; }
+@media (max-width: 479px) { .bb-contact .bb-btn { flex: 1 1 100%; } }
+
+/* Fechamento ────────────────────────────────────────────────────────── */
+.bb-closing { padding: clamp(96px, 16vw, 200px) var(--bb-gut) 120px; border-top: 1px solid var(--bb-line); }
+.bb-closing-h {
+  margin: 0; max-width: 14ch;
+  font: 700 clamp(30px, 6.4vw, 80px)/1 Panchang, sans-serif;
+  letter-spacing: -0.03em; text-transform: uppercase; text-wrap: balance;
+}
+.bb-closing-h span { color: var(--bb-red); }
+.bb-more {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 40px;
+  font-size: 15px; color: var(--bb-dim); text-decoration: none;
+}
+.bb-more:hover { color: var(--bb-ink); }
+
+/* ═══ A bobina ═══════════════════════════════════════════════════════ */
+.bb-roll-item { position: relative; padding: 0 var(--bb-gut) clamp(96px, 14vw, 180px); }
+.bb-roll-side { padding: 40px 0 28px; border-top: 1px solid var(--bb-line); }
+.bb-roll-name {
+  /* Cada nome mede pela própria palavra mais longa (--len): "Plataformas"
+     encolhe pra caber, "Nord Arch" fica grande. Panchang ≈ 1,1em por letra. */
+  margin: 0; font: 700 min(12vw, 120px, calc((100vw - 2 * var(--bb-gut)) / (var(--len, 6) * 1.1)))/0.9 Panchang, sans-serif;
+  letter-spacing: -0.035em; text-transform: uppercase;
+}
+@media (max-width: 959px) {
+  .bb-roll-lead { padding-top: calc(var(--bb-head) + 44px); padding-bottom: 36px; }
+  .bb-roll-side { padding: 28px 0 20px; }
+  .bb-roll-side .bb-links { margin-top: 8px; }
+}
+.bb-roll-line { margin: 16px 0 0; max-width: 42ch; font-size: 16px; line-height: 1.5; color: var(--bb-dim); }
+
+.bb-roll-sheet { position: relative; background: #141414; }
+.bb-roll-img { display: block; width: 100%; height: auto; }
+/* No celular, uma faixa presa no topo diz qual site está passando. */
+.bb-roll-bar {
+  position: sticky; top: var(--bb-head); z-index: 5;
+  display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px;
+  background: rgba(10, 10, 10, 0.94); border-bottom: 1px solid var(--bb-line);
+  font-size: 13px;
+}
+.bb-roll-bar b { font: 700 12px/1 Panchang, sans-serif; text-transform: uppercase; letter-spacing: 0.01em; }
+.bb-roll-bar span { color: var(--bb-dim); }
+.bb-roll-progress {
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: var(--bb-red); transform: scaleX(0); transform-origin: left;
+}
+@supports (animation-timeline: view()) {
+  .bb-roll-sheet { view-timeline: --bb-sheet block; }
+  .bb-roll-progress {
+    animation: bb-fill linear both;
+    animation-timeline: --bb-sheet;
+    animation-range: contain 0% contain 100%;
+  }
+}
+@supports not (animation-timeline: view()) { .bb-roll-progress { display: none; } }
+@keyframes bb-fill { to { transform: scaleX(1); } }
+
+@media (min-width: 960px) {
+  .bb-roll-item {
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4vw, 72px);
+    padding-top: 0;
+  }
+  .bb-roll-side { padding: 0; border-top: 0; }
+  .bb-roll-sticky { position: sticky; top: 0; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 96px 0 48px; }
+  .bb-roll-name { font-size: min(6.4vw, 112px, calc((100vw - 2 * var(--bb-gut) - 4vw) * 5 / 12 / (var(--len, 6) * 1.1))); }
+  .bb-roll-bar { display: none; }
+  .bb-roll-sheet { margin-top: 12svh; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); }
+  .bb-roll-sticky::after {
+    content: ""; display: block; width: 100%; height: 1px; margin-top: 40px; background: var(--bb-line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bb *, .bb *::after { animation: none !important; transition: none !important; }
+}
+
+
+/* ═══ Ver mais sites ═════════════════════════════════════════════════ */
+.bb-others { padding: 0 var(--bb-gut) clamp(72px, 10vw, 140px); }
+.bb-others-box { border-top: 1px solid var(--bb-line); border-bottom: 1px solid var(--bb-line); }
+.bb-others-sum {
+  position: relative; display: grid; gap: 8px; padding: 32px 64px 32px 0;
+  list-style: none; cursor: pointer;
+}
+.bb-others-sum::-webkit-details-marker { display: none; }
+.bb-others-title {
+  font: 700 clamp(24px, 4vw, 44px)/1 Panchang, sans-serif;
+  letter-spacing: -0.03em; text-transform: uppercase;
+  transition: color 0.3s var(--bb-ease);
+}
+.bb-others-title span { color: var(--bb-dim); font-weight: 500; }
+.bb-others-hint { font-size: 15px; color: var(--bb-dim); }
+.bb-others-sum:hover .bb-others-title { color: var(--bb-red); }
+/* Mais que vira menos: duas barras, a vertical gira e some ao abrir. */
+.bb-others-icon { position: absolute; right: 4px; top: 50%; width: 28px; height: 28px; transform: translateY(-50%); }
+.bb-others-icon::before, .bb-others-icon::after {
+  content: ""; position: absolute; left: 0; top: 13px; width: 28px; height: 2px; background: var(--bb-red);
+  transition: transform 0.45s var(--bb-ease);
+}
+.bb-others-icon::after { transform: rotate(90deg); }
+.bb-others-box[open] .bb-others-icon::after { transform: rotate(0deg); }
+
+.bb-others-list { list-style: none; margin: 0; padding: 0 0 24px; }
+.bb-others-box[open] .bb-others-list { animation: bb-open 0.6s var(--bb-ease) both; }
+@keyframes bb-open { from { opacity: 0; transform: translateY(-8px); } }
+.bb-others-list li + li { border-top: 1px solid var(--bb-line); }
+.bb-other {
+  display: grid; grid-template-columns: 132px minmax(0, 1fr) auto; align-items: center; gap: 16px;
+  padding: 14px 0; text-decoration: none;
+}
+.bb-other-thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #141414; }
+.bb-other-thumb img { object-fit: cover; object-position: top; transition: transform 0.8s var(--bb-ease); }
+.bb-other-text { display: grid; gap: 6px; min-width: 0; }
+.bb-other-text b { font: 700 clamp(15px, 2vw, 22px)/1.1 Panchang, sans-serif; text-transform: uppercase; letter-spacing: -0.01em; }
+.bb-other-text span { max-width: 44ch; font-size: 14px; line-height: 1.4; color: var(--bb-dim); }
+.bb-other-go { color: var(--bb-dim); transition: color 0.3s, transform 0.3s var(--bb-ease); }
+.bb-other:hover .bb-other-thumb img { transform: scale(1.04); }
+.bb-other:hover .bb-other-text b, .bb-other:hover .bb-other-go { color: var(--bb-red); }
+.bb-other:hover .bb-other-go { transform: translateX(4px); }
+
+/* Celular: a linha inteira já é link; a seta sai e o nome ganha espaço. */
+@media (max-width: 479px) {
+  .bb-other { grid-template-columns: 104px minmax(0, 1fr); gap: 14px; }
+  .bb-other-go { display: none; }
+  .bb-other-text b { font-size: 14px; }
+}
+@media (min-width: 640px) and (max-width: 1199px) {
+  .bb-other { grid-template-columns: 220px minmax(0, 1fr) auto; gap: 24px; padding: 18px 0; }
+}
+@media (min-width: 1200px) {
+  .bb-others-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(32px, 4vw, 72px); }
+  .bb-others-list li, .bb-others-list li + li { border-top: 1px solid var(--bb-line); }
+  .bb-other { grid-template-columns: clamp(180px, 15vw, 240px) minmax(0, 1fr) auto; gap: 24px; padding: 20px 0; }
+}
+
+@media (min-width: 960px) { .bb { --bb-head: 64px; } }
+/* Faixa do celular: nada de texto cortado. Se o nome e o selo não cabem
+   juntos, a faixa mostra só o nome (o selo já está logo acima). */
+.bb-roll-bar b, .bb-roll-bar span { white-space: nowrap; }
+@media (max-width: 419px) { .bb-roll-bar span { display: none; } }

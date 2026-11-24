@@ -3,10 +3,9 @@ import { waLink } from "@/lib/contact";
 import { publishedPosts } from "@/data/blog";
 import { PRIVACY_PATH } from "@/data/privacidade";
 import { TriArrow } from "@/components/ui/TriArrow";
+import { PORTFOLIO_WA_MESSAGE } from "@/data/projetos";
 
-/** Mensagem do WhatsApp de quem vem do portfólio. */
-export const PORTFOLIO_WA_MESSAGE =
-  "Olá! Vi o portfólio da Coded by M e gostaria de conversar sobre um projeto.";
+export { PORTFOLIO_WA_MESSAGE };
 
 /**
  * Links internos do rodapé: vitrine, sobre, contato e blog (se houver artigo).

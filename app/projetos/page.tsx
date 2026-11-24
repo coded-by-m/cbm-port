@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { getPublishedProjects, portfolioGroups } from "@/lib/galleryData";
-import { PROJETOS_INTRO, PROJETOS_TITLE } from "@/data/projetos";
-import { SURFACE } from "@/components/site/shared";
-import { GalleryHeader } from "@/components/projetos/GalleryHeader";
-import { IndexClosing } from "@/components/projetos/IndexClosing";
-import { IndexOpening } from "@/components/projetos/IndexOpening";
-import { ProjetosIndex } from "@/components/projetos/ProjetosIndex";
+import { BOBINA, PROJETOS_INTRO, PROJETOS_TITLE } from "@/data/projetos";
+import { Bobina } from "@/components/projetos/bobina/Bobina";
+import type { BbOther, BbProject } from "@/components/projetos/bobina/shared";
+import "@/components/projetos/bobina/bobina.css";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { OG, OG_SIZE, breadcrumbSchema, graph, webPageSchema } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
@@ -33,7 +31,37 @@ export const metadata: Metadata = {
 };
 
 export default function ProjetosPage() {
-  const { live, conceptual, ordered: projects } = portfolioGroups(getPublishedProjects());
+  const { ordered: projects } = portfolioGroups(getPublishedProjects());
+
+  const featured: BbProject[] = BOBINA.flatMap(({ slug, tallH, line }) => {
+    const c = projects.find((p) => p.slug === slug);
+    if (!c?.preview) return [];
+    return [
+      {
+        slug,
+        title: c.title,
+        concept: Boolean(c.concept),
+        setor: c.meta.setor,
+        ano: c.meta.ano,
+        line,
+        siteUrl: c.siteUrl,
+        tall: { src: c.preview.desktop, w: 1440, h: tallH },
+        top: { src: c.preview.top ?? c.preview.desktop, w: 1440, h: 900 },
+      },
+    ];
+  });
+  const picked = new Set(featured.map((f) => f.slug));
+  const others: BbOther[] = projects
+    .filter((p) => !picked.has(p.slug))
+    .map((p) => ({
+      slug: p.slug,
+      title: p.title,
+      concept: Boolean(p.concept),
+      setor: p.meta.setor,
+      thumb: p.preview?.top ?? p.preview?.card ?? "",
+    }))
+    .filter((o) => o.thumb);
+
   const schema = graph(
     {
       ...webPageSchema({
@@ -59,14 +87,9 @@ export default function ProjetosPage() {
     ]),
   );
   return (
-    <div className="site-home pi-root min-h-dvh text-[#F5F2ED]" style={{ background: SURFACE.base }}>
+    <>
       <JsonLd data={schema} />
-      <GalleryHeader />
-      <main data-cm-section="projects">
-        <IndexOpening total={projects.length} />
-        <ProjetosIndex live={live} conceptual={conceptual} />
-      </main>
-      <IndexClosing />
-    </div>
+      <Bobina projects={featured} others={others} />
+    </>
   );
 }

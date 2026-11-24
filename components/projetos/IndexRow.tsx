@@ -48,7 +48,7 @@ export function IndexRow({
           <span aria-hidden>{num}</span>
           <span>{project.meta.tipo}</span>
           <span className="pi-kicker-sector">{project.meta.setor}</span>
-          <span>{project.meta.ano}</span>
+          <span className="pi-kicker-year">{project.meta.ano}</span>
           {project.concept && <span className="pi-tag">conceitual</span>}
         </span>
         <h3 className="pi-name">{project.title}</h3>

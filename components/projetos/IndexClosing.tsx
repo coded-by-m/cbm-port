@@ -4,8 +4,8 @@ import { TriArrow } from "@/components/ui/TriArrow";
 import { FOOTER_LINKS, PORTFOLIO_WA_MESSAGE } from "./GalleryFooter";
 
 /**
- * Fecho da `/projetos`: a pergunta em corpo de título, o WhatsApp e a
- * navegação do rodapé.
+ * Fecho da `/projetos`: a pergunta em corpo de título, o WhatsApp, o
+ * "Salvar contato" (vCard) e a navegação do rodapé.
  *
  * Tem fundo sólido e fica acima da cena: é ele que encerra a capa em tela
  * cheia. Os `data-cm-*` são os mesmos do `GalleryFooter`, pra o histórico do
@@ -16,6 +16,7 @@ export function IndexClosing() {
     <footer data-cm-section="contact" className="pi-closing">
       <div className="pi-closing-inner">
         <p className="pi-closing-title">Tem um projeto em mente?</p>
+        <div className="pi-closing-ctas">
         <a
           href={waLink(PORTFOLIO_WA_MESSAGE)}
           target="_blank"
@@ -27,6 +28,15 @@ export function IndexClosing() {
           Falar no WhatsApp
           <TriArrow dir="up-right" />
         </a>
+        <a
+          href="/contato.vcf"
+          data-cm-role="secondary-cta"
+          data-cm-id="gallery-footer-vcard"
+          className="pi-closing-cta is-quiet"
+        >
+          Salvar contato
+        </a>
+        </div>
       </div>
       <nav aria-label="Navegação do rodapé" className="pi-closing-nav">
         <span className="pi-closing-label">Navegação</span>
