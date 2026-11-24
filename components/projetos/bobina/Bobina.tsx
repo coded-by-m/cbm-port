@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import type React from "react";
+import { useRef, type CSSProperties } from "react";
+import { REVEAL_BOOT, useReveal } from "./useReveal";
 import { Outros } from "./Outros";
 import { QR_DIVE_BOOT, QrDive } from "./QrDive";
+import { TriCurtain } from "./TriCurtain";
 import {
   BbClosing,
   BbHeader,
@@ -28,10 +30,14 @@ export function Bobina({
   projects: BbProject[];
   others: BbOther[];
 }) {
+  const root = useRef<HTMLDivElement>(null);
+  useReveal(root);
   return (
-    <div className="bb bb-roll">
+    <div ref={root} className="bb bb-roll">
       {/* Decide o mergulho antes do primeiro quadro (ver QrDive). */}
       <script dangerouslySetInnerHTML={{ __html: QR_DIVE_BOOT }} />
+      {/* Esconde os projetos antes do primeiro quadro (ver useReveal). */}
+      <script dangerouslySetInnerHTML={{ __html: REVEAL_BOOT }} />
       <QrDive />
       <BbHeader />
       <main data-cm-section="projects">
@@ -44,7 +50,7 @@ export function Bobina({
             data-cm-section={`projeto-${p.slug}`}
           >
             <div className="bb-roll-side">
-              <div className="bb-roll-sticky">
+              <div className="bb-roll-sticky" data-reveal="text">
                 <h2
                   className="bb-roll-name"
                   style={
@@ -52,7 +58,7 @@ export function Bobina({
                       "--len": Math.max(
                         ...p.title.split(" ").map((w) => w.length),
                       ),
-                    } as React.CSSProperties
+                    } as CSSProperties
                   }
                 >
                   {p.title}
@@ -65,7 +71,7 @@ export function Bobina({
               </div>
             </div>
 
-            <div className="bb-roll-sheet">
+            <div className="bb-roll-sheet" data-reveal="sheet">
               <div className="bb-roll-bar" aria-hidden>
                 <b>{p.title}</b>
                 <span>{status(p)}</span>
@@ -81,6 +87,7 @@ export function Bobina({
                 priority={i === 0}
                 className="bb-roll-img"
               />
+              <TriCurtain />
             </div>
           </section>
         ))}

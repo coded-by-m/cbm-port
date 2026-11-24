@@ -112,7 +112,8 @@
 }
 .bb-roll-line { margin: 16px 0 0; max-width: 42ch; font-size: 16px; line-height: 1.5; color: var(--bb-dim); }
 
-.bb-roll-sheet { position: relative; background: #141414; }
+/* clip (não hidden): segura o zoom de entrada do print sem matar o sticky da faixa. */
+.bb-roll-sheet { position: relative; background: #141414; overflow-x: clip; }
 .bb-roll-img { display: block; width: 100%; height: auto; }
 /* No celular, uma faixa presa no topo diz qual site está passando. */
 .bb-roll-bar {
@@ -184,8 +185,6 @@
 .bb-others-box[open] .bb-others-icon::after { transform: rotate(0deg); }
 
 .bb-others-list { list-style: none; margin: 0; padding: 0 0 24px; }
-.bb-others-box[open] .bb-others-list { animation: bb-open 0.6s var(--bb-ease) both; }
-@keyframes bb-open { from { opacity: 0; transform: translateY(-8px); } }
 .bb-others-list li + li { border-top: 1px solid var(--bb-line); }
 .bb-other {
   display: grid; grid-template-columns: 132px minmax(0, 1fr) auto; align-items: center; gap: 16px;
@@ -301,3 +300,54 @@ html.bb-arrived .bb-lead > :nth-child(2) { animation-delay: 0.08s; }
 html.bb-arrived .bb-roll-item:first-of-type .bb-roll-side { animation: bb-arrive 0.9s 0.16s var(--bb-ease) both; }
 @keyframes bb-arrive { from { opacity: 0; transform: translateY(18px); } }
 @keyframes bb-arrive-fade { from { opacity: 0; } }
+
+/* ═══ Entrada dos projetos ═══════════════════════════════════════════
+   Um gesto só, o da bobina: o nome sobe de dentro de uma máscara, o texto
+   vem atrás em sequência curta e o print desenrola de cima pra baixo.
+   Só esconde com `.bb-motion` no <html> (posto pelo REVEAL_BOOT antes do
+   primeiro quadro, com desistência em 6s), então sem JS tudo aparece. */
+.bb-motion [data-reveal="text"] > * {
+  transition: opacity 0.8s var(--bb-ease), transform 1s var(--bb-ease), clip-path 1s var(--bb-ease);
+}
+.bb-motion [data-reveal="text"] > :nth-child(2) { transition-delay: 0.12s; }
+.bb-motion [data-reveal="text"] > :nth-child(3) { transition-delay: 0.2s; }
+.bb-motion [data-reveal="text"] > :nth-child(4) { transition-delay: 0.28s; }
+.bb-motion [data-reveal="text"]:not(.is-in) > * { opacity: 0; transform: translateY(22px); }
+/* O nome não esmaece: é revelado pela máscara, de baixo pra cima. */
+.bb-motion [data-reveal="text"] > .bb-roll-name { clip-path: inset(-10% -4% -12% -4%); }
+.bb-motion [data-reveal="text"]:not(.is-in) > .bb-roll-name {
+  opacity: 1; transform: translateY(42%); clip-path: inset(-10% -4% 100% -4%);
+}
+
+/* O print aparece triângulo por triângulo (TriCurtain): cada um encolhe
+   no próprio centro, numa onda a partir do canto de cima. Cortina por cima
+   e não clip-path no print: com a imagem recortada o navegador acha que ela
+   não está na tela e o lazy-load nunca a carrega. */
+.bb-curtain { display: none; }
+.bb-motion .bb-curtain { display: block; position: absolute; inset: 0; z-index: 6; pointer-events: none; overflow: hidden; }
+/* Antes da malha existir (HTML do servidor, JS ainda subindo), um bloco liso cobre o print. */
+.bb-motion .bb-curtain:not(.is-ready) { background: var(--bb-bg); }
+.bb-curtain svg { display: block; width: calc(100% + 2px); height: auto; margin: -1px 0 0 -1px; }
+.bb-curtain path {
+  fill: var(--bb-bg); stroke: var(--bb-bg); stroke-width: 1.5;
+  transform-box: fill-box; transform-origin: center;
+  transition: transform 0.55s cubic-bezier(0.55, 0, 0.3, 1), opacity 0.4s ease;
+}
+.bb-motion [data-reveal="sheet"].is-in .bb-curtain path { transform: scale(0) rotate(-24deg); opacity: 0; }
+.bb-curtain-rest { position: absolute; left: 0; right: 0; bottom: 0; background: var(--bb-bg); transition: opacity 0.3s ease 0.9s; }
+.bb-motion [data-reveal="sheet"].is-in .bb-curtain-rest { opacity: 0; }
+/* Depois da onda a cortina sai do caminho de vez. */
+.bb-motion [data-reveal="sheet"].is-in .bb-curtain { animation: bb-curtain-off 0s 1.8s forwards; }
+@keyframes bb-curtain-off { to { visibility: hidden; } }
+.bb-motion [data-reveal="sheet"] .bb-roll-img { transform-origin: 50% 0; transition: transform 1.8s var(--bb-ease) 0.1s; }
+.bb-motion [data-reveal="sheet"]:not(.is-in) .bb-roll-img { transform: scale(1.06); }
+
+/* "Ver mais sites": as linhas entram uma a uma quando a lista abre. */
+.bb-others-box[open] .bb-others-list li { animation: bb-row 0.7s var(--bb-ease) both; }
+.bb-others-box[open] .bb-others-list li:nth-child(2) { animation-delay: 0.05s; }
+.bb-others-box[open] .bb-others-list li:nth-child(3) { animation-delay: 0.1s; }
+.bb-others-box[open] .bb-others-list li:nth-child(4) { animation-delay: 0.15s; }
+.bb-others-box[open] .bb-others-list li:nth-child(5) { animation-delay: 0.2s; }
+.bb-others-box[open] .bb-others-list li:nth-child(6) { animation-delay: 0.25s; }
+.bb-others-box[open] .bb-others-list li:nth-child(n + 7) { animation-delay: 0.3s; }
+@keyframes bb-row { from { opacity: 0; transform: translateY(14px); } }
